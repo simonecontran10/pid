@@ -941,3 +941,33 @@ Dopo aver risolto il bug delle seconde squadre, programmare un cleanup:
 Effetto: 14 club guadagnano 1-14 giocatori in più. Inter U23 passa da 15 a 29, Milan Futuro da 22 a 32, Juventus Next Gen da 24 a 29, Atalanta U23 da 20 a 28. **I numeri online ora corrispondono alla rosa Transfermarkt scrappata.**
 
 Lasciato invariato: `applyFilters` per Lista/Convocazione/Griglie/Minutaggi (rige 1986, 2889, 3832, 4414) — lì la semantica deve restare "un giocatore in un club" via `current_club_id`, altrimenti i 71 doppi comparirebbero due volte nelle liste.
+
+## 7 mag 2026 (sera 2) — Cloud sync Supabase riattivato + login obbligatorio
+
+### Bug strutturale trovato
+1. `cloud_sync.js` era **commentato** in `index.html` (riga 272: `<!-- ... cloud sync disabilitato -->`). Spiega perché il sito si apriva senza login e i salvataggi non andavano nel cloud.
+2. **Naming bug**: `cloud_sync.js` faceva sync su chiavi `saudi_*` (legacy) ma `app.js` salva su `pid_*` (post-rename). Risultato: cloud riceveva sempre dati vuoti, e dopo il login vedevi un sito vuoto.
+3. **Mancavano `pid_favorites` e `saudi_minutes_v1`** dalla mappa LS_TO_CLOUD. Anche se il sync avesse funzionato, preferiti e minutaggi sarebbero rimasti solo locali.
+4. **Schema DB**: tabella `user_state` su Supabase non aveva le colonne `minutes` e `favorites`.
+5. **Fallback insicuro**: `cloudInitAuth()` se Supabase non si caricava (CDN giù) sbloccava il sito senza autenticazione.
+
+### Fix applicato
+- **`frontend/index.html`**: riattivato `<script src="cloud_sync.js?v=20260507a"></script>`.
+- **`frontend/cloud_sync.js`** riscritto:
+  - Mappa LS_TO_CLOUD con chiavi `pid_*` corrette + `pid_favorites` + `saudi_minutes_v1`
+  - Funzione `_migrateLegacyKeys()` che al primo avvio rinomina silenziosamente `saudi_player_notes` → `pid_player_notes`, `saudi_grids_v1` → `pid_grids_v1`, `saudi_callup_active` → `pid_callup_active` (per chi aveva dati legacy nel browser)
+  - `_buildColumnValue()` aggiornato per legge dalle chiavi giuste
+  - `_onFirstSignIn()` aggiornato per upload/download anche di minutes + favorites
+  - Fallback "supabase non caricato → sblocca sito" rimosso. Ora se Supabase fallisce mostra errore esplicito sull'auth-gate.
+- **Schema Supabase**: file `supabase_setup.sql` (nuovo, root) idempotente che crea/aggiorna la tabella `user_state` con tutte le colonne necessarie + Row Level Security (ogni utente vede solo i propri dati).
+
+### Login obbligatorio
+Da ora il sito richiede login all'apertura: schermata fullscreen "Accedi" con email/password. Opzioni: Crea account (signup con conferma email), Magic link, Forgot password (reset).
+
+### Note conservate per chiavi LS legacy
+`saudi_callups_v1` e `saudi_minutes_v1` restano "saudi_" nei nomi delle costanti (`CALLUP_STORAGE_KEY` e `MINUTES_STORAGE_KEY` in app.js), perché sono identificatori opachi lato utente. Rinominarle richiederebbe migrazione dati senza valore funzionale. Le altre chiavi (notes, grids, callup_active, favorites) usano nomenclatura `pid_*` corretta.
+
+### File modificati
+- `frontend/index.html` (riattivato cloud_sync.js)
+- `frontend/cloud_sync.js` (riscritto, ~390 righe)
+- `supabase_setup.sql` (nuovo, root, da eseguire UNA VOLTA sul dashboard Supabase)

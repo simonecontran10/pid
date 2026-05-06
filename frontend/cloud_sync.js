@@ -1,16 +1,19 @@
 /**
- * cloud_sync.js — Auth + sincronizzazione cloud (Supabase) per Saudi Players Hub.
+ * cloud_sync.js — Auth + sincronizzazione cloud (Supabase) per PID.
  *
  * Cosa fa:
  *  1. Inizializza il client Supabase (publishable key, sicura da esporre).
- *  2. Mostra modale login con email magic link (sidebar bottone "Login").
+ *  2. Mostra l'auth-gate fullscreen all'apertura del sito (login obbligatorio).
  *  3. Sync automatico LS↔cloud per:
- *       - saudi_callups_v1   → user_state.callups.store
- *       - saudi_callup_active → user_state.callups.currentIds
- *       - saudi_player_notes  → user_state.notes
- *       - saudi_grids_v1      → user_state.grids
- *  4. Migrazione: al primo login, sale i dati LS al cloud. Login successivi:
- *     scarica dal cloud e sovrascrive LS, poi reload.
+ *       - pid_callup_active     → user_state.callups.currentIds
+ *       - saudi_callups_v1      → user_state.callups.store     (chiave LS legacy mantenuta)
+ *       - pid_player_notes      → user_state.notes
+ *       - pid_grids_v1          → user_state.grids
+ *       - saudi_minutes_v1      → user_state.minutes           (chiave LS legacy mantenuta)
+ *       - pid_favorites         → user_state.favorites
+ *  4. Migrazione dati legacy: al primo avvio, se trova dati su chiavi `saudi_*` orfane
+ *     (player_notes, grids, callup_active), li migra silenziosamente alle chiavi `pid_*`.
+ *  5. Migrazione first-sign-in: cloud vuoto → upload LS al cloud; cloud non vuoto → download.
  *
  * Caricato in index.html DOPO supabase-js CDN e PRIMA di app.js.
  */
@@ -23,22 +26,44 @@ const _supa = window.supabase
     })
   : null;
 
-// Stato auth
 window.cloudAuth = { user: null, ready: false };
 
 // Mappatura keys localStorage → colonne user_state e relativi parser
 const LS_TO_CLOUD = {
-  saudi_callup_active: { col: "callups", path: "currentIds", parse: (v) => JSON.parse(v || "[]") },
-  saudi_callups_v1:    { col: "callups", path: "store",      parse: (v) => JSON.parse(v || '{"lists":{},"currentName":""}') },
-  saudi_player_notes:  { col: "notes",   path: null,         parse: (v) => JSON.parse(v || "{}") },
-  saudi_grids_v1:      { col: "grids",   path: null,         parse: (v) => JSON.parse(v || '{"formation":"4-3-3","assigned":{},"store":{"lists":{},"currentName":""}}') },
+  pid_callup_active: { col: "callups", path: "currentIds", parse: (v) => JSON.parse(v || "[]") },
+  saudi_callups_v1:  { col: "callups", path: "store",      parse: (v) => JSON.parse(v || '{"lists":{},"currentName":""}') },
+  pid_player_notes:  { col: "notes",   path: null,         parse: (v) => JSON.parse(v || "{}") },
+  pid_grids_v1:      { col: "grids",   path: null,         parse: (v) => JSON.parse(v || '{"formation":"4-3-3","assigned":{},"store":{"lists":{},"currentName":""}}') },
+  saudi_minutes_v1:  { col: "minutes", path: null,         parse: (v) => JSON.parse(v || "[]") },
+  pid_favorites:     { col: "favorites", path: null,       parse: (v) => JSON.parse(v || "[]") },
 };
 
-// ============ AUTH ============
+// Migrazione one-shot: chiavi saudi_* legacy → pid_*
+const LEGACY_RENAMES = {
+  saudi_player_notes:  "pid_player_notes",
+  saudi_grids_v1:      "pid_grids_v1",
+  saudi_callup_active: "pid_callup_active",
+  // Nota: saudi_callups_v1 e saudi_minutes_v1 sono ancora usate "as-is" da app.js → non rinominare
+};
+
+function _migrateLegacyKeys() {
+  let migrated = 0;
+  for (const [oldKey, newKey] of Object.entries(LEGACY_RENAMES)) {
+    const oldVal = localStorage.getItem(oldKey);
+    const newVal = localStorage.getItem(newKey);
+    if (oldVal && !newVal) {
+      localStorage.setItem(newKey, oldVal);
+      migrated++;
+      console.log(`[cloud_sync] migrated ${oldKey} → ${newKey}`);
+    }
+  }
+  if (migrated) console.log(`[cloud_sync] legacy migration: ${migrated} keys moved to pid_*`);
+}
+
+// ============ AUTH GATE ============
 function _showAuthGate() {
   const gate = document.getElementById("auth-gate");
   if (gate) gate.style.display = "flex";
-  // disabilita scroll body sotto al gate
   document.body.style.overflow = "hidden";
 }
 
@@ -49,12 +74,22 @@ function _hideAuthGate() {
 }
 
 async function cloudInitAuth() {
+  try { _migrateLegacyKeys(); } catch (e) { console.warn("legacy migration:", e); }
+
   if (!_supa) {
-    console.warn("Supabase JS non caricato. Cloud sync disabilitato.");
-    // Senza Supabase non possiamo proteggere → nascondi gate per non bloccare tutto
-    _hideAuthGate();
+    // Senza Supabase → bloccato (cambio policy: prima si sbloccava)
+    console.error("[cloud_sync] Supabase JS non caricato. Login obbligatorio NON disponibile.");
+    const gate = document.getElementById("auth-gate");
+    const msg = document.getElementById("auth-gate-msg");
+    if (gate) gate.style.display = "flex";
+    if (msg) {
+      msg.textContent = "Errore connessione al servizio di autenticazione. Ricarica la pagina o riprova tra qualche minuto.";
+      msg.style.color = "#EF4444";
+    }
+    document.body.style.overflow = "hidden";
     return;
   }
+
   const { data: { session } } = await _supa.auth.getSession();
   window.cloudAuth.user = session?.user || null;
   window.cloudAuth.ready = true;
@@ -66,7 +101,6 @@ async function cloudInitAuth() {
     _showAuthGate();
   }
 
-  // Wire form inline del gate
   _wireAuthGateForm();
 
   _supa.auth.onAuthStateChange(async (event, session) => {
@@ -98,8 +132,7 @@ async function cloudSignInWithPassword(email, password) {
 
 async function cloudSignUpWithPassword(email, password) {
   const { error } = await _supa.auth.signUp({
-    email,
-    password,
+    email, password,
     options: { emailRedirectTo: window.location.href },
   });
   if (error) throw error;
@@ -116,16 +149,16 @@ async function cloudSignOut() {
   await _supa.auth.signOut();
 }
 
-// ============ STATE LOAD/SAVE ============
+// ============ CLOUD I/O ============
 async function _cloudLoad() {
   if (!window.cloudAuth.user) return null;
   const { data, error } = await _supa
     .from("user_state")
-    .select("callups,notes,grids,updated_at")
+    .select("*")
     .eq("user_id", window.cloudAuth.user.id)
     .maybeSingle();
   if (error) {
-    console.warn("Cloud load error:", error);
+    console.warn("[cloud_sync] load error:", error.message);
     return null;
   }
   return data;
@@ -133,30 +166,30 @@ async function _cloudLoad() {
 
 async function _cloudSaveColumn(col, value) {
   if (!window.cloudAuth.user) return;
-  const update = { [col]: value };
+  const update = { [col]: value, updated_at: new Date().toISOString() };
   const { error } = await _supa
     .from("user_state")
-    .upsert({ user_id: window.cloudAuth.user.id, ...update }, { onConflict: "user_id" });
-  if (error) console.warn("Cloud save error:", error);
+    .upsert(
+      { user_id: window.cloudAuth.user.id, ...update },
+      { onConflict: "user_id" }
+    );
+  if (error) console.warn(`[cloud_sync] save ${col} error:`, error.message);
 }
 
-// Helper: legge LS attuale e ricostruisce il valore della colonna cloud
 function _buildColumnValue(col) {
   if (col === "callups") {
     return {
-      currentIds: JSON.parse(localStorage.getItem("saudi_callup_active") || "[]"),
-      store: JSON.parse(localStorage.getItem("saudi_callups_v1") || '{"lists":{},"currentName":""}'),
+      currentIds: JSON.parse(localStorage.getItem("pid_callup_active") || "[]"),
+      store:      JSON.parse(localStorage.getItem("saudi_callups_v1") || '{"lists":{},"currentName":""}'),
     };
   }
-  if (col === "notes") {
-    return JSON.parse(localStorage.getItem("saudi_player_notes") || "{}");
-  }
-  if (col === "grids") {
-    return JSON.parse(localStorage.getItem("saudi_grids_v1") || '{"formation":"4-3-3","assigned":{},"store":{"lists":{},"currentName":""}}');
-  }
+  if (col === "notes")     return JSON.parse(localStorage.getItem("pid_player_notes") || "{}");
+  if (col === "grids")     return JSON.parse(localStorage.getItem("pid_grids_v1") || '{"formation":"4-3-3","assigned":{},"store":{"lists":{},"currentName":""}}');
+  if (col === "minutes")   return JSON.parse(localStorage.getItem("saudi_minutes_v1") || "[]");
+  if (col === "favorites") return JSON.parse(localStorage.getItem("pid_favorites") || "[]");
+  return null;
 }
 
-// Debounce per non spammare il DB
 const _saveTimers = {};
 function _scheduleSaveColumn(col) {
   if (!window.cloudAuth.user) return;
@@ -164,7 +197,6 @@ function _scheduleSaveColumn(col) {
   _saveTimers[col] = setTimeout(() => _cloudSaveColumn(col, _buildColumnValue(col)), 1200);
 }
 
-// Override globale di localStorage.setItem per intercettare le 4 keys
 const _origSetItem = Storage.prototype.setItem;
 Storage.prototype.setItem = function (key, value) {
   _origSetItem.call(this, key, value);
@@ -175,42 +207,53 @@ Storage.prototype.setItem = function (key, value) {
 
 // ============ LOGIN/LOGOUT EVENTS ============
 async function _onFirstSignIn() {
-  console.log("Cloud sign-in:", window.cloudAuth.user.email);
+  console.log("[cloud_sync] sign-in:", window.cloudAuth.user.email);
   const cloud = await _cloudLoad();
   const hasCloudData =
     cloud && (
       (cloud.callups?.currentIds?.length > 0) ||
       Object.keys(cloud.callups?.store?.lists || {}).length > 0 ||
       Object.keys(cloud.notes || {}).length > 0 ||
-      Object.keys(cloud.grids?.store?.lists || {}).length > 0
+      Object.keys(cloud.grids?.store?.lists || {}).length > 0 ||
+      (cloud.minutes?.length > 0) ||
+      (cloud.favorites?.length > 0)
     );
 
   if (hasCloudData) {
-    // Cloud ha dati → sovrascrivi LS e ricarica
-    if (cloud.callups?.store) _origSetItem.call(localStorage, "saudi_callups_v1", JSON.stringify(cloud.callups.store));
-    if (cloud.callups?.currentIds) _origSetItem.call(localStorage, "saudi_callup_active", JSON.stringify(cloud.callups.currentIds));
-    if (cloud.notes) _origSetItem.call(localStorage, "saudi_player_notes", JSON.stringify(cloud.notes));
-    if (cloud.grids) _origSetItem.call(localStorage, "saudi_grids_v1", JSON.stringify(cloud.grids));
+    if (cloud.callups?.store)      _origSetItem.call(localStorage, "saudi_callups_v1", JSON.stringify(cloud.callups.store));
+    if (cloud.callups?.currentIds) _origSetItem.call(localStorage, "pid_callup_active", JSON.stringify(cloud.callups.currentIds));
+    if (cloud.notes)               _origSetItem.call(localStorage, "pid_player_notes", JSON.stringify(cloud.notes));
+    if (cloud.grids)               _origSetItem.call(localStorage, "pid_grids_v1", JSON.stringify(cloud.grids));
+    if (cloud.minutes)             _origSetItem.call(localStorage, "saudi_minutes_v1", JSON.stringify(cloud.minutes));
+    if (cloud.favorites)           _origSetItem.call(localStorage, "pid_favorites", JSON.stringify(cloud.favorites));
     setTimeout(() => location.reload(), 500);
   } else {
-    // Cloud vuoto → migra LS attuale al cloud
     const upload = {
       user_id: window.cloudAuth.user.id,
-      callups: _buildColumnValue("callups"),
-      notes:   _buildColumnValue("notes"),
-      grids:   _buildColumnValue("grids"),
+      callups:   _buildColumnValue("callups"),
+      notes:     _buildColumnValue("notes"),
+      grids:     _buildColumnValue("grids"),
+      minutes:   _buildColumnValue("minutes"),
+      favorites: _buildColumnValue("favorites"),
     };
     await _supa.from("user_state").upsert(upload, { onConflict: "user_id" });
-    console.log("Cloud: migrated localStorage to cloud.");
+    console.log("[cloud_sync] migrated localStorage to cloud.");
   }
 }
 
 function _onSignedOut() {
-  console.log("Cloud sign-out");
+  console.log("[cloud_sync] sign-out");
   setTimeout(() => location.reload(), 300);
 }
 
 // ============ UI ============
+function _renderAuthUI() {
+  const lbl = document.getElementById("auth-user-email");
+  if (lbl) lbl.textContent = window.cloudAuth.user?.email || "";
+  const btn = document.getElementById("auth-logout");
+  if (btn) btn.style.display = window.cloudAuth.user ? "" : "none";
+}
+
 function _wireAuthGateForm() {
   const email = document.getElementById("auth-gate-email");
   const pass = document.getElementById("auth-gate-password");
@@ -223,21 +266,21 @@ function _wireAuthGateForm() {
 
   email.focus();
 
+  const tx = (key, fallback) => (typeof t === "function" ? t(key) : null) || fallback;
   const showErr = (txt) => { msg.textContent = txt; msg.style.color = "#EF4444"; };
-  const showOk = (txt) => { msg.textContent = txt; msg.style.color = "var(--accent,#6FE0A8)"; };
+  const showOk  = (txt) => { msg.textContent = txt; msg.style.color = "var(--accent,#6FE0A8)"; };
 
   const doLogin = async () => {
     const e = email.value.trim();
     const p = pass.value;
-    if (!e || !e.includes("@")) return showErr(t("gate_email_invalid"));
-    if (p.length < 6) return showErr(t("gate_password_min"));
-    submit.disabled = true; submit.textContent = t("gate_please_wait");
+    if (!e || !e.includes("@")) return showErr(tx("gate_email_invalid", "Inserisci un email valido"));
+    if (p.length < 6) return showErr(tx("gate_password_min", "Password di almeno 6 caratteri"));
+    submit.disabled = true; submit.textContent = tx("gate_please_wait", "Attendere…");
     try {
       await cloudSignInWithPassword(e, p);
-      // SIGNED_IN handler will hide the gate
     } catch (err) {
-      showErr(t("gate_error") + ": " + (err.message || err));
-      submit.disabled = false; submit.textContent = t("gate_signin");
+      showErr(tx("gate_error", "Errore") + ": " + (err.message || err));
+      submit.disabled = false; submit.textContent = tx("gate_signin", "Accedi");
     }
   };
 
@@ -250,118 +293,72 @@ function _wireAuthGateForm() {
   if (linkReset)  linkReset.onclick  = (ev) => { ev.preventDefault(); _showLoginModal({ forced: true, mode: "reset" }); };
 }
 
-function _renderAuthUI() {
-  const btn = document.getElementById("sidebar-auth-btn");
-  const lbl = document.getElementById("sidebar-auth-label");
-  if (!btn || !lbl) return;
-  if (window.cloudAuth.user) {
-    const name = (window.cloudAuth.user.email || "user").split("@")[0];
-    lbl.textContent = "👤 " + name;
-    btn.title = window.cloudAuth.user.email;
-    btn.onclick = () => { if (confirm(t("sign_out_q"))) cloudSignOut(); };
-  } else {
-    lbl.textContent = t("sidebar_signin");
-    btn.title = t("gate_signin");
-    btn.onclick = _showLoginModal;
-  }
-}
-
-function _showLoginModal(opts) {
-  if (document.getElementById("auth-modal")) return;
-  const forced = !!(opts && opts.forced);
-  let mode = (opts && opts.mode) || "login"; // login | signup | magic | reset
-
+function _showLoginModal({ forced = false, mode = "signin" } = {}) {
+  const tx = (key, fallback) => (typeof t === "function" ? t(key) : null) || fallback;
   const modal = document.createElement("div");
-  modal.id = "auth-modal";
-  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);";
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:24px;";
+  const card = document.createElement("div");
+  card.style.cssText = "background:var(--surface,#1A1F26);padding:28px;border-radius:14px;width:100%;max-width:420px;border:0.5px solid var(--border,#2A3038);";
+  modal.appendChild(card);
+
+  const titleByMode = {
+    signin: tx("gate_signin", "Accedi"),
+    signup: tx("gate_create_account", "Crea account"),
+    magic:  tx("gate_magic_link", "Magic link"),
+    reset:  tx("gate_forgot_password", "Reimposta password"),
+  };
+  let currentMode = mode;
+  let showPassword = ["signin", "signup"].includes(mode);
+
+  const $ = (id) => document.getElementById(id);
 
   const render = () => {
-    const titles = { login: t("gate_signin"), signup: t("gate_signup_title"), magic: t("gate_magic_title"), reset: t("gate_reset_title") };
-    const desc = {
-      login:  t("gate_signin_desc"),
-      signup: t("gate_signup_desc"),
-      magic:  t("gate_magic_desc"),
-      reset:  t("gate_reset_desc"),
-    };
-    const btnLabel = { login: t("gate_signin"), signup: t("gate_btn_signup"), magic: t("gate_btn_magic"), reset: t("gate_btn_reset") };
-    const showPassword = mode === "login" || mode === "signup";
+    showPassword = ["signin", "signup"].includes(currentMode);
+    card.innerHTML = `
+      <h3 style="margin:0 0 16px;font-size:18px;color:var(--text-1,#F2F4F7);">${titleByMode[currentMode]}</h3>
+      <input id="auth-email" type="email" placeholder="email@example.com"
+        style="width:100%;padding:12px;border-radius:8px;background:var(--bg,#0E1116);color:var(--text-1);border:0.5px solid var(--border);font-size:14px;margin-bottom:10px;"/>
+      ${showPassword ? `<input id="auth-password" type="password" placeholder="password (min 6 caratteri)"
+        style="width:100%;padding:12px;border-radius:8px;background:var(--bg,#0E1116);color:var(--text-1);border:0.5px solid var(--border);font-size:14px;margin-bottom:10px;"/>` : ""}
+      <div id="auth-msg" style="font-size:12px;color:var(--text-3);min-height:18px;margin-bottom:12px;"></div>
+      <button id="auth-submit" style="width:100%;padding:12px;border-radius:8px;background:var(--accent,#6FE0A8);color:#0E1116;border:none;font-weight:600;cursor:pointer;font-size:14px;">${titleByMode[currentMode]}</button>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;font-size:12px;flex-wrap:wrap;gap:8px;">
+        ${currentMode !== "signin" ? `<a href="#" id="auth-link-signin" style="color:var(--text-3);text-decoration:none;">${tx("gate_signin", "Accedi")}</a>` : ""}
+        ${currentMode !== "signup" ? `<a href="#" id="auth-link-signup" style="color:var(--text-3);text-decoration:none;">${tx("gate_create_account", "Crea account")}</a>` : ""}
+        ${currentMode !== "magic" ? `<a href="#" id="auth-link-magic" style="color:var(--text-3);text-decoration:none;">${tx("gate_magic_link", "Magic link")}</a>` : ""}
+        ${currentMode !== "reset" ? `<a href="#" id="auth-link-reset" style="color:var(--text-3);text-decoration:none;">${tx("gate_forgot_password", "Forgot?")}</a>` : ""}
+      </div>
+    `;
+    ["signin","signup","magic","reset"].forEach(m => {
+      const el = $("auth-link-" + m);
+      if (el) el.onclick = (e) => { e.preventDefault(); currentMode = m; render(); };
+    });
 
-    modal.innerHTML = `
-      <div style="background:var(--surface,#1A1F26);padding:28px;border-radius:14px;border:0.5px solid var(--border-strong,rgba(255,255,255,0.10));max-width:380px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
-        <h2 style="font-size:18px;font-weight:600;color:var(--text-1,#fff);margin:0 0 6px;">${titles[mode]}</h2>
-        <p style="font-size:12.5px;color:var(--text-3,#6B7585);margin:0 0 18px;line-height:1.5;">${desc[mode]}</p>
-
-        <input id="auth-email" type="email" placeholder="${t("gate_email_ph")}" autocomplete="email"
-               style="width:100%;padding:10px 12px;border-radius:8px;background:var(--surface-2,#21262E);border:0.5px solid var(--border,rgba(255,255,255,0.06));color:var(--text-1,#fff);font-size:14px;outline:none;box-sizing:border-box;margin-bottom:8px;"/>
-
-        ${showPassword ? `
-          <input id="auth-password" type="password" placeholder="${t("gate_password_ph")}" autocomplete="${mode==='signup'?'new-password':'current-password'}"
-                 style="width:100%;padding:10px 12px;border-radius:8px;background:var(--surface-2,#21262E);border:0.5px solid var(--border,rgba(255,255,255,0.06));color:var(--text-1,#fff);font-size:14px;outline:none;box-sizing:border-box;"/>
-        ` : ""}
-
-        <div id="auth-msg" style="font-size:11.5px;color:var(--text-3,#6B7585);min-height:16px;margin:10px 0 14px;line-height:1.4;"></div>
-
-        <div style="display:flex;gap:8px;margin-bottom:12px;">
-          ${forced ? "" : `<button id="auth-cancel" style="flex:1;padding:10px;border-radius:8px;background:transparent;color:var(--text-2,#B5BDCB);border:0.5px solid var(--border,rgba(255,255,255,0.10));font-size:13px;cursor:pointer;font-weight:500;">${t("gate_cancel")}</button>`}
-          <button id="auth-submit" style="flex:1;padding:10px;border-radius:8px;background:var(--accent,#6FE0A8);color:#0E1116;border:none;font-size:13px;cursor:pointer;font-weight:600;">${btnLabel[mode]}</button>
-        </div>
-
-        <div style="font-size:11px;color:var(--text-3,#6B7585);text-align:center;line-height:1.6;">
-          ${mode === "login" ? `
-            <a href="#" id="link-signup" style="color:var(--accent,#6FE0A8);text-decoration:none;">${t("gate_create_account")}</a>
-            <span style="margin:0 6px;">·</span>
-            <a href="#" id="link-magic" style="color:var(--info,#60A5FA);text-decoration:none;">${t("gate_magic_link")}</a>
-            <span style="margin:0 6px;">·</span>
-            <a href="#" id="link-reset" style="color:var(--text-3,#6B7585);text-decoration:none;">${t("gate_forgot_password")}</a>
-          ` : `
-            <a href="#" id="link-back" style="color:var(--accent,#6FE0A8);text-decoration:none;">${t("gate_back")}</a>
-          `}
-        </div>
-      </div>`;
-
-    // Listeners
-    const $ = (id) => document.getElementById(id);
-    if ($("auth-cancel")) $("auth-cancel").onclick = cleanup;
-    $("auth-email").focus();
-
-    if ($("link-signup")) $("link-signup").onclick = (e) => { e.preventDefault(); mode = "signup"; render(); };
-    if ($("link-magic"))  $("link-magic").onclick  = (e) => { e.preventDefault(); mode = "magic";  render(); };
-    if ($("link-reset"))  $("link-reset").onclick  = (e) => { e.preventDefault(); mode = "reset";  render(); };
-    if ($("link-back"))   $("link-back").onclick   = (e) => { e.preventDefault(); mode = "login";  render(); };
-
+    const showErr = (txt) => { const m = $("auth-msg"); m.textContent = txt; m.style.color = "#EF4444"; };
+    const showOk  = (txt) => { const m = $("auth-msg"); m.textContent = txt; m.style.color = "var(--accent)"; };
     const submit = async () => {
-      const email = $("auth-email").value.trim();
-      const password = $("auth-password") ? $("auth-password").value : "";
-      const msg = $("auth-msg");
-      const btn = $("auth-submit");
-      msg.style.color = "var(--text-3,#6B7585)";
-      if (!email || !email.includes("@")) { msg.textContent = "Please enter a valid email"; msg.style.color = "#EF4444"; return; }
-      if (showPassword && password.length < 6) { msg.textContent = "Password must be at least 6 characters"; msg.style.color = "#EF4444"; return; }
-      btn.disabled = true; btn.textContent = "Please wait…";
+      const eVal = $("auth-email").value.trim();
+      const pVal = showPassword ? $("auth-password").value : null;
+      if (!eVal || !eVal.includes("@")) return showErr(tx("gate_email_invalid","Email non valido"));
+      if (showPassword && pVal.length < 6) return showErr(tx("gate_password_min","Password >= 6 caratteri"));
+      $("auth-submit").disabled = true;
       try {
-        if (mode === "login") {
-          await cloudSignInWithPassword(email, password);
-          cleanup();
-        } else if (mode === "signup") {
-          await cloudSignUpWithPassword(email, password);
-          msg.textContent = "✓ Account created! Confirm your email if required, then sign in.";
-          msg.style.color = "var(--accent,#6FE0A8)";
-          setTimeout(cleanup, 4000);
-        } else if (mode === "magic") {
-          await cloudSignInWithEmail(email);
-          msg.textContent = "✓ Magic link sent. Check your inbox.";
-          msg.style.color = "var(--accent,#6FE0A8)";
-          setTimeout(cleanup, 4000);
-        } else if (mode === "reset") {
-          await cloudResetPassword(email);
-          msg.textContent = "✓ Recovery email sent.";
-          msg.style.color = "var(--accent,#6FE0A8)";
-          setTimeout(cleanup, 4000);
+        if (currentMode === "signin") await cloudSignInWithPassword(eVal, pVal);
+        else if (currentMode === "signup") {
+          await cloudSignUpWithPassword(eVal, pVal);
+          showOk("Account creato! Controlla la tua email per confermarlo.");
+        } else if (currentMode === "magic") {
+          await cloudSignInWithEmail(eVal);
+          showOk("Email inviata! Controlla la tua casella e clicca sul link.");
+        } else if (currentMode === "reset") {
+          await cloudResetPassword(eVal);
+          showOk("Email per reset password inviata.");
         }
-      } catch (e) {
-        msg.textContent = "Error: " + (e.message || e);
-        msg.style.color = "#EF4444";
-        btn.disabled = false; btn.textContent = btnLabel[mode];
+        if (currentMode === "signin") setTimeout(cleanup, 300);
+      } catch (err) {
+        showErr(tx("gate_error","Errore") + ": " + (err.message || err));
+      } finally {
+        if ($("auth-submit")) $("auth-submit").disabled = false;
       }
     };
     $("auth-submit").onclick = submit;
@@ -380,7 +377,7 @@ function _showLoginModal(opts) {
   render();
 }
 
-// Init
+// === Init ===
 document.addEventListener("DOMContentLoaded", () => {
   cloudInitAuth();
 });
