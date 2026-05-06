@@ -971,3 +971,18 @@ Da ora il sito richiede login all'apertura: schermata fullscreen "Accedi" con em
 - `frontend/index.html` (riattivato cloud_sync.js)
 - `frontend/cloud_sync.js` (riscritto, ~390 righe)
 - `supabase_setup.sql` (nuovo, root, da eseguire UNA VOLTA sul dashboard Supabase)
+
+### Esito test login (7 mag, sera 3)
+- ✅ Auth-gate appare correttamente all'apertura del sito
+- ✅ Connessione Supabase OK (errore "User already registered" su signup conferma che il backend risponde)
+- ✅ Login con credenziali esistenti riuscito (account `simonecontran10@gmail.com` ereditato dal vecchio Saudi Players Hub Supabase project — il progetto Supabase è condiviso)
+- ✅ Sito accessibile post-login
+
+### Note importanti per il futuro
+- Il progetto Supabase è "Saudi Players Hub" (org SAFF) — condiviso tra Saudi Hub originale e PID. Le credenziali sono comuni. Per ora va bene, ma se in futuro PID deve essere completamente separato dal vecchio Saudi Hub, va creato un nuovo progetto Supabase dedicato (nuova URL + nuova publishable key in `cloud_sync.js`).
+- Schema `user_state` ora ha 8 colonne: `user_id, callups, notes, grids, minutes, favorites, created_at, updated_at`. Row Level Security attivo: ogni utente vede solo i propri dati.
+- Tutti gli utenti del Saudi Hub originale possono accedere a PID con le loro credenziali esistenti, ma NON vedono dati Saudi (le colonne sono le stesse, ma i dati che app.js scrive sono per PID — cioè se un utente Saudi accede a PID per la prima volta vede DB vuoto e i suoi dati LS PID vengono caricati).
+
+### TODO follow-up
+- Verificare che il sync funzioni cross-device: login con stessa email su altro browser/iPhone → vedere stessi salvataggi
+- Considerare separazione Supabase (project dedicato PID) quando il Saudi Hub originale verrà dismesso
