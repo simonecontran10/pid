@@ -522,7 +522,6 @@ function renderPlayers() {
     <button class="player-card text-left rounded-xl overflow-hidden relative" data-pid="${p.tm_player_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
       <div class="overflow-hidden relative" style="aspect-ratio: 1/1; background: linear-gradient(180deg, #21262E 0%, #14181E 100%);">
         ${shirt}${goalsBadge}
-        <span class="fav-star ${isFavorite(p.tm_player_id) ? 'is-fav' : ''}" data-fav="${p.tm_player_id}" title="${t(isFavorite(p.tm_player_id) ? 'remove_from_favorites' : 'add_to_favorites')}">${FAV_STAR_SVG}</span>
         ${(() => { const fl = nationFlag(p); return fl ? `<div class="absolute bottom-1 left-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${fl}" alt="" class="w-8 h-8 object-contain" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>` : ""; })()}
         <img src="${playerPhoto(p)}" alt="${escapeHtml(p.full_name)}" class="w-full h-full object-contain" loading="lazy"
              style="padding: 14px;"

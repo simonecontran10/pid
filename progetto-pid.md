@@ -692,3 +692,39 @@ Entrambi 139×181 PNG RGBA, formato standard TM coerente con IT1/IT2/IJ1.png gi�
 - `frontend/app.js` (2 occorrenze di w-9 → w-8 nelle player card)
 - `data/photos/branding/logo.png` (sostituito con PID logo 2 ottimizzato 256x256)
 - `data/photos/branding/logo@2x.png` (nuovo, 512x512)
+
+## 6 mag 2026 (sera 3) — Sistema Preferiti + UI tweaks finali
+
+### Modifiche
+1. **Lingue**: rimossi pulsanti AR (Saudi/Arabo) e FR (Francese) dall'header. Restano solo EN + IT (le uniche con dizionario completo). Pulito CSS `html[dir="rtl"]` morto + `RTL_LANGS` svuotato.
+2. **Logo PID nuovo**: sostituito `data/photos/branding/logo.png` con "PID logo 2" ottimizzato (1.4 MB → 33 KB, 256x256 RGBA con alpha). Aggiunta variante `logo@2x.png` 512x512.
+3. **Logo header ingrandito**: w-10 h-10 (40px) → w-14 h-14 (56px), sfondo trasparente puro (rimosso box bianco/border).
+4. **Auth-gate logo**: 140x140 con box rounded → 160x160 trasparente puro.
+5. **Loghi nelle player card**: bandiere nazione + logo club ridotti da w-9 h-9 (36px) → w-8 h-8 (32px), -11%.
+6. **Logo competizione sezioni Club**: w-6 h-6 (24px) → w-9 h-9 (36px), +50%, scritta "SERIE A" etc ora leggibile.
+7. **Pogoń Grodzisk Mazowiecki**: logo trovato e applicato (sots_team_id=96056623, /team/96056623/pogon-grodzisk-mazowiecki). Aggiornato `clubs.json` + `pl2_clubs.json` + scaricato logo in `data/photos/clubs_sots/30998.png`. Aggiunto a `SOTS_MANUAL_OVERRIDES` di `backfill_club_logos.py` per memoria futura. **Ora 96/96 = 100% club con logo.**
+
+### Sistema Preferiti (Favorites)
+Nuova feature completa:
+- **Storage**: `localStorage["pid_favorites"]` = JSON array di tm_player_id (persistente tra sessioni, scope browser)
+- **Stato**: `state.favorites = Set<number>`. Helpers: `loadFavorites()`, `saveFavorites()`, `isFavorite(pid)`, `toggleFavorite(pid)`, `updateFavoritesBadge()`.
+- **UI stella sulle player card** (home grid): in alto a destra, classe `.fav-star` con varianti `.is-fav` (oro pieno) vs default (vuota). Click su stella usa stopPropagation per non aprire il modal giocatore. Tooltip i18n.
+- **Sidebar**: nuova voce "⭐ Preferiti" (route=`favorites`) tra Lista e Club, con badge contatore (`#favorites-badge`) che si nasconde quando 0.
+- **Pannello dedicato** (`#favorites-panel`): griglia identica alla home, filtrata su `state.favorites`. Mostra header con icona stella + count. Stato vuoto con messaggio "Nessun preferito ancora. Aggiungi i giocatori cliccando la stella sulla loro scheda."
+- **Bottone nel modal giocatore**: "★ Aggiungi/Rimuovi preferiti" tra "Aggiungi al confronto" e "+ Convoca". Aggiornamento sincrono dello state della stella su card e pannello.
+
+### File modificati/creati
+- `frontend/index.html` (header, auth-gate, sidebar, pannello favorites, CSS stella, CSS RTL rimosso)
+- `frontend/i18n.js` (chiavi favorites IT+EN, RTL_LANGS svuotato)
+- `frontend/app.js` (modulo favorites ~50 righe + stella su card + renderFavoritesPanel ~70 righe + bottone modal + setActiveTab routing + loadFavorites in init + UI tweaks dimensioni loghi)
+- `data/photos/branding/logo.png` (sostituito con PID logo 2 256x256, 33 KB)
+- `data/photos/branding/logo@2x.png` (nuovo, 512x512, 100 KB)
+- `data/clubs.json` (Pogon Grodzisk Mazowiecki arricchito)
+- `data/pl2_clubs.json` (sync)
+- `data/photos/clubs_sots/30998.png` (logo Pogoń Grodzisk Mazowiecki)
+- `backfill_club_logos.py` (Pogon aggiunto a SOTS_MANUAL_OVERRIDES)
+
+### Note
+- I preferiti sono **scope browser**, non sincronizzati tra dispositivi (richiederebbe Supabase/cloud_sync).
+- Loghi competizione (`data/photos/competitions/*.png`): tutti già con sfondo trasparente. Nessuna modifica necessaria.
+- Stato copertura loghi club: **96/96 = 100%** (era 95/96 = 98.9%).
