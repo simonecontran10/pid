@@ -17,8 +17,8 @@
  *
  * Caricato in index.html DOPO supabase-js CDN e PRIMA di app.js.
  */
-const SUPABASE_URL = "https://akhmipddijvbphhguuvw.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_hqhs7JFWT7Mj2b5Zu4QfjQ_xVxIPjRs";
+const SUPABASE_URL = "https://mbghahzykbsaudcpybdh.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_f9w-q3c7PPCJZYvx2kCYmg_rG271ipU";
 
 const _supa = window.supabase
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {

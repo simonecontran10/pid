@@ -986,3 +986,34 @@ Da ora il sito richiede login all'apertura: schermata fullscreen "Accedi" con em
 ### TODO follow-up
 - Verificare che il sync funzioni cross-device: login con stessa email su altro browser/iPhone → vedere stessi salvataggi
 - Considerare separazione Supabase (project dedicato PID) quando il Saudi Hub originale verrà dismesso
+
+## 7 mag 2026 (sera 4) — Separazione progetto Supabase PID dedicato
+
+### Problema rilevato
+Dopo l'attivazione del cloud sync, login con `simonecontran10@gmail.com` su PID ha caricato dati salvati nel **vecchio Saudi Players Hub Supabase project** (org SAFF, URL `akhmipddijvbphhguuvw.supabase.co`):
+- 3 preferiti — corretti (PID)
+- 2 griglie — alcune erano del Saudi Hub
+- 71 giocatori in convocazione attiva — del Saudi Hub
+- 2 liste convocazione — del Saudi Hub
+
+Causa: i due siti puntavano allo stesso DB Supabase con le stesse colonne (`callups, notes, grids`). Quando l'utente esisteva già nel DB Saudi, `_onFirstSignIn()` su PID scaricava quei dati in localStorage PID.
+
+Console mostrava warning `Multiple GoTrueClient instances detected` perché il modulo Supabase era istanziato sia dal codice Saudi (se mai caricato) sia da PID.
+
+### Decisione: nuovo progetto Supabase dedicato a PID
+- I dati Saudi Hub restano dove sono (non li tocchiamo)
+- PID parte da zero con nuovo DB pulito
+- Decisione: NON migrare i dati attuali — i 3 preferiti/griglie/convocazioni esistenti vengono ricreati da zero
+- Setup nuovo progetto: org/account simone, region Frankfurt, plan Free
+
+### Note configurazione setup
+- **Enable Data API**: ON (necessario per supabase-js)
+- **Automatically expose new tables**: ON (rende user_state disponibile via REST quando viene creata)
+- **Enable automatic RLS**: OFF (l'SQL setup gestisce RLS esplicitamente con 4 policy)
+
+### TODO immediati
+- [x] Crea nuovo progetto Supabase "PID"
+- [ ] Lancia `supabase_setup.sql` sul nuovo progetto (schema user_state + RLS)
+- [ ] Recupera nuova URL Supabase + nuova publishable key
+- [ ] Aggiorna `frontend/cloud_sync.js` riga 23-24 con nuove credenziali
+- [ ] Push e nuovo signup PID
