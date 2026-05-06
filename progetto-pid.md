@@ -1195,3 +1195,38 @@ Totale 206 persons U23 nella cache, oltre alle 5669 già presenti per Serie A/B 
 ### TODO
 - [ ] PR per fix definitivo `apply_confirmed_matches.py` (renaming costante CONFIRMED_FILE)
 - [ ] Indagare i 46 DOB mismatch: probabili giovanissimi con DOB diverse tra TM e SortItOutSi (TM aggiornato post-trasferimento, SortItOutSi cache vecchia FM26)
+
+### Esito finale (8 mag, 02:00) — Foto IT3 applicate ✅
+**Pipeline ufficiale del progetto eseguita con successo:**
+
+1. `harvest_sots_rosters.py`: cache aggiornata con 4 nuove rose U23 (Inter U23 45, Milan Futuro 41, Juventus Next Gen 58, Atalanta U23 62) → totale **5875 persons** in `data/sots_rosters.json` (era 5669, +206)
+2. `find_more_sots_matches.py`: **106 match confermati** con DOB-verify (su 152 candidati, 46 mismatch DOB)
+3. **Bug `apply_confirmed_matches.py`**: la costante `CONFIRMED_FILE` puntava a `sots_auto_matched_confirmed.xlsx` (file vecchio, 17 righe). Patchato per leggere il nuovo `sots_more_matches_confirmed.xlsx` (file generato da `find_more_sots_matches.py`, 106 righe).
+4. `apply_confirmed_matches.py` rilanciato: aggiornati 3 JSON (`players_main`, `players_static`, `players_all`), scaricate 104/106 face, lookup ora ha 1726 entries (era 1620, +106).
+
+### Coverage finale foto SortItOutSi per le 4 seconde squadre
+| Club | Con face | Senza face | % |
+|---|---|---|---|
+| Inter U23 | 28 | 1 | 97% |
+| Milan Futuro | 24 | 8 | 75% |
+| Juventus Next Gen | 27 | 2 | 93% |
+| Atalanta U23 | 26 | 2 | 93% |
+| **Totale** | **105** | **13** | **89%** |
+
+I 13 senza face sono giovanissimi non ancora indicizzati su SortItOutSi FM26 (DB chiuso a estate 2025).
+
+### Bug `apply_confirmed_matches.py` (fixato in questa sessione)
+File costante hardcoded che puntava all'Excel vecchio della pipeline `confirm_dob_matches`. Dopo l'introduzione di `find_more_sots_matches.py` (sera 6 mag), il file output è cambiato ma `apply_confirmed_matches.py` non è stato aggiornato. **Patch permanente**: 1 riga in `apply_confirmed_matches.py` riga 26.
+
+### Bug `harvest_sots_rosters.py` (osservato, non fixato)
+Lo script salva sotto chiave `persons` ma altri parti del codice si aspettano `players`. Workaround: leggere `persons`. **TODO**: standardizzare su `players` in tutto il codice (è il nome più descrittivo, "persons" include anche staff su SortItOutSi che non ci interessa).
+
+### Push e online
+Commit `731426c`, 117 oggetti, 3 MB. Vercel deploy automatico → `pid-nine.vercel.app/` con face FM-style sui 105 giocatori IT3.
+
+### TODO definitivi (per le prossime sessioni)
+- [ ] Standardizzare chiave `persons`/`players` in tutta la pipeline SortItOutSi
+- [ ] Rinominare `CONFIRMED_FILE` in `apply_confirmed_matches.py` → `MORE_MATCHES_CONFIRMED_FILE` per chiarezza
+- [ ] 13 IT3 senza face: verificare a campione su SortItOutSi se sono presenti con slug diverso
+- [ ] 46 DOB mismatch: investigare un campione (probabile: TM aggiornato post-trasferimento vs SortItOutSi cache FM26 chiusa estate 2025)
+- [ ] 1056 polacchi senza face: lanciare di nuovo `find_more_sots_matches.py` ora che harvest ha 4 nuovi club PL non c'erano
