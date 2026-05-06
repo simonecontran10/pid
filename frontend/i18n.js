@@ -37,12 +37,12 @@ const I18N = {
     league_it1: "Serie A",
     league_it2: "Serie B",
 
-    league_it3: "Primavera 1",
-    league_other: "Primavera 1",
+    league_it3: "Italian Reserve Teams",
+    league_other: "Other clubs",
     league_short_it1: "SA",
     league_short_it2: "SB",
 
-    league_short_it3: "P1",
+    league_short_it3: "U23",
     league_short_other: "Other",
     col_player: "Player",
     col_min: "Min",
@@ -235,12 +235,12 @@ const I18N = {
     league_it1: "Serie A",
     league_it2: "Serie B",
 
-    league_it3: "Primavera 1",
-    league_other: "Primavera 1",
+    league_it3: "Seconde Squadre",
+    league_other: "Altre squadre",
     league_short_it1: "SA",
     league_short_it2: "SB",
 
-    league_short_it3: "P1",
+    league_short_it3: "U23",
     league_short_other: "Altre",
     col_player: "Giocatore",
     col_min: "Min",

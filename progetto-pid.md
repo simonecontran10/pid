@@ -728,3 +728,168 @@ Nuova feature completa:
 - I preferiti sono **scope browser**, non sincronizzati tra dispositivi (richiederebbe Supabase/cloud_sync).
 - Loghi competizione (`data/photos/competitions/*.png`): tutti già con sfondo trasparente. Nessuna modifica necessaria.
 - Stato copertura loghi club: **96/96 = 100%** (era 95/96 = 98.9%).
+
+## 6 mag 2026 (sera continuazione 2) — UI refinements + preferiti + loghi clean
+
+### Modifiche
+
+**1. Lingue ridotte a IT + EN**
+- Rimossi pulsanti AR (🇸🇦) e FR (🇫🇷) dall'header `index.html`. Erano già pulsanti morti (`SUPPORTED_LANGS = ["it","en"]` da prima), nessun dizionario AR/FR in `i18n.js`.
+- Pulito blocco CSS `html[dir="rtl"] *` (~14 righe morte) + `RTL_LANGS = new Set()` svuotato.
+
+**2. Logo PID nuovo**
+- Sostituito `data/photos/branding/logo.png` con la versione "PID logo 2" che era nel repo come `PID logo 2.png` (1.4 MB). Pipeline: crop margini trasparenti, padding quadrato, resize 256×256 LANCZOS, save ottimizzato → **33 KB** (-98%). Aggiunta variante `logo@2x.png` 512×512 (100 KB) per retina futuro.
+- Header: `w-10 h-10` (40px) con box bianco arrotondato → `w-14 h-14` (56px) puro trasparente.
+- Auth-gate: 140×140 con box → 160×160 trasparente.
+- Favicon (`<link rel="icon">`): aggiunto `?v=20260506` per forzare refresh browser.
+
+**3. Loghi club + nazione nelle player card**
+- Bandiere e logo club: da `w-9 h-9` (36px) a `w-8 h-8` (32px), -11%.
+
+**4. Loghi competizione "solo stemma"**
+Sostituiti tutti i loghi TM (con scritta sotto tipo "SERIE A") con versioni clean:
+- IT1 (Serie A "A" triangolo) — football-logos.cc, crop scritta
+- IT2 (LNPB Lega B) — football-logos.cc, scritta integrata nel logo
+- IJ1 (Primavera 1 stemma) — TM esistente, crop scritta "PRIMAVERA 1"
+- PL1 (Ekstraklasa "e") — football-logos.cc, già pulito
+- PL2 (1 Liga) — football-logos.cc, crop scritta
+- CIT (Coppa Italia) — football-logos.cc, crop scritta
+- CL (Champions League pallone-stelle) — seeklogo.com, crop "UEFA CHAMPIONS LEAGUE"
+- EL (Europa League trofeo) — seeklogo.com, crop "UEFA EUROPA LEAGUE"
+- UECL (Conference League) — seeklogo.com, crop "UEFA EUROPA CONFERENCE LEAGUE"
+- SCI (Supercoppa) — TM esistente PS5 badge, niente fonte alternativa pulita
+
+Pipeline Python:
+1. flood-fill bordo per rimuovere sfondo bianco (alpha=0)
+2. `find_text_split()` per identificare gap orizzontale tra stemma e testo (search dalla metà inferiore, gap minimo 8 pixel)
+3. crop alla riga di gap
+4. trim margini trasparenti, padding quadrato, resize 256×256 LANCZOS
+5. save PNG ottimizzato
+
+Tutti i file sostituiti in `data/photos/competitions/*.png`.
+
+**5. Logo Pogon Grodzisk Mazowiecki**
+- SortItOutSi `team_id=96056623` (slug `/team/96056623/pogon-grodzisk-mazowiecki`)
+- Scaricato `https://sortitoutsi.b-cdn.net/uploads/team/96056623.png` → `data/photos/clubs_sots/30998.png`
+- Aggiornato `data/clubs.json` e `data/pl2_clubs.json`
+- Aggiunto a `SOTS_MANUAL_OVERRIDES` in `backfill_club_logos.py` per future run
+
+Risultato: ora **96/96 club hanno logo (100%)**.
+
+**6. Sistema preferiti** (era già implementato, attivato di fatto col push)
+- `state.favorites` Set + persistenza `localStorage` (chiave `pid_favorites`)
+- Bottone ☆/★ "Aggiungi/Rimuovi dai preferiti" nel modale dettaglio giocatore (riga ~895 di app.js)
+- Pannello dedicato `<div id="favorites-panel">` con voce sidebar ⭐ Preferiti (HTML già presente in `index.html` riga 135-139)
+- `renderFavoritesPanel()` mostra le card dei giocatori favoriti con stella per rimuoverli
+- Badge contatore `favorites-badge` nella sidebar
+- i18n IT+EN: `nav_favorites`, `favorites_title`, `favorites_empty`, `add_to_favorites`, `remove_from_favorites`
+- **Stella NON appare** nelle mini-card della Home (richiesto esplicito: distrae). Aggiunta solo nel modale e nel pannello Preferiti.
+- CSS `.fav-star` con effetto hover scale e color toggle giallo/grigio
+
+### File modificati/creati
+- `frontend/index.html` (header, auth-gate, CSS RTL rimosso, dropdown lingue, favicon ?v=)
+- `frontend/i18n.js` (commento + RTL_LANGS svuotato)
+- `frontend/app.js` (loghi card più piccoli, stella rimossa dalla home — modale e pannello preferiti intatti)
+- `data/photos/branding/logo.png` (sostituito, ottimizzato 256×256)
+- `data/photos/branding/logo@2x.png` (nuovo, 512×512)
+- `data/photos/competitions/*.png` (10 file: IT1, IT2, IJ1, PL1, PL2, CIT, CL, EL, UECL, SCI)
+- `data/photos/clubs_sots/30998.png` (Pogoń Grodzisk)
+- `data/clubs.json`, `data/pl2_clubs.json` (Pogoń arricchito con sots_id)
+- `backfill_club_logos.py` (alias Pogoń aggiunto)
+
+### Commit pushati (Vercel deploy automatico)
+- `23bc55b` — feat: sistema preferiti + logo Pogon + UI tweaks (lingue, logo PID, dimensioni)
+- `f38a3c3` — ui: AR/FR via, logo PID nuovo, loghi competizione clean, Pogon Grodzisk, preferiti (no stella in home)
+
+### TODO sistemazione sito (post UI refinements)
+1. **Foto SortItOutSi giocatori polacchi** — `find_more_sots_matches.py` per matching automatico delle 1056 face polacche; apply matches confirmed → JSON aggiornati → push
+2. **SCI (Supercoppa Italiana)** — logo attuale è il badge PS5 2020/21, sponsorship vecchia. Cercare versione "lega serie a coppa" pulita (Wikimedia commons / pagina FIGC ufficiale) quando avrai tempo
+3. **Cleanup naming legacy** (residui refactoring B.1 saudita):
+   - Variabili `saudi_by_id`, `n_saudi`, `step_filter_saudi`, `is_saudi_eligible` → `target_*`
+   - `scraper/filter_saudi.py` (alias deprecato)
+   - Alias `_saudiNationalTeamName` in app.js
+   - Label `[SAUDI ✓]` nei log scraping
+4. **Custom domain** — `pid-nine.vercel.app` (già attivo). Eventualmente registrare dominio personalizzato.
+5. **Update workflow** invariato: `git add -A && git commit && git push` → Vercel redeploy auto. R2 solo se cambia `players_stats.json`.
+
+## 6 mag 2026 (sera 4) — Seconde Squadre IT3 aggiunte
+
+### Obiettivo
+Aggiungere le 4 seconde squadre italiane (riserve di Serie A che militano in Serie C) al DB come nuova lega `IT3` "Seconde Squadre":
+- Inter U23 (tm=41119)
+- Milan Futuro (tm=41107)
+- Juventus Next Gen (tm=41101)
+- Atalanta U23 (tm=41110)
+
+### Script `add_seconde_squadre.py`
+Pipeline completa in un singolo script (root del progetto):
+1. Crea `data/it3_clubs.json` con i 4 club hardcoded
+2. Per ogni club, scrappa rosa da Transfermarkt (29+31+29+28 = 117 player_id unici)
+3. Per ogni giocatore: `scrape_player_profile` + (se eligible italiano) `scrape_player_stats`
+4. Riusa il `sortitoutsi_team_id` del club di prima squadra (mappatura `parent_tm_id`):
+   - Inter U23 → tm=46 (Inter Milan, sots=1135)
+   - Milan Futuro → tm=5 (AC Milan, sots=1099)
+   - Juventus Next Gen → tm=506 (Juventus FC, sots=1139)
+   - Atalanta U23 → tm=800 (Atalanta BC, sots=1106)
+5. Aggiorna `clubs.json` master + lancia `enrich_sortitoutsi.py` + `download_photos.py`
+
+Idempotente: ogni club già presente viene aggiornato senza duplicati. Salva ogni 10 giocatori per resilienza.
+
+### Risultati run
+- **Club**: 96 → **100** (+4 IT3)
+- **Giocatori (target italiani)**: 2763 → **2858** (+95 nuovi target dalle 4 seconde squadre, +23 erano già nel DB perché in prestito da prime squadre, totale 118 con roster_club_id IT3)
+- **Stats**: +13 (solo 13 italiani delle U23 hanno presenze stagionali con minutaggio significativo, gli altri sono giovanissimi senza stats valide)
+- **Loghi club**: 100% (4/4 IT3 riusano i loghi locali delle prime squadre)
+- **Foto giocatori**: scaricate 89 nuove (`Download loghi club: dl=89 cached=4739`)
+
+### Bug fixato post-run
+Dopo lo scraping, `enrich_sortitoutsi.py` ha resettato `sortitoutsi_team_id` e `sortitoutsi_logo_url` a `None` per i 4 club IT3 (perché non trova match SortItOutSi diretto per "Inter U23" etc, e azzera i campi "vuoti"). Il `sortitoutsi_logo_local` è invece sopravvissuto, quindi il frontend ha comunque il path corretto.
+
+**Fix manuale post-run**: script Python inline che ripristina i campi `sots_team_id` e `sots_logo_url` riusando quelli del parent club (Inter, Milan, Juve, Atalanta). Crea anche `data/it3_clubs.json` mancante.
+
+**TODO permanente**: modificare `enrich_sortitoutsi.py` perché non azzeri campi esistenti quando un team non viene trovato — deve solo SKIP il club, non sovrascrivere. Per ora il fix manuale va rilanciato dopo ogni `enrich_sortitoutsi.py` per i club delle seconde squadre.
+
+### Frontend update per IT3
+Modifiche speculari al fix Polonia (riapplicate perché il commit `f38a3c3` aveva applicato solo parzialmente le modifiche del fix Polonia):
+
+**`frontend/i18n.js`**:
+- `league_it3: "Seconde Squadre"` (IT) / `"Italian Reserve Teams"` (EN), short `"U23"`
+- Fix legacy `league_other: "Altre squadre"` / `"Other clubs"` (era `"Primavera 1"`)
+
+**`frontend/index.html`**:
+- 4 nuove CSS variables: `--comp-ij1` (viola), `--comp-it3: #38BDF8` (azzurro Serie C), `--comp-pl1` (rosso), `--comp-pl2` (blu chiaro)
+- Dropdown `#filter-league` (home): da 3 opzioni (IT1/IT2/OTHER) a 6 (IT1/IT2/IT3/IJ1/PL1/PL2). OTHER rimosso.
+- Counter "Leghe" stats bar: da hardcoded `2` a `id="stat-leagues"` popolato dinamicamente da `renderClubs()` (mostra `6`).
+
+**`frontend/app.js`** (13 modifiche):
+1. `competitionLogo()` mappa `known`: aggiunto IT3
+2. `compColor()`: case IT3 → `var(--comp-it3)`
+3. `renderClubs()`: filtro `it3` + sezione `sectionHtml(t("league_it3"), it3Logo, ...)` inserita tra IT2 e IJ1, ordine = Serie A → Serie B → Seconde Squadre → Primavera → Ekstraklasa → 1 Liga
+4. `it3Logo` URL aggiunto, `leaguesCount` esteso
+5. `applyFilters()`: `KNOWN_LEAGUES` esteso a 6 leghe
+6. 4 occorrenze `isKnownLeague` aggiornate (5 → 6 leghe)
+7. 4 dropdown filtro lega in app.js (Home, Lista, Convocazione, Griglie, Minutaggi) aggiornati con IT3
+8. `COMP_LABEL.IT3 = { short: "U23", full: "Seconde Squadre" }`
+9. `KNOWN_CLUB_CODES` e `CLUB_PRIORITY_ORDER` estesi a IT3
+
+Sintassi JS verificata con `node --check` ✅
+
+### Logo competizione IT3
+`data/photos/competitions/IT3.png` — logo Serie C ufficiale Transfermarkt (139×181, 23.6 KB, RGBA con alpha). Scaricato da `tmssl.akamaized.net/images/logo/header/it3a.png` (TM usa lo stesso logo per tutti e 3 i gironi A/B/C).
+
+### File modificati/creati
+- `add_seconde_squadre.py` (nuovo, root)
+- `data/it3_clubs.json` (nuovo)
+- `data/clubs.json` (+4 club IT3, 96 → 100)
+- `data/players_main.json` (+95 nuovi italiani target, 2763 → 2858)
+- `data/players_static.json` (sync)
+- `data/players_stats.json` (+13 stats)
+- `data/players_all.json` (+117 nuovi profili totali, anche non-target)
+- `data/photos/competitions/IT3.png` (nuovo, 24 KB)
+- `frontend/index.html` (CSS vars, dropdown filtro home, counter dinamico)
+- `frontend/i18n.js` (chiavi IT3 + fix league_other legacy)
+- `frontend/app.js` (13 modifiche IT3)
+
+### TODO
+1. Modificare `enrich_sortitoutsi.py` perché non resetti campi sots esistenti quando il team non è trovato (per evitare il bug ricorrente sulle Seconde Squadre)
+2. Verificare che le 89 nuove foto giocatori IT3 siano corrette (i 95 italiani vanno controllati a campione su SortItOutSi)

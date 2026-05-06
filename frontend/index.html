@@ -33,6 +33,10 @@
       --comp-acl: #60A5FA;
       --comp-cup: #A78BFA;
       --comp-serieb: #FB923C;  /* arancione, palette PID */
+      --comp-ij1: #C084FC;     /* viola tenue, Primavera */
+      --comp-it3: #38BDF8;     /* azzurro chiaro, Seconde Squadre (Serie C) */
+      --comp-pl1: #EF4444;     /* rosso, Ekstraklasa */
+      --comp-pl2: #60A5FA;     /* blu chiaro, 1 Liga */
       --comp-nat: #F472B6;
       --sidebar-w: 220px;
     }
@@ -190,7 +194,7 @@
     </div>
     <div class="p-3 rounded-xl" style="background: var(--surface); border: 0.5px solid var(--border);">
       <div class="text-[10px] uppercase tracking-wider" style="color: var(--text-3);" data-i18n="leagues">Leghe</div>
-      <div class="text-xl font-bold mt-1 stat-cell" style="color: var(--text-1);">2</div>
+      <div class="text-xl font-bold mt-1 stat-cell" id="stat-leagues" style="color: var(--text-1);">—</div>
     </div>
   </section>
 
@@ -211,7 +215,10 @@
       <option value="">Tutti i campionati</option>
       <option value="IT1" selected>Serie A</option>
       <option value="IT2">Serie B</option>
-      <option value="OTHER" data-i18n="league_other">Altre squadre</option>
+      <option value="IT3" data-i18n="league_it3">Seconde Squadre</option>
+      <option value="IJ1" data-i18n="league_ij1">Primavera 1</option>
+      <option value="PL1" data-i18n="league_pl1">Ekstraklasa</option>
+      <option value="PL2" data-i18n="league_pl2">1 Liga</option>
     </select>
     <select id="filter-club" class="filter-select">
       <option value="" data-i18n="filter_all_clubs">Tutti i club</option>
