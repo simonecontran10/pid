@@ -1062,9 +1062,9 @@
     "league_id": "IT3",
     "league_name": "Seconde Squadre",
     "club_url": "https://www.transfermarkt.com/inter-u23/startseite/verein/41119/saison_id/2025",
-    "sortitoutsi_team_id": 1135,
-    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1135.png",
-    "sortitoutsi_logo_local": "photos/clubs_sots/46.png"
+    "sortitoutsi_team_id": 2000475415,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000475415.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/41119.png"
   },
   {
     "tm_club_id": 41107,
@@ -1073,9 +1073,9 @@
     "league_id": "IT3",
     "league_name": "Seconde Squadre",
     "club_url": "https://www.transfermarkt.com/milan-futuro/startseite/verein/41107/saison_id/2025",
-    "sortitoutsi_team_id": 1099,
-    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1099.png",
-    "sortitoutsi_logo_local": "photos/clubs_sots/5.png"
+    "sortitoutsi_team_id": 2000376493,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000376493.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/41107.png"
   },
   {
     "tm_club_id": 41101,
@@ -1084,9 +1084,9 @@
     "league_id": "IT3",
     "league_name": "Seconde Squadre",
     "club_url": "https://www.transfermarkt.com/juventus-next-gen/startseite/verein/41101/saison_id/2025",
-    "sortitoutsi_team_id": 1139,
-    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1139.png",
-    "sortitoutsi_logo_local": "photos/clubs_sots/506.png"
+    "sortitoutsi_team_id": 43457016,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/43457016.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/41101.png"
   },
   {
     "tm_club_id": 41110,
@@ -1095,8 +1095,8 @@
     "league_id": "IT3",
     "league_name": "Seconde Squadre",
     "club_url": "https://www.transfermarkt.com/atalanta-u23/startseite/verein/41110/saison_id/2025",
-    "sortitoutsi_team_id": 1106,
-    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1106.png",
-    "sortitoutsi_logo_local": "photos/clubs_sots/800.png"
+    "sortitoutsi_team_id": 2000277208,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000277208.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/41110.png"
   }
 ]

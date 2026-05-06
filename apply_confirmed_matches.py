@@ -23,7 +23,7 @@ from scraper.config import (
 )
 from scraper.sortitoutsi import face_url, profile_url
 
-CONFIRMED_FILE = DATA_DIR / "sots_auto_matched_confirmed.xlsx"
+CONFIRMED_FILE = DATA_DIR / "sots_more_matches_confirmed.xlsx"
 LOOKUP_FILE = DATA_DIR / "sortitoutsi_id_lookup.json"
 PLAYERS_ALL_FILE = DATA_DIR / "players_all.json"
 PHOTOS_DIR = DATA_DIR / "photos" / "players_sots_lookup"

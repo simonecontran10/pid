@@ -12013,5 +12013,747 @@
     "match_score": 1.0,
     "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/43500463.png"
+  },
+  "1056269": {
+    "sots_id": 2000186346,
+    "name": "Alessandro Bonomi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000186346.png"
+  },
+  "1049598": {
+    "sots_id": 2000205921,
+    "name": "Diego Pugno",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205921.png"
+  },
+  "1301514": {
+    "sots_id": 2000446506,
+    "name": "Emanuele Borsani",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": null
+  },
+  "1044818": {
+    "sots_id": 2000328959,
+    "name": "Emanuele Sala",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000328959.png"
+  },
+  "1058398": {
+    "sots_id": 2000183049,
+    "name": "Gioele Perina",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000183049.png"
+  },
+  "938430": {
+    "sots_id": 2000185228,
+    "name": "Justin Oboavwoduo",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000185228.png"
+  },
+  "1200411": {
+    "sots_id": 2000418676,
+    "name": "Léo Paul Bouyer",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000418676.png"
+  },
+  "1137274": {
+    "sots_id": 2000366140,
+    "name": "Leon Jakirović",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000366140.png"
+  },
+  "1168373": {
+    "sots_id": 2000298508,
+    "name": "Lorenzo Ossola",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000298508.png"
+  },
+  "942736": {
+    "sots_id": 2000205842,
+    "name": "Matteo Venturini",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205842.png"
+  },
+  "1069159": {
+    "sots_id": 2000264653,
+    "name": "Mattia Cappelletti",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000264653.png"
+  },
+  "1008570": {
+    "sots_id": 2000269293,
+    "name": "Mattia Mosconi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000269293.png"
+  },
+  "1088322": {
+    "sots_id": 2000395639,
+    "name": "Shane van Aarle",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000395639.png"
+  },
+  "1136279": {
+    "sots_id": 2000384641,
+    "name": "Valeri Vladimirov",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000384641.png"
+  },
+  "943977": {
+    "sots_id": 2000379554,
+    "name": "Yahya Idrissi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000379554.png"
+  },
+  "902573": {
+    "sots_id": 2000212891,
+    "name": "Mateusz Kowalski",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000212891.png"
+  },
+  "746711": {
+    "sots_id": 2000097987,
+    "name": "Alessandro Calligaris",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000097987.png"
+  },
+  "162951": {
+    "sots_id": 43084310,
+    "name": "Riccardo Melgrati",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43084310.png"
+  },
+  "724100": {
+    "sots_id": 2000098008,
+    "name": "Paolo Raimondi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000098008.png"
+  },
+  "898812": {
+    "sots_id": 2000123937,
+    "name": "Christos Alexiou",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000123937.png"
+  },
+  "1054322": {
+    "sots_id": 2000242142,
+    "name": "Gabriele Re Cecconi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000242142.png"
+  },
+  "819033": {
+    "sots_id": 2000098013,
+    "name": "Francesco Stante",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000098013.png"
+  },
+  "163187": {
+    "sots_id": 43083356,
+    "name": "Giuseppe Prestia",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43083356.png"
+  },
+  "1041129": {
+    "sots_id": 2000198856,
+    "name": "Yvan Maye",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000198856.png"
+  },
+  "1059257": {
+    "sots_id": 2000242138,
+    "name": "Gabriele Garonetti",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000242138.png"
+  },
+  "988987": {
+    "sots_id": 2000269260,
+    "name": "Matteo Cocchi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000269260.png"
+  },
+  "929688": {
+    "sots_id": 2000099664,
+    "name": "Antonio David",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000099664.png"
+  },
+  "1103692": {
+    "sots_id": 2000245483,
+    "name": "Tommaso Avitabile",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000245483.png"
+  },
+  "884228": {
+    "sots_id": 2000124710,
+    "name": "Leonardo Bovo",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000124710.png"
+  },
+  "1054347": {
+    "sots_id": 2000242145,
+    "name": "Mattia Zanchetta",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000242145.png"
+  },
+  "287875": {
+    "sots_id": 43124601,
+    "name": "Luca Fiordilino",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43124601.png"
+  },
+  "991744": {
+    "sots_id": 2000264561,
+    "name": "Luka Topalović",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000264561.png"
+  },
+  "930780": {
+    "sots_id": 2000097986,
+    "name": "Thomas Berenbruch",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000097986.png"
+  },
+  "885623": {
+    "sots_id": 2000097996,
+    "name": "Issiaka Kamate",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000097996.png"
+  },
+  "555056": {
+    "sots_id": 2000012809,
+    "name": "Iwo Kaczmarski",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000012809.png"
+  },
+  "980346": {
+    "sots_id": 2000205844,
+    "name": "Richi Agbonifo",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205844.png"
+  },
+  "927911": {
+    "sots_id": 2000121626,
+    "name": "Igor Amerighi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000121626.png"
+  },
+  "930768": {
+    "sots_id": 2000205839,
+    "name": "Matteo Spinaccè",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205839.png"
+  },
+  "972475": {
+    "sots_id": 2000205837,
+    "name": "Matteo Lavelli",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205837.png"
+  },
+  "287876": {
+    "sots_id": 43124602,
+    "name": "Antonino La Gumina",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43124602.png"
+  },
+  "555070": {
+    "sots_id": 2000056232,
+    "name": "Jan Żuberek",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000056232.png"
+  },
+  "1185980": {
+    "sots_id": 2000443848,
+    "name": "Matteo Pittarella",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000443848.png"
+  },
+  "1225927": {
+    "sots_id": 2000503756,
+    "name": "Pietro Faccioli",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000503756.png"
+  },
+  "823891": {
+    "sots_id": 2000075631,
+    "name": "Gabriele Minotti",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000075631.png"
+  },
+  "1115031": {
+    "sots_id": 2000295379,
+    "name": "Damir Zukic",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000295379.png"
+  },
+  "1047293": {
+    "sots_id": 2000310757,
+    "name": "Berkay Karaca",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000310757.png"
+  },
+  "1086882": {
+    "sots_id": 2000255277,
+    "name": "Magnus Dalpiaz",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000255277.png"
+  },
+  "738476": {
+    "sots_id": 2000046151,
+    "name": "Silvano Vos",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000046151.png"
+  },
+  "935508": {
+    "sots_id": 2000136420,
+    "name": "Victor Eletu",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000136420.png"
+  },
+  "167793": {
+    "sots_id": 43074523,
+    "name": "Simone Branca",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43074523.png"
+  },
+  "1168371": {
+    "sots_id": 2000298509,
+    "name": "Matteo Geroli",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000298509.png"
+  },
+  "993212": {
+    "sots_id": 2000157295,
+    "name": "Jacopo Sardo",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000157295.png"
+  },
+  "700998": {
+    "sots_id": 2000021095,
+    "name": "Chaka Traorè",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000021095.png"
+  },
+  "1032683": {
+    "sots_id": 2000408376,
+    "name": "Cheveyo Balentien",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000408376.png"
+  },
+  "908947": {
+    "sots_id": 2000311977,
+    "name": "Levis Asanji",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000311977.png"
+  },
+  "175788": {
+    "sots_id": 43067878,
+    "name": "Andrea Magrassi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43067878.png"
+  },
+  "942058": {
+    "sots_id": 2000209630,
+    "name": "Stefano Mangiapoco",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000209630.png"
+  },
+  "925864": {
+    "sots_id": 2000104652,
+    "name": "Matteo Fuscaldo",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000104652.png"
+  },
+  "650989": {
+    "sots_id": 2000022539,
+    "name": "Simone Scaglia",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000022539.png"
+  },
+  "1237027": {
+    "sots_id": 2000295525,
+    "name": "Luca Bruno",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000295525.png"
+  },
+  "1160260": {
+    "sots_id": 2000284428,
+    "name": "Javier Gil",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000284428.png"
+  },
+  "1150916": {
+    "sots_id": 2000274050,
+    "name": "Bruno Martinez",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000274050.png"
+  },
+  "163597": {
+    "sots_id": 43043964,
+    "name": "Filippo Scaglia",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43043964.png"
+  },
+  "715894": {
+    "sots_id": 2000104623,
+    "name": "David Puczka",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000104623.png"
+  },
+  "925841": {
+    "sots_id": 2000104663,
+    "name": "Federico Savio",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000104663.png"
+  },
+  "567453": {
+    "sots_id": 43500532,
+    "name": "Gabriele Mulazzi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43500532.png"
+  },
+  "651002": {
+    "sots_id": 2000024755,
+    "name": "Giacomo Faticanti",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000024755.png"
+  },
+  "925845": {
+    "sots_id": 2000104670,
+    "name": "Augusto Owusu",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000104670.png"
+  },
+  "1019680": {
+    "sots_id": 2000278141,
+    "name": "Patryk Mazur",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278141.png"
+  },
+  "704840": {
+    "sots_id": 43500440,
+    "name": "Federico Macca",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43500440.png"
+  },
+  "487844": {
+    "sots_id": 43424941,
+    "name": "Nicolò Cudrig",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43424941.png"
+  },
+  "925842": {
+    "sots_id": 2000104666,
+    "name": "Stefano Turco",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000104666.png"
+  },
+  "978442": {
+    "sots_id": 2000205918,
+    "name": "Filippo Pagnucco",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205918.png"
+  },
+  "960943": {
+    "sots_id": 2000259412,
+    "name": "Adin Licina",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000259412.png"
+  },
+  "787150": {
+    "sots_id": 2000154598,
+    "name": "Teoman Gündüz",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000154598.png"
+  },
+  "1096827": {
+    "sots_id": 2000300087,
+    "name": "Luca Amaradio",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000300087.png"
+  },
+  "925848": {
+    "sots_id": 2000098304,
+    "name": "Lorenzo Anghelè",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000098304.png"
+  },
+  "936230": {
+    "sots_id": 2000106663,
+    "name": "Serigne Deme",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000106663.png"
+  },
+  "672830": {
+    "sots_id": 43500092,
+    "name": "Leonardo Cerri",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43500092.png"
+  },
+  "76110": {
+    "sots_id": 43006969,
+    "name": "Simone Guerra",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43006969.png"
+  },
+  "650256": {
+    "sots_id": 43609947,
+    "name": "Paolo Vismara",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43609947.png"
+  },
+  "970683": {
+    "sots_id": 2000123796,
+    "name": "Piotr Pardel",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000123796.png"
+  },
+  "930791": {
+    "sots_id": 2000205831,
+    "name": "Filippo Cecchini",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000205831.png"
+  },
+  "964471": {
+    "sots_id": 2000184399,
+    "name": "Andrea Torriani",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": null
+  },
+  "962154": {
+    "sots_id": 2000297302,
+    "name": "Albert Navarro",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000297302.png"
+  },
+  "940553": {
+    "sots_id": 2000246003,
+    "name": "Relja Obric",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000246003.png"
+  },
+  "929871": {
+    "sots_id": 2000184280,
+    "name": "Matteo Plaia",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000184280.png"
+  },
+  "936753": {
+    "sots_id": 2000145296,
+    "name": "Pietro Comi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000145296.png"
+  },
+  "667066": {
+    "sots_id": 2000025541,
+    "name": "Alessio Guerini",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000025541.png"
+  },
+  "567476": {
+    "sots_id": 43499964,
+    "name": "Gabriele Berto",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43499964.png"
+  },
+  "1048080": {
+    "sots_id": 2000241428,
+    "name": "Federico Simonetto",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000241428.png"
+  },
+  "536837": {
+    "sots_id": 43372283,
+    "name": "Federico Bergonzi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43372283.png"
+  },
+  "487836": {
+    "sots_id": 43425634,
+    "name": "Simone Panada",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43425634.png"
+  },
+  "936755": {
+    "sots_id": 2000145297,
+    "name": "Alberto Manzoni",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000145297.png"
+  },
+  "954265": {
+    "sots_id": 2000184400,
+    "name": "Lorenzo Riccio",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000184400.png"
+  },
+  "1178213": {
+    "sots_id": 2000386608,
+    "name": "Federico Steffanoni",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000386608.png"
+  },
+  "892165": {
+    "sots_id": 2000224878,
+    "name": "Sergej Levak",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000224878.png"
+  },
+  "1170813": {
+    "sots_id": 2000330718,
+    "name": "Javison Idele",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000330718.png"
+  },
+  "421769": {
+    "sots_id": 43372275,
+    "name": "Davide Ghislandi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43372275.png"
+  },
+  "1048147": {
+    "sots_id": 2000241431,
+    "name": "Federico Cassa",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000241431.png"
+  },
+  "1048145": {
+    "sots_id": 2000241430,
+    "name": "Andrea Bonanomi",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000241430.png"
+  },
+  "421768": {
+    "sots_id": 43372277,
+    "name": "Alessandro Cortinovis",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43372277.png"
+  },
+  "936739": {
+    "sots_id": 2000145303,
+    "name": "Dominic Vavassori",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000145303.png"
+  },
+  "988862": {
+    "sots_id": 2000168273,
+    "name": "Moustapha Cissé",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000168273.png"
+  },
+  "928046": {
+    "sots_id": 2000121640,
+    "name": "Giulio Misitano",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000121640.png"
+  },
+  "1101344": {
+    "sots_id": 2000245902,
+    "name": "Emanuele Zanaboni",
+    "match_score": 1.0,
+    "matched_via": "offline_match_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000245902.png"
   }
 }
