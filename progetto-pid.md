@@ -1017,3 +1017,61 @@ Console mostrava warning `Multiple GoTrueClient instances detected` perché il m
 - [ ] Recupera nuova URL Supabase + nuova publishable key
 - [ ] Aggiorna `frontend/cloud_sync.js` riga 23-24 con nuove credenziali
 - [ ] Push e nuovo signup PID
+
+### Esito finale (7 mag, sera 4) — ✅ Cloud sync PID dedicato funzionante
+- **Nuovo progetto Supabase PID** creato: URL `https://mbghahzykbsaudcpybdh.supabase.co`, region Frankfurt, plan Free
+- Schema `user_state` setup tramite SQL editor (8 colonne: user_id, callups, notes, grids, minutes, favorites, created_at, updated_at + 4 RLS policy: select/insert/update/delete own)
+- Credenziali aggiornate in `frontend/cloud_sync.js` riga 20-21
+- Configurazione Authentication → URL Configuration:
+  - Site URL: `https://pid-nine.vercel.app`
+  - Redirect URLs allowlist: `https://pid-nine.vercel.app`, `https://pid-nine.vercel.app/**`, `http://localhost:8000/**`
+- Signup riuscito con email `simonecontran10@gmail.com` (account nuovo nel DB PID, **separato** dal Saudi Hub)
+- Email Supabase ora redirige correttamente a `pid-nine.vercel.app` post-conferma
+
+### Conferma DB separato
+Console post-login mostra `user_id: 34da1ed9-c767-40bf-844b-ecfb953f7e3b` — diverso da `c5c05e82-ae99-4e55-8323-6743a7caeb9c` del Saudi Hub. I due progetti Supabase sono completamente isolati anche se condividono l'email.
+
+### Pulizia dati locali post-migrazione
+Al primo login sul DB PID nuovo, `_onFirstSignIn()` ha trovato cloud vuoto e caricato i dati di localStorage attuali (3 preferiti, 2 griglie, 71 convocati) — ma erano residui mescolati di Saudi Hub. Eseguito reset manuale via console JavaScript:
+```js
+cd ~/Desktop/pid && cat >> progetto-pid.md << 'EOF_DIARY'
+
+### Esito finale (7 mag, sera 4) — ✅ Cloud sync PID dedicato funzionante
+- **Nuovo progetto Supabase PID** creato: URL `https://mbghahzykbsaudcpybdh.supabase.co`, region Frankfurt, plan Free
+- Schema `user_state` setup tramite SQL editor (8 colonne: user_id, callups, notes, grids, minutes, favorites, created_at, updated_at + 4 RLS policy: select/insert/update/delete own)
+- Credenziali aggiornate in `frontend/cloud_sync.js` riga 20-21
+- Configurazione Authentication → URL Configuration:
+  - Site URL: `https://pid-nine.vercel.app`
+  - Redirect URLs allowlist: `https://pid-nine.vercel.app`, `https://pid-nine.vercel.app/**`, `http://localhost:8000/**`
+- Signup riuscito con email `simonecontran10@gmail.com` (account nuovo nel DB PID, **separato** dal Saudi Hub)
+- Email Supabase ora redirige correttamente a `pid-nine.vercel.app` post-conferma
+
+### Conferma DB separato
+Console post-login mostra `user_id: 34da1ed9-c767-40bf-844b-ecfb953f7e3b` — diverso da `c5c05e82-ae99-4e55-8323-6743a7caeb9c` del Saudi Hub. I due progetti Supabase sono completamente isolati anche se condividono l'email.
+
+### Pulizia dati locali post-migrazione
+Al primo login sul DB PID nuovo, `_onFirstSignIn()` ha trovato cloud vuoto e caricato i dati di localStorage attuali (3 preferiti, 2 griglie, 71 convocati) — ma erano residui mescolati di Saudi Hub. Eseguito reset manuale via console JavaScript:
+```js
+['pid_favorites','pid_grids_v1','pid_callup_active','pid_player_notes',
+ 'saudi_callups_v1','saudi_minutes_v1','saudi_player_notes','saudi_grids_v1',
+ 'saudi_callup_active'].forEach(k => localStorage.removeItem(k));
+// + upsert riga user_state con valori vuoti
+```
+
+### Note su separazione progetti Supabase
+- **Saudi Hub Supabase** (vecchio): `akhmipddijvbphhguuvw.supabase.co` (org SAFF) — non più referenziato da PID
+- **PID Supabase** (nuovo): `mbghahzykbsaudcpybdh.supabase.co` — DB pulito, dedicato a PID
+- I due sono completamente isolati. Login su PID NON mostra dati Saudi e viceversa.
+
+### Sicurezza: rotazione service_role key
+Durante il setup è stata accidentalmente esposta la `sb_secret_*` del nuovo progetto. Procedura: dashboard PID → Settings → API → "Roll secret" sulla service role key per invalidare l'esposizione e generare nuova chiave.
+
+### Costo Supabase Free Tier
+- 500 MB storage, 50K monthly active users, 5 GB bandwidth
+- Per PID con uso personale (1-10 utenti): largamente sufficiente
+- Auto-pausa dopo 1 settimana di inattività, riprende automaticamente
+
+### TODO follow-up
+- [ ] Test cross-device per conferma definitiva sync (login da iPhone con stessa credenziale → vedere stessi salvataggi)
+- [ ] Nascondere bottone "🔐 Accedi" sidebar quando `cloudAuth.user` è valorizzato (residuo cosmetico legacy)
+- [ ] Pulire fetch a `127.0.0.1:8000/update/status` (vecchio dev server, non serve in production)
