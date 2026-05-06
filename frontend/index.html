@@ -34,9 +34,6 @@
       --comp-cup: #A78BFA;
       --comp-serieb: #FB923C;  /* arancione, palette PID */
       --comp-nat: #F472B6;
-      --comp-ij1: #C084FC;     /* viola tenue, Primavera */
-      --comp-pl1: #EF4444;     /* rosso, Ekstraklasa */
-      --comp-pl2: #60A5FA;     /* blu chiaro, 1 Liga */
       --sidebar-w: 220px;
     }
     * { font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
@@ -63,19 +60,12 @@
     .lang-btn .lang-flag { font-size: 14px; line-height: 1; }
     .lang-btn-active { background: var(--accent-bg); color: var(--accent); border-color: rgba(111,224,168,0.30); }
 
-    /* RTL adjustments (Arabic) */
-    html[dir="rtl"] body { text-align: right; }
-    html[dir="rtl"] aside#sidebar { left: auto; right: 0; border-right: none; border-left: 0.5px solid var(--border); }
-    html[dir="rtl"] header > div { margin-left: 0 !important; margin-right: var(--sidebar-w) !important; }
-    html[dir="rtl"] main { margin-left: 0 !important; margin-right: var(--sidebar-w) !important; }
-    html[dir="rtl"] #player-modal { left: 0 !important; right: var(--sidebar-w) !important; }
-    html[dir="rtl"] .ml-auto { margin-left: 0 !important; margin-right: auto !important; }
-    html[dir="rtl"] .mr-auto { margin-right: 0 !important; margin-left: auto !important; }
-    html[dir="rtl"] .nav-item { flex-direction: row-reverse; }
-    html[dir="rtl"] input, html[dir="rtl"] select, html[dir="rtl"] textarea { text-align: right; direction: rtl; }
-    html[dir="rtl"] .nav-badge { margin-left: 0; margin-right: auto; }
-    html[dir="rtl"] #author-credit { left: auto !important; right: 0 !important; }
-    /* Filtri: input e select restano allineati a destra in RTL — il flow naturale flexbox si occupa del resto */
+    /* Stella preferiti sulle player card */
+    .fav-star { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(14,17,22,0.55); backdrop-filter: blur(4px); border: 0.5px solid rgba(255,255,255,0.10); cursor: pointer; transition: transform 120ms ease, background 120ms ease; z-index: 5; color: var(--text-3); }
+    .fav-star:hover { background: rgba(14,17,22,0.85); transform: scale(1.08); color: var(--hot); }
+    .fav-star.is-fav { color: var(--hot); background: rgba(251,191,36,0.18); border-color: rgba(251,191,36,0.40); }
+    .fav-star svg { width: 16px; height: 16px; }
+    .fav-star.is-fav svg { fill: var(--hot); stroke: var(--hot); }
   </style>
 </head>
 <body class="min-h-screen">
@@ -90,7 +80,7 @@
 <!-- Auth gate: schermata di login bloccante con form inline, visibile fino a SIGNED_IN -->
 <div id="auth-gate" style="display:none;position:fixed;inset:0;z-index:200;background:radial-gradient(ellipse at top, rgba(111,224,168,0.08), transparent 60%), var(--bg);flex-direction:column;align-items:center;justify-content:center;padding:24px;">
   <div style="max-width:420px;width:100%;text-align:center;">
-    <img src="../data/photos/branding/logo.png" alt="" style="width:140px;height:140px;border-radius:24px;margin:0 auto 24px;background:rgba(255,255,255,0.04);border:0.5px solid var(--border);object-fit:cover;" onerror="this.style.display='none'"/>
+    <img src="../data/photos/branding/logo.png" alt="" style="width:160px;height:160px;margin:0 auto 24px;object-fit:contain;display:block;" onerror="this.style.display='none'"/>
     <h1 style="font-size:38px;font-weight:800;color:var(--text-1);margin:0 0 28px;letter-spacing:-0.02em;line-height:1.1;">Player Intelligence Database</h1>
 
     <input id="auth-gate-email" type="email" data-i18n-placeholder="gate_email_ph" placeholder="email@example.com" autocomplete="email"
@@ -117,7 +107,7 @@
 <header class="sticky top-0 z-40" style="background: rgba(14,17,22,0.85); backdrop-filter: blur(8px); border-bottom: 0.5px solid var(--border);">
   <div class="px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between" style="margin-left: var(--sidebar-w);">
     <div class="flex items-center gap-3">
-      <img src="../data/photos/branding/logo.png" alt="PID" class="w-10 h-10 rounded-lg object-cover" style="background: rgba(255,255,255,0.04); border: 0.5px solid var(--border);" onerror="this.onerror=null;this.style.display='none'"/>
+      <img src="../data/photos/branding/logo.png" alt="PID" class="w-14 h-14 object-contain" onerror="this.onerror=null;this.style.display='none'"/>
       <div>
         <h1 class="text-base font-semibold tracking-tight" data-i18n="title" style="color: var(--text-1);">Player Intelligence Database</h1>
         <p class="text-xs" data-i18n="subtitle" style="color: var(--text-3);"></p>
@@ -125,9 +115,7 @@
     </div>
     <div class="flex items-center gap-1">
       <button id="lang-en" class="lang-btn" title="English"><span class="lang-flag">🇬🇧</span><span>EN</span></button>
-      <button id="lang-ar" class="lang-btn" title="العربية"><span class="lang-flag">🇸🇦</span><span>AR</span></button>
       <button id="lang-it" class="lang-btn" title="Italiano"><span class="lang-flag">🇮🇹</span><span>IT</span></button>
-      <button id="lang-fr" class="lang-btn" title="Français"><span class="lang-flag">🇫🇷</span><span>FR</span></button>
     </div>
   </div>
 </header>
@@ -143,6 +131,11 @@
   <div class="nav-item" data-route="list">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="3.5" cy="6" r="1.5"/><circle cx="3.5" cy="12" r="1.5"/><circle cx="3.5" cy="18" r="1.5"/></svg>
     <span class="sidebar-label" data-i18n="nav_list">Lista</span>
+  </div>
+  <div class="nav-item" data-route="favorites">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    <span class="sidebar-label" data-i18n="nav_favorites">Preferiti</span>
+    <span id="favorites-badge" class="nav-badge" style="display:none;">0</span>
   </div>
   <div class="nav-item" data-route="clubs">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 v6 c0 5 3 8 8 10 5-2 8-5 8-10 V6 z"/></svg>
@@ -197,7 +190,7 @@
     </div>
     <div class="p-3 rounded-xl" style="background: var(--surface); border: 0.5px solid var(--border);">
       <div class="text-[10px] uppercase tracking-wider" style="color: var(--text-3);" data-i18n="leagues">Leghe</div>
-      <div class="text-xl font-bold mt-1 stat-cell" id="stat-leagues" style="color: var(--text-1);">—</div>
+      <div class="text-xl font-bold mt-1 stat-cell" style="color: var(--text-1);">2</div>
     </div>
   </section>
 
@@ -218,9 +211,7 @@
       <option value="">Tutti i campionati</option>
       <option value="IT1" selected>Serie A</option>
       <option value="IT2">Serie B</option>
-      <option value="IJ1" data-i18n="league_ij1">Primavera 1</option>
-      <option value="PL1" data-i18n="league_pl1">Ekstraklasa</option>
-      <option value="PL2" data-i18n="league_pl2">1 Liga</option>
+      <option value="OTHER" data-i18n="league_other">Altre squadre</option>
     </select>
     <select id="filter-club" class="filter-select">
       <option value="" data-i18n="filter_all_clubs">Tutti i club</option>
@@ -249,6 +240,7 @@
   <section id="tab-content">
     <div id="players-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-1.5"></div>
     <div id="list-panel" class="hidden"></div>
+    <div id="favorites-panel" class="hidden"></div>
     <div id="clubs-content" class="hidden"></div>
     <div id="compare-panel" class="hidden">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -672,3 +672,23 @@ Entrambi 139×181 PNG RGBA, formato standard TM coerente con IT1/IT2/IJ1.png gi�
    - Label `[SAUDI ✓]` nei log scraping
 5. **Custom domain**: rinominare progetto Vercel → `pid.vercel.app`
 6. **Update workflow** invariato: `git add -A && git commit && git push` → Vercel redeploy auto. R2 solo se cambia `players_stats.json`.
+
+## 6 mag 2026 (sera continuazione 2) — UI refinements
+
+### Modifiche
+1. **Lingue ridotte**: rimossi pulsanti AR (Saudi/Arabo) e FR (Francese) dall'header. Restano solo EN + IT (le uniche con dizionario completo in i18n.js, le altre erano sempre stati pulsanti morti — `SUPPORTED_LANGS = ["it","en"]` già da prima). Pulito anche blocco CSS `html[dir="rtl"] *` (~14 righe morte) + `RTL_LANGS = new Set()` svuotato.
+2. **Logo PID**: sostituito `data/photos/branding/logo.png` con la versione "PID logo 2" (era nel repo come `PID logo 2.png` 1.4 MB). Pipeline: crop dei margini trasparenti, padding a quadrato, resize 256x256 LANCZOS, save ottimizzato → **33 KB** (-98% dimensione). Aggiunta variante `logo@2x.png` 512x512 per future esigenze retina (100 KB).
+3. **Logo header ingrandito**: `w-10 h-10` (40px) → `w-14 h-14` (56px), rimosso box arrotondato `rounded-lg` + bg bianco + border, logo ora "fluttua" sulla barra header con sfondo trasparente.
+4. **Auth-gate logo**: 140x140 con box rounded → 160x160 trasparente puro.
+5. **Loghi nelle player card**: bandiere nazione (bottom-left) e logo club (bottom-right) ridotti da `w-9 h-9` (36px) a `w-8 h-8` (32px), -11%.
+
+### Note
+- Loghi competizione (`data/photos/competitions/*.png`): già RGBA con alpha=0 ai bordi (TM li serve già con trasparenza). Nessuna modifica necessaria.
+- Favicon (riga 8-10 di index.html): usa lo stesso file `branding/logo.png`, quindi il favicon del browser e dell'apple-touch-icon si aggiornano automaticamente.
+
+### File modificati
+- `frontend/index.html` (header, auth-gate, CSS RTL rimosso, dropdown lingue)
+- `frontend/i18n.js` (commento + RTL_LANGS svuotato)
+- `frontend/app.js` (2 occorrenze di w-9 → w-8 nelle player card)
+- `data/photos/branding/logo.png` (sostituito con PID logo 2 ottimizzato 256x256)
+- `data/photos/branding/logo@2x.png` (nuovo, 512x512)

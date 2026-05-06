@@ -48,6 +48,7 @@ LOGOS_DIR = DATA_DIR / "photos" / "clubs_sots"
 SOTS_MANUAL_OVERRIDES = {
     # PL2 — non presenti nella pagina competizione FM26 ma esistenti su SortItOutSi
     "Wieczysta Krakow": 2000028546,    # /team/2000028546/wieczysta-krakow
+    "Pogon Grodzisk Mazowiecki": 96056623,  # /team/96056623/pogon-grodzisk-mazowiecki
     # PL2 — varianti di nome
     "LKS Lodz": 1454,                  # SortItOutSi: lodzki-klub-sportowy
     "Polonia Warsaw": 1300879,         # SortItOutSi: polonia-warszawa

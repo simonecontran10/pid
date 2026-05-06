@@ -941,8 +941,9 @@
     "league_id": "PL2",
     "club_url": "https://www.transfermarkt.com/pogon-grodzisk-mazowiecki/startseite/verein/30998/saison_id/2025",
     "league_name": "1 Liga",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null
+    "sortitoutsi_team_id": 96056623,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/96056623.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/30998.png"
   },
   {
     "tm_club_id": 318,

@@ -1,5 +1,5 @@
 /**
- * Multilingue: EN (default), AR (RTL), IT, FR.
+ * Multilingue: IT (default) e EN.
  * Le chiavi sono usate sui data-i18n / data-i18n-placeholder dell'HTML.
  */
 const I18N = {
@@ -36,17 +36,13 @@ const I18N = {
     sort_minutes: "Most minutes 25/26",
     league_it1: "Serie A",
     league_it2: "Serie B",
+
     league_it3: "Primavera 1",
-    league_ij1: "Primavera 1",
-    league_pl1: "Ekstraklasa",
-    league_pl2: "1 Liga",
-    league_other: "Other clubs",
+    league_other: "Primavera 1",
     league_short_it1: "SA",
     league_short_it2: "SB",
+
     league_short_it3: "P1",
-    league_short_ij1: "P1",
-    league_short_pl1: "PL1",
-    league_short_pl2: "PL2",
     league_short_other: "Other",
     col_player: "Player",
     col_min: "Min",
@@ -114,6 +110,7 @@ const I18N = {
     away: "Away",
     nav_home: "Home",
     nav_list: "List",
+    nav_favorites: "Favorites",
     nav_clubs: "Clubs",
     nav_compare: "Compare",
     nav_callup: "Call-up",
@@ -121,6 +118,10 @@ const I18N = {
     nav_minutes: "Minutes",
     callup_title: "Call-up",
     callup_desc: "Build a squad of called-up players: add them from their card with one click and view aggregated stats. Feature coming soon.",
+    favorites_title: "Favorites",
+    favorites_empty: "No favorites yet. Add players by clicking the star on their card.",
+    add_to_favorites: "Add to favorites",
+    remove_from_favorites: "Remove from favorites",
     grids_title: "Grids",
     grids_desc: "Place players on a pitch with tactical formation (4-3-3, 4-4-2…). Feature coming soon.",
     no_matches: "No matches played",
@@ -233,17 +234,13 @@ const I18N = {
     sort_minutes: "Più minuti 25/26",
     league_it1: "Serie A",
     league_it2: "Serie B",
+
     league_it3: "Primavera 1",
-    league_ij1: "Primavera 1",
-    league_pl1: "Ekstraklasa",
-    league_pl2: "1 Liga",
-    league_other: "Altre squadre",
+    league_other: "Primavera 1",
     league_short_it1: "SA",
     league_short_it2: "SB",
+
     league_short_it3: "P1",
-    league_short_ij1: "P1",
-    league_short_pl1: "PL1",
-    league_short_pl2: "PL2",
     league_short_other: "Altre",
     col_player: "Giocatore",
     col_min: "Min",
@@ -311,6 +308,7 @@ const I18N = {
     away: "Trasferta",
     nav_home: "Home",
     nav_list: "Lista",
+    nav_favorites: "Preferiti",
     nav_clubs: "Club",
     nav_compare: "Confronto",
     nav_callup: "Convocazione",
@@ -318,6 +316,10 @@ const I18N = {
     nav_minutes: "Minutaggi",
     callup_title: "Convocazione",
     callup_desc: "Crea una rosa di giocatori convocati: aggiungili dalla loro scheda con un click e visualizza statistiche aggregate. Funzione in arrivo.",
+    favorites_title: "Preferiti",
+    favorites_empty: "Nessun preferito ancora. Aggiungi i giocatori cliccando la stella sulla loro scheda.",
+    add_to_favorites: "Aggiungi ai preferiti",
+    remove_from_favorites: "Rimuovi dai preferiti",
     grids_title: "Griglie",
     grids_desc: "Posiziona i giocatori in un campo da gioco con disposizione tattica (4-3-3, 4-4-2…). Funzione in arrivo.",
     no_matches: "Nessuna partita",
@@ -399,7 +401,7 @@ const I18N = {
 };
 
 const SUPPORTED_LANGS = ["it", "en"];
-const RTL_LANGS = new Set(["ar"]);
+const RTL_LANGS = new Set();
 
 let currentLang = localStorage.getItem("pid_lang") || "it";
 if (!SUPPORTED_LANGS.includes(currentLang)) currentLang = "it";

@@ -18,7 +18,45 @@ const state = {
   filters: { league: "IT1", club: "", role: "", sort: "name", q: "", yearMin: null, yearMax: null },
   compareIds: [null, null],
   lastUpdate: null,
+  favorites: new Set(),
 };
+
+// ============ FAVORITES ============
+const FAVORITES_STORAGE_KEY = "pid_favorites";
+function loadFavorites() {
+  try {
+    const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+    if (!raw) return;
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) state.favorites = new Set(arr.map(Number).filter(Boolean));
+  } catch {}
+}
+function saveFavorites() {
+  try {
+    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify([...state.favorites]));
+  } catch {}
+}
+function isFavorite(pid) {
+  return state.favorites.has(Number(pid));
+}
+function toggleFavorite(pid) {
+  pid = Number(pid);
+  if (!pid) return false;
+  if (state.favorites.has(pid)) state.favorites.delete(pid);
+  else state.favorites.add(pid);
+  saveFavorites();
+  updateFavoritesBadge();
+  return state.favorites.has(pid);
+}
+function updateFavoritesBadge() {
+  const badge = document.getElementById("favorites-badge");
+  if (!badge) return;
+  const n = state.favorites.size;
+  if (n > 0) { badge.textContent = String(n); badge.style.display = ""; }
+  else { badge.style.display = "none"; }
+}
+// SVG stella - aperta (preferito off) e piena (preferito on, fill via CSS)
+const FAV_STAR_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
 
 // ============ FETCH ============
 // File pesanti hostati su Cloudflare R2 (escluso da git/Vercel per limite 100MB)
@@ -484,11 +522,12 @@ function renderPlayers() {
     <button class="player-card text-left rounded-xl overflow-hidden relative" data-pid="${p.tm_player_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
       <div class="overflow-hidden relative" style="aspect-ratio: 1/1; background: linear-gradient(180deg, #21262E 0%, #14181E 100%);">
         ${shirt}${goalsBadge}
-        ${(() => { const fl = nationFlag(p); return fl ? `<div class="absolute bottom-1 left-1 w-9 h-9 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${fl}" alt="" class="w-9 h-9 object-contain" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>` : ""; })()}
+        <span class="fav-star ${isFavorite(p.tm_player_id) ? 'is-fav' : ''}" data-fav="${p.tm_player_id}" title="${t(isFavorite(p.tm_player_id) ? 'remove_from_favorites' : 'add_to_favorites')}">${FAV_STAR_SVG}</span>
+        ${(() => { const fl = nationFlag(p); return fl ? `<div class="absolute bottom-1 left-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${fl}" alt="" class="w-8 h-8 object-contain" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>` : ""; })()}
         <img src="${playerPhoto(p)}" alt="${escapeHtml(p.full_name)}" class="w-full h-full object-contain" loading="lazy"
              style="padding: 14px;"
              onerror="(function(img){var fb=${JSON.stringify(p.photo_url || '')};var av='https://ui-avatars.com/api/?name=${encodeURIComponent(p.full_name||'?')}&size=256&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45';if(fb && img.src!==fb && fb.indexOf('default')<0){img.src=fb;img.onerror=function(){img.onerror=null;img.src=av;};}else{img.onerror=null;img.src=av;}})(this)"/>
-        ${logo ? `<div class="absolute bottom-1 right-1 w-9 h-9 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${logo}" alt="" class="w-9 h-9 object-contain" loading="lazy"/></div>` : ""}
+        ${logo ? `<div class="absolute bottom-1 right-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${logo}" alt="" class="w-8 h-8 object-contain" loading="lazy"/></div>` : ""}
       </div>
       <div class="px-2 py-2">
         <div class="text-[13px] font-semibold leading-tight truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)||"—"}</div>
@@ -499,7 +538,22 @@ function renderPlayers() {
       </div>
     </button>`;
   }).join("");
-  grid.querySelectorAll("[data-pid]").forEach(el => el.addEventListener("click", () => openPlayerModal(parseInt(el.dataset.pid))));
+  grid.querySelectorAll("[data-pid]").forEach(el => el.addEventListener("click", (ev) => {
+    // Se il click è sulla stella, gestiscila e non aprire il modal
+    const star = ev.target.closest("[data-fav]");
+    if (star) {
+      ev.stopPropagation();
+      ev.preventDefault();
+      const pid = parseInt(star.dataset.fav);
+      const nowFav = toggleFavorite(pid);
+      star.classList.toggle("is-fav", nowFav);
+      star.title = t(nowFav ? "remove_from_favorites" : "add_to_favorites");
+      // Se siamo nel pannello favorites, refresh
+      if (state.activeTab === "favorites") renderFavoritesPanel();
+      return;
+    }
+    openPlayerModal(parseInt(el.dataset.pid));
+  }));
 }
 
 // ============ RENDER CLUBS (diviso per lega) ============
@@ -548,7 +602,7 @@ function renderClubs() {
   const sectionHtml = (title, leagueLogo, clubs, accentVar) => `
     <section class="mb-6">
       <div class="flex items-center gap-2 mb-3 pb-1.5" style="border-bottom: 0.5px solid var(--border);">
-        ${leagueLogo ? `<img src="${leagueLogo}" alt="" class="w-6 h-6 object-contain"/>` : ""}
+        ${leagueLogo ? `<img src="${leagueLogo}" alt="" class="w-9 h-9 object-contain"/>` : ""}
         <h3 class="text-sm font-bold tracking-tight" style="color: var(--text-1);">${escapeHtml(title)}</h3>
         <span class="ml-auto text-[10px] stat-cell px-1.5 py-0.5 rounded-full" style="background: ${accentVar}; color: var(--text-2); border: 0.5px solid var(--border);">${clubs.length} club</span>
       </div>
@@ -838,6 +892,10 @@ function openPlayerModal(pid) {
           <button id="modal-close" style="width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-1); border: 0.5px solid var(--border-strong); font-size: 16px; line-height: 1; cursor: pointer;">×</button>
           <button id="compare-toggle" style="padding: 5px 10px; border-radius: 8px; background: transparent; color: var(--accent); border: 0.5px solid rgba(111,224,168,0.30); font-size: 11px; cursor: pointer; white-space: nowrap;">
             ${inCompare ? t("remove_from_compare") : t("add_to_compare")}
+          </button>
+          <button id="modal-fav-toggle" style="padding: 5px 10px; border-radius: 8px; background: ${isFavorite(pid)?"rgba(251,191,36,0.18)":"transparent"}; color: var(--hot); border: 0.5px solid ${isFavorite(pid)?"rgba(251,191,36,0.50)":"rgba(251,191,36,0.30)"}; font-size: 11px; cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;">
+            <span style="font-size: 12px;">${isFavorite(pid) ? "★" : "☆"}</span>
+            ${isFavorite(pid) ? t("remove_from_favorites") : t("add_to_favorites")}
           </button>
           <button id="callup-add-from-modal" style="padding: 5px 10px; border-radius: 8px; background: ${state.callup.currentIds.includes(pid)?"rgba(239,68,68,0.10)":"var(--accent-bg)"}; color: ${state.callup.currentIds.includes(pid)?"#EF4444":"var(--accent)"}; border: 0.5px solid ${state.callup.currentIds.includes(pid)?"rgba(239,68,68,0.30)":"rgba(111,224,168,0.30)"}; font-size: 11px; cursor: pointer; white-space: nowrap; font-weight: 600;">
             ${state.callup.currentIds.includes(pid) ? (currentLang==="it"?"− Rimuovi convocazione":"− Remove call-up") : (currentLang==="it"?"+ Convoca":"+ Call up")}
@@ -1216,6 +1274,14 @@ function openPlayerModal(pid) {
     closeModal();
     setActiveTab("compare");
     renderCompare();
+  });
+  document.getElementById("modal-fav-toggle")?.addEventListener("click", () => {
+    toggleFavorite(pid);
+    // Re-render del modal per aggiornare lo stato del bottone (sempre con stesso pid)
+    openPlayerModal(pid);
+    // Refresh la home grid e il pannello favoriti per riflettere lo stato della stella
+    if (state.activeTab === "home") applyFilters();
+    else if (state.activeTab === "favorites") renderFavoritesPanel();
   });
   // Click sull'overlay (fuori dalla card) chiude la scheda
   modal.onclick = (e) => { if (e.target === modal) closeModal(); };
@@ -5218,6 +5284,83 @@ async function exportMinutesPDF(selectedList) {
   }
 }
 
+// ============ FAVORITES PANEL ============
+function renderFavoritesPanel() {
+  const panel = document.getElementById("favorites-panel");
+  if (!panel) return;
+  const favIds = state.favorites;
+  const items = state.players.filter(p => favIds.has(Number(p.tm_player_id)));
+  if (items.length === 0) {
+    panel.innerHTML = `
+      <div class="text-center py-16" style="color: var(--text-3);">
+        <div style="font-size: 48px; line-height: 1; margin-bottom: 12px; opacity: 0.4;">⭐</div>
+        <div class="text-base font-semibold mb-1" style="color: var(--text-2);">${escapeHtml(t("favorites_title"))}</div>
+        <div class="text-sm" style="max-width: 360px; margin: 0 auto;">${escapeHtml(t("favorites_empty"))}</div>
+      </div>`;
+    return;
+  }
+  // Ordinamento alfabetico predefinito
+  items.sort((a,b) => (a.full_name||"").localeCompare(b.full_name||""));
+
+  const renderCard = (p) => {
+    const club = state.clubsById.get(p.current_club_id);
+    const logo = clubLogo(club);
+    const goals = totalGoals2025(p.tm_player_id);
+    const goalsBadge = goals > 0
+      ? `<div class="absolute top-2 left-2 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-bold stat-cell" style="background: rgba(251,191,36,0.18); color: var(--hot); backdrop-filter: blur(4px); border: 0.5px solid rgba(251,191,36,0.30);">⚽ ${goals}</div>`
+      : "";
+    const shirt = p.shirt_number
+      ? `<div class="absolute top-2 right-10 z-10">
+          <svg width="26" height="26" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="13" cy="13" r="11" fill="rgba(14,17,22,0.85)" stroke="rgba(111,224,168,0.30)" stroke-width="0.6"/>
+            <text x="13" y="17" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#6FE0A8">${p.shirt_number}</text>
+          </svg>
+        </div>`
+      : "";
+    return `
+    <button class="player-card text-left rounded-xl overflow-hidden relative" data-pid="${p.tm_player_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
+      <div class="overflow-hidden relative" style="aspect-ratio: 1/1; background: linear-gradient(180deg, #21262E 0%, #14181E 100%);">
+        ${shirt}${goalsBadge}
+        <span class="fav-star is-fav" data-fav="${p.tm_player_id}" title="${t('remove_from_favorites')}">${FAV_STAR_SVG}</span>
+        ${(() => { const fl = nationFlag(p); return fl ? `<div class="absolute bottom-1 left-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${fl}" alt="" class="w-8 h-8 object-contain" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>` : ""; })()}
+        <img src="${playerPhoto(p)}" alt="${escapeHtml(p.full_name)}" class="w-full h-full object-contain" loading="lazy" style="padding: 14px;"
+             onerror="(function(img){var fb=${JSON.stringify(p.photo_url || '')};var av='https://ui-avatars.com/api/?name=${encodeURIComponent(p.full_name||'?')}&size=256&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45';if(fb && img.src!==fb && fb.indexOf('default')<0){img.src=fb;img.onerror=function(){img.onerror=null;img.src=av;};}else{img.onerror=null;img.src=av;}})(this)"/>
+        ${logo ? `<div class="absolute bottom-1 right-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${logo}" alt="" class="w-8 h-8 object-contain" loading="lazy"/></div>` : ""}
+      </div>
+      <div class="px-2 py-2">
+        <div class="text-[13px] font-semibold leading-tight truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)||"—"}</div>
+        <div class="flex items-center justify-between mt-1.5 gap-1">
+          <span class="text-[10px] px-1.5 py-0.5 rounded truncate" style="background: var(--accent-bg); color: var(--accent);">${escapeHtml(localizeRole(p.position_specific || p.position_general))}</span>
+          <span class="text-[10px] stat-cell flex-shrink-0" style="color: var(--text-3);">${birthYear(p) || (p.age || "")}</span>
+        </div>
+      </div>
+    </button>`;
+  };
+
+  panel.innerHTML = `
+    <div class="flex items-center gap-2 mb-4 pb-2" style="border-bottom: 0.5px solid var(--border);">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--hot)" stroke="var(--hot)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <h2 class="text-base font-bold" style="color: var(--text-1);">${escapeHtml(t("favorites_title"))}</h2>
+      <span class="ml-auto text-xs stat-cell" style="color: var(--text-3);">${items.length}</span>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-1.5">
+      ${items.map(renderCard).join("")}
+    </div>`;
+
+  panel.querySelectorAll("[data-pid]").forEach(el => el.addEventListener("click", (ev) => {
+    const star = ev.target.closest("[data-fav]");
+    if (star) {
+      ev.stopPropagation();
+      ev.preventDefault();
+      const pid = parseInt(star.dataset.fav);
+      toggleFavorite(pid);
+      renderFavoritesPanel(); // refresh per togliere il giocatore dalla lista
+      return;
+    }
+    openPlayerModal(parseInt(el.dataset.pid));
+  }));
+}
+
 // ============ ROUTING (sidebar) ============
 function setActiveTab(route) {
   if (route === "players") route = "home"; // backward-compat
@@ -5231,6 +5374,7 @@ function setActiveTab(route) {
   };
   setVisible("players-grid", route === "home");
   setVisible("list-panel", route === "list");
+  setVisible("favorites-panel", route === "favorites");
   setVisible("clubs-content", route === "clubs");
   setVisible("compare-panel", route === "compare");
   setVisible("callup-panel", route === "callup");
@@ -5241,6 +5385,7 @@ function setActiveTab(route) {
   if (route === "compare") renderCompare();
   if (route === "callup") renderCallupPanel();
   if (route === "list") renderListPanel();
+  if (route === "favorites") renderFavoritesPanel();
   if (route === "grids") renderGridsPanel();
   if (route === "minutes") renderMinutesPanel();
 }
@@ -5530,11 +5675,13 @@ function setupUpdateButton() {
 
 // ============ INIT ============
 document.addEventListener("DOMContentLoaded", () => {
+  loadFavorites();
   bootstrap().then(() => {
     setupSearch();
     setupUpdateButton();
     document.querySelectorAll(".nav-item").forEach(b => b.addEventListener("click", () => setActiveTab(b.dataset.route)));
     setActiveTab("home");
+    updateFavoritesBadge();
     document.getElementById("filter-league").addEventListener("change", e => { state.filters.league = e.target.value; applyFilters(); });
     document.getElementById("filter-club").addEventListener("change", e => { state.filters.club = e.target.value; applyFilters(); });
     document.getElementById("filter-role").addEventListener("change", e => { state.filters.role = e.target.value; applyFilters(); });
