@@ -1099,3 +1099,99 @@ Dopo: lega=Serie A, click "Cesena" → state.filters = {league: 'IT2', club: 664
 
 ### File modificato
 - `frontend/app.js` (3 occorrenze fix, ~25 righe aggiunte totali)
+
+## 7 mag 2026 — Chiusura giornata
+
+### Riepilogo lavoro fatto oggi
+Giornata densa, tutto online e funzionante su `pid-nine.vercel.app`:
+- Bug Polonia fixato (5 sezioni separate, loghi Primavera/Polonia)
+- 4 seconde squadre IT3 aggiunte (+95 giocatori, +4 club, totale 2858 / 100 / 6 leghe)
+- Counter pannello Club corretto (current_club_id OR roster_club_id)
+- Sistema cloud sync attivato con progetto Supabase dedicato (separato dal Saudi Hub)
+- Login obbligatorio funzionante (signup + magic link + reset password)
+- Fix coerenza filtri Club ↔ Lega (selezionando un club si auto-allinea la lega)
+
+### TODO aperti per domani
+- [ ] Cosmetico: nascondere bottone "🔐 Accedi" sidebar quando `cloudAuth.user` valorizzato
+- [ ] Pulire fetch a `127.0.0.1:8000/update/status` (vecchio dev server, errore CORS in console)
+- [ ] Cleanup naming legacy `saudi_*` → `target_*`/`pid_*`:
+  - Variabili `saudi_by_id`, `n_saudi`, `step_filter_saudi`, `is_saudi_eligible`
+  - File `scraper/filter_saudi.py` (alias deprecato)
+  - Costanti `SAUDI_NATIONALITY`, `PLAYERS_SAUDI_FILE` in `scraper/config.py`
+  - Tag `[SAUDI ✓]` nei log scraping
+  - Alias `_saudiNationalTeamName` in app.js
+  - Chiave LS `saudi_callups_v1` e `saudi_minutes_v1` (richiede migrazione dati LS)
+- [ ] Custom domain: rinominare progetto Vercel → `pid.vercel.app` (oggi `pid-nine.vercel.app`)
+- [ ] Test cross-device cloud sync da iPhone (login con stessa email → vedere stessi salvataggi)
+- [ ] Foto SortItOutSi giocatori polacchi (1056 pendenti, `find_more_sots_matches.py` per matching automatico)
+- [ ] Bug `enrich_sortitoutsi.py` che resetta `sortitoutsi_team_id` per club non trovati su SortItOutSi (workaround attivo: script Python inline post-run)
+- [ ] Stats giocatori IT3: solo 13 dei 118 hanno stats valide. Verificare se andare a popolare per tutti o lasciare per i giovani senza minutaggio significativo
+
+### Stato attuale
+- 100 club in 6 leghe (Serie A 20, Serie B 20, IT3 Seconde Squadre 4, IJ1 Primavera 20, PL1 Ekstraklasa 18, PL2 1 Liga 18)
+- 2858 giocatori in `players_main.json`
+- Cloud sync attivo: progetto Supabase `mbghahzykbsaudcpybdh.supabase.co`, schema `user_state` con 4 RLS policy
+- Sito online: https://pid-nine.vercel.app/
+- Repo: https://github.com/simonecontran10/pid (commit `447ea86`)
+
+## 7 mag 2026 (sera 6) — Foto giocatori IT3 via pipeline ufficiale
+
+### Workflow corretto identificato
+La pipeline esistente per associare foto SortItOutSi ai giocatori è:
+1. `harvest_sots_rosters.py` → cache rose SortItOutSi (`data/sots_rosters.json`)
+2. `find_more_sots_matches.py` → match cross-club con DOB-verify, output xlsx
+3. `apply_confirmed_matches.py` → applica match confermati (scarica face, aggiorna JSON)
+
+NON serve scrappare le pagine team a mano: `harvest_sots_rosters.py` legge `clubs.json` e per ogni club con `sortitoutsi_team_id` valido scarica la rosa. Quindi basta avere i sots_team_id giusti in `clubs.json`.
+
+### Bug `current sortitoutsi_team_id` per IT3
+I 4 club seconde squadre in `clubs.json` avevano `sortitoutsi_team_id` puntanti alle PRIME squadre (1135 Inter Milan, 1099 AC Milan, 1139 Juventus FC, 1106 Atalanta BC), retaggio del fallback applicato da `add_seconde_squadre.py` (riusa logo prima squadra come fallback se la seconda squadra non ha entry SortItOutSi).
+
+### Fix manuale
+Patch Python inline che sostituisce con i veri sots_team_id delle U23 da SortItOutSi FM26:
+- Inter U23 → 2000475415 (`/team/2000475415/fc-internazionale-milano-under-23`)
+- Milan Futuro → 2000376493 (`/team/2000376493/milan-futuro`)
+- Juventus Next Gen → 43457016 (`/team/43457016/juventus-fc-next-gen`)
+- Atalanta U23 → 2000277208 (`/team/2000277208/atalanta-bergamasca-calcio-under-23`)
+
+`clubs.json` + `it3_clubs.json` aggiornati. `sortitoutsi_logo_url` ora punta al logo dedicato U23.
+
+### Diagnostica Cloudflare
+Test preliminare: `curl` ritornava HTTP 403 "Just a moment..." (Cloudflare challenge). Ma `requests` Python va bene (HTTP 200, 45 link `/person/` per la rosa Inter U23) — fingerprint TLS diverso che passa il challenge passivo.
+
+Quindi `harvest_sots_rosters.py` (che usa `requests`) funziona regolarmente.
+
+### Stato cache `sots_rosters.json`
+Solo 40 club nella cache (Serie A 20 + Serie B 20). Mancano: 20 Primavera, 18+18 Polonia, 4 IT3. Il prossimo `harvest_sots_rosters.py` dovrebbe popolare i 60 club mancanti in 2-3 minuti.
+
+### TODO immediato
+- [ ] Lanciare `python3 harvest_sots_rosters.py` (60 club da fetchare)
+- [ ] Lanciare `python3 find_more_sots_matches.py` per i match candidati
+- [ ] Verificare e applicare con `apply_confirmed_matches.py`
+- [ ] Fix `enrich_sortitoutsi.py` perché non azzeri `sortitoutsi_team_id` quando il team non viene trovato (workaround: re-applicare patch manuale)
+
+### Bug minore lettura cache `sots_rosters.json`
+Diagnostica iniziale aveva letto chiave `players` ritrovando 0 giocatori — sembrava bug critico. In realtà `harvest_sots_rosters.py` salva sotto chiave `persons`. Verifica con chiave corretta:
+
+| Club U23 | sots_team_id | persons in cache |
+|---|---|---|
+| Inter U23 | 2000475415 | **45** |
+| Milan Futuro | 2000376493 | **41** |
+| Juventus Next Gen | 43457016 | **58** |
+| Atalanta U23 | 2000277208 | **62** |
+
+Totale 206 persons U23 nella cache, oltre alle 5669 già presenti per Serie A/B = **5875 totali**. Cache pronta per `find_more_sots_matches.py`.
+
+### TODO standardizzazione
+- [ ] Uniformare nome chiave: il modulo `find_more_sots_matches.py` usa `players` o `persons`? Verificare e standardizzare in `harvest_sots_rosters.py` per evitare confusione futura
+
+### Esito finale (8 mag, 02:00) — Foto IT3 applicate
+- `harvest_sots_rosters.py`: 4 nuove rose U23 in cache (Inter U23 45, Milan Futuro 41, Juventus Next Gen 58, Atalanta U23 62 → totale 5875 persons)
+- `find_more_sots_matches.py`: 106 confermati DOB-verificati, 46 mismatch
+- Bug fix: `apply_confirmed_matches.py` puntava a `sots_auto_matched_confirmed.xlsx` (file vecchio, 17 righe). Patchato per leggere `sots_more_matches_confirmed.xlsx` (file nuovo, 106 righe)
+- Applicati 106 match: players_main/static/all aggiornati, 104/106 face scaricate
+- Risultato: ~105/118 giocatori IT3 con foto FM-style SortItOutSi (89%)
+
+### TODO
+- [ ] PR per fix definitivo `apply_confirmed_matches.py` (renaming costante CONFIRMED_FILE)
+- [ ] Indagare i 46 DOB mismatch: probabili giovanissimi con DOB diverse tra TM e SortItOutSi (TM aggiornato post-trasferimento, SortItOutSi cache vecchia FM26)
