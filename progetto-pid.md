@@ -893,3 +893,51 @@ Sintassi JS verificata con `node --check` ✅
 ### TODO
 1. Modificare `enrich_sortitoutsi.py` perché non resetti campi sots esistenti quando il team non è trovato (per evitare il bug ricorrente sulle Seconde Squadre)
 2. Verificare che le 89 nuove foto giocatori IT3 siano corrette (i 95 italiani vanno controllati a campione su SortItOutSi)
+
+## 7 mag 2026 — ⚠️ NOTA CONCETTUALE CHIAVE: PID è country-agnostic
+
+### Principio fondamentale (da non dimenticare)
+**PID NON filtra per nazionalità dei giocatori.** Il database include TUTTI i giocatori delle leghe target (Serie A, Serie B, Seconde Squadre, Primavera, Ekstraklasa, 1 Liga), indipendentemente dalla cittadinanza.
+
+Questo è chiaramente documentato in `scraper/filter_target.py`:
+> "PID — country-agnostic: per default ogni profilo è 'eligible' perché PID raccoglie TUTTI i giocatori delle leghe target (Serie A include 28+ nazionalità diverse)."
+> `is_target_eligible()` ritorna sempre `True`.
+
+### Perché è importante ricordarlo
+Il progetto **deriva** da un fork del "Saudi Players Hub" (focus solo giocatori sauditi), e ci sono ancora **alias legacy ovunque** che possono trarre in inganno:
+- `is_saudi_eligible` (alias deprecato di `is_target_eligible`)
+- `PLAYERS_SAUDI_FILE` (alias di `PLAYERS_MAIN_FILE`)
+- `players_saudi.json` ↔ `players_main.json`
+- `n_saudi`, `saudi_by_id`, `step_filter_saudi` come variabili locali in script
+- `SAUDI_NATIONALITY` in config.py
+- `scraper/filter_saudi.py` (alias deprecato)
+- Tag `[SAUDI ✓]` nei log scraping
+- Negli script "is_saudi_eligible" è usato come booleano semantico ma in realtà = "deve entrare nel DB" (cioè TRUE per tutti)
+
+**Errore comune da evitare**: scrivere logica che ASSUME che `is_saudi_eligible/is_target_eligible` sia un filtro di nazionalità, magari perché il nome lo suggerisce. Non lo è. È un flag tecnico che vale `True` per tutti i giocatori scrappati delle leghe target.
+
+### Implicazioni per le Seconde Squadre (IT3)
+Le 4 seconde squadre italiane hanno rose miste con stranieri (sudamericani, africani, est-Europa) che il club valuta per il futuro. Il DB DEVE includere tutti, non solo gli italiani.
+
+Numeri attesi (da rosa Transfermarkt): Inter U23 ≈29, Milan Futuro ≈31, Juventus Next Gen ≈29, Atalanta U23 ≈28 = **~117 totali**.
+Numeri visti online dopo il push del 6 mag: 15 + 22 + 24 + 20 = **81**.
+**Discrepanza: -36 giocatori, da debuggare.**
+
+### TODO permanente — cleanup naming legacy
+Dopo aver risolto il bug delle seconde squadre, programmare un cleanup:
+1. Rinomina `is_saudi_eligible` → `is_target_eligible` ovunque (ultimo alias rimasto)
+2. Rinomina `players_saudi.json` → `players_main.json` (file fisico, non solo costante Python)
+3. Variabili locali `saudi_by_id` → `main_by_id`, `n_saudi` → `n_eligible`, `step_filter_saudi` → `step_filter_target`
+4. Cancella `scraper/filter_saudi.py` (è solo un re-export di `filter_target.py`)
+5. Tag log `[SAUDI ✓]` → `[TARGET ✓]` o rimuovi del tutto
+6. Costante `SAUDI_NATIONALITY` in `scraper/config.py` → `TARGET_NATIONALITY` (solo per uso "Italy" nei nomi nazionale)
+
+### Fix applicato (7 mag, sera)
+3 modifiche in `frontend/app.js`:
+1. `playersByClubCount` (riga ~568): da `current === cid` a `current === cid || roster === cid`
+2. `nPlayers` card pannello Club (riga ~587): stessa logica OR
+3. `applyFilters` filtro lega home (riga ~477): `leagueClubIds.has(p.current_club_id) || leagueClubIds.has(p.roster_club_id)`
+
+Effetto: 14 club guadagnano 1-14 giocatori in più. Inter U23 passa da 15 a 29, Milan Futuro da 22 a 32, Juventus Next Gen da 24 a 29, Atalanta U23 da 20 a 28. **I numeri online ora corrispondono alla rosa Transfermarkt scrappata.**
+
+Lasciato invariato: `applyFilters` per Lista/Convocazione/Griglie/Minutaggi (rige 1986, 2889, 3832, 4414) — lì la semantica deve restare "un giocatore in un club" via `current_club_id`, altrimenti i 71 doppi comparirebbero due volte nelle liste.

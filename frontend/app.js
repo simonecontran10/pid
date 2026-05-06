@@ -472,9 +472,10 @@ function applyFilters() {
     const knownClubIds = new Set(state.clubs.filter(c => KNOWN_LEAGUES.has(c.league_id)).map(c => c.tm_club_id));
     items = items.filter(p => !knownClubIds.has(p.current_club_id));
   } else if (league) {
-    // Filtra giocatori il cui current_club_id appartiene a un club della lega
+    // Filtra giocatori il cui current_club_id O roster_club_id appartiene a un club della lega
+    // (un giocatore può apparire in 2 rose, es. giovane in U23 con current_club=Primavera)
     const leagueClubIds = new Set(state.clubs.filter(c => c.league_id === league).map(c => c.tm_club_id));
-    items = items.filter(p => leagueClubIds.has(p.current_club_id));
+    items = items.filter(p => leagueClubIds.has(p.current_club_id) || leagueClubIds.has(p.roster_club_id));
   }
   if (club) items = items.filter(p => String(p.current_club_id) === String(club));
   if (role) items = items.filter(p => (p.position_general||"").toLowerCase() === role.toLowerCase());
@@ -565,7 +566,7 @@ function renderClubs() {
     return;
   }
 
-  const playersByClubCount = (cid) => state.players.filter(p => p.current_club_id === cid).length;
+  const playersByClubCount = (cid) => state.players.filter(p => p.current_club_id === cid || p.roster_club_id === cid).length;
   const sortClubs = (clubs) => {
     const arr = [...clubs];
     if (state.clubsSort === "by_count_desc") arr.sort((a,b) => playersByClubCount(b.tm_club_id) - playersByClubCount(a.tm_club_id));
@@ -585,7 +586,7 @@ function renderClubs() {
 
   const renderClubCard = (c) => {
     const logo = clubLogo(c);
-    const nPlayers = state.players.filter(p => p.current_club_id === c.tm_club_id).length;
+    const nPlayers = state.players.filter(p => p.current_club_id === c.tm_club_id || p.roster_club_id === c.tm_club_id).length;
     return `
       <button class="player-card rounded-lg flex flex-col items-center justify-center text-center gap-1 p-2" data-cid="${c.tm_club_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
         ${logo
