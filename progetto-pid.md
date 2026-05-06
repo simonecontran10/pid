@@ -1230,3 +1230,16 @@ Commit `731426c`, 117 oggetti, 3 MB. Vercel deploy automatico → `pid-nine.verc
 - [ ] 13 IT3 senza face: verificare a campione su SortItOutSi se sono presenti con slug diverso
 - [ ] 46 DOB mismatch: investigare un campione (probabile: TM aggiornato post-trasferimento vs SortItOutSi cache FM26 chiusa estate 2025)
 - [ ] 1056 polacchi senza face: lanciare di nuovo `find_more_sots_matches.py` ora che harvest ha 4 nuovi club PL non c'erano
+
+### Bug emerso post-deploy: loghi IT3 rotti (8 mag, 02:30)
+Sul sito i 4 club Seconde Squadre mostravano placeholder "immagine non caricata" invece del logo. Causa: il fix manuale precedente aveva impostato `sortitoutsi_logo_local: "photos/clubs_sots/41119.png"` (e analoghi) in `clubs.json`, ma i file fisici esistevano solo come `46.png` (Inter Milan), `5.png` (AC Milan), `506.png` (Juventus FC), `800.png` (Atalanta BC) — i tm_club_id delle prime squadre.
+
+`ls -la data/photos/clubs_sots/41119.png` → file not found.
+
+### Fix da applicare
+Script Python inline che copia i 4 loghi delle prime squadre nei file path delle seconde squadre, poi tentativo di download dei loghi U23 reali da SortItOutSi (se >1KB sovrascrivono il fallback). Comandi consegnati nel messaggio precedente, da eseguire al risveglio.
+
+### TODO domani mattina
+- [ ] Lanciare i 2 blocchi di codice: copia fallback + tentativo download SortItOutSi
+- [ ] Verificare online che i loghi siano visibili
+- [ ] Decidere se SortItOutSi non ha loghi U23 (caso confermato): tenere fallback prima squadra (sembra OK visivamente perché Inter U23 = stemma Inter, Milan Futuro = stemma Milan, ecc.)
