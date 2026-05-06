@@ -4,125 +4,194 @@
     "name": "Wisla Kraków",
     "slug": "wisla-krakau",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/wisla-krakau/startseite/verein/422/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/wisla-krakau/startseite/verein/422/saison_id/2025",
+    "sortitoutsi_team_id": 1300881,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1300881.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/422.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 30974,
     "name": "Wieczysta Krakow",
     "slug": "wieczysta-krakow",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/wieczysta-krakow/startseite/verein/30974/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/wieczysta-krakow/startseite/verein/30974/saison_id/2025",
+    "sortitoutsi_team_id": 2000028546,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000028546.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/30974.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 2745,
     "name": "Polonia Warsaw",
     "slug": "polonia-warschau",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/polonia-warschau/startseite/verein/2745/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/polonia-warschau/startseite/verein/2745/saison_id/2025",
+    "sortitoutsi_team_id": 1300879,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1300879.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/2745.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 8936,
     "name": "Miedz Legnica",
     "slug": "miedz-legnica",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/miedz-legnica/startseite/verein/8936/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/miedz-legnica/startseite/verein/8936/saison_id/2025",
+    "sortitoutsi_team_id": 710017,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/710017.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/8936.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 759,
     "name": "Slask Wroclaw",
     "slug": "slask-wroclaw",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/slask-wroclaw/startseite/verein/759/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/slask-wroclaw/startseite/verein/759/saison_id/2025",
+    "sortitoutsi_team_id": 1300885,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1300885.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/759.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 9510,
     "name": "Stal Rzeszow",
     "slug": "stal-rzeszow",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/stal-rzeszow/startseite/verein/9510/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/stal-rzeszow/startseite/verein/9510/saison_id/2025",
+    "sortitoutsi_team_id": 130127,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/130127.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/9510.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 256,
     "name": "LKS Lodz",
     "slug": "lks-lodz",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/lks-lodz/startseite/verein/256/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/lks-lodz/startseite/verein/256/saison_id/2025",
+    "sortitoutsi_team_id": 1454,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1454.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/256.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 30998,
     "name": "Pogon Grodzisk Mazowiecki",
     "slug": "pogon-grodzisk-mazowiecki",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/pogon-grodzisk-mazowiecki/startseite/verein/30998/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/pogon-grodzisk-mazowiecki/startseite/verein/30998/saison_id/2025",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 318,
     "name": "Ruch Chorzow",
     "slug": "ruch-chorzow",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/ruch-chorzow/startseite/verein/318/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/ruch-chorzow/startseite/verein/318/saison_id/2025",
+    "sortitoutsi_team_id": 1462,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1462.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/318.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 8377,
     "name": "Chrobry Glogow",
     "slug": "chrobry-glogow",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/chrobry-glogow/startseite/verein/8377/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/chrobry-glogow/startseite/verein/8377/saison_id/2025",
+    "sortitoutsi_team_id": 717313,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/717313.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/8377.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 5699,
     "name": "Odra Opole",
     "slug": "odra-opole",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/odra-opole/startseite/verein/5699/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/odra-opole/startseite/verein/5699/saison_id/2025",
+    "sortitoutsi_team_id": 129567,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/129567.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/5699.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 7976,
     "name": "Polonia Bytom",
     "slug": "polonia-bytom",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/polonia-bytom/startseite/verein/7976/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/polonia-bytom/startseite/verein/7976/saison_id/2025",
+    "sortitoutsi_team_id": 129569,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/129569.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/7976.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 22431,
     "name": "Stal Mielec",
     "slug": "stal-mielec",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/stal-mielec/startseite/verein/22431/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/stal-mielec/startseite/verein/22431/saison_id/2025",
+    "sortitoutsi_team_id": 715911,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/715911.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/22431.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 1750,
     "name": "GKS Tychy",
     "slug": "gks-tychy",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/gks-tychy/startseite/verein/1750/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/gks-tychy/startseite/verein/1750/saison_id/2025",
+    "sortitoutsi_team_id": 54003060,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/54003060.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1750.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 28893,
     "name": "Puszcza Niepolomice",
     "slug": "puszcza-niepolomice",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/puszcza-niepolomice/startseite/verein/28893/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/puszcza-niepolomice/startseite/verein/28893/saison_id/2025",
+    "sortitoutsi_team_id": 96012813,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/96012813.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/28893.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 3291,
     "name": "Gornik Leczna",
     "slug": "gornik-leczna",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/gornik-leczna/startseite/verein/3291/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/gornik-leczna/startseite/verein/3291/saison_id/2025",
+    "sortitoutsi_team_id": 129565,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/129565.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/3291.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 4896,
     "name": "Pogon Siedlce",
     "slug": "pogon-siedlce",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/pogon-siedlce/startseite/verein/4896/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/pogon-siedlce/startseite/verein/4896/saison_id/2025",
+    "sortitoutsi_team_id": 96020194,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/96020194.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/4896.png",
+    "league_name": "1 Liga"
   },
   {
     "tm_club_id": 9109,
     "name": "Znicz Pruszkow",
     "slug": "znicz-pruszkow",
     "league_id": "PL2",
-    "club_url": "https://www.transfermarkt.com/znicz-pruszkow/startseite/verein/9109/saison_id/2025"
+    "club_url": "https://www.transfermarkt.com/znicz-pruszkow/startseite/verein/9109/saison_id/2025",
+    "sortitoutsi_team_id": 714240,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/714240.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/9109.png",
+    "league_name": "1 Liga"
   }
 ]

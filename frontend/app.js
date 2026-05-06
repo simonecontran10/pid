@@ -389,7 +389,7 @@ function clubLogo(c) {
 
 function competitionLogo(compCode) {
   if (!compCode) return null;
-  const known = { IT1: "png", IT2: "png", SDL: "png", CIT: "png", SCI: "png", "23AF": "png", ACLE: "svg", ACL2: "svg", ES1: "svg" };
+  const known = { IT1: "png", IT2: "png", IJ1: "png", PL1: "png", PL2: "png", SDL: "png", CIT: "png", SCI: "png", "23AF": "png", ACLE: "svg", ACL2: "svg", ES1: "svg" };
   // SA2P (Saudi Second Division League) → usa il logo curato SDL.png
   // ES1 → riusa il logo di ACL2
   const code = compCode === "ES1" ? "ACL2" : compCode === "SA2P" ? "SDL" : compCode;
@@ -429,9 +429,10 @@ function applyFilters() {
     });
   }
   if (league === "OTHER") {
-    // Mostra giocatori il cui club NON è in IT1/IT2 (include club OTHER + cid sconosciuti)
-    const mainClubIds = new Set(state.clubs.filter(c => c.league_id === "IT1" || c.league_id === "IT2").map(c => c.tm_club_id));
-    items = items.filter(p => !mainClubIds.has(p.current_club_id));
+    // Club senza league_id riconosciuta (fallback per dati legacy)
+    const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IJ1", "PL1", "PL2"]);
+    const knownClubIds = new Set(state.clubs.filter(c => KNOWN_LEAGUES.has(c.league_id)).map(c => c.tm_club_id));
+    items = items.filter(p => !knownClubIds.has(p.current_club_id));
   } else if (league) {
     // Filtra giocatori il cui current_club_id appartiene a un club della lega
     const leagueClubIds = new Set(state.clubs.filter(c => c.league_id === league).map(c => c.tm_club_id));
@@ -522,7 +523,11 @@ function renderClubs() {
 
   const it1 = sortClubs(state.clubs.filter(c => c.league_id === "IT1"));
   const it2 = sortClubs(state.clubs.filter(c => c.league_id === "IT2"));
-  const others = sortClubs(state.clubs.filter(c => c.league_id !== "IT1" && c.league_id !== "IT2"));
+  const ij1 = sortClubs(state.clubs.filter(c => c.league_id === "IJ1"));
+  const pl1 = sortClubs(state.clubs.filter(c => c.league_id === "PL1"));
+  const pl2 = sortClubs(state.clubs.filter(c => c.league_id === "PL2"));
+  const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IJ1", "PL1", "PL2"]);
+  const others = sortClubs(state.clubs.filter(c => !KNOWN_LEAGUES.has(c.league_id)));
 
   const renderClubCard = (c) => {
     const logo = clubLogo(c);
@@ -555,6 +560,8 @@ function renderClubs() {
   const it1Logo = _photoUrl("photos/competitions/IT1.png");
   const it2Logo = _photoUrl("photos/competitions/IT2.png");
   const ij1Logo = _photoUrl("photos/competitions/IJ1.png");
+  const pl1Logo = _photoUrl("photos/competitions/PL1.png");
+  const pl2Logo = _photoUrl("photos/competitions/PL2.png");
 
   // Toolbar di ordinamento
   const sortBar = `
@@ -568,9 +575,17 @@ function renderClubs() {
     </div>`;
 
   container.innerHTML = sortBar +
-    sectionHtml(t("league_it1"), it1Logo, it1, "rgba(111,224,168,0.08)") +
-    sectionHtml(t("league_it2"), it2Logo, it2, "rgba(251,146,60,0.08)") +
-    (others.length ? sectionHtml(t("league_other"), ij1Logo, others, "rgba(255,255,255,0.06)") : "");
+    (it1.length ? sectionHtml(t("league_it1"), it1Logo, it1, "rgba(111,224,168,0.08)") : "") +
+    (it2.length ? sectionHtml(t("league_it2"), it2Logo, it2, "rgba(251,146,60,0.08)") : "") +
+    (ij1.length ? sectionHtml(t("league_ij1"), ij1Logo, ij1, "rgba(192,132,252,0.08)") : "") +
+    (pl1.length ? sectionHtml(t("league_pl1"), pl1Logo, pl1, "rgba(239,68,68,0.08)") : "") +
+    (pl2.length ? sectionHtml(t("league_pl2"), pl2Logo, pl2, "rgba(96,165,250,0.08)") : "") +
+    (others.length ? sectionHtml(t("league_other"), null, others, "rgba(255,255,255,0.06)") : "");
+
+  // Aggiorna contatore "leghe" nella stats bar
+  const leaguesCount = [it1, it2, ij1, pl1, pl2].filter(arr => arr.length).length;
+  const statLeagues = document.getElementById("stat-leagues");
+  if (statLeagues) statLeagues.textContent = leaguesCount;
 
   document.getElementById("clubs-sort")?.addEventListener("change", e => {
     state.clubsSort = e.target.value;
@@ -643,6 +658,9 @@ function openPlayerModal(pid) {
     if (isNational) return "var(--comp-nat)";
     if (code === "IT1") return "var(--comp-seriea)";
     if (code === "IT2") return "var(--comp-serieb)";
+    if (code === "IJ1") return "var(--comp-ij1)";
+    if (code === "PL1") return "var(--comp-pl1)";
+    if (code === "PL2") return "var(--comp-pl2)";
     if (code === "ACLE" || code === "ACL2" || code === "ES1") return "var(--comp-acl)";
     if (code === "CIT" || code === "SCI") return "var(--comp-cup)";
     return "var(--text-3)";
@@ -1904,8 +1922,8 @@ function applyCallupFilters(players) {
     if (f.league) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isSaudi = (lg === "IT1" || lg === "IT2");
-      const match = (f.league === "OTHER") ? !isSaudi : (lg === f.league);
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const match = (f.league === "OTHER") ? !isKnownLeague : (lg === f.league);
       if (!match) return false;
     }
     if (f.minutesMin && _seasonMins(p.tm_player_id) < f.minutesMin) return false;
@@ -2034,7 +2052,9 @@ function renderCallupPanel() {
             <option value="">${t("filter_all_leagues")}</option>
             <option value="IT1" ${f.league==="IT1"?"selected":""}>${t("league_it1")}</option>
             <option value="IT2" ${f.league==="IT2"?"selected":""}>${t("league_it2")}</option>
-            <option value="OTHER" ${f.league==="OTHER"?"selected":""}>${t("league_other")}</option>
+            <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
+            <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
+            <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
           </select>
           <select id="callup-club" class="filter-select" style="font-size: 12px;">
             <option value="">${t("filter_all_clubs")}</option>
@@ -2807,8 +2827,8 @@ function renderGridsPanel() {
     if (fLeague) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isSaudi = (lg === "IT1" || lg === "IT2");
-      const match = (fLeague === "OTHER") ? !isSaudi : (lg === fLeague);
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const match = (fLeague === "OTHER") ? !isKnownLeague : (lg === fLeague);
       if (!match) return false;
     }
     const yr = parseInt(birthYear(p));
@@ -3031,7 +3051,9 @@ function renderGridsPanel() {
             <option value="">${t("filter_all_leagues")}</option>
             <option value="IT1" ${state.grids.filterLeague==="IT1"?"selected":""}>${t("league_short_it1")}</option>
             <option value="IT2" ${state.grids.filterLeague==="IT2"?"selected":""}>${t("league_short_it2")}</option>
-            <option value="OTHER" ${state.grids.filterLeague==="OTHER"?"selected":""}>${t("league_short_other")}</option>
+            <option value="IJ1" ${state.grids.filterLeague==="IJ1"?"selected":""}>${t("league_short_ij1")}</option>
+            <option value="PL1" ${state.grids.filterLeague==="PL1"?"selected":""}>${t("league_short_pl1")}</option>
+            <option value="PL2" ${state.grids.filterLeague==="PL2"?"selected":""}>${t("league_short_pl2")}</option>
           </select>
         </div>
         <div class="flex flex-wrap gap-1 mb-1.5">
@@ -3746,8 +3768,8 @@ function renderListPanel() {
     if (f.league) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isSaudi = (lg === "IT1" || lg === "IT2");
-      const match = (f.league === "OTHER") ? !isSaudi : (lg === f.league);
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const match = (f.league === "OTHER") ? !isKnownLeague : (lg === f.league);
       if (!match) return false;
     }
     const yr = parseInt(birthYear(p));
@@ -3875,7 +3897,9 @@ function renderListPanel() {
           <option value="">${t("filter_all_leagues")}</option>
           <option value="IT1" ${f.league==="IT1"?"selected":""}>${t("league_it1")}</option>
           <option value="IT2" ${f.league==="IT2"?"selected":""}>${t("league_it2")}</option>
-          <option value="OTHER" ${f.league==="OTHER"?"selected":""}>${t("league_other")}</option>
+          <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
+          <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
+          <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
         </select>
         <select id="list-club" class="filter-select" style="font-size: 12px;">
           <option value="">${t("filter_all_clubs")}</option>
@@ -4174,13 +4198,16 @@ function _saveMinutesSelection() {
 // Ritorna [{code, name, type:"club"|"national", apps, minutes}, ...] ordinato per minuti desc.
 // Mappatura codici TM → label leggibile e nome esteso (per tooltip/PDF)
 const COMP_LABEL = {
-  IT1: { short: "SPL",         full: "Saudi Pro League" },
-  IT2: { short: "FDL",         full: "Saudi First Division League" },
-  SA2P: { short: "SDL",         full: "Saudi Second Division League" },
-  ACLE: { short: "CHAMP",       full: "AFC Champions League Elite" },
-  ACL2: { short: "CHAMP 2",     full: "AFC Champions League 2" },
-  CIT: { short: "King's\nCup", full: "Saudi King's Cup" },
-  SCI: { short: "Supercup",    full: "Saudi Super Cup" },
+  IT1: { short: "SA",   full: "Serie A" },
+  IT2: { short: "SB",   full: "Serie B" },
+  IJ1: { short: "P1",   full: "Primavera 1" },
+  PL1: { short: "EKS",  full: "Ekstraklasa" },
+  PL2: { short: "1L",   full: "1 Liga (Polonia)" },
+  CIT: { short: "CIT",  full: "Coppa Italia" },
+  SCI: { short: "SCI",  full: "Supercoppa Italiana" },
+  ACLE: { short: "UCL", full: "UEFA Champions League" },
+  ACL2: { short: "UEL", full: "UEFA Europa League" },
+  ES1:  { short: "UECL", full: "UEFA Conference League" },
   // Codici noti (per tooltip; non hanno colonna dedicata, finiscono in ESTERO)
   BOS1: { short: "BOS1", full: "Bosnia Premijer Liga" },
   BIHP: { short: "BIHP", full: "Bosnia Kup BiH" },
@@ -4192,7 +4219,6 @@ const COMP_LABEL = {
   FR1:  { short: "FR1",  full: "France Ligue 1" },
   FR2:  { short: "FR2",  full: "France Ligue 2" },
   FRC:  { short: "FRC",  full: "Coupe de France" },
-  IT1:  { short: "IT1",  full: "Serie A" },
   EL:   { short: "EL",   full: "UEFA Europa League" },
   "23AF": { short: "U23 AC", full: "AFC U23 Asian Cup" },
   AL21: { short: "AL21", full: "Albania Kategoria Superiore U21" },
@@ -4206,11 +4232,11 @@ function _compName(code, fallback) {
   if (COMP_LABEL[code]?.full) return COMP_LABEL[code].full;
   return fallback || code;
 }
-// Codici club che hanno colonna dedicata (Saudi + AFC); tutto il resto va sotto "ESTERO"
-const KNOWN_CLUB_CODES = new Set(["IT1", "IT2", "ACLE", "ACL2", "CIT", "SCI"]);
+// Codici club che hanno colonna dedicata; tutto il resto va sotto "ESTERO"
+const KNOWN_CLUB_CODES = new Set(["IT1", "IT2", "IJ1", "PL1", "PL2", "ACLE", "ACL2", "CIT", "SCI"]);
 const FOREIGN_CODE = "ESTERO";
-// Ordine fisso colonne club: Serie A → Serie B → UCL → UEL → UECL → Coppa Italia → Supercoppa → Estero
-const CLUB_PRIORITY_ORDER = ["IT1", "IT2", "ACLE", "ACL2", "CIT", "SCI", FOREIGN_CODE];
+// Ordine fisso colonne club: Serie A → Serie B → Primavera → Ekstraklasa → 1 Liga → UCL → UEL → UECL → Coppa Italia → Supercoppa → Estero
+const CLUB_PRIORITY_ORDER = ["IT1", "IT2", "IJ1", "PL1", "PL2", "ACLE", "ACL2", "CIT", "SCI", FOREIGN_CODE];
 // Ordine team_category nazionali
 const NAT_CATEGORY_ORDER = ["A", "U23", "U22", "U21", "U20", "U19", "U18", "U17", "U16", "U15", "Olympic"];
 
@@ -4324,8 +4350,8 @@ function _applyMinutesFilters(players) {
     if (f.league) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isSaudi = (lg === "IT1" || lg === "IT2");
-      const match = (f.league === "OTHER") ? !isSaudi : (lg === f.league);
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const match = (f.league === "OTHER") ? !isKnownLeague : (lg === f.league);
       if (!match) return false;
     }
     if (f.q && !matchPlayer(p, f.q)) return false;
@@ -4635,7 +4661,9 @@ function renderMinutesPanel() {
           <option value="">${t("filter_all_leagues")}</option>
           <option value="IT1" ${f.league==="IT1"?"selected":""}>${t("league_it1")}</option>
           <option value="IT2" ${f.league==="IT2"?"selected":""}>${t("league_it2")}</option>
-          <option value="OTHER" ${f.league==="OTHER"?"selected":""}>${t("league_other")}</option>
+          <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
+          <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
+          <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
         </select>
 
         <select id="minutes-club" class="filter-select mb-1.5" style="font-size: 11px; padding: 4px 8px;">

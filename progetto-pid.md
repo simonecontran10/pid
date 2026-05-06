@@ -514,3 +514,161 @@ Aggiunti tramite `data/sots_overrides.xlsx`:
 - `data/pl1_clubs.json`, `data/pl2_clubs.json` (36 club polacchi)
 - `urls_pl.txt` (1058 URL polacchi - già committato accidentalmente, da decidere se mantenerlo)
 - `scraping_pl.log` (gitignored, log scraping)
+
+## 6 mag 2026 (notte) — DEPLOY VERCEL ONLINE 🎉
+
+### Pubblicazione completata
+- ✅ **Sito online**: `https://pid-7goy028x5-simone-contran-s-projects.vercel.app`
+- ✅ Repo GitHub pubblico: `https://github.com/simonecontran10/pid`
+- ✅ Bucket R2 `pid-data` con players_stats.json (122MB) accessibile via `https://pub-aa9d173290684b36a9f35e79d4d388c2.r2.dev/players_stats.json`
+- ✅ DB pubblicato: 2763 giocatori, 96 club, 5 leghe (IT1/IT2/IJ1/PL1/PL2)
+
+### Steps completati
+1. R2 setup: bucket creato, Public Development URL abilitato, CORS Policy applicata (`AllowedOrigins: *`, `AllowedMethods: GET/HEAD`)
+2. API Token R2: `Object Read & Write` su pid-data, salvato in `.env` LOCALE (gitignored)
+3. Script `upload_to_r2.py` creato (boto3 + python-dotenv) — upload completato in ~2 min
+4. Frontend modificato: aggiunto `R2_OVERRIDES` dict in `loadJSON()` per redirect di `players_stats` verso URL R2
+5. Git history pulita con orphan branch (`git checkout --orphan main-clean`):
+   - 1 solo commit `fb8e6e7` (era 4 con file pesante in cronologia)
+   - .git/ ridotto a 81MB
+   - players_stats.json escluso definitivamente da `.gitignore`
+6. Push GitHub: 4045 file, 59.73 MiB compressi, OK
+7. Vercel: importato repo `pid`, deploy automatico
+
+### Configurazione finale
+- `.env` (locale, gitignored): credenziali R2
+- `vercel.json`: rewrites `/` → `/frontend/index.html`, headers cache su `/data/*`
+- `.gitignore`: include venv/, *.log, __pycache__, *.saudi_backup, *.bak, scraping.pid, urls_test.txt, urls_remaining.txt, .env, data/players_stats.json, progetto_saudi_REFERENCE.md
+- `frontend/app.js`: `R2_OVERRIDES = {"players_stats": "https://pub-aa9d173290684b36a9f35e79d4d388c2.r2.dev/players_stats.json"}`
+
+### Account & risorse
+- Cloudflare: simonecontran10@gmail.com, account ID `b8d30d0c945985ca7928fd7cf5548f0d`
+- Vercel: progetto pid (team simone-contran-s-projects, plan Hobby)
+- GitHub: simonecontran10/pid (pubblico)
+
+### TODO sistemazione sito (post-deploy)
+1. **Frontend Polonia** (rimasto in sospeso):
+   - i18n.js: chiavi `league_pl1: "Ekstraklasa"`, `league_pl2: "1 Liga"` (IT + EN) + short
+   - app.js renderClubs(): sezioni Ekstraklasa + 1 Liga
+   - app.js filtri: option PL1, PL2 nei 3 dropdown
+   - Loghi competizione PL1.png e PL2.png da TM
+2. **Foto SortItOutSi polacchi**:
+   - Aggiornare COMPETITIONS in scrape_sortitoutsi_competition.py con URL Ekstraklasa+1 Liga
+   - Lanciare match SortItOutSi club polacchi
+   - find_more_sots_matches.py per foto FM polacchi (auto cattura)
+3. **Branding/UI**:
+   - Sottotitolo vuoto sotto logo (volutamente per multi-paese)
+   - Verifica colori sezioni: Serie A verde acceso, Serie B arancione, Polonia da definire
+   - Ottimizzare logo PID (1254×1254 → 256×256, 996KB → ~50KB)
+4. **Cleanup pendente**:
+   - Variabili interne `saudi_by_id`, `n_saudi`, `step_filter_saudi`, `is_saudi_eligible` → rinominare `target_*`
+   - `scraper/filter_saudi.py` (alias deprecato verso filter_target.py)
+   - Alias `_saudiNationalTeamName` in app.js
+   - Label `[SAUDI ✓]` nei log scraping (cosmetico)
+5. **Custom domain**:
+   - URL attuale: pid-7goy028x5-simone-contran-s-projects.vercel.app (lungo)
+   - Settings Vercel: rinominare progetto a `pid` per ottenere `pid.vercel.app`
+   - Eventualmente custom domain
+6. **Update workflow**:
+   - Quando aggiungo giocatori/foto in locale: `git add -A && git commit && git push` → redeploy automatico
+   - Per aggiornare players_stats.json su R2: `python3 upload_to_r2.py data/players_stats.json` (sovrascrive)
+
+### File chiave creati oggi
+- `.env` (gitignored, credenziali R2)
+- `upload_to_r2.py` (script reusable upload R2)
+- `frontend/app.js` modificato con R2_OVERRIDES
+
+## 6 mag 2026 (continuazione) — Frontend Polonia COMPLETATO + backfill loghi club
+
+### Bug emersi a sito online
+Aprendo il pannello "Club" sul deploy Vercel:
+1. **36 club polacchi mescolati nella sezione "Primavera 1"**, totale visibile 56 club. Causa: frontend aveva una sola sezione catch-all `OTHER` che raccoglieva tutto ciò che non era IT1/IT2 e la etichettava "Primavera 1" via `league_other` in i18n.
+2. **Loghi Primavera + Polonia spariti**: tutte le 56 card mostravano l'iniziale-lettera invece del logo.
+
+### Diagnosi loghi
+Ispezione di `data/clubs.json`:
+- IT1 (20) + IT2 (20): tutti con `sortitoutsi_team_id` + `sortitoutsi_logo_url` ✅
+- IJ1 (20): **nessun campo logo** (zero su tutti)
+- PL1 (18) + PL2 (18): **nessun campo logo**
+
+`clubLogo()` ritornava `null` → fallback iniziale-lettera. La nota del 6 mag "tutti i 20 club Primavera con logo" non era riflessa nel `clubs.json` pushato (modifica rimasta locale o sovrascritta dall'arricchimento Polonia).
+
+### Frontend: refactor 5 sezioni esplicite
+Eliminata la logica `OTHER` come "tutto il resto", sostituita da 5 leghe esplicite + fallback solo per league_id sconosciute.
+
+**`frontend/i18n.js`** (IT + EN):
+- Aggiunto `league_ij1`, `league_pl1: "Ekstraklasa"`, `league_pl2: "1 Liga"` + short
+- `league_other` ora è davvero "Altre squadre" / "Other clubs" (era erroneamente "Primavera 1")
+
+**`frontend/index.html`**:
+- 3 nuove CSS variables: `--comp-ij1: #C084FC` (viola tenue), `--comp-pl1: #EF4444` (rosso), `--comp-pl2: #60A5FA` (blu). Servono per le pillole-accent; le sezioni usano i loghi competizione, non sfondi colorati.
+- Dropdown `#filter-league`: rimossa option `OTHER`, aggiunte `IJ1`, `PL1`, `PL2` esplicite.
+- Counter "Leghe" stats bar: era hardcoded `2`, ora `id="stat-leagues"` popolato dinamicamente in `renderClubs()` → mostra `5`.
+
+**`frontend/app.js`** (8 modifiche):
+1. `competitionLogo()` mappa `known`: aggiunti PL1, PL2, IJ1
+2. `compColor()`: nuovi case per IJ1/PL1/PL2
+3. `renderClubs()`: 5 sezioni separate (`it1` → `it2` → `ij1` → `pl1` → `pl2`) + fallback `others` per league_id non riconosciute. Logo competizione caricato per ognuna.
+4. `applyFilters()`: la logica `OTHER` ora controlla `KNOWN_LEAGUES = {IT1,IT2,IJ1,PL1,PL2}` invece di solo IT1/IT2
+5. 4 occorrenze di `isSaudi = (lg === "IT1" || lg === "IT2")` rinominate in `isKnownLeague` ed estese alle 5 leghe (residuo legacy del refactoring B.1 saudita)
+6. 4 dropdown filtro lega (Home + Lista + Convocazione + Griglie + Minutaggi) aggiornati con IJ1/PL1/PL2
+7. `COMP_LABEL`: pulite le label saudite legacy (IT1: "SPL"/Saudi Pro League, IT2: "FDL"/Saudi First Division, SA2P, ACLE/ACL2 Saudi…), aggiunte mapping corrette IT1/IT2/IJ1/PL1/PL2
+8. `KNOWN_CLUB_CODES` e `CLUB_PRIORITY_ORDER`: estesi a IJ1/PL1/PL2
+
+Sintassi JS verificata con `node --check` ✅
+
+### Backfill loghi club: `backfill_club_logos.py`
+Script standalone (root del progetto) che arricchisce `clubs.json` con `sortitoutsi_team_id` + `sortitoutsi_logo_url` per i 56 club mancanti. Strategia duale:
+
+- **IJ1 (Primavera)**: SortItOutSi non ha squadre Primavera dedicate. Riusa il `sortitoutsi_team_id` del club di prima squadra in Serie A/B, matchato per nome normalizzato. Es. "Inter Milan Primavera" → "Inter Milan" → sots=1135.
+- **PL1 + PL2**: scrappa pagine competizione SortItOutSi FM26:
+  - PL1: `competition/129558/pko-bank-polski-ekstraklasa`
+  - PL2: `competition/129559/polish-first-division`
+  - Match per nome normalizzato (con mapping per lettere polacche `ł→l`, `Ł→L`)
+  - 4 alias manuali per club non presenti su pagina competizione: Wieczysta Krakow (id=2000028546), LKS Lodz (id=1454, slug `lodzki-klub-sportowy`), Polonia Warsaw (id=1300879)
+
+**Robustezza scraping**: SortItOutSi ritorna 403 alle requests Python da alcuni IP. Aggiunto fallback su `curl` come subprocess in `_fetch_via_curl()`. Headers HTTP completi (Sec-Fetch-*, Accept-Encoding, Cache-Control).
+
+**Download loghi**: per ogni match riuscito scarica `https://sortitoutsi.b-cdn.net/uploads/team/{sots_id}.png` in `data/photos/clubs_sots/{tm_club_id}.png`. Skip se già presente >200 bytes (anti-placeholder GIF 1×1, pattern visto il 6 mag pomeriggio).
+
+**Sincronizzazione file individuali**: oltre a `clubs.json`, lo script aggiorna anche `data/ij1_clubs.json`, `pl1_clubs.json`, `pl2_clubs.json` per consistenza.
+
+**Risultato run**:
+- IJ1: 20/20 ✅
+- PL1: 18/18 ✅
+- PL2: 17/18 (manca solo Pogoń Grodzisk Mazowiecki, non presente su SortItOutSi FM26 — promosso di recente)
+- **Totale: 55/56 club arricchiti, 95/96 con logo (98.9%)**
+
+Caso noto Pogoń Grodzisk: card mostra iniziale "P" come fallback. Quando SortItOutSi lo aggiungerà, basta inserire `"Pogon Grodzisk Mazowiecki": <id>` in `SOTS_MANUAL_OVERRIDES` e rilanciare lo script.
+
+### Loghi competizione PL1/PL2
+Scaricati da Transfermarkt (URL pattern `tmssl.akamaized.net/images/logo/header/<lower>.png`):
+- `data/photos/competitions/PL1.png` (PKO Bank Polski Ekstraklasa, 6.4 KB)
+- `data/photos/competitions/PL2.png` (Betclic 1 Liga, 16 KB)
+
+Entrambi 139×181 PNG RGBA, formato standard TM coerente con IT1/IT2/IJ1.png già presenti.
+
+### File modificati/creati oggi
+- `frontend/i18n.js` (chiavi PL/IJ + fix `league_other`)
+- `frontend/index.html` (CSS vars, dropdown, counter dinamico)
+- `frontend/app.js` (8 modifiche, refactor sezione club + filtri + mapping competizioni)
+- `backfill_club_logos.py` (nuovo, root)
+- `data/clubs.json` (55 record arricchiti con sots_*)
+- `data/ij1_clubs.json`, `pl1_clubs.json`, `pl2_clubs.json` (sync da clubs.json)
+- `data/photos/competitions/PL1.png`, `PL2.png` (nuovi)
+- `data/photos/clubs_sots/*.png` (55 nuovi: 20 IJ1 + 18 PL1 + 17 PL2)
+
+### TODO sistemazione sito (post fix Polonia)
+1. ⏳ Pogoń Grodzisk Mazowiecki: cercare logo manualmente o aspettare update SortItOutSi
+2. **Foto SortItOutSi giocatori polacchi** (rimasto in sospeso):
+   - `find_more_sots_matches.py` per matching automatico delle 1056 face polacche
+   - Apply matches confirmed → JSON aggiornati → push
+3. **Branding/UI**:
+   - Ottimizzare logo PID (1254×1254 → 256×256, 996KB → ~50KB)
+4. **Cleanup naming legacy** (residui refactoring B.1 saudita):
+   - Variabili `saudi_by_id`, `n_saudi`, `step_filter_saudi`, `is_saudi_eligible` → `target_*`
+   - `scraper/filter_saudi.py` (alias deprecato)
+   - Alias `_saudiNationalTeamName` in app.js
+   - Label `[SAUDI ✓]` nei log scraping
+5. **Custom domain**: rinominare progetto Vercel → `pid.vercel.app`
+6. **Update workflow** invariato: `git add -A && git commit && git push` → Vercel redeploy auto. R2 solo se cambia `players_stats.json`.
