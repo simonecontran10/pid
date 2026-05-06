@@ -1,0 +1,71 @@
+{
+  "app_name": "Player Intelligence Database",
+  "app_short": "PID",
+  "tagline": "Serie A · Serie B · Primavera",
+  "country_focus": "Italy",
+  "country_iso": "IT",
+  "country_label_en": "Italy",
+  "country_label_native": "Italia",
+  "default_lang": "it",
+  "supported_langs": [
+    "it",
+    "en"
+  ],
+  "competitions": {
+    "primary": {
+      "code": "IT1",
+      "name": "Serie A",
+      "tier": 1
+    },
+    "secondary": {
+      "code": "IT2",
+      "name": "Serie B",
+      "tier": 2
+    },
+    "cup": {
+      "code": "CIT",
+      "name": "Coppa Italia",
+      "tier": 1
+    },
+    "supercup": {
+      "code": "SCI",
+      "name": "Supercoppa Italiana",
+      "tier": 1
+    },
+    "youth": {
+      "code": "IJ1",
+      "name": "Primavera 1",
+      "tier": 1
+    }
+  },
+  "international_competitions": [
+    {
+      "code": "UCL",
+      "name": "UEFA Champions League"
+    },
+    {
+      "code": "UEL",
+      "name": "UEFA Europa League"
+    },
+    {
+      "code": "UECL",
+      "name": "UEFA Conference League"
+    }
+  ],
+  "national_team_categories": [
+    "U17",
+    "U18",
+    "U19",
+    "U20",
+    "U21",
+    "U23",
+    "NT"
+  ],
+  "formations_default": "4-3-3",
+  "branding": {
+    "logo_path": "data/photos/branding/figc.png",
+    "primary_color": "#0066CC",
+    "accent_color": "#FFFFFF",
+    "header_subtitle": "Serie A · Serie B · Primavera"
+  }
+}

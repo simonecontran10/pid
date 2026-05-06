@@ -1,0 +1,128 @@
+[
+  {
+    "tm_club_id": 238,
+    "name": "Lech Poznan",
+    "slug": "lech-posen",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/lech-posen/startseite/verein/238/saison_id/2025"
+  },
+  {
+    "tm_club_id": 9644,
+    "name": "Raków Częstochowa",
+    "slug": "rakow-czestochowa",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/rakow-czestochowa/startseite/verein/9644/saison_id/2025"
+  },
+  {
+    "tm_club_id": 88,
+    "name": "Widzew Lodz",
+    "slug": "widzew-lodz",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/widzew-lodz/startseite/verein/88/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2300,
+    "name": "Jagiellonia Bialystok",
+    "slug": "jagiellonia-bialystok",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/jagiellonia-bialystok/startseite/verein/2300/saison_id/2025"
+  },
+  {
+    "tm_club_id": 4000,
+    "name": "Lechia Gdansk",
+    "slug": "lechia-gdansk",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/lechia-gdansk/startseite/verein/4000/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5689,
+    "name": "Cracovia",
+    "slug": "cracovia",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/cracovia/startseite/verein/5689/saison_id/2025"
+  },
+  {
+    "tm_club_id": 255,
+    "name": "Legia Warszawa",
+    "slug": "legia-warschau",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/legia-warschau/startseite/verein/255/saison_id/2025"
+  },
+  {
+    "tm_club_id": 428,
+    "name": "Górnik Zabrze",
+    "slug": "gornik-zabrze",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/gornik-zabrze/startseite/verein/428/saison_id/2025"
+  },
+  {
+    "tm_club_id": 324,
+    "name": "Pogon Szczecin",
+    "slug": "pogon-stettin",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/pogon-stettin/startseite/verein/324/saison_id/2025"
+  },
+  {
+    "tm_club_id": 168,
+    "name": "Zaglebie Lubin",
+    "slug": "zaglebie-lubin",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/zaglebie-lubin/startseite/verein/168/saison_id/2025"
+  },
+  {
+    "tm_club_id": 3527,
+    "name": "Motor Lublin",
+    "slug": "motor-lublin",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/motor-lublin/startseite/verein/3527/saison_id/2025"
+  },
+  {
+    "tm_club_id": 6110,
+    "name": "Korona Kielce",
+    "slug": "korona-kielce",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/korona-kielce/startseite/verein/6110/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2118,
+    "name": "Wisla Plock",
+    "slug": "wisla-plock",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/wisla-plock/startseite/verein/2118/saison_id/2025"
+  },
+  {
+    "tm_club_id": 7154,
+    "name": "Radomiak Radom",
+    "slug": "radomiak-radom",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/radomiak-radom/startseite/verein/7154/saison_id/2025"
+  },
+  {
+    "tm_club_id": 6112,
+    "name": "Piast Gliwice",
+    "slug": "piast-gliwice",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/piast-gliwice/startseite/verein/6112/saison_id/2025"
+  },
+  {
+    "tm_club_id": 6456,
+    "name": "GKS Katowice",
+    "slug": "gks-katowice",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/gks-katowice/startseite/verein/6456/saison_id/2025"
+  },
+  {
+    "tm_club_id": 6107,
+    "name": "Arka Gdynia",
+    "slug": "arka-gdynia",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/arka-gdynia/startseite/verein/6107/saison_id/2025"
+  },
+  {
+    "tm_club_id": 15906,
+    "name": "Bruk-Bet Termalica Nieciecza",
+    "slug": "bruk-bet-termalica-nieciecza",
+    "league_id": "PL1",
+    "club_url": "https://www.transfermarkt.com/bruk-bet-termalica-nieciecza/startseite/verein/15906/saison_id/2025"
+  }
+]

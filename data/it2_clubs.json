@@ -1,0 +1,142 @@
+[
+  {
+    "tm_club_id": 607,
+    "name": "Venezia FC",
+    "slug": "venezia-fc",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/venezia-fc/startseite/verein/607/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2919,
+    "name": "AC Monza",
+    "slug": "ac-monza",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/ac-monza/startseite/verein/2919/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1038,
+    "name": "UC Sampdoria",
+    "slug": "sampdoria-genua",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/sampdoria-genua/startseite/verein/1038/saison_id/2025"
+  },
+  {
+    "tm_club_id": 8970,
+    "name": "Frosinone Calcio",
+    "slug": "frosinone-calcio",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/frosinone-calcio/startseite/verein/8970/saison_id/2025"
+  },
+  {
+    "tm_club_id": 458,
+    "name": "Palermo FC",
+    "slug": "palermo-fc",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/palermo-fc/startseite/verein/458/saison_id/2025"
+  },
+  {
+    "tm_club_id": 4097,
+    "name": "US Catanzaro",
+    "slug": "us-catanzaro",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/us-catanzaro/startseite/verein/4097/saison_id/2025"
+  },
+  {
+    "tm_club_id": 3522,
+    "name": "Spezia Calcio",
+    "slug": "spezia-calcio",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/spezia-calcio/startseite/verein/3522/saison_id/2025"
+  },
+  {
+    "tm_club_id": 749,
+    "name": "FC Empoli",
+    "slug": "fc-empoli",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/fc-empoli/startseite/verein/749/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1385,
+    "name": "Modena FC",
+    "slug": "modena-fc-2018",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/modena-fc-2018/startseite/verein/1385/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1429,
+    "name": "Cesena FC",
+    "slug": "cesena-fc",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/cesena-fc/startseite/verein/1429/saison_id/2025"
+  },
+  {
+    "tm_club_id": 332,
+    "name": "SSC Bari",
+    "slug": "ssc-bari",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/ssc-bari/startseite/verein/332/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2581,
+    "name": "Mantova 1911",
+    "slug": "mantova-1911",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/mantova-1911/startseite/verein/2581/saison_id/2025"
+  },
+  {
+    "tm_club_id": 4159,
+    "name": "Carrarese Calcio 1908",
+    "slug": "carrarese-calcio-1908",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/carrarese-calcio-1908/startseite/verein/4159/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5587,
+    "name": "SS Juve Stabia",
+    "slug": "ss-juve-stabia",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/ss-juve-stabia/startseite/verein/5587/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2331,
+    "name": "US Avellino 1912",
+    "slug": "us-avellino-1912",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/us-avellino-1912/startseite/verein/2331/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2921,
+    "name": "Delfino Pescara 1936",
+    "slug": "delfino-pescara-1936",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/delfino-pescara-1936/startseite/verein/2921/saison_id/2025"
+  },
+  {
+    "tm_club_id": 4554,
+    "name": "FC Südtirol",
+    "slug": "fc-sudtirol",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/fc-sudtirol/startseite/verein/4554/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5621,
+    "name": "AC Reggiana 1919",
+    "slug": "ac-reggiana-1919",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/ac-reggiana-1919/startseite/verein/5621/saison_id/2025"
+  },
+  {
+    "tm_club_id": 3037,
+    "name": "Calcio Padova",
+    "slug": "calcio-padova",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/calcio-padova/startseite/verein/3037/saison_id/2025"
+  },
+  {
+    "tm_club_id": 20519,
+    "name": "Virtus Entella",
+    "slug": "virtus-entella",
+    "league_id": "IT2",
+    "club_url": "https://www.transfermarkt.com/virtus-entella/startseite/verein/20519/saison_id/2025"
+  }
+]

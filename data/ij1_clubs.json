@@ -1,0 +1,142 @@
+[
+  {
+    "tm_club_id": 8505,
+    "name": "Fiorentina Primavera",
+    "slug": "ac-florenz-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/ac-florenz-u19/startseite/verein/8505/saison_id/2025"
+  },
+  {
+    "tm_club_id": 11676,
+    "name": "Cagliari Primavera",
+    "slug": "cagliari-calcio-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/cagliari-calcio-u19/startseite/verein/11676/saison_id/2025"
+  },
+  {
+    "tm_club_id": 12130,
+    "name": "Torino Primavera",
+    "slug": "fc-turin-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/fc-turin-u19/startseite/verein/12130/saison_id/2025"
+  },
+  {
+    "tm_club_id": 8517,
+    "name": "Genoa U20",
+    "slug": "genua-cfc-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/genua-cfc-u19/startseite/verein/8517/saison_id/2025"
+  },
+  {
+    "tm_club_id": 12816,
+    "name": "Lazio U20",
+    "slug": "lazio-rom-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/lazio-rom-u19/startseite/verein/12816/saison_id/2025"
+  },
+  {
+    "tm_club_id": 11997,
+    "name": "Roma U20",
+    "slug": "as-rom-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/as-rom-u19/startseite/verein/11997/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5380,
+    "name": "Inter Milan Primavera",
+    "slug": "inter-mailand-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/inter-mailand-u19/startseite/verein/5380/saison_id/2025"
+  },
+  {
+    "tm_club_id": 10958,
+    "name": "AC Milan Primavera",
+    "slug": "ac-mailand-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/ac-mailand-u19/startseite/verein/10958/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5243,
+    "name": "Parma Primavera",
+    "slug": "parma-calcio-1913-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/parma-calcio-1913-u19/startseite/verein/5243/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5618,
+    "name": "Lecce Primavera",
+    "slug": "us-lecce-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/us-lecce-u19/startseite/verein/5618/saison_id/2025"
+  },
+  {
+    "tm_club_id": 17664,
+    "name": "Frosinone Primavera",
+    "slug": "frosinone-calcio-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/frosinone-calcio-u19/startseite/verein/17664/saison_id/2025"
+  },
+  {
+    "tm_club_id": 16996,
+    "name": "Hellas Verona Primavera",
+    "slug": "hellas-verona-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/hellas-verona-u19/startseite/verein/16996/saison_id/2025"
+  },
+  {
+    "tm_club_id": 11008,
+    "name": "Juventus Primavera",
+    "slug": "juventus-turin-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/juventus-turin-u19/startseite/verein/11008/saison_id/2025"
+  },
+  {
+    "tm_club_id": 14848,
+    "name": "Bologna Primavera",
+    "slug": "fc-bologna-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/fc-bologna-u19/startseite/verein/14848/saison_id/2025"
+  },
+  {
+    "tm_club_id": 11998,
+    "name": "Atalanta Primavera",
+    "slug": "atalanta-bergamo-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/atalanta-bergamo-u19/startseite/verein/11998/saison_id/2025"
+  },
+  {
+    "tm_club_id": 19114,
+    "name": "Sassuolo Primavera",
+    "slug": "us-sassuolo-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/us-sassuolo-u19/startseite/verein/19114/saison_id/2025"
+  },
+  {
+    "tm_club_id": 20106,
+    "name": "Cesena Primavera",
+    "slug": "cesena-fc-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/cesena-fc-u19/startseite/verein/20106/saison_id/2025"
+  },
+  {
+    "tm_club_id": 17198,
+    "name": "Cremonese Primavera",
+    "slug": "us-cremonese-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/us-cremonese-u19/startseite/verein/17198/saison_id/2025"
+  },
+  {
+    "tm_club_id": 12819,
+    "name": "Napoli Primavera",
+    "slug": "ssc-neapel-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/ssc-neapel-u19/startseite/verein/12819/saison_id/2025"
+  },
+  {
+    "tm_club_id": 84400,
+    "name": "Monza Primavera",
+    "slug": "ac-monza-u19",
+    "league_id": "IJ1",
+    "club_url": "https://www.transfermarkt.com/ac-monza-u19/startseite/verein/84400/saison_id/2025"
+  }
+]

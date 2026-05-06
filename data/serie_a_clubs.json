@@ -1,0 +1,122 @@
+[
+  {
+    "tm_club_id": 46,
+    "name": "Inter Milan",
+    "slug": "inter-mailand",
+    "club_url": "https://www.transfermarkt.com/inter-mailand/startseite/verein/46/saison_id/2025"
+  },
+  {
+    "tm_club_id": 506,
+    "name": "Juventus FC",
+    "slug": "juventus-turin",
+    "club_url": "https://www.transfermarkt.com/juventus-turin/startseite/verein/506/saison_id/2025"
+  },
+  {
+    "tm_club_id": 5,
+    "name": "AC Milan",
+    "slug": "ac-mailand",
+    "club_url": "https://www.transfermarkt.com/ac-mailand/startseite/verein/5/saison_id/2025"
+  },
+  {
+    "tm_club_id": 12,
+    "name": "AS Roma",
+    "slug": "as-rom",
+    "club_url": "https://www.transfermarkt.com/as-rom/startseite/verein/12/saison_id/2025"
+  },
+  {
+    "tm_club_id": 6195,
+    "name": "SSC Napoli",
+    "slug": "ssc-neapel",
+    "club_url": "https://www.transfermarkt.com/ssc-neapel/startseite/verein/6195/saison_id/2025"
+  },
+  {
+    "tm_club_id": 800,
+    "name": "Atalanta BC",
+    "slug": "atalanta-bergamo",
+    "club_url": "https://www.transfermarkt.com/atalanta-bergamo/startseite/verein/800/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1047,
+    "name": "Como 1907",
+    "slug": "como-1907",
+    "club_url": "https://www.transfermarkt.com/como-1907/startseite/verein/1047/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1025,
+    "name": "Bologna FC 1909",
+    "slug": "fc-bologna",
+    "club_url": "https://www.transfermarkt.com/fc-bologna/startseite/verein/1025/saison_id/2025"
+  },
+  {
+    "tm_club_id": 430,
+    "name": "ACF Fiorentina",
+    "slug": "ac-florenz",
+    "club_url": "https://www.transfermarkt.com/ac-florenz/startseite/verein/430/saison_id/2025"
+  },
+  {
+    "tm_club_id": 398,
+    "name": "SS Lazio",
+    "slug": "lazio-rom",
+    "club_url": "https://www.transfermarkt.com/lazio-rom/startseite/verein/398/saison_id/2025"
+  },
+  {
+    "tm_club_id": 6574,
+    "name": "US Sassuolo",
+    "slug": "us-sassuolo",
+    "club_url": "https://www.transfermarkt.com/us-sassuolo/startseite/verein/6574/saison_id/2025"
+  },
+  {
+    "tm_club_id": 130,
+    "name": "Parma Calcio 1913",
+    "slug": "parma-calcio-1913",
+    "club_url": "https://www.transfermarkt.com/parma-calcio-1913/startseite/verein/130/saison_id/2025"
+  },
+  {
+    "tm_club_id": 410,
+    "name": "Udinese Calcio",
+    "slug": "udinese-calcio",
+    "club_url": "https://www.transfermarkt.com/udinese-calcio/startseite/verein/410/saison_id/2025"
+  },
+  {
+    "tm_club_id": 252,
+    "name": "Genoa CFC",
+    "slug": "genua-cfc",
+    "club_url": "https://www.transfermarkt.com/genua-cfc/startseite/verein/252/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1390,
+    "name": "Cagliari Calcio",
+    "slug": "cagliari-calcio",
+    "club_url": "https://www.transfermarkt.com/cagliari-calcio/startseite/verein/1390/saison_id/2025"
+  },
+  {
+    "tm_club_id": 416,
+    "name": "Torino FC",
+    "slug": "fc-turin",
+    "club_url": "https://www.transfermarkt.com/fc-turin/startseite/verein/416/saison_id/2025"
+  },
+  {
+    "tm_club_id": 4172,
+    "name": "Pisa Sporting Club",
+    "slug": "ac-pisa-1909",
+    "club_url": "https://www.transfermarkt.com/ac-pisa-1909/startseite/verein/4172/saison_id/2025"
+  },
+  {
+    "tm_club_id": 276,
+    "name": "Hellas Verona",
+    "slug": "hellas-verona",
+    "club_url": "https://www.transfermarkt.com/hellas-verona/startseite/verein/276/saison_id/2025"
+  },
+  {
+    "tm_club_id": 1005,
+    "name": "US Lecce",
+    "slug": "us-lecce",
+    "club_url": "https://www.transfermarkt.com/us-lecce/startseite/verein/1005/saison_id/2025"
+  },
+  {
+    "tm_club_id": 2239,
+    "name": "US Cremonese",
+    "slug": "us-cremonese",
+    "club_url": "https://www.transfermarkt.com/us-cremonese/startseite/verein/2239/saison_id/2025"
+  }
+]

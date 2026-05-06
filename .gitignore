@@ -1,0 +1,68 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.deps_*
+api/.deps_installed
+
+# Logs
+logs/
+*.log
+scheduler/launchd.*.log
+scheduler/last_run.log
+
+# Runtime / PID files (anche duplicati macOS con spazio: ".backend 2.pid")
+.backend*.pid
+.frontend*.pid
+
+# Debug archives
+_archive/
+BUG_REPORT.md
+debug_*.py
+analyze_*.py
+simulate_*.py
+final_bug_*.py
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local env / secrets
+.env
+.env.local
+
+# Temporary
+/tmp/
+*.tmp
+
+# Photos lookup (12MB, fallback automatico, optional)
+# Decommenta se i deploy Vercel diventano troppo pesanti:
+# data/photos/players_sots_lookup/
+# data/photos/players_tm/
+
+# Backup migrazione fork
+*.saudi_backup
+
+# Generic PID files
+scraping.pid
+*.pid
+
+# Working/testing URLs (non finali)
+urls_test.txt
+urls_remaining.txt
+
+# Diario progetto saudita (storico, non rilevante per PID)
+progetto_saudi_REFERENCE.md
+# Backup vari
+*.bak
+
+# File >100MB (limite GitHub) — ricreabile localmente con run_stats.py
+data/players_stats.json
+data/players_stats.json

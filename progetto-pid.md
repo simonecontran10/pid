@@ -1,0 +1,516 @@
+# Player Intelligence Database (PID) — Diario tecnico
+
+App di scouting/analisi giocatori. Fork di "Saudi Players Hub" (`~/Desktop/tm_project`) adattato per:
+- **Focus iniziale**: Italia (Serie A + Serie B + Primavera 1)
+- **Architettura predisposta** per altri paesi via `data/config.json`
+- **Slug Vercel previsto**: `pid` → `pid.vercel.app`
+
+Lavoriamo in `~/Desktop/pid/`. Niente `.git` ancora — verrà inizializzato a refactoring stabile.
+
+## Decisioni architetturali confermate
+- Fork separato (non multi-DB)
+- Tutti i giocatori di Serie A con le loro nazionali (28+ nazionalità)
+- Architettura parametrica via `data/config.json`
+- Default lingua: italiano
+
+## Stato setup
+- Clonato `tm_project` → `pid`, rimosso `.git` saudita
+- Pulizia: dati saudita, foto giocatori/club saudita, script saudita-specifici, temporanei
+- Conservato: scraper core, frontend, API, scheduler, foto `competitions/` e `national/`
+- Creato `data/config.json` con: app_name, country_focus=Italy, competizioni IT (IT1/IT2/CIT/SCI/PRIM), international (UCL/UEL/UECL), national_team_categories
+- `progetto.md` saudita rinominato in `progetto_saudi_REFERENCE.md`
+
+## Refactoring app.js — punti hardcoded mappati
+~50 punti su 5 file. Suddivisi in:
+- **Blocco A** (~20 punti, sostituzioni dirette): localStorage keys, nomi file JSON, title HTML, logo, stringhe i18n
+- **Blocco B** (~15 punti, mapping competizioni): SA1→IT1, SA2L→IT2, SAKC→CIT, SASS→SCI, SAU21→PRIM
+- **Blocco C** (~15 punti, business logic): saudis_desc/asc filtri, modulo U21→Primavera, is_saudi_eligible, mappe team_category nazionali
+
+## Log incrementale step
+- ✅ **A.1** — Rinomina chiavi localStorage e nomi file dati in `app.js`:
+  - `"saudi_player_notes"` → `"pid_player_notes"`
+  - `"saudi_callup_active"` → `"pid_callup_active"`
+  - `"saudi_grids_v1"` → `"pid_grids_v1"`
+  - `"saudi_callup_lists"` → `"pid_callup_lists"`
+  - `loadJSON("players_saudi")` → `loadJSON("players_main")`
+  - destructuring var `saudi` → `main`
+
+## Pendenze
+**Sera 1 (in corso)**:
+- A.2 — header HTML title/icon/logo
+- A.3 — i18n.js title e league labels
+- A.4 — variabili stringa "Saudi Players Hub" sparse
+- B — mapping codici competizione (SA1→IT1, ecc.) + colori CSS
+- C — business logic (filtri "saudis_desc", U21 module, is_saudi_eligible, team_categories)
+
+**Sera 2**: dati Italia
+- `data/clubs.json` (60 club: 20 A + 20 B + 20 Primavera)
+- Lista URL Transfermarkt squadre
+- `add_players.py` × 3 round → ~1300 giocatori
+- `run_stats.py --refresh` (notte, caffeinate)
+- enrich + download foto
+
+**Sera 3+**: branding (logo, palette), deploy Vercel pid.vercel.app
+
+## Architettura riusabile (gratis dal saudita)
+Tutto il frontend `app.js` (303KB) include già: scheda giocatore con Career by competition, Minutaggio, Convocazione, Compare, Griglie con drag&drop completo (lista→slot, slot→slot, drop preview), 5 formazioni, Note, Export PDF, multi-lingua, cloud sync, filtri avanzati, U21 cross-section.
+- ✅ **A.2** — `index.html` aggiornato:
+  - `<title>` → "Player Intelligence Database"
+  - icon/apple-touch/shortcut icon → `data/photos/branding/logo.png` (placeholder, da creare in sera 3)
+  - H1 grande splash + H1 piccolo header → "Player Intelligence Database"
+  - alt img → "PID"
+  - dropdown lega: `<option value="SA1">Saudi Pro League</option>` → `<option value="IT1">Serie A</option>`, idem SA2L → IT2 / Serie B
+  - Creata cartella `data/photos/branding/`
+- ✅ **A.3** — `i18n.js` aggiornato:
+  - `title: "Saudi Players Hub"` → `"Player Intelligence Database"` in tutte le 4 lingue (IT/EN/AR/FR) — il nome prodotto non si traduce
+  - `league_sa1: "Saudi Pro League"` → `"Serie A"` in tutte le lingue
+  - `league_sa2: "Saudi First Division"` → `"Serie B"` in tutte le lingue
+  - 0 residui "Saudi"/"SAFF" in `i18n.js` (verificato con grep)
+  - Le chiavi `league_sa1`/`league_sa2` restano per ora; rinomina in `league_it1`/`league_it2` rimandata al blocco B
+- ✅ **A.4** — `app.js` aggiornato:
+  - Commento header riga 2: "Saudi Players Hub" → "Player Intelligence Database (PID)"
+  - Path logo nazionale fallback: `photos/national/saudi_arabia.png` → `photos/branding/logo.png`
+- ✅ **A.5** — Filtri "saudis_desc/asc" rinominati in modo agnostico:
+  - `"saudis_desc"` → `"by_count_desc"`, `"saudis_asc"` → `"by_count_asc"` (la logica già contava giocatori per club, il nome era fuorviante)
+  - Label IT: "Più sauditi" → "Più giocatori", "Meno sauditi" → "Meno giocatori"
+  - Label EN: "Most saudis" → "Most players", "Fewest saudis" → "Fewest players"
+- ⏸️ **A residue rimandate al blocco C** (~46 righe):
+  - Modulo U21 saudita ("Saudi U21 Elite League") → diventerà modulo Primavera nel blocco C
+  - Funzione `_saudiNationalTeamName()` → ridisegnare per usare la nazionalità reale del giocatore (Italia/Belgio/Brasile/...) invece di assumere una nazionale fissa
+  - 2 commenti residui ("SA2P", "SAUP" → SA1") sono mappature legacy interne — non urgenti
+- ✅ **B.1** — `app.js` mapping codici competizione (saudita → italiano):
+  - Stringhe quoted: `"SA1"`→`"IT1"`, `"SA2L"`→`"IT2"`, `"SAKC"`→`"CIT"`, `"SASS"`→`"SCI"`
+  - Chiavi oggetto: `SA1:`→`IT1:`, `SA2L:`→`IT2:`, `SAKC:`→`CIT:`, `SASS:`→`SCI:`
+  - Path foto competizioni: `SA1.png`→`IT1.png`, ecc.
+  - Variabili JS: `const sa1Logo`→`const it1Logo`, `const sa2l`→`const it2`, `saClubIds`→`mainClubIds`
+  - CSS variables: `var(--comp-spl)`→`var(--comp-seriea)`, `var(--comp-super)`→`var(--comp-serieb)`
+  - Commenti aggiornati ("SA1/SA2L"→"IT1/IT2")
+  - 0 residui SA1/SA2L/SAKC/SASS in `app.js` (verificato con grep `\b...\b`)
+  - **NB**: SAU21 e SAUP volutamente NON toccati (verranno gestiti nel blocco C col modulo Primavera)
+- ✅ **B.2** — `index.html` CSS variables rinominate:
+  - `--comp-spl: #6FE0A8` → `--comp-seriea: #6FE0A8` (verde, ex Saudi Pro League → Serie A)
+  - `--comp-super: #FB923C` → `--comp-serieb: #FB923C` (arancione, ex Saudi Second → Serie B)
+  - Colori conservati identici al saudita; palette palette ufficiale Serie A da rivedere in sera 3 (branding)
+  - 0 residui `comp-spl`/`comp-super` in `index.html`
+- ✅ **B.3** — Chiavi i18n competizioni rinominate + aggiunta Primavera:
+  - `league_sa1` → `league_it1` in tutti e 4 i dizionari (en/ar/it/fr)
+  - `league_sa2` → `league_it2` in tutti e 4 i dizionari
+  - Valori arabi residui sostituiti con IT: `"دوري روشن السعودي"` → `"Serie A"`, `"دوري الدرجة الأولى"` → `"Serie B"`, `"أندية أخرى"` → `"Altri club"`
+  - **Aggiunta nuova chiave `league_it3: "Primavera 1"`** in tutti i 4 dizionari
+  - 7 riferimenti `t("league_sa1/sa2")` aggiornati in `app.js`
+  - 0 residui `league_sa1`/`league_sa2` in `frontend/`
+  - **Nota**: alcune traduzioni nei dizionari AR/FR sono ancora miste IT/EN — verranno ripulite nel blocco C insieme alla decisione su quali lingue mantenere (PID userà solo IT/EN)
+- ✅ **B.4** — Default filter `league: "SA1"` → `league: "IT1"`: già coperto da B.1 (sostituzione `"SA1"` → `"IT1"` aveva preso anche questo punto). 0 residui.
+- ✅ **B.5** — Chiavi `league_short_*` rinominate + Primavera aggiunta:
+  - `league_short_spl: "SPL"` → `league_short_it1: "SA"` (4 lingue)
+  - `league_short_sa2l: "SA2L"` → `league_short_it2: "SB"` (4 lingue)
+  - **Aggiunta `league_short_it3: "P1"` (Primavera 1)** in tutti i 4 dizionari
+  - 3 riferimenti aggiornati in `app.js` (riga 3036-3038, dropdown filtro lega Griglie)
+- ✅ **Blocco B chiuso**: 0 residui codici stabili (`SA1/SA2L/SAKC/SASS`, `comp-spl/super`, `league_sa1/sa2`, `league_short_spl/sa2l`) in tutto `frontend/`.
+
+## Blocco C — Business logic (in corso)
+
+- ✅ **C.1** — Rimozione modulo U21 saudita da `app.js`:
+  - `_u21MatchesNormalized(pid)` neutralizzata: ora ritorna `[]` (1658 chars → 185 chars). Codice di accesso al `state.u21MatchesByTmid` lasciato in piedi per compatibilità ma riceve sempre Map vuota.
+  - `loadJSON("u21_matches_by_tmid")` rimosso dal `Promise.all` di bootstrap
+  - Variabile `u21` rimossa dalla destrutturazione (era undefined → ReferenceError)
+  - Blocco di popolamento `state.u21MatchesByTmid = new Map(); if (u21) {...}` semplificato a sola Map vuota
+  - Mappa loghi competizioni (`const known = {...}`): rimosso `SAU21: "png"`
+  - Rimosso blocco append riga SAU21 in renderClubBlocks (~10 righe)
+  - Rimosso blocco merge SAU21 all-time in career-by-competition (~9 righe)
+  - Rimosso blocco append U21 in altra sezione career
+  - Rimosso `COMP_LABEL.SAU21`, voce in `KNOWN_CLUB_CODES`, voce in `CLUB_PRIORITY_ORDER`
+  - Rimossi 2 mapping legacy `SAUP → IT1` (Saudi Pro League Playoff)
+  - Aggiornato commento ordine colonne club: ora "Serie A → Serie B → UCL → UEL → UECL → Coppa Italia → Supercoppa → Estero"
+  - **0 residui SAU21/SAUP** in `app.js`
+  - Decisione: niente Excel U21/Primavera per PID. Quando in futuro servirà un modulo Primavera 1, ricostruire `_u21MatchesNormalized` come funzione attiva e aggiungere `loadJSON("primavera_matches")` al bootstrap.
+- ✅ **C.2** — Rimosso `build_u21_player_matches.py` (~20KB). Dati U21 (`u21_matches_by_tmid.json`, `u21_player_matches.json`, `u21_player_matches.csv`, `sofascore_u21_calendar.json`) erano già stati rimossi nella pulizia iniziale di sera 1.
+  - Script Python core rimasti (tutti riusabili): `_bootstrap.py`, `add_players.py`, `download_photos.py`, `enrich_sortitoutsi.py`, `run_static.py`, `run_stats.py`, `run_update.py`
+- ✅ **C.3** — Pulizia `i18n.js` (820 → 440 righe, -46%):
+  - Rimossa intera sezione AR (riga 199-388, ~190 righe) — non più supportata in PID
+  - Rimossa intera sezione FR (riga 581-769, ~190 righe) — non più supportata in PID
+  - `SUPPORTED_LANGS = ["en","ar","it","fr"]` → `["it","en"]`
+  - localStorage chiave `"saudi_lang"` → `"pid_lang"`
+  - Default lang: `localStorage.getItem("pid_lang") || "it"` (era `"en"`)
+  - Fallback su chiave mancante: `I18N[currentLang] ?? I18N.it ?? I18N.en ?? key`
+  - Subtitle obsoleto "Pro League · First Division · Nazionale" → `"Serie A · Serie B · Primavera"` in IT e EN
+  - Verifica RTL handling (`RTL_LANGS.has(currentLang)`): ora PID non ha lingue RTL, ma il codice è innocuo se la chiave `RTL_LANGS` resta come `Set(["ar"])` → semplicemente non match mai
+- ✅ **C.4** — Refactoring `_saudiNationalTeamName` → `_nationalTeamName` (parametrico):
+  - La nuova funzione usa la **nazionalità reale del giocatore** invece di assumere "Saudi Arabia" hardcoded
+  - Lookup ordine: `stats.nationality` → fallback `state.players.find(...).nationality` o `.citizenship` → fallback `"National"`
+  - Costruisce "{Country}" per cat "A" (senior), "{Country} Olympic", "{Country} {cat}" per altre
+  - Esempio: per Verratti restituisce "Italia" / "Italia U21"; per Lukaku "Belgio"
+  - Aggiunto alias `_saudiNationalTeamName` → `_nationalTeamName` per compatibilità (rimovibile in futuro)
+  - Variabili locali rinominate: `saudiTeam`/`saudiCat`/`saudiColor` → `natTeam`/`natCat`/`natColor`
+  - Commento "Media caps nazionale A (Saudi Arabia maggiore)" → "Media caps nazionale A (senior)"
+  - 0 residui `Saudi Arabia` / `saudiTeam` / `saudiCat` / `saudiColor` in `app.js`
+- ✅ **C.5.a** — `scraper/config.py` riscritto in versione PID config-driven (backup salvato in `scraper/config.py.saudi_backup`):
+  - Carica `data/config.json` come fonte di parametri country-specific
+  - `SAUDI_NATIONALITY = "Saudi Arabia"` → `TARGET_NATIONALITY = config["country_label_en"]` (default "Italy")
+  - `PLAYERS_SAUDI_FILE` → `PLAYERS_MAIN_FILE` (path `data/players_main.json`)
+  - `LEAGUES = {SA1, SA2L}` → dict vuoto (verrà popolato in sera 2 con URL squadre Italia o tramite `add_players.py`)
+  - `COMPETITION_NAMES`: rimosse SA1/SAKC/SASS/SAUP/AFC/Arab; aggiunte IT1/IT2/CIT/SCI/PRIM/CL/EL/UECL/EM21/U21Q/U19E/U17E
+  - `NATIONAL_CLUB_IDS`: dict vuoto. PID-Italia con giocatori multi-nazionalità: Transfermarkt espone `team_category` direttamente nei profili, non serve mapping per id. Se in futuro emergono casi senza team_category, popolare qui.
+  - `NATIONAL_TEAM_CATEGORY_FROM_COMP`: aggiunte EM21/U21Q/U19E/U17E (mancavano per il calcio europeo)
+  - `_heuristic_category_from_comp`: aggiunto match per U21 e U19
+  - `national_team_label(category, country=None)`: ora parametrico — il chiamante passa il paese del giocatore (Italia/Belgio/Brasile/...). Default fallback su `TARGET_NATIONALITY`.
+  - Alias `SAUDI_NATIONALITY` e `PLAYERS_SAUDI_FILE` mantenuti come deprecati per compatibilità retroattiva durante la migrazione import (verranno rimossi dopo C.5.b/c)
+  - Verifica: `from scraper import config` importa correttamente, `config.comp_name("IT1") == "Serie A"`, `config.national_team_label("A", "Belgium") == "Belgium"`
+- ✅ **C.5.b** — `scraper/filter_saudi.py` → `scraper/filter_target.py`:
+  - Nuovo modulo `filter_target.py` con `is_target_eligible(profile)` e `filter_target_profiles(profiles)`
+  - Per PID-Italia (e in generale per uno scouting hub di una lega): **default ritorna sempre True** — vogliamo TUTTI i giocatori della lega, indipendentemente dalla cittadinanza
+  - Override esplicito: `_force_target=True` (sempre incluso) o `_force_target=False` (sempre escluso)
+  - `filter_saudi.py` mantenuto come alias di retrocompatibilità: riesporta `is_target_eligible as is_saudi_eligible` e `filter_target_profiles as filter_saudi_profiles`
+  - Test: `is_target_eligible({})` → True, `is_target_eligible({"_force_target": False})` → False, alias `from scraper.filter_saudi import is_saudi_eligible` continua a funzionare
+- ✅ **C.5.c** — Migrazione import nei moduli utilizzatori (approccio conservativo):
+  - `run_static.py`, `run_update.py`: `from scraper.filter_saudi import filter_saudi_profiles` → `from scraper.filter_target import filter_target_profiles as filter_saudi_profiles`
+  - `add_players.py`: `from scraper.filter_saudi import is_saudi_eligible` → `from scraper.filter_target import is_target_eligible as is_saudi_eligible`
+  - `scraper/profiles.py` riga 256: `"is_saudi_eligible": "Saudi Arabia" in citizenships` → `"is_target_eligible": True, "is_saudi_eligible": True` (per PID-Italia ogni profilo è eligible perché siamo uno scouting hub di una lega; alias mantenuto)
+  - **Variabili interne NON rinominate** (es. `saudi_by_id`, `n_saudi`, `step_filter_saudi`): refactoring rimandato a sera 2 quando avremo dati italiani per testare. Codice gira identico ma "modernizzato" lato import.
+  - Verifica import: `scraper.config`, `scraper.filter_target`, `scraper.filter_saudi` (alias) caricano senza errori. `is_target_eligible({})` → True.
+  - Nota: test completi import scraper bloccato da `ModuleNotFoundError: bs4` — non è un errore di refactoring, è solo dipendenza Python non installata in venv. Si risolve in sera 2 con `pip install -r requirements.txt` (BeautifulSoup, requests, lxml, pandas, openpyxl, curl_cffi).
+
+## ✅ BLOCCO C CHIUSO
+
+Ricapitolando i 3 blocchi:
+| Blocco | Stato |
+|---|---|
+| A — sostituzioni meccaniche dirette | ✅ chiuso |
+| B — mapping competizioni | ✅ chiuso |
+| C — business logic ridisegnata | ✅ chiuso |
+
+Sostituzioni totali: ~50 punti su 5 file (`app.js`, `index.html`, `i18n.js`, `scraper/config.py`, `scraper/filter_saudi.py`).
+
+## Stato dell'app PID dopo refactoring
+
+- ✅ Niente "Saudi" hardcoded in nessun file frontend funzionale
+- ✅ Codici competizione italiani (IT1/IT2/CIT/SCI/PRIM)
+- ✅ `data/config.json` come fonte di verità per parametri country-specific
+- ✅ Modulo U21 saudita rimosso (Excel + script + render). Da ricostruire come "Primavera 1" se servirà
+- ✅ Default lingua IT, AR/FR rimosse, fallback IT→EN
+- ✅ Funzione nazionali parametrica sulla nazionalità del giocatore
+- ✅ Scraper config-driven via `data/config.json`
+
+## Pendenze sera 2
+
+**Popolamento dati Italia**:
+1. `data/clubs.json` — 60 club (20 Serie A + 20 Serie B + 20 Primavera) con `tm_club_id`
+2. Lista URL Transfermarkt squadre Italia
+3. Setup venv Python (`python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt`)
+4. `add_players.py` × 3 round (Serie A → ~600, Serie B → ~500, Primavera → ~200)
+5. `run_stats.py --refresh` (notte, `caffeinate`, ~30-40 min)
+6. `enrich_sortitoutsi.py` per le foto curate
+7. `download_photos.py` per le foto Transfermarkt
+
+**UI/Branding**:
+- Logo: FIGC o tricolore (oggi è placeholder `data/photos/branding/logo.png` non ancora creato)
+- Palette: rivedere `--comp-seriea` / `--comp-serieb` con colori Lega Serie A ufficiali
+
+**Deploy**:
+- `git init` + repo GitHub `pid` + collegamento Vercel + dominio `pid.vercel.app`
+
+**Cleanup futuro** (non urgente):
+- Rimuovere alias deprecati in `scraper/config.py` (`SAUDI_NATIONALITY`, `PLAYERS_SAUDI_FILE`)
+- Rimuovere `scraper/filter_saudi.py` (è solo alias)
+- Rinominare variabili interne `saudi_by_id`, `n_saudi`, `step_filter_saudi` ecc. in `target_*` / `n_target`
+- Rimuovere `scraper/config.py.saudi_backup`
+- Rimuovere alias `_saudiNationalTeamName` in `app.js`
+
+## Sera 2 — Popolamento dati Italia (in corso)
+
+### Setup
+- ✅ Creato venv Python 3.13 in `pid/venv/`
+- ✅ Installato: requests, beautifulsoup4, lxml, pandas, openpyxl
+- ✅ Tutti i moduli `scraper.*` importano correttamente nel venv
+- ✅ `add_players.py` importa correttamente (con alias `is_target_eligible as is_saudi_eligible`)
+- Transfermarkt risponde senza bisogno di `curl_cffi` (per ora)
+
+### Lista club scrappata (3 leghe italiane 2025/26)
+- ✅ Creato `scrape_serie_a_clubs.py` e `scrape_league_clubs.py` (generico, accetta slug + code)
+- ✅ **Serie A (IT1)** → `data/serie_a_clubs.json` — 20 club: Inter, Juve, Milan, Roma, Napoli, Atalanta, Como, Bologna, Fiorentina, Lazio, Sassuolo, Parma, Udinese, Genoa, Cagliari, Torino, Pisa, Hellas Verona, Lecce, Cremonese
+- ✅ **Serie B (IT2)** → `data/it2_clubs.json` — 20 club: Venezia, Monza, Sampdoria, Frosinone, Palermo, Catanzaro, Spezia, Empoli, Modena, Cesena, Bari, Mantova, Carrarese, Juve Stabia, Avellino, Pescara, Südtirol, Reggiana, Padova, Entella
+- ✅ **Primavera 1 (IJ1)** → `data/ij1_clubs.json` — 20 club U20/Primavera. Codice TM **IJ1** (NON `PRIM` come nel config iniziale, corretto)
+- ✅ `data/config.json` → `competitions.youth.code` aggiornato da `PRIM` → `IJ1`
+
+### Pendenze immediate
+- Scrappare rosters di ciascun club (`scraper/rosters.py:parse_club_roster`) per ottenere ~1300 URL profilo giocatori
+- Salvare URL in `urls.txt`
+- Lanciare `add_players.py urls.txt` → popola `players_main.json` + scarica stats + foto
+
+### Scraping rosters → urls.txt
+- ✅ Creato `build_urls.py`: scrappa rosters di tutti i 60 club dai 3 file JSON (serie_a, it2, ij1) usando `parse_club_roster` di `scraper/rosters.py`
+- ✅ **1713 URL profilo unici** estratti (1728 giocatori scrappati, ~15 duplicati = stesso giocatore in più rose, es. nazionali in Primavera) → `urls.txt`
+- ✅ Test campione con 5 giocatori → `urls_test.txt` (Abdou Diene, Aaron Martin, ecc.). `add_players.py` funziona: 4 file JSON popolati, foto scaricate (`players_tm/`, `players_sots_lookup/`)
+- 🔄 **Lancio massivo** in background: `nohup caffeinate -i python3 -u add_players.py urls_remaining.txt > scraping.log 2>&1 &`
+  - 1708 URL rimanenti
+  - PID 32217 attivo, `PYTHONUNBUFFERED=1` per log in tempo reale
+  - Stima fine: ~85 minuti puri di scraping + 20-40 min enrich/photos al termine
+  - Comandi monitoraggio:
+    - `tail -f scraping.log` — segui in tempo reale
+    - `ps -p 32217` — verifica processo vivo
+    - `kill 32217` — stop
+    - `python3 -c "import json; print(len(json.load(open('data/players_main.json'))))"` — conta giocatori importati
+
+### Sera 3+ (pendenze)
+- Verificare che il giro completo `add_players.py` finisca senza errori (1708 → 1713 totali in `players_main.json`)
+- `enrich_sortitoutsi.py` finale (chiamato già automaticamente alla fine di `add_players.py`)
+- `download_photos.py` finale (idem)
+- Eventuali giocatori falliti (403 / timeout) → ritentare con liste mirate
+- `data/clubs.json` — unire in unico file i 60 club dei 3 JSON per il frontend (oggi `clubs.json` è solo `[]`)
+- Branding: logo PID `data/photos/branding/logo.png` (oggi placeholder)
+- Test app `cd frontend && python3 -m http.server 8000` → verificare che `players_main.json` carica
+- Deploy Vercel `pid.vercel.app`
+
+## ✅ MILESTONE — PID Italia online in locale (6 mag 2026, 10:30)
+
+L'app è completamente funzionante in locale con dati italiani:
+
+### Dati
+- **1707 giocatori** scrappati da Transfermarkt (Serie A + Serie B + Primavera 1)
+- **60 club** organizzati in 3 leghe (IT1: 20, IT2: 20, IJ1: 20)
+- **1704 stats entries** (presenze, minuti, gol, assist per stagione 24/25 e 25/26)
+- **1312 foto giocatori** da Transfermarkt
+- **6 FAIL** nel scraping massivo (502 Bad Gateway TM, ~0.35%) — recuperabili con re-run mirato
+- **9 loghi competizione** italiani/UEFA scaricati (IT1, IT2, IJ1, CIT, SCI, CL, EL)
+
+### Frontend
+- Logo PID custom in header (1254×1254 PNG, 996KB)
+- Subtitle "Serie A · Serie B · Primavera"
+- 3 dropdown filtri lega operativi
+- Auth gate disabilitato (lavoriamo in locale, riattiveremo per deploy con nuovo Supabase)
+- `cloud_sync.js` commentato
+- Tutte le sezioni navigabili: Home, Lista, Club, Confronto, Convocazione, Griglie, Minutaggi
+
+### Errori critici risolti
+- `SyntaxError: Unexpected token '}'` a riga 4197 (residuo blocco U21 rimosso in C.1, 2 graffe orfane)
+- `ReferenceError: sa1 is not defined` (variabili JS non rinominate in B.1)
+- 5 file mancanti: creati `players_unified.json` ([]) , `opponent_club_names.json` ({}), `last_update.json` (timestamp+counts), scaricati IT1/IT2/IJ1/CIT/SCI/CL/EL.png
+
+### Pendenze residue
+- 6 giocatori falliti (502 TM) → re-run mirato in sera 3
+- Warning Tailwind CDN (innocuo, eventuale ottimizzazione produzione)
+- API backend `/update/status` non gira (uvicorn non avviato; `python3 api/main.py` quando serve il bottone "Aggiorna ora")
+- Sera 3: deploy Vercel + nuovo progetto Supabase per cloud sync utente
+- Cleanup variabili interne `saudi_*` → `target_*` (rimandato, non urgente)
+- Ottimizzare logo PID (1254×1254 → 256×256, da 996KB a ~50KB)
+
+## 6 mag 2026 (mattina/pomeriggio) — Foto SortItOutSi
+
+### Setup foto SortItOutSi (FM-style)
+- ✅ Copiati `scrape_sortitoutsi_competition.py` e `scrape_sortitoutsi_ids.py` dal saudita
+- ✅ `scrape_sortitoutsi_competition.py`: aggiornate `COMPETITIONS` con URL Italia (Serie A `competition/32`, Serie B/BKT `competition/33`). Primavera 1 NON ha pagina FM26 dedicata — i giocatori Primavera che giocano in prima squadra Serie A/B vengono comunque trovati nelle rose dei rispettivi club.
+- ✅ Aggiunto dizionario `SOTS_TO_TM_ALIAS` per match nomi club (SortItOutSi usa "F.C. Internazionale Milano", TM usa "Inter Milan", ecc.). Funzione `_norm()` ora rimuove tokens generici (AC, FC, SS, US, ecc.).
+- ✅ Run `scrape_sortitoutsi_competition.py` → 40/40 club Serie A + Serie B mappati con `sortitoutsi_team_id`
+- ✅ Run `scrape_sortitoutsi_ids.py --no-search` (no fallback by name search, troppo lento) in 7'16":
+  - 40 club Serie A + Serie B processati
+  - **675 giocatori match** + **677 foto scaricate** (FM-style) in `data/photos/players_sots_lookup/`
+  - **169 unmatched** (giocatori in rose TM ma non SortItOutSi: prestiti recenti, transfer non riflessi, U17/U18 nei club Serie A)
+  - `sortitoutsi_id_lookup.json` (149KB) salvato
+  - `players_main.json` aggiornato: **675/1707 giocatori hanno `sortitoutsi_face_url`** (40%)
+- ✅ Frontend: foto FM-style visibili nei giocatori Serie A/B famosi
+- ⚠️ **Primavera 1**: i ~600 giocatori Primavera "puri" (non in prima squadra Serie A/B) restano con foto Transfermarkt — accettabile, le foto TM dei giovani sono comunque utili
+
+### Override manuali SortItOutSi
+- ✅ Creato `data/sots_overrides.xlsx` (template Excel: 2 colonne `name | sortitoutsi_url`)
+- ✅ Creato `apply_sots_overrides.py`:
+  - Legge l'Excel
+  - Match per nome esatto (`full_name` da `players_main.json`)
+  - Estrae sots_id dall'URL via regex `/person/(\d+)/`
+  - Scarica face in `data/photos/players_sots_lookup/{sots_id}.png`
+  - Aggiorna `sortitoutsi_id_lookup.json` + `players_main.json` + `players_all.json` + `players_static.json`
+  - Imposta TUTTI i campi richiesti dal frontend: `sortitoutsi_person_id`, `sortitoutsi_face_url`, `sortitoutsi_profile_url`, `sortitoutsi_face_local_lookup`
+  - Idempotente: re-run salta i mapping già applicati (segnati con `=`)
+  - Flag `--dry-run` per simulazione
+- ✅ Test: 2/2 mapping applicati (Aarón Martín, Alberto Cerri), foto SortItOutSi visibili nel frontend
+
+### Workflow per nuovi mapping manuali
+1. Apri `data/sots_overrides.xlsx`
+2. Aggiungi righe con `name` (esatto come da DB) + `sortitoutsi_url`
+3. `python3 apply_sots_overrides.py`
+4. Hard reload browser
+
+### Match offline aggressivo + verifica DOB
+- ✅ Creato `harvest_sots_rosters.py`: scarica le 40 rose SortItOutSi (Serie A + Serie B) e salva in `data/sots_rosters.json` (5669 persons cached)
+- ✅ Creato `match_unmatched_offline.py`: cerca match offline per i giocatori unmatched usando regole multiple (slug esatto, all-tokens, cognome, primo nome). Score 0.5-1.0.
+  - Risultato: 18 unmatched in club Serie A/B, 17 auto-match (score>=0.7), 1 review
+- ✅ Creato `verify_auto_matches_dob.py`: per ogni match candidato, fetch pagina person SortItOutSi, estrae DOB, confronta con TM
+  - Risultato: **17/17 DOB confermate** (0 mismatch, 0 errori) — match offline al 100% accurato
+- ✅ Creato `apply_confirmed_matches.py`: legge i match confermati, scarica foto, aggiorna 3 JSON players
+  - 17 nuovi mapping applicati, lookup totale: **694 entries**
+  - Stato finale foto SortItOutSi: 694/1707 (40.6%)
+- 🟢 Casi notevoli risolti: greci (Dimitrios→Dimitris), africani (André-Franck Anguissa), nicknames (Benji Siegrist), nomi alternativi (Junior Onana)
+
+### File generati per workflow ibrido
+- `data/sots_rosters.json` — cache rose SortItOutSi
+- `data/sots_auto_matched_preview.xlsx` — anteprima match auto (deprecato dopo verifica DOB)
+- `data/sots_auto_matched_confirmed.xlsx` — match con DOB verificata
+- `data/sots_dob_mismatch.xlsx` — eventuali mismatch (al run attuale: vuoto)
+- `data/sots_unmatched_review.xlsx` — review manuale (1 caso: Faris Moumbagna in Cremonese)
+
+## 6 mag 2026 (pomeriggio) — Branding Primavera + bug rilevato
+
+### Branding Primavera 1
+- ✅ Tutti i 20 club Primavera ora hanno il logo (riusato `sortitoutsi_team_id` + `sortitoutsi_logo_url` del club di prima squadra)
+- ✅ 3 club rinominati: "Genoa U20" → "Genoa Primavera", "Lazio U20" → "Lazio Primavera", "Roma U20" → "Roma Primavera"
+- ✅ Aggiornati 64 riferimenti a `current_club_name` / `roster_club_name` / stats nei 3 JSON players (Genoa/Lazio/Roma U20 → Primavera)
+- ✅ `app.js` riga 537: aggiunto `ij1Logo = _photoUrl("photos/competitions/IJ1.png")` e passato a `sectionHtml(t("league_other"), ij1Logo, …)` (prima era `null`)
+- ✅ `i18n.js`: rinominata stringa `league_other` da "Altre squadre" / "Other clubs" a **"Primavera 1"** (IT + EN)
+
+### Foto SortItOutSi — Stato finale
+- **1606/1707 = 94.1% copertura** (era 0% all'inizio della sessione, poi 675, poi 692, poi 1606)
+- 101 giocatori restano con foto Transfermarkt (giovanissimi Primavera puri, nuovi acquisti recenti, nomi atipici)
+- Sistema completo verificato:
+  - DOB-verify obbligatorio (zero falsi positivi accettati)
+  - Cross-club lookup (per giocatori "New arrival" / prestiti)
+  - Override manuale via `data/sots_overrides.xlsx` per casi residui
+
+## ⚠️ BUG RILEVATO (al rientro dalla pausa)
+**AC Milan ha solo 13 giocatori**, dovrebbero essere ~25-30. Vedere `data/players_main.json` filtrando per `current_club_id == 5`.
+
+Altri potenziali sotto-conteggi (da verificare):
+- Atalanta BC: 16
+- Hellas Verona: 17
+- Cesena FC: 14, Virtus Entella: 14, Palermo FC: 16
+
+### Diagnosi step by step (al rientro)
+1. **Verifica giocatori Milan attualmente nel DB** (lista per nome + posizione)
+2. **Rifare scraping rosa Milan** con `parse_club_roster("https://www.transfermarkt.com/ac-mailand/startseite/verein/5")` per vedere quanti URL estrae lo scraper
+3. **Confrontare**: lo scraper estraeva 13 URL già allora? Oppure era un timeout / errore HTTP nel run massivo?
+4. **Ipotesi probabili**:
+   - Bug parser TM rosters per certe squadre (struttura HTML pagina rosa diversa)
+   - Errore HTTP transitorio durante il run massivo notturno (Milan appare al posto giusto ma con rosa parziale)
+   - Filtro fascia età / posizione che escludeva primavera Milan (poi presi nel club Primavera separato come `current_club_id != 5`)
+
+### Comandi diagnostici da lanciare al rientro
+```bash
+cd ~/Desktop/pid && source venv/bin/activate
+
+# 1. Lista Milan attuale
+python3 -c "
+import json
+players = json.load(open('data/players_main.json'))
+milan = [p for p in players if p.get('current_club_id') == 5]
+print(f'Milan: {len(milan)} giocatori')
+for p in milan:
+    print(f\"  tm={p['tm_player_id']:<7}  {p.get('full_name', ''):<35}  pos={p.get('main_position', ''):<25}\")
+"
+
+# 2. Re-scrape rosa Milan
+python3 -c "
+import sys; sys.path.insert(0, '.')
+from scraper.rosters import parse_club_roster
+urls = parse_club_roster('https://www.transfermarkt.com/ac-mailand/startseite/verein/5')
+print(f'URL rosa Milan: {len(urls)}')
+for u in urls: print(' ', u)
+"
+```
+
+
+## 6 mag 2026 (sera) — Bug "club misclassified" risolto
+
+### Diagnosi
+- Sintomo: AC Milan mostrava 13 giocatori, dovrebbe esserne ~23. Stesso problema su molti club.
+- Cause confluite:
+  1. Lo scraping notturno del 6 mag mattina aveva preso TUTTI i 1707 giocatori
+  2. Ma i loro **profili individuali** TM mostravano `current_club="New arrival"` / `Returnee` / `Internal transfer: X` perché il trasferimento estivo era stato registrato in modo asincrono (la rosa era già aggiornata, ma i profili no)
+  3. `add_players.py` aveva salvato sia `current_club` sia `roster_club` con il valore placeholder, perdendo l'informazione dell'origine
+  4. Risultato: 793 giocatori (46% del DB) classificati con `current_club_id` di un club di provenienza random (`id=244` per Marsiglia, `id=418` per Real Madrid, ecc.)
+  
+### Fix applicato
+- Creato `find_missing_players.py` (diagnostico): conferma 0 missing, ~284 misclassified Serie A/B + 347 misclassified Primavera = ~631 da ricollocare
+- Creato `fix_misclassified_clubs.py`:
+  1. Per ogni club Serie A/B/Primavera (60 totali), fetch live rosa TM
+  2. Ricostruisce mapping `tm_player_id` → `(roster_club_id, roster_club_name)` (1713 mapping; per giocatori in più rose, priorità al senior over Primavera)
+  3. Sovrascrive `roster_club_*` nei 3 JSON players
+  4. Riusa la funzione `fix_club_placeholder()` di `enrich_sortitoutsi.py` (fase 3 fallback su roster_club)
+- Risultati:
+  - 794 roster_club ricostruiti
+  - **793 placeholder risolti** in tutti i 3 JSON (`players_main`, `players_static`, `players_all`)
+- Verifica post-fix: AC Milan 23 (era 13), Atalanta 27, Hellas Verona 30, Cesena Primavera 24, Inter Primavera 28, ecc. Tutti i 60 club ora con conteggi sani.
+
+### Note tecniche
+- I 6 nuovi giocatori scoperti (rose attuali contenevano tm_id non ancora nel DB) sono stati aggiunti agli URL ma non scrappati (richiederebbe `add_players.py` mirato). Si possono aggiungere in futuro con `python3 add_players.py missing_urls.txt`.
+- Genoa CFC: TM mostra 26 ma DB ne ha 26 dopo fix (erano 31 prima, c'erano 5 ex-Genoa che ora sono altrove — ora correttamente riassegnati al loro nuovo club)
+
+## 6 mag 2026 (sera tardi) — Override manuali + cleanup placeholder
+
+### 14 nuovi mapping manuali via Excel
+Aggiunti tramite `data/sots_overrides.xlsx`:
+- David Odogu, Ange-Yoan Bonny, Alex Amorim, Faris Moumbagna, Henrik Meister, Leo Østigård, Torbjørn Heggem, Andrija Novakovich, Daniel Theiner, Davide Pio Stabile, Emanuele Adamo, Magnus Brøndbo, Papu Gómez, Alessandro Marcandalli
+- Tutti applicati con `apply_sots_overrides.py` (15 face scaricate, 3 JSON aggiornati)
+
+### Bug "quadrato bianco" risolto
+**Sintomo**: 130 giocatori mostravano un quadrato bianco invece della foto SortItOutSi (visto nello screenshot Atalanta su Alessandro Rinaldi, Giovanni Percassi, Mattia Pedretti).
+
+**Diagnosi**: SortItOutSi restituisce un **GIF 1×1 trasparente da 43 bytes** (estensione .png) quando il giocatore non ha la face caricata. Il browser lo considera un'immagine valida e non chiama `onerror`, quindi non scatta il fallback `ui-avatars.com`.
+
+**Fix applicato**:
+- Creato `/tmp/clean_placeholders.py`: scansiona `data/photos/players_sots_lookup/`, identifica file ≤200 bytes (i placeholder), li cancella, rimuove `sortitoutsi_face_local_lookup` dai 3 JSON, nullifica `face_local` nel lookup
+- Risultato: **130 placeholder cancellati**, ora i giocatori senza foto SortItOutSi mostrano le iniziali (fallback `ui-avatars.com` esistente)
+- Stato file foto reali: **1490** (era 1620 con 130 placeholder)
+
+**Fix preventivo**:
+- Patch a `apply_sots_overrides.py`, `apply_confirmed_matches.py`, `apply_more_matches.py`: `download_face()` ora salva solo se `len(content) > 200 bytes`
+- `scrape_sortitoutsi_ids.py` aveva già il check (codice originale corretto)
+- Nei prossimi run, niente più GIF spazzatura
+
+### Stato finale foto SortItOutSi (corretto)
+- **1490/1707 = 87.3% copertura reale** con foto FM-style
+- 217 giocatori con fallback `ui-avatars.com` (iniziali nome+cognome su sfondo verde)
+
+## 6 mag 2026 (sera) — Espansione Polonia COMPLETATA + Setup deploy
+
+### Polonia (Ekstraklasa + 1 Liga)
+- ✅ Scraping 1058 nuovi giocatori polacchi finito (PID 40181, ~2h)
+- ✅ DB totale: **2763 giocatori** (1707 Italia + 1056 Polonia)
+- ✅ Foto: 1033 nuove TM scaricate, 3617 in cache
+- ✅ 96 club totali (IT1:20, IT2:20, IJ1:20, PL1:18, PL2:18)
+- ✅ Sottotitolo "Serie A · Serie B · Primavera" rimosso da i18n.js + index.html
+- ⏳ **Pending frontend Polonia**:
+  - i18n.js: chiavi `league_pl1: "Ekstraklasa"`, `league_pl2: "1 Liga"` (IT + EN)
+  - app.js renderClubs(): sezioni Ekstraklasa + 1 Liga
+  - app.js filtri: option PL1, PL2 nei 3 dropdown
+  - Loghi competizione PL1.png e PL2.png da TM
+  - Match SortItOutSi club polacchi (rose Ekstraklasa)
+  - find_more_sots_matches.py per foto FM polacchi
+
+### Deploy: Cloudflare R2 + GitHub
+- ✅ Repo GitHub creato: `https://github.com/simonecontran10/pid`
+- ✅ Public, no README/license/gitignore (gestiti localmente)
+- ✅ Description: "Players Intelligence Database"
+- ✅ Git init + 2 commit:
+  - `d4c6c70` Initial commit (3007 file)
+  - `542e265` cleanup: rimuovi diario fork e backup HTML
+  - `ac29164` fix: escludi players_stats.json (>100MB GitHub limit)
+- ❌ Push GitHub fallito: **players_stats.json (122MB) > limite 100MB**
+- ✅ Soluzione adottata: **Cloudflare R2** (gratis 10GB/mese, no egress fees)
+  - Account Cloudflare creato: simonecontran10@gmail.com
+  - Bucket `pid-data` creato (Eastern Europe / EEUR)
+  - Account ID: `b8d30d0c945985ca7928fd7cf5548f0d`
+  - Public Development URL: `https://pub-aa9d173290684b36a9f35e79d4d388c2.r2.dev`
+  - CORS Policy applicata (AllowedOrigins: *, Methods: GET/HEAD)
+  - API Token creato (Object Read & Write su pid-data)
+  - Credenziali in `.env` LOCALE (gitignored)
+- ✅ `players_stats.json` (122MB → 127.880.998 bytes) caricato su R2
+- ✅ URL pubblico verificato: HTTP 200, content-type application/json
+- ✅ Script `upload_to_r2.py` creato per future re-upload (pip install boto3 python-dotenv)
+
+### TODO immediato per andare in produzione
+1. ✅ Modificare `frontend/app.js` con override R2 per `players_stats` → fatto, `R2_OVERRIDES` dict aggiunto
+2. ⏳ Test in locale: hard reload, verifica che stats si caricano da R2
+3. ⏳ Aggiungere `data/players_stats.json` definitivamente al `.gitignore`
+4. ⏳ Riscrivere cronologia git per rimuovere il file dal commit `d4c6c70` (con `git filter-repo` o reset+ricommit)
+5. ⏳ Push GitHub: `git push -u origin main` (ora dovrebbe passare, ~150MB)
+6. ⏳ Vercel: collega repo `simonecontran10/pid`, deploy
+
+### Quasi-emergenza disco
+- Disco esaurito a 122MB liberi su 926GB totali (905GB usati = 100% capacità)
+- Liberato spazio (utente ha rimosso file pesanti)
+- Lezione: monitorare lo storage, R2 è la mossa giusta proprio per non saturare
+
+### File chiave creati oggi
+- `.env` (credenziali R2, gitignored)
+- `upload_to_r2.py` (script upload reusable)
+- `data/pl1_clubs.json`, `data/pl2_clubs.json` (36 club polacchi)
+- `urls_pl.txt` (1058 URL polacchi - già committato accidentalmente, da decidere se mantenerlo)
+- `scraping_pl.log` (gitignored, log scraping)

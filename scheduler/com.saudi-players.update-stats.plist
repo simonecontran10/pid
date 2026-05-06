@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  launchd plist per aggiornare le presenze giocatori ogni 2 giorni.
+
+  Installazione:
+    bash scheduler/install_scheduler.sh install
+  Disinstallazione:
+    bash scheduler/install_scheduler.sh uninstall
+  Verifica:
+    bash scheduler/install_scheduler.sh status
+  Lancia manualmente (test):
+    launchctl start com.saudi-players.update-stats
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.saudi-players.update-stats</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/simone/Desktop/tm_project/scheduler/update_stats.sh</string>
+    </array>
+
+    <key>StartInterval</key>
+    <integer>172800</integer> <!-- 2 giorni = 2 * 24 * 3600 secondi -->
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/simone/Desktop/tm_project/scheduler/launchd.out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/simone/Desktop/tm_project/scheduler/launchd.err.log</string>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/simone/Desktop/tm_project</string>
+</dict>
+</plist>

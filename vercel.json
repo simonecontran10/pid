@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/frontend/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/data/:path*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=60, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/data/photos/:path*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=300" }
+      ]
+    }
+  ]
+}
