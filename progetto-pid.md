@@ -1075,3 +1075,27 @@ Durante il setup è stata accidentalmente esposta la `sb_secret_*` del nuovo pro
 - [ ] Test cross-device per conferma definitiva sync (login da iPhone con stessa credenziale → vedere stessi salvataggi)
 - [ ] Nascondere bottone "🔐 Accedi" sidebar quando `cloudAuth.user` è valorizzato (residuo cosmetico legacy)
 - [ ] Pulire fetch a `127.0.0.1:8000/update/status` (vecchio dev server, non serve in production)
+
+## 7 mag 2026 (sera 5) — Fix coerenza filtri Club ↔ Lega
+
+### Bug osservato
+Sul sito, scenario:
+1. Filtro lega = "Serie A" (default home)
+2. Utente seleziona club "Cesena" dal dropdown filtro club (Cesena è in Serie B)
+3. Risultato: 0 giocatori visualizzati (Cesena ⊥ Serie A → AND vuoto)
+
+L'utente vede una pagina vuota e non capisce il perché. Stesso problema cliccando una card club nel pannello Club o un risultato di ricerca globale: il club si applica come filtro ma la lega resta sul valore precedente.
+
+### Fix applicato — `frontend/app.js`
+3 modifiche, tutte con stessa logica: quando si imposta `state.filters.club`, si guarda il `league_id` del club selezionato, e se diverso da `state.filters.league` lo si aggiorna. Sia lo state che il dropdown UI restano allineati.
+
+1. **Handler dropdown `#filter-club`** (riga ~5709): change handler con auto-allineamento lega solo se le due leghe sono diverse (per non resettare quando l'utente filtra esplicitamente "Tutti i campionati" prima del club).
+2. **Click su card club in `renderClubs`** (riga ~652): quando l'utente clicca una card club nel pannello Club, allinea sempre la lega del club cliccato (è l'azione più diretta possibile, vuole vedere quel club).
+3. **Click su risultato di ricerca globale** (riga ~5449): stesso comportamento del 2, l'utente ha cercato un club specifico.
+
+### Esempio
+Prima: lega=Serie A, click "Cesena" → state.filters = {league: 'IT1', club: 6648} → 0 giocatori
+Dopo: lega=Serie A, click "Cesena" → state.filters = {league: 'IT2', club: 6648} → ~25 giocatori Cesena
+
+### File modificato
+- `frontend/app.js` (3 occorrenze fix, ~25 righe aggiunte totali)

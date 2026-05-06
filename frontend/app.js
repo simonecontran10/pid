@@ -652,6 +652,13 @@ function renderClubs() {
   container.querySelectorAll("[data-cid]").forEach(el => el.addEventListener("click", () => {
     state.filters.club = el.dataset.cid;
     document.getElementById("filter-club").value = el.dataset.cid;
+    // Auto-allinea la lega in base al club cliccato
+    const club = state.clubs.find(c => String(c.tm_club_id) === String(el.dataset.cid));
+    if (club && club.league_id) {
+      state.filters.league = club.league_id;
+      const leagueSel = document.getElementById("filter-league");
+      if (leagueSel) leagueSel.value = club.league_id;
+    }
     setActiveTab("home");
     applyFilters();
   }));
@@ -5451,6 +5458,13 @@ function setupSearch() {
         input.value = ""; clear.classList.add("hidden");
         state.filters.club = el.dataset.cid;
         document.getElementById("filter-club").value = el.dataset.cid;
+        // Auto-allinea la lega in base al club cliccato
+        const club = state.clubs.find(c => String(c.tm_club_id) === String(el.dataset.cid));
+        if (club && club.league_id) {
+          state.filters.league = club.league_id;
+          const leagueSel = document.getElementById("filter-league");
+          if (leagueSel) leagueSel.value = club.league_id;
+        }
         setActiveTab("players");
         applyFilters();
       }));
@@ -5692,7 +5706,20 @@ document.addEventListener("DOMContentLoaded", () => {
     setActiveTab("home");
     updateFavoritesBadge();
     document.getElementById("filter-league").addEventListener("change", e => { state.filters.league = e.target.value; applyFilters(); });
-    document.getElementById("filter-club").addEventListener("change", e => { state.filters.club = e.target.value; applyFilters(); });
+    document.getElementById("filter-club").addEventListener("change", e => {
+      state.filters.club = e.target.value;
+      // Auto-allinea la lega: se il club appartiene ad una lega diversa da quella selezionata,
+      // aggiorna entrambi i filtri (altrimenti AND lega+club svuoterebbe i risultati).
+      if (e.target.value) {
+        const club = state.clubs.find(c => String(c.tm_club_id) === String(e.target.value));
+        if (club && club.league_id && state.filters.league && club.league_id !== state.filters.league) {
+          state.filters.league = club.league_id;
+          const leagueSel = document.getElementById("filter-league");
+          if (leagueSel) leagueSel.value = club.league_id;
+        }
+      }
+      applyFilters();
+    });
     document.getElementById("filter-role").addEventListener("change", e => { state.filters.role = e.target.value; applyFilters(); });
     document.getElementById("filter-sort").addEventListener("change", e => { state.filters.sort = e.target.value; applyFilters(); });
     document.getElementById("filter-year-min")?.addEventListener("input", e => {
