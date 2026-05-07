@@ -1470,3 +1470,66 @@ Recovery: clonato di nuovo il repo da GitHub (git clone https://github.com/simon
 - Custom domain pid.vercel.app
 - Cleanup naming legacy saudi_*
 - Cancellare ~/Desktop/pid-backup-3 dopo conferma niente file unici critici
+
+## 8 mag 2026 (pomeriggio) — Loghi competizioni + Carriera Nazionale + sezione Salvataggi
+
+### Bug 1 — Loghi competizioni mancanti (resolved)
+Sintomo: nei modali giocatori (Carriera per Competizione, Ultime Partite) competizioni come Bundesliga, La Liga, Tercera RFEF, Copa del Rey, DFB-Pokal, Conference League mostravano solo barretta colorata o codice tecnico.
+Causa: competitionLogo() aveva solo 13 codici hardcoded.
+Fix:
+- Script download_competition_logos.py scarica 534 PNG da TM CDN (homepageWappen150x150) per top 120 codici + override curati. BL1 da Wikipedia con UA conforme.
+- competitionLogo() ora generico: cerca {code}.png per qualsiasi codice. Eccezioni SVG: ACLE, ACL2.
+- COMP_LABEL esteso da 22 a 130+ entries con nomi italianizzati.
+- Rimosso redirect bug ES1->ACL2 (causava La Liga senza logo).
+- Loghi ancora mancanti (non disponibili TM CDN, non critici): BL2, BL3, WC, FACS, ACQA, JUSO, PL3W, PL3Z.
+
+### Bug 2 — Carriera Nazionale mostra Italy ovunque (resolved)
+Sintomo: Rabiot (francese), Sabiri (marocchino), Aaron Martin (spagnolo) mostravano "Italy / Italy U21 / U19" con logo PID.
+Causa duplice:
+- Bug scraper stats.py riga 252: national_team_label(cat) chiamato senza country, default "Italy" per tutti.
+- Bug rendering riga 1479: flagUrl hardcoded sul logo PID.
+Fix lato frontend:
+- Costruita mappa team_id->{country, category} via build_national_team_lookup.py (scrappa 392 pagine TM, ~3 min). Output data/national_team_lookup.json (392 entries, 99 paesi).
+- _renderNationalCareerBox usa lookup invece di team_name hardcoded.
+- Bandiera dinamica da photos/national/{country}.png con onerror fallback.
+
+### Bug 3 — Voci duplicate dopo merge lookup (resolved)
+Sintomo: Aaron Martin mostrava "Spain U21" 2 volte (10 caps + 8 caps) perche scraper aveva 2 voci con team_id=9567 ma cat="A" e cat="U21".
+Fix: dopo lookup, raggruppo voci con stesso (country, category) e sommo caps/goals/minutes via Map.
+
+### Nuova feature: Sezione Salvataggi
+Nuova voce sidebar "Salvataggi" come vista trasversale dei salvataggi, separata da linea divisoria sotto Minutaggi.
+Architettura: privati per utente con import/export. Niente backend nuovo (usa cloud_sync esistente). 2 sezioni stacked verticalmente: Griglie + Convocazioni. Ogni riga: nome | username creatore | data creazione | data modifica | bottoni Carica/Duplica/Esporta/Elimina.
+Modulo aggiunto in app.js (~340 righe nuove): _currentUsername, _formatTs, _ensureMetaGrids, _ensureMetaCallups, _callupIds, _touchGridSave/_touchCallupSave, exportGridSave/exportCallupSave, importSavesFromFile, loadGridSave/loadCallupSave, duplicate, delete, renderSavesPanel.
+Migration silenziosa: convocazioni passano da array (legacy saudi_callups_v1) a {ids, _meta}.
+UI fix dopo prima iterazione: tolto max-width 1200px, bottoni con label esplicita (Carica/Duplica/Esporta/Elimina), icona Esporta differenziata da Importa, sidebar Salvataggi sotto Minutaggi con linea separator.
+
+### Bug 4 — Dati national_career incompleti per alcuni giocatori (in attesa)
+Sintomo: Aaron Martin TM dice 12+18+5+1=36 caps (U21+U19+U17+U16). PID dice 10+11+8+3=32 (A+U19+U21+U17). Mancano partite e U16 totalmente assente.
+Diagnosi: scraper TM stats.py probabilmente perde alcune partite (rate limit? participationState filter? competition_id non riconosciuto?).
+Decisione: wait & see fino a domani mattina dopo primo run notturno completo (cron 03:00 UTC, timeout 180 min).
+
+### Incidente — cartella ~/Desktop/pid cancellata accidentalmente
+A fine sessione, durante l'aggiornamento del diario, il terminale ha riportato "no such file or directory" su /Users/simone/Desktop/pid. La cartella era sparita per errore (probabile drag&drop sbagliato). Niente backup .env/venv locale, ma R2 credenziali sono solo per script locali (workflow notturno gira da GitHub Actions con propri secrets).
+Recovery: clonato di nuovo il repo da GitHub (git clone https://github.com/simonecontran10/pid.git, 71 MB), ricostruito venv (python3 -m venv venv + pip install -r requirements.txt). Tutto il lavoro recuperato (era pushato fino a commit 580b4ca). Decisione: niente .env locale, GitHub Actions gestisce gli aggiornamenti notturni autonomamente. Cartella backup vecchia pid-backup-3 da cancellare.
+
+### Commit della giornata (8 mag)
+- c415f8a fix: 25 foto manuali + i18n leghe IJ1/PL1/PL2
+- 1fa546b fix: New arrival/Returnee/Internal transfer placeholder
+- 9474b74 ops: timeout daily 90->180 min
+- 5224a9f docs: test workflow daily timeout
+- 6b7a8c4 feat: 540+ loghi competizioni
+- 6ae8b3d docs: loghi competizioni
+- 2c40ee1 fix: lookup team_id->country (392 team)
+- e2575ce feat: nuova sezione Salvataggi
+- 6a11c29 fix: Carriera Nazionale fonde voci stesso country+category
+- 580b4ca fix(ux): Salvataggi width 100% + bottoni con label
+
+### TODO long-term aggiornati
+- Verificare run notturno 03:00 UTC del 9 mag: nuovo commit github-actions[bot] + dati national_career corretti
+- Indagare bug national_career incompleti se persiste
+- Fix scraper stats.py riga 252 per dati puliti senza override frontend (richiede ri-scraping ~95 min)
+- Loghi mancanti BL2, BL3, WC, FACS (manualmente da fonti varie)
+- Custom domain pid.vercel.app
+- Cleanup naming legacy saudi_*
+- Decisione: niente .env locale, GitHub Actions notturno e' sufficiente per aggiornamenti
