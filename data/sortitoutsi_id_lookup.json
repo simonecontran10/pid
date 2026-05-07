@@ -12876,5 +12876,12 @@
     "name": "Michael Zeppieri",
     "match_score": 1.0,
     "matched_via": "manual_override_8mag"
+  },
+  "265088": {
+    "sots_id": 43167354,
+    "name": "Manuel Locatelli",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/43167354.png"
   }
 }
