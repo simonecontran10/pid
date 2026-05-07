@@ -1,0 +1,1962 @@
+{
+  "102981": {
+    "name": "Argentina U19",
+    "country": "Argentina",
+    "category": "U19"
+  },
+  "10521": {
+    "name": "San Marino",
+    "country": "San Marino",
+    "category": "A"
+  },
+  "107694": {
+    "name": "Morocco U16",
+    "country": "Morocco",
+    "category": "U16"
+  },
+  "10831": {
+    "name": "France U17",
+    "country": "France",
+    "category": "U17"
+  },
+  "10844": {
+    "name": "France U16",
+    "country": "France",
+    "category": "U16"
+  },
+  "10933": {
+    "name": "Netherlands U17",
+    "country": "Netherlands",
+    "category": "U17"
+  },
+  "114122": {
+    "name": "Ukraine Olympic Team",
+    "country": "Ukraine",
+    "category": "Olympic"
+  },
+  "118369": {
+    "name": "Morocco U18",
+    "country": "Morocco",
+    "category": "U18"
+  },
+  "11940": {
+    "name": "Argentina U20",
+    "country": "Argentina",
+    "category": "U20"
+  },
+  "11941": {
+    "name": "Bosnia-Herzegovina U21",
+    "country": "Bosnia-Herzegovina",
+    "category": "U21"
+  },
+  "11943": {
+    "name": "Croatia U21",
+    "country": "Croatia",
+    "category": "U21"
+  },
+  "11944": {
+    "name": "Netherlands U21",
+    "country": "Netherlands",
+    "category": "U21"
+  },
+  "11946": {
+    "name": "United States U20",
+    "country": "United States",
+    "category": "U20"
+  },
+  "11947": {
+    "name": "Italy U21",
+    "country": "Italy",
+    "category": "U21"
+  },
+  "11952": {
+    "name": "Albania U21",
+    "country": "Albania",
+    "category": "U21"
+  },
+  "11953": {
+    "name": "Montenegro",
+    "country": "Montenegro",
+    "category": "A"
+  },
+  "12148": {
+    "name": "Georgia U21",
+    "country": "Georgia",
+    "category": "U21"
+  },
+  "12395": {
+    "name": "Spain U17",
+    "country": "Spain",
+    "category": "U17"
+  },
+  "12519": {
+    "name": "Austria U19",
+    "country": "Austria",
+    "category": "U19"
+  },
+  "12609": {
+    "name": "Spain U19",
+    "country": "Spain",
+    "category": "U19"
+  },
+  "13485": {
+    "name": "Equatorial Guinea",
+    "country": "Equatorial Guinea",
+    "category": "A"
+  },
+  "13951": {
+    "name": "El Salvador",
+    "country": "El Salvador",
+    "category": "A"
+  },
+  "13958": {
+    "name": "Indonesia",
+    "country": "Indonesia",
+    "category": "A"
+  },
+  "14238": {
+    "name": "Mauritania",
+    "country": "Mauritania",
+    "category": "A"
+  },
+  "15232": {
+    "name": "Dominican Republic",
+    "country": "Dominican Republic",
+    "category": "A"
+  },
+  "15359": {
+    "name": "Suriname",
+    "country": "Suriname",
+    "category": "A"
+  },
+  "16267": {
+    "name": "Montenegro U21",
+    "country": "Montenegro",
+    "category": "U21"
+  },
+  "16272": {
+    "name": "Slovenia U21",
+    "country": "Slovenia",
+    "category": "U21"
+  },
+  "16274": {
+    "name": "Ukraine U21",
+    "country": "Ukraine",
+    "category": "U21"
+  },
+  "16297": {
+    "name": "Poland U18",
+    "country": "Poland",
+    "category": "U18"
+  },
+  "16298": {
+    "name": "Poland U19",
+    "country": "Poland",
+    "category": "U19"
+  },
+  "16299": {
+    "name": "Poland U20",
+    "country": "Poland",
+    "category": "U20"
+  },
+  "16337": {
+    "name": "Belgium U18",
+    "country": "Belgium",
+    "category": "U18"
+  },
+  "16338": {
+    "name": "Belgium U19",
+    "country": "Belgium",
+    "category": "U19"
+  },
+  "16340": {
+    "name": "Netherlands U18",
+    "country": "Netherlands",
+    "category": "U18"
+  },
+  "16341": {
+    "name": "Netherlands U19",
+    "country": "Netherlands",
+    "category": "U19"
+  },
+  "16342": {
+    "name": "Netherlands U20",
+    "country": "Netherlands",
+    "category": "U20"
+  },
+  "16371": {
+    "name": "Portugal U18",
+    "country": "Portugal",
+    "category": "U18"
+  },
+  "16372": {
+    "name": "Portugal U19",
+    "country": "Portugal",
+    "category": "U19"
+  },
+  "16373": {
+    "name": "Portugal U20",
+    "country": "Portugal",
+    "category": "U20"
+  },
+  "16374": {
+    "name": "Portugal U21",
+    "country": "Portugal",
+    "category": "U21"
+  },
+  "16783": {
+    "name": "Denmark U21",
+    "country": "Denmark",
+    "category": "U21"
+  },
+  "16817": {
+    "name": "Switzerland U20",
+    "country": "Switzerland",
+    "category": "U20"
+  },
+  "16844": {
+    "name": "North Macedonia U21",
+    "country": "North Macedonia",
+    "category": "U21"
+  },
+  "16854": {
+    "name": "Norway U21",
+    "country": "Norway",
+    "category": "U21"
+  },
+  "16864": {
+    "name": "Romania U21",
+    "country": "Romania",
+    "category": "U21"
+  },
+  "16868": {
+    "name": "Scotland U21",
+    "country": "Scotland",
+    "category": "U21"
+  },
+  "17368": {
+    "name": "Germany U16",
+    "country": "Germany",
+    "category": "U16"
+  },
+  "17379": {
+    "name": "Croatia U19",
+    "country": "Croatia",
+    "category": "U19"
+  },
+  "17383": {
+    "name": "Serbia U19",
+    "country": "Serbia",
+    "category": "U19"
+  },
+  "17621": {
+    "name": "Northern Ireland U21",
+    "country": "Northern Ireland",
+    "category": "U21"
+  },
+  "17622": {
+    "name": "Scotland U19",
+    "country": "Scotland",
+    "category": "U19"
+  },
+  "17662": {
+    "name": "Germany U17",
+    "country": "Germany",
+    "category": "U17"
+  },
+  "19429": {
+    "name": "Switzerland U19",
+    "country": "Switzerland",
+    "category": "U19"
+  },
+  "19532": {
+    "name": "Austria U17",
+    "country": "Austria",
+    "category": "U17"
+  },
+  "19533": {
+    "name": "Austria U18",
+    "country": "Austria",
+    "category": "U18"
+  },
+  "19755": {
+    "name": "Guadeloupe",
+    "country": "Guadeloupe",
+    "category": "A"
+  },
+  "20267": {
+    "name": "Israel U21",
+    "country": "Israel",
+    "category": "U21"
+  },
+  "20791": {
+    "name": "Finland U16",
+    "country": "Finland",
+    "category": "U16"
+  },
+  "20792": {
+    "name": "Finland U17",
+    "country": "Finland",
+    "category": "U17"
+  },
+  "20793": {
+    "name": "Finland U18",
+    "country": "Finland",
+    "category": "U18"
+  },
+  "20794": {
+    "name": "Finland U19",
+    "country": "Finland",
+    "category": "U19"
+  },
+  "20796": {
+    "name": "Finland U21",
+    "country": "Finland",
+    "category": "U21"
+  },
+  "20901": {
+    "name": "Denmark U17",
+    "country": "Denmark",
+    "category": "U17"
+  },
+  "20902": {
+    "name": "Denmark U19",
+    "country": "Denmark",
+    "category": "U19"
+  },
+  "20911": {
+    "name": "Spain U20",
+    "country": "Spain",
+    "category": "U20"
+  },
+  "20947": {
+    "name": "Spain U18",
+    "country": "Spain",
+    "category": "U18"
+  },
+  "20951": {
+    "name": "Lithuania U18",
+    "country": "Lithuania",
+    "category": "U18"
+  },
+  "21100": {
+    "name": "Italy U20",
+    "country": "Italy",
+    "category": "U20"
+  },
+  "21102": {
+    "name": "Czechia U19",
+    "country": "Czechia",
+    "category": "U19"
+  },
+  "21103": {
+    "name": "Republic of Ireland U21",
+    "country": "Republic of Ireland",
+    "category": "U21"
+  },
+  "21136": {
+    "name": "Serbia U17",
+    "country": "Serbia",
+    "category": "U17"
+  },
+  "21141": {
+    "name": "Croatia U17",
+    "country": "Croatia",
+    "category": "U17"
+  },
+  "21142": {
+    "name": "Slovenia U19",
+    "country": "Slovenia",
+    "category": "U19"
+  },
+  "21233": {
+    "name": "Ukraine U19",
+    "country": "Ukraine",
+    "category": "U19"
+  },
+  "21340": {
+    "name": "England U19",
+    "country": "England",
+    "category": "U19"
+  },
+  "21361": {
+    "name": "Bulgaria U21",
+    "country": "Bulgaria",
+    "category": "U21"
+  },
+  "21426": {
+    "name": "Italy U19",
+    "country": "Italy",
+    "category": "U19"
+  },
+  "21428": {
+    "name": "Romania U19",
+    "country": "Romania",
+    "category": "U19"
+  },
+  "21647": {
+    "name": "Luxembourg U17",
+    "country": "Luxembourg",
+    "category": "U17"
+  },
+  "21648": {
+    "name": "Luxembourg U19",
+    "country": "Luxembourg",
+    "category": "U19"
+  },
+  "21649": {
+    "name": "Luxembourg U21",
+    "country": "Luxembourg",
+    "category": "U21"
+  },
+  "21705": {
+    "name": "Bosnia-Herzegovina U19",
+    "country": "Bosnia-Herzegovina",
+    "category": "U19"
+  },
+  "21741": {
+    "name": "Denmark U18",
+    "country": "Denmark",
+    "category": "U18"
+  },
+  "21746": {
+    "name": "Italy U18",
+    "country": "Italy",
+    "category": "U18"
+  },
+  "22027": {
+    "name": "Austria U16",
+    "country": "Austria",
+    "category": "U16"
+  },
+  "22246": {
+    "name": "Greece U19",
+    "country": "Greece",
+    "category": "U19"
+  },
+  "22247": {
+    "name": "Belarus U21",
+    "country": "Belarus",
+    "category": "U21"
+  },
+  "22360": {
+    "name": "Japan U20",
+    "country": "Japan",
+    "category": "U20"
+  },
+  "22414": {
+    "name": "Iceland U21",
+    "country": "Iceland",
+    "category": "U21"
+  },
+  "22462": {
+    "name": "Türkiye U17",
+    "country": "Türkiye",
+    "category": "U17"
+  },
+  "22513": {
+    "name": "Hungary U19",
+    "country": "Hungary",
+    "category": "U19"
+  },
+  "22514": {
+    "name": "Hungary U21",
+    "country": "Hungary",
+    "category": "U21"
+  },
+  "22515": {
+    "name": "Norway U19",
+    "country": "Norway",
+    "category": "U19"
+  },
+  "22584": {
+    "name": "Türkiye U18",
+    "country": "Türkiye",
+    "category": "U18"
+  },
+  "22585": {
+    "name": "Türkiye U19",
+    "country": "Türkiye",
+    "category": "U19"
+  },
+  "22586": {
+    "name": "Türkiye U20",
+    "country": "Türkiye",
+    "category": "U20"
+  },
+  "22901": {
+    "name": "Bosnia-Herzegovina U17",
+    "country": "Bosnia-Herzegovina",
+    "category": "U17"
+  },
+  "22906": {
+    "name": "Slovenia U17",
+    "country": "Slovenia",
+    "category": "U17"
+  },
+  "22907": {
+    "name": "England U20",
+    "country": "England",
+    "category": "U20"
+  },
+  "22978": {
+    "name": "Ghana U20",
+    "country": "Ghana",
+    "category": "U20"
+  },
+  "22979": {
+    "name": "Honduras U20",
+    "country": "Honduras",
+    "category": "U20"
+  },
+  "22982": {
+    "name": "Paraguay U20",
+    "country": "Paraguay",
+    "category": "U20"
+  },
+  "22987": {
+    "name": "Czechia U20",
+    "country": "Czechia",
+    "category": "U20"
+  },
+  "22988": {
+    "name": "Hungary U20",
+    "country": "Hungary",
+    "category": "U20"
+  },
+  "22989": {
+    "name": "Uruguay U20",
+    "country": "Uruguay",
+    "category": "U20"
+  },
+  "22991": {
+    "name": "Venezuela U20",
+    "country": "Venezuela",
+    "category": "U20"
+  },
+  "22998": {
+    "name": "Switzerland U18",
+    "country": "Switzerland",
+    "category": "U18"
+  },
+  "23101": {
+    "name": "France U19",
+    "country": "France",
+    "category": "U19"
+  },
+  "23130": {
+    "name": "Brazil U17",
+    "country": "Brazil",
+    "category": "U17"
+  },
+  "23132": {
+    "name": "Republic of Ireland U17",
+    "country": "Republic of Ireland",
+    "category": "U17"
+  },
+  "23133": {
+    "name": "Italy U17",
+    "country": "Italy",
+    "category": "U17"
+  },
+  "23135": {
+    "name": "Nigeria U17",
+    "country": "Nigeria",
+    "category": "U17"
+  },
+  "23136": {
+    "name": "Poland U17",
+    "country": "Poland",
+    "category": "U17"
+  },
+  "23137": {
+    "name": "Portugal U17",
+    "country": "Portugal",
+    "category": "U17"
+  },
+  "23140": {
+    "name": "Switzerland U17",
+    "country": "Switzerland",
+    "category": "U17"
+  },
+  "23219": {
+    "name": "Belgium U17",
+    "country": "Belgium",
+    "category": "U17"
+  },
+  "23243": {
+    "name": "Italy U16",
+    "country": "Italy",
+    "category": "U16"
+  },
+  "23260": {
+    "name": "England U17",
+    "country": "England",
+    "category": "U17"
+  },
+  "23282": {
+    "name": "Belgium U16",
+    "country": "Belgium",
+    "category": "U16"
+  },
+  "23313": {
+    "name": "Ukraine U17",
+    "country": "Ukraine",
+    "category": "U17"
+  },
+  "23487": {
+    "name": "Sweden U17",
+    "country": "Sweden",
+    "category": "U17"
+  },
+  "23488": {
+    "name": "Sweden U19",
+    "country": "Sweden",
+    "category": "U19"
+  },
+  "23657": {
+    "name": "Chile U20",
+    "country": "Chile",
+    "category": "U20"
+  },
+  "23658": {
+    "name": "France U20",
+    "country": "France",
+    "category": "U20"
+  },
+  "23912": {
+    "name": "Armenia U21",
+    "country": "Armenia",
+    "category": "U21"
+  },
+  "24955": {
+    "name": "Moldova U21",
+    "country": "Moldova",
+    "category": "U21"
+  },
+  "24957": {
+    "name": "Azerbaijan U21",
+    "country": "Azerbaijan",
+    "category": "U21"
+  },
+  "24958": {
+    "name": "Estonia U21",
+    "country": "Estonia",
+    "category": "U21"
+  },
+  "24959": {
+    "name": "Faroe Islands U21",
+    "country": "Faroe Islands",
+    "category": "U21"
+  },
+  "24961": {
+    "name": "Latvia U21",
+    "country": "Latvia",
+    "category": "U21"
+  },
+  "24962": {
+    "name": "Lithuania U21",
+    "country": "Lithuania",
+    "category": "U21"
+  },
+  "24963": {
+    "name": "Malta U21",
+    "country": "Malta",
+    "category": "U21"
+  },
+  "24964": {
+    "name": "San Marino U21",
+    "country": "San Marino",
+    "category": "U21"
+  },
+  "24965": {
+    "name": "Slovakia U21",
+    "country": "Slovakia",
+    "category": "U21"
+  },
+  "24967": {
+    "name": "Cyprus U21",
+    "country": "Cyprus",
+    "category": "U21"
+  },
+  "24978": {
+    "name": "Sweden U18",
+    "country": "Sweden",
+    "category": "U18"
+  },
+  "25250": {
+    "name": "France U18",
+    "country": "France",
+    "category": "U18"
+  },
+  "25505": {
+    "name": "Honduras U17",
+    "country": "Honduras",
+    "category": "U17"
+  },
+  "25506": {
+    "name": "Iran U17",
+    "country": "Iran",
+    "category": "U17"
+  },
+  "25507": {
+    "name": "Japan U17",
+    "country": "Japan",
+    "category": "U17"
+  },
+  "25508": {
+    "name": "Colombia U17",
+    "country": "Colombia",
+    "category": "U17"
+  },
+  "25510": {
+    "name": "New Zealand U16/U17",
+    "country": "New Zealand",
+    "category": "U16"
+  },
+  "25512": {
+    "name": "Uruguay U17",
+    "country": "Uruguay",
+    "category": "U17"
+  },
+  "25514": {
+    "name": "United States U17",
+    "country": "United States",
+    "category": "U17"
+  },
+  "25565": {
+    "name": "Czechia U18",
+    "country": "Czechia",
+    "category": "U18"
+  },
+  "25721": {
+    "name": "Hungary U17",
+    "country": "Hungary",
+    "category": "U17"
+  },
+  "25724": {
+    "name": "Armenia U19",
+    "country": "Armenia",
+    "category": "U19"
+  },
+  "25725": {
+    "name": "Israel U17",
+    "country": "Israel",
+    "category": "U17"
+  },
+  "25728": {
+    "name": "Slovenia U16",
+    "country": "Slovenia",
+    "category": "U16"
+  },
+  "25740": {
+    "name": "Georgia U19",
+    "country": "Georgia",
+    "category": "U19"
+  },
+  "25784": {
+    "name": "North Macedonia U19",
+    "country": "North Macedonia",
+    "category": "U19"
+  },
+  "25785": {
+    "name": "Iceland U19",
+    "country": "Iceland",
+    "category": "U19"
+  },
+  "25787": {
+    "name": "Georgia U17",
+    "country": "Georgia",
+    "category": "U17"
+  },
+  "25790": {
+    "name": "Northern Ireland U17",
+    "country": "Northern Ireland",
+    "category": "U17"
+  },
+  "25791": {
+    "name": "Scotland U17",
+    "country": "Scotland",
+    "category": "U17"
+  },
+  "25792": {
+    "name": "Slovakia U17",
+    "country": "Slovakia",
+    "category": "U17"
+  },
+  "25793": {
+    "name": "Czechia U16",
+    "country": "Czechia",
+    "category": "U16"
+  },
+  "25907": {
+    "name": "Estonia U19",
+    "country": "Estonia",
+    "category": "U19"
+  },
+  "25960": {
+    "name": "Slovakia U19",
+    "country": "Slovakia",
+    "category": "U19"
+  },
+  "25962": {
+    "name": "Cyprus U17",
+    "country": "Cyprus",
+    "category": "U17"
+  },
+  "26031": {
+    "name": "North Macedonia U17",
+    "country": "North Macedonia",
+    "category": "U17"
+  },
+  "26032": {
+    "name": "Estonia U17",
+    "country": "Estonia",
+    "category": "U17"
+  },
+  "26033": {
+    "name": "Faroe Islands U17",
+    "country": "Faroe Islands",
+    "category": "U17"
+  },
+  "26034": {
+    "name": "Iceland U17",
+    "country": "Iceland",
+    "category": "U17"
+  },
+  "26035": {
+    "name": "Czechia U17",
+    "country": "Czechia",
+    "category": "U17"
+  },
+  "26099": {
+    "name": "Albania U19",
+    "country": "Albania",
+    "category": "U19"
+  },
+  "26100": {
+    "name": "Malta U19",
+    "country": "Malta",
+    "category": "U19"
+  },
+  "26101": {
+    "name": "Montenegro U19",
+    "country": "Montenegro",
+    "category": "U19"
+  },
+  "26373": {
+    "name": "San Marino U19",
+    "country": "San Marino",
+    "category": "U19"
+  },
+  "26425": {
+    "name": "Slovenia U18",
+    "country": "Slovenia",
+    "category": "U18"
+  },
+  "26469": {
+    "name": "Greece U17",
+    "country": "Greece",
+    "category": "U17"
+  },
+  "26471": {
+    "name": "Norway U17",
+    "country": "Norway",
+    "category": "U17"
+  },
+  "26508": {
+    "name": "Ukraine U18",
+    "country": "Ukraine",
+    "category": "U18"
+  },
+  "27256": {
+    "name": "Bulgaria U19",
+    "country": "Bulgaria",
+    "category": "U19"
+  },
+  "27260": {
+    "name": "Jordan U20",
+    "country": "Jordan",
+    "category": "U20"
+  },
+  "27274": {
+    "name": "Tunisia U17",
+    "country": "Tunisia",
+    "category": "U17"
+  },
+  "27851": {
+    "name": "Romania U17",
+    "country": "Romania",
+    "category": "U17"
+  },
+  "28030": {
+    "name": "Lithuania U17",
+    "country": "Lithuania",
+    "category": "U17"
+  },
+  "28031": {
+    "name": "Northern Ireland U19",
+    "country": "Northern Ireland",
+    "category": "U19"
+  },
+  "28076": {
+    "name": "Denmark U20",
+    "country": "Denmark",
+    "category": "U20"
+  },
+  "28149": {
+    "name": "Lithuania U19",
+    "country": "Lithuania",
+    "category": "U19"
+  },
+  "28155": {
+    "name": "Switzerland U16",
+    "country": "Switzerland",
+    "category": "U16"
+  },
+  "28162": {
+    "name": "Hungary U18",
+    "country": "Hungary",
+    "category": "U18"
+  },
+  "28164": {
+    "name": "United States U19",
+    "country": "United States",
+    "category": "U19"
+  },
+  "28207": {
+    "name": "Croatia U18",
+    "country": "Croatia",
+    "category": "U18"
+  },
+  "28244": {
+    "name": "Poland U15",
+    "country": "Poland",
+    "category": "U15"
+  },
+  "28266": {
+    "name": "Colombia U20",
+    "country": "Colombia",
+    "category": "U20"
+  },
+  "28312": {
+    "name": "Belarus U19",
+    "country": "Belarus",
+    "category": "U19"
+  },
+  "28316": {
+    "name": "Slovakia U20",
+    "country": "Slovakia",
+    "category": "U20"
+  },
+  "28330": {
+    "name": "Hungary U16",
+    "country": "Hungary",
+    "category": "U16"
+  },
+  "28381": {
+    "name": "Ukraine U20",
+    "country": "Ukraine",
+    "category": "U20"
+  },
+  "28424": {
+    "name": "Iran U19",
+    "country": "Iran",
+    "category": "U19"
+  },
+  "28425": {
+    "name": "Japan U19",
+    "country": "Japan",
+    "category": "U19"
+  },
+  "28426": {
+    "name": "Latvia U19",
+    "country": "Latvia",
+    "category": "U19"
+  },
+  "28434": {
+    "name": "Cyprus U19",
+    "country": "Cyprus",
+    "category": "U19"
+  },
+  "28461": {
+    "name": "Italy U15",
+    "country": "Italy",
+    "category": "U15"
+  },
+  "28642": {
+    "name": "Japan U23",
+    "country": "Japan",
+    "category": "U23"
+  },
+  "28647": {
+    "name": "Poland U16",
+    "country": "Poland",
+    "category": "U16"
+  },
+  "28758": {
+    "name": "Belarus U17",
+    "country": "Belarus",
+    "category": "U17"
+  },
+  "28832": {
+    "name": "Latvia U17",
+    "country": "Latvia",
+    "category": "U17"
+  },
+  "29174": {
+    "name": "Peru U20",
+    "country": "Peru",
+    "category": "U20"
+  },
+  "29380": {
+    "name": "Croatia U20",
+    "country": "Croatia",
+    "category": "U20"
+  },
+  "29809": {
+    "name": "Ecuador U17",
+    "country": "Ecuador",
+    "category": "U17"
+  },
+  "30118": {
+    "name": "Albania U17",
+    "country": "Albania",
+    "category": "U17"
+  },
+  "30232": {
+    "name": "Faroe Islands U19",
+    "country": "Faroe Islands",
+    "category": "U19"
+  },
+  "30322": {
+    "name": "England U16",
+    "country": "England",
+    "category": "U16"
+  },
+  "30430": {
+    "name": "Slovakia U18",
+    "country": "Slovakia",
+    "category": "U18"
+  },
+  "30503": {
+    "name": "Portugal U15",
+    "country": "Portugal",
+    "category": "U15"
+  },
+  "30519": {
+    "name": "Israel U19",
+    "country": "Israel",
+    "category": "U19"
+  },
+  "30568": {
+    "name": "San Marino U17",
+    "country": "San Marino",
+    "category": "U17"
+  },
+  "30569": {
+    "name": "Moldova U19",
+    "country": "Moldova",
+    "category": "U19"
+  },
+  "31096": {
+    "name": "Nigeria U23",
+    "country": "Nigeria",
+    "category": "U23"
+  },
+  "31269": {
+    "name": "England U18",
+    "country": "England",
+    "category": "U18"
+  },
+  "31372": {
+    "name": "Portugal U16",
+    "country": "Portugal",
+    "category": "U16"
+  },
+  "31463": {
+    "name": "Ecuador U20",
+    "country": "Ecuador",
+    "category": "U20"
+  },
+  "31523": {
+    "name": "Senegal U17",
+    "country": "Senegal",
+    "category": "U17"
+  },
+  "31591": {
+    "name": "Greece U18",
+    "country": "Greece",
+    "category": "U18"
+  },
+  "31919": {
+    "name": "Norway U18",
+    "country": "Norway",
+    "category": "U18"
+  },
+  "32207": {
+    "name": "New Zealand U23",
+    "country": "New Zealand",
+    "category": "U23"
+  },
+  "32269": {
+    "name": "Australia U17",
+    "country": "Australia",
+    "category": "U17"
+  },
+  "32270": {
+    "name": "Australia U23",
+    "country": "Australia",
+    "category": "U23"
+  },
+  "32341": {
+    "name": "Iran U23",
+    "country": "Iran",
+    "category": "U23"
+  },
+  "3262": {
+    "name": "Germany",
+    "country": "Germany",
+    "category": "A"
+  },
+  "32645": {
+    "name": "Canada U17",
+    "country": "Canada",
+    "category": "U17"
+  },
+  "3299": {
+    "name": "England",
+    "country": "England",
+    "category": "A"
+  },
+  "3300": {
+    "name": "Portugal",
+    "country": "Portugal",
+    "category": "A"
+  },
+  "3375": {
+    "name": "Spain",
+    "country": "Spain",
+    "category": "A"
+  },
+  "3376": {
+    "name": "Italy",
+    "country": "Italy",
+    "category": "A"
+  },
+  "3377": {
+    "name": "France",
+    "country": "France",
+    "category": "A"
+  },
+  "33775": {
+    "name": "Spain U16",
+    "country": "Spain",
+    "category": "U16"
+  },
+  "3378": {
+    "name": "Greece",
+    "country": "Greece",
+    "category": "A"
+  },
+  "3379": {
+    "name": "Netherlands",
+    "country": "Netherlands",
+    "category": "A"
+  },
+  "3380": {
+    "name": "Scotland",
+    "country": "Scotland",
+    "category": "A"
+  },
+  "3381": {
+    "name": "Turkiye",
+    "country": "Turkiye",
+    "category": "A"
+  },
+  "3382": {
+    "name": "Belgium",
+    "country": "Belgium",
+    "category": "A"
+  },
+  "3383": {
+    "name": "Austria",
+    "country": "Austria",
+    "category": "A"
+  },
+  "3384": {
+    "name": "Switzerland",
+    "country": "Switzerland",
+    "category": "A"
+  },
+  "3394": {
+    "name": "Bulgaria",
+    "country": "Bulgaria",
+    "category": "A"
+  },
+  "3433": {
+    "name": "Australia",
+    "country": "Australia",
+    "category": "A"
+  },
+  "3434": {
+    "name": "Cameroon",
+    "country": "Cameroon",
+    "category": "A"
+  },
+  "3435": {
+    "name": "Japan",
+    "country": "Japan",
+    "category": "A"
+  },
+  "3436": {
+    "name": "Denmark",
+    "country": "Denmark",
+    "category": "A"
+  },
+  "3437": {
+    "name": "Argentina",
+    "country": "Argentina",
+    "category": "A"
+  },
+  "3438": {
+    "name": "Serbia",
+    "country": "Serbia",
+    "category": "A"
+  },
+  "3439": {
+    "name": "Brazil",
+    "country": "Brazil",
+    "category": "A"
+  },
+  "3440": {
+    "name": "Norway",
+    "country": "Norway",
+    "category": "A"
+  },
+  "3441": {
+    "name": "Ghana",
+    "country": "Ghana",
+    "category": "A"
+  },
+  "3442": {
+    "name": "Poland",
+    "country": "Poland",
+    "category": "A"
+  },
+  "3443": {
+    "name": "Finland",
+    "country": "Finland",
+    "category": "A"
+  },
+  "3444": {
+    "name": "Nigeria",
+    "country": "Nigeria",
+    "category": "A"
+  },
+  "3445": {
+    "name": "Czechia",
+    "country": "Czechia",
+    "category": "A"
+  },
+  "3446": {
+    "name": "Bosnia-Herzegovina",
+    "country": "Bosnia-Herzegovina",
+    "category": "A"
+  },
+  "3447": {
+    "name": "Romania",
+    "country": "Romania",
+    "category": "A"
+  },
+  "3449": {
+    "name": "Uruguay",
+    "country": "Uruguay",
+    "category": "A"
+  },
+  "3450": {
+    "name": "Belarus",
+    "country": "Belarus",
+    "category": "A"
+  },
+  "3468": {
+    "name": "Hungary",
+    "country": "Hungary",
+    "category": "A"
+  },
+  "34680": {
+    "name": "Belgium U15",
+    "country": "Belgium",
+    "category": "U15"
+  },
+  "34684": {
+    "name": "Netherlands U15",
+    "country": "Netherlands",
+    "category": "U15"
+  },
+  "34686": {
+    "name": "Romania U15",
+    "country": "Romania",
+    "category": "U15"
+  },
+  "34699": {
+    "name": "Croatia U16",
+    "country": "Croatia",
+    "category": "U16"
+  },
+  "34868": {
+    "name": "Ivory Coast U23",
+    "country": "Ivory Coast",
+    "category": "U23"
+  },
+  "34869": {
+    "name": "Gabon U23",
+    "country": "Gabon",
+    "category": "U23"
+  },
+  "34870": {
+    "name": "Senegal U23",
+    "country": "Senegal",
+    "category": "U23"
+  },
+  "3499": {
+    "name": "Senegal",
+    "country": "Senegal",
+    "category": "A"
+  },
+  "3503": {
+    "name": "Slovakia",
+    "country": "Slovakia",
+    "category": "A"
+  },
+  "3504": {
+    "name": "Venezuela",
+    "country": "Venezuela",
+    "category": "A"
+  },
+  "3505": {
+    "name": "United States",
+    "country": "United States",
+    "category": "A"
+  },
+  "3509": {
+    "name": "Republic of Ireland",
+    "country": "Republic of Ireland",
+    "category": "A"
+  },
+  "3510": {
+    "name": "Canada",
+    "country": "Canada",
+    "category": "A"
+  },
+  "3555": {
+    "name": "Latvia",
+    "country": "Latvia",
+    "category": "A"
+  },
+  "3556": {
+    "name": "Croatia",
+    "country": "Croatia",
+    "category": "A"
+  },
+  "3557": {
+    "name": "Sweden",
+    "country": "Sweden",
+    "category": "A"
+  },
+  "3560": {
+    "name": "Iraq",
+    "country": "Iraq",
+    "category": "A"
+  },
+  "3561": {
+    "name": "Albania",
+    "country": "Albania",
+    "category": "A"
+  },
+  "3574": {
+    "name": "Iceland",
+    "country": "Iceland",
+    "category": "A"
+  },
+  "35746": {
+    "name": "Bulgaria U17",
+    "country": "Bulgaria",
+    "category": "U17"
+  },
+  "3575": {
+    "name": "Morocco",
+    "country": "Morocco",
+    "category": "A"
+  },
+  "3580": {
+    "name": "Luxembourg",
+    "country": "Luxembourg",
+    "category": "A"
+  },
+  "3581": {
+    "name": "Paraguay",
+    "country": "Paraguay",
+    "category": "A"
+  },
+  "3582": {
+    "name": "Iran",
+    "country": "Iran",
+    "category": "A"
+  },
+  "3583": {
+    "name": "Zimbabwe",
+    "country": "Zimbabwe",
+    "category": "A"
+  },
+  "3584": {
+    "name": "Peru",
+    "country": "Peru",
+    "category": "A"
+  },
+  "3585": {
+    "name": "Angola",
+    "country": "Angola",
+    "category": "A"
+  },
+  "3588": {
+    "name": "Slovenia",
+    "country": "Slovenia",
+    "category": "A"
+  },
+  "3590": {
+    "name": "Honduras",
+    "country": "Honduras",
+    "category": "A"
+  },
+  "3591": {
+    "name": "Ivory Coast",
+    "country": "Ivory Coast",
+    "category": "A"
+  },
+  "36026": {
+    "name": "Malta U17",
+    "country": "Malta",
+    "category": "U17"
+  },
+  "3614": {
+    "name": "Algeria",
+    "country": "Algeria",
+    "category": "A"
+  },
+  "36178": {
+    "name": "Bosnia-Herzegovina U18",
+    "country": "Bosnia-Herzegovina",
+    "category": "U18"
+  },
+  "3668": {
+    "name": "Cyprus",
+    "country": "Cyprus",
+    "category": "A"
+  },
+  "3669": {
+    "name": "Georgia",
+    "country": "Georgia",
+    "category": "A"
+  },
+  "3674": {
+    "name": "Mali",
+    "country": "Mali",
+    "category": "A"
+  },
+  "3699": {
+    "name": "Ukraine",
+    "country": "Ukraine",
+    "category": "A"
+  },
+  "3700": {
+    "name": "Chile",
+    "country": "Chile",
+    "category": "A"
+  },
+  "3701": {
+    "name": "Guinea-Bissau",
+    "country": "Guinea-Bissau",
+    "category": "A"
+  },
+  "37018": {
+    "name": "Brazil U23",
+    "country": "Brazil",
+    "category": "U23"
+  },
+  "3702": {
+    "name": "Republic of the Congo",
+    "country": "Republic of the Congo",
+    "category": "A"
+  },
+  "3703": {
+    "name": "Zambia",
+    "country": "Zambia",
+    "category": "A"
+  },
+  "37497": {
+    "name": "Senegal U20",
+    "country": "Senegal",
+    "category": "U20"
+  },
+  "37515": {
+    "name": "Romania U18",
+    "country": "Romania",
+    "category": "U18"
+  },
+  "37630": {
+    "name": "Morocco U20",
+    "country": "Morocco",
+    "category": "U20"
+  },
+  "37709": {
+    "name": "Republic of Ireland U18",
+    "country": "Republic of Ireland",
+    "category": "U18"
+  },
+  "3815": {
+    "name": "Togo",
+    "country": "Togo",
+    "category": "A"
+  },
+  "3816": {
+    "name": "Colombia",
+    "country": "Colombia",
+    "category": "A"
+  },
+  "3817": {
+    "name": "Germany U21",
+    "country": "Germany",
+    "category": "U21"
+  },
+  "3851": {
+    "name": "Lithuania",
+    "country": "Lithuania",
+    "category": "A"
+  },
+  "3854": {
+    "name": "Democratic Republic of the Congo",
+    "country": "Democratic Republic of the Congo",
+    "category": "A"
+  },
+  "3856": {
+    "name": "Guinea",
+    "country": "Guinea",
+    "category": "A"
+  },
+  "38740": {
+    "name": "Norway U20",
+    "country": "Norway",
+    "category": "U20"
+  },
+  "39099": {
+    "name": "Guinea U23",
+    "country": "Guinea",
+    "category": "U23"
+  },
+  "39118": {
+    "name": "Netherlands U16",
+    "country": "Netherlands",
+    "category": "U16"
+  },
+  "39414": {
+    "name": "Austria U15",
+    "country": "Austria",
+    "category": "U15"
+  },
+  "39435": {
+    "name": "Greece U16",
+    "country": "Greece",
+    "category": "U16"
+  },
+  "39436": {
+    "name": "Greece U20",
+    "country": "Greece",
+    "category": "U20"
+  },
+  "39543": {
+    "name": "Serbia U20",
+    "country": "Serbia",
+    "category": "U20"
+  },
+  "40099": {
+    "name": "Montenegro U17",
+    "country": "Montenegro",
+    "category": "U17"
+  },
+  "40739": {
+    "name": "Iraq U23",
+    "country": "Iraq",
+    "category": "U23"
+  },
+  "41199": {
+    "name": "Burkina Faso U20",
+    "country": "Burkina Faso",
+    "category": "U20"
+  },
+  "41373": {
+    "name": "Venezuela U17",
+    "country": "Venezuela",
+    "category": "U17"
+  },
+  "41525": {
+    "name": "Sweden U16",
+    "country": "Sweden",
+    "category": "U16"
+  },
+  "4311": {
+    "name": "Cape Verde",
+    "country": "Cape Verde",
+    "category": "A"
+  },
+  "43903": {
+    "name": "Tunisia U20",
+    "country": "Tunisia",
+    "category": "U20"
+  },
+  "44247": {
+    "name": "Albania U16",
+    "country": "Albania",
+    "category": "U16"
+  },
+  "46607": {
+    "name": "Sweden U20",
+    "country": "Sweden",
+    "category": "U20"
+  },
+  "50074": {
+    "name": "Zambia U23",
+    "country": "Zambia",
+    "category": "U23"
+  },
+  "51024": {
+    "name": "Democratic Republic of the Congo U17",
+    "country": "Democratic Republic of the Congo",
+    "category": "U17"
+  },
+  "5148": {
+    "name": "North Macedonia",
+    "country": "North Macedonia",
+    "category": "A"
+  },
+  "52540": {
+    "name": "Argentina U23",
+    "country": "Argentina",
+    "category": "U23"
+  },
+  "52690": {
+    "name": "Ukraine U23",
+    "country": "Ukraine",
+    "category": "U23"
+  },
+  "53525": {
+    "name": "Malta U16",
+    "country": "Malta",
+    "category": "U16"
+  },
+  "53687": {
+    "name": "Slovenia U15",
+    "country": "Slovenia",
+    "category": "U15"
+  },
+  "53805": {
+    "name": "Sweden Olympic Team",
+    "country": "Sweden",
+    "category": "Olympic"
+  },
+  "53808": {
+    "name": "Iraq Olympic Team",
+    "country": "Iraq",
+    "category": "Olympic"
+  },
+  "53815": {
+    "name": "Mexico Olympic Team",
+    "country": "Mexico",
+    "category": "Olympic"
+  },
+  "53816": {
+    "name": "Honduras Olympic Team",
+    "country": "Honduras",
+    "category": "Olympic"
+  },
+  "53818": {
+    "name": "Brazil Olympic Team",
+    "country": "Brazil",
+    "category": "Olympic"
+  },
+  "53819": {
+    "name": "Argentina Olympic Team",
+    "country": "Argentina",
+    "category": "Olympic"
+  },
+  "53824": {
+    "name": "Spain Olympic Team",
+    "country": "Spain",
+    "category": "Olympic"
+  },
+  "53827": {
+    "name": "New Zealand Olympic Team",
+    "country": "New Zealand",
+    "category": "Olympic"
+  },
+  "53840": {
+    "name": "Italy Olympic Team",
+    "country": "Italy",
+    "category": "Olympic"
+  },
+  "53842": {
+    "name": "Ivory Coast Olympic Team",
+    "country": "Ivory Coast",
+    "category": "Olympic"
+  },
+  "53846": {
+    "name": "United States Olympic Team",
+    "country": "United States",
+    "category": "Olympic"
+  },
+  "53860": {
+    "name": "France Olympic Team",
+    "country": "France",
+    "category": "Olympic"
+  },
+  "53907": {
+    "name": "Israel Olympic Team",
+    "country": "Israel",
+    "category": "Olympic"
+  },
+  "53930": {
+    "name": "Guinea Olympic Team",
+    "country": "Guinea",
+    "category": "Olympic"
+  },
+  "53982": {
+    "name": "Kosovo",
+    "country": "Kosovo",
+    "category": "A"
+  },
+  "54037": {
+    "name": "Romania Olympic Team",
+    "country": "Romania",
+    "category": "Olympic"
+  },
+  "54396": {
+    "name": "Kosovo U19",
+    "country": "Kosovo",
+    "category": "U19"
+  },
+  "54460": {
+    "name": "Dominican Republic U20",
+    "country": "Dominican Republic",
+    "category": "U20"
+  },
+  "55469": {
+    "name": "Zambia U17",
+    "country": "Zambia",
+    "category": "U17"
+  },
+  "5547": {
+    "name": "Israel",
+    "country": "Israel",
+    "category": "A"
+  },
+  "56252": {
+    "name": "Kosovo U21",
+    "country": "Kosovo",
+    "category": "U21"
+  },
+  "5704": {
+    "name": "Gabon",
+    "country": "Gabon",
+    "category": "A"
+  },
+  "5709": {
+    "name": "Germany U20",
+    "country": "Germany",
+    "category": "U20"
+  },
+  "5710": {
+    "name": "Germany U19",
+    "country": "Germany",
+    "category": "U19"
+  },
+  "5750": {
+    "name": "Ecuador",
+    "country": "Ecuador",
+    "category": "A"
+  },
+  "58009": {
+    "name": "Kosovo U16",
+    "country": "Kosovo",
+    "category": "U16"
+  },
+  "58016": {
+    "name": "Kosovo U17",
+    "country": "Kosovo",
+    "category": "U17"
+  },
+  "58277": {
+    "name": "Albania U15",
+    "country": "Albania",
+    "category": "U15"
+  },
+  "5872": {
+    "name": "Burkina Faso",
+    "country": "Burkina Faso",
+    "category": "A"
+  },
+  "60509": {
+    "name": "Guinea U16",
+    "country": "Guinea",
+    "category": "U16"
+  },
+  "6090": {
+    "name": "Moldova",
+    "country": "Moldova",
+    "category": "A"
+  },
+  "61207": {
+    "name": "Dominican Republic U17",
+    "country": "Dominican Republic",
+    "category": "U17"
+  },
+  "6133": {
+    "name": "Estonia",
+    "country": "Estonia",
+    "category": "A"
+  },
+  "6186": {
+    "name": "The Gambia",
+    "country": "The Gambia",
+    "category": "A"
+  },
+  "6219": {
+    "name": "Armenia",
+    "country": "Armenia",
+    "category": "A"
+  },
+  "6303": {
+    "name": "Mexico",
+    "country": "Mexico",
+    "category": "A"
+  },
+  "64232": {
+    "name": "Jordan U23",
+    "country": "Jordan",
+    "category": "U23"
+  },
+  "6602": {
+    "name": "Libya",
+    "country": "Libya",
+    "category": "A"
+  },
+  "68813": {
+    "name": "Bulgaria U15",
+    "country": "Bulgaria",
+    "category": "U15"
+  },
+  "73100": {
+    "name": "Romania U20",
+    "country": "Romania",
+    "category": "U20"
+  },
+  "7658": {
+    "name": "Brazil U20",
+    "country": "Brazil",
+    "category": "U20"
+  },
+  "82699": {
+    "name": "Argentina U15",
+    "country": "Argentina",
+    "category": "U15"
+  },
+  "8595": {
+    "name": "Sweden U21",
+    "country": "Sweden",
+    "category": "U21"
+  },
+  "8605": {
+    "name": "Azerbaijan",
+    "country": "Azerbaijan",
+    "category": "A"
+  },
+  "8771": {
+    "name": "Czechia U21",
+    "country": "Czechia",
+    "category": "U21"
+  },
+  "8987": {
+    "name": "Kenya",
+    "country": "Kenya",
+    "category": "A"
+  },
+  "9067": {
+    "name": "Germany U18",
+    "country": "Germany",
+    "category": "U18"
+  },
+  "9171": {
+    "name": "New Zealand",
+    "country": "New Zealand",
+    "category": "A"
+  },
+  "9173": {
+    "name": "Faroe Islands",
+    "country": "Faroe Islands",
+    "category": "A"
+  },
+  "9315": {
+    "name": "Belgium U21",
+    "country": "Belgium",
+    "category": "U21"
+  },
+  "9316": {
+    "name": "Austria U21",
+    "country": "Austria",
+    "category": "U21"
+  },
+  "9317": {
+    "name": "Greece U21",
+    "country": "Greece",
+    "category": "U21"
+  },
+  "9323": {
+    "name": "France U21",
+    "country": "France",
+    "category": "U21"
+  },
+  "9324": {
+    "name": "Poland U21",
+    "country": "Poland",
+    "category": "U21"
+  },
+  "94748": {
+    "name": "Brazil U18",
+    "country": "Brazil",
+    "category": "U18"
+  },
+  "9534": {
+    "name": "Switzerland U21",
+    "country": "Switzerland",
+    "category": "U21"
+  },
+  "9565": {
+    "name": "England U21",
+    "country": "England",
+    "category": "U21"
+  },
+  "9566": {
+    "name": "Serbia U21",
+    "country": "Serbia",
+    "category": "U21"
+  },
+  "9567": {
+    "name": "Spain U21",
+    "country": "Spain",
+    "category": "U21"
+  },
+  "9568": {
+    "name": "Türkiye U21",
+    "country": "Türkiye",
+    "category": "U21"
+  }
+}

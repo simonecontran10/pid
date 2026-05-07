@@ -93,15 +93,17 @@ async function loadJSON(name) {
 }
 
 async function bootstrap() {
-  const [clubs, main, unified, stats, lastUpdate, oppNames] = await Promise.all([
+  const [clubs, main, unified, stats, lastUpdate, oppNames, nationalTeamLookup] = await Promise.all([
     loadJSON("clubs"),
     loadJSON("players_main"),
     loadJSON("players_unified"),
     loadJSON("players_stats"),
     loadJSON("last_update"),
     loadJSON("opponent_club_names"),
+    loadJSON("national_team_lookup"),
   ]);
   state.opponentNames = oppNames || {};
+  state.nationalTeamLookup = nationalTeamLookup || {};
   state.clubs = clubs || [];
   // PID: modulo U21 disattivato (era specifico Saudi U21 Excel).
   // Map vuota per compatibilità con eventuali chiamate residue a state.u21MatchesByTmid.
@@ -448,19 +450,12 @@ function clubLogo(c) {
 
 function competitionLogo(compCode) {
   if (!compCode) return null;
-  // Prima i casi noti con estensione esplicita non-PNG
-  const knownNonPng = { ACLE: "svg", ACL2: "svg", ES1: "svg" };
-  // ES1 → riusa il logo di ACL2 (legacy fix)
-  // SA2P → usa SDL.png
-  let code = compCode;
-  if (compCode === "ES1" && knownNonPng[compCode]) code = "ACL2";
-  if (compCode === "SA2P") code = "SDL";
-  // Tenta prima il file PNG (default per la maggior parte). Se non c'è, fallback su SVG noto.
-  const ext = knownNonPng[code] || "png";
-  const url = _photoUrl(`photos/competitions/${code}.${ext}`);
-  return url;
-  // Nota: il browser farà 404 se il file non esiste, e il frontend mostrerà il fallback (barra colorata).
-  // I file PNG vengono scaricati con `download_competition_logos.py`.
+  // Casi noti SVG (le 2 UEFA principali pre-existenti)
+  const knownSvg = { ACLE: "svg", ACL2: "svg" };
+  // SA2P (Saudi Second Division League) → riusa SDL.png (legacy)
+  let code = compCode === "SA2P" ? "SDL" : compCode;
+  const ext = knownSvg[code] || "png";
+  return _photoUrl(`photos/competitions/${code}.${ext}`);
 }
 
 function totalGoals2025(pid) {
@@ -1476,19 +1471,33 @@ function _renderClubCareerBox(stats) {
 function _renderNationalCareerBox(stats) {
   const list = stats?.national_career;
   if (!Array.isArray(list) || !list.length) return "";
-  // Trova il profilo del giocatore per dedurre la nazionalità
+  // Trova il profilo del giocatore per dedurre la nazionalità (fallback)
   const pid = stats?.tm_player_id;
   const profile = pid != null ? state.players.find(x => x.tm_player_id === pid) : null;
-  const country = (profile?.citizenships?.[0]) || stats?.nationality || "National";
-  const flagUrl = profile ? nationFlag(profile) : _photoUrl("photos/branding/logo.png");
-  // Helper per costruire il nome locale a partire dalla categoria + country del giocatore
-  // (i dati TM scrappati hanno team_name hardcoded "Italy ..." anche per giocatori non-italiani:
-  // bug scraper, fixiamo qui lato render).
-  const buildTeamName = (cat) => {
+  const fallbackCountry = (profile?.citizenships?.[0]) || stats?.nationality || "National";
+
+  // Lookup TM team_id → {country, category, name} caricato in bootstrap()
+  const lookup = state.nationalTeamLookup || {};
+
+  // Helper: per ogni voce di national_career, deduci country + category corretti
+  // Strategia (ordine):
+  //  1. lookup[team_id] se esiste (fonte di verità: scrappato da TM)
+  //  2. fallback al primo cittadinanza del giocatore + category della voce
+  const resolveTeamInfo = (nt) => {
+    const tid = String(nt.team_id || "");
+    const lk = lookup[tid];
+    if (lk?.country) {
+      return { country: lk.country, category: lk.category || nt.category || "A" };
+    }
+    return { country: fallbackCountry, category: nt.category || "A" };
+  };
+
+  const buildTeamName = (country, cat) => {
     if (!cat || cat === "A") return country;
     if (cat === "Olympic") return `${country} Olympic`;
     return `${country} ${cat}`;
   };
+
   // Ordinamento gerarchico fisso: A → U23 → U22 → U21 → U20 → U19 → U18 → U17 → U16 → U15 → Olympic → altre
   const CAT_ORDER = { "A": 0, "U23": 1, "U22": 2, "U21": 3, "U20": 4, "U19": 5, "U18": 6, "U17": 7, "U16": 8, "U15": 9, "Olympic": 10 };
   const sorted = [...list].sort((a, b) => {
@@ -1501,11 +1510,15 @@ function _renderNationalCareerBox(stats) {
   const GRID_TPL = "1fr 38px 38px 64px";
   const rows = sorted.map(nt => {
     const goalsHot = (nt.goals||0) >= 5;
-    const teamName = buildTeamName(nt.category);
+    const info = resolveTeamInfo(nt);
+    const teamName = buildTeamName(info.country, info.category);
+    // Bandiera: lookup country → file PNG nazionale (es. "Morocco" → photos/national/Morocco.png)
+    const flagFname = info.country.replace(/'/g, "").replace(/,/g, "").replace(/\s+/g, "-");
+    const flagUrl = _photoUrl(`photos/national/${flagFname}.png`);
     return `
     <div style="display: grid; grid-template-columns: ${GRID_TPL}; gap: 12px; align-items: center; padding: 8px 12px; border-bottom: 0.5px solid var(--border);">
       <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
-        ${flagUrl ? `<img src="${flagUrl}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px; flex-shrink: 0;"/>` : ""}
+        ${flagUrl ? `<img src="${flagUrl}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px; flex-shrink: 0;" onerror="this.style.display='none'"/>` : ""}
         <span class="truncate" style="font-size: 13px; color: var(--text-1); font-weight: 500;">${escapeHtml(teamName)}</span>
       </div>
       <span class="stat-cell" style="font-size: 14px; font-weight: 600; color: ${nt.caps?"var(--text-1)":"var(--text-3)"}; text-align: center; font-variant-numeric: tabular-nums;">${nt.caps||0}</span>
