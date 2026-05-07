@@ -5586,17 +5586,12 @@ function _formatEta(seconds) {
 }
 
 function setupUpdateButton() {
-  // Il bottone "Aggiorna ora" è stato rimosso: il sito è statico su Vercel,
-  // gli aggiornamenti dati avvengono via GitHub Actions (vedi .github/workflows/auto_update_*.yml).
-  // Mostro solo info statica "Ultimo aggiornamento" letta da data/last_update.json.
-  const btn = document.getElementById("sidebar-update-btn");
-  const progress = document.getElementById("sidebar-update-progress");
-  if (btn) btn.style.display = "none";
-  if (progress) progress.style.display = "none";
-
-  // Inserisci un riquadro "Auto-update" con la data dell'ultimo aggiornamento
-  // (la stringa data è già popolata in #sidebar-last-update da bootstrap()).
-  const updateBox = btn ? btn.parentElement : null;
+  // Il bottone "Aggiorna ora" è stato rimosso dall'HTML: il sito è statico su Vercel,
+  // gli aggiornamenti dati avvengono via GitHub Actions (.github/workflows/auto_update_*.yml).
+  // Mostro solo un riquadro "Auto-update / nightly" con la data dell'ultimo aggiornamento.
+  // Ancoraggio: il container che contiene #sidebar-last-update.
+  const lastUpdateEl = document.getElementById("sidebar-last-update");
+  const updateBox = lastUpdateEl ? lastUpdateEl.parentElement : null;
   if (updateBox && !document.getElementById("auto-update-info")) {
     const info = document.createElement("div");
     info.id = "auto-update-info";
