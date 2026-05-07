@@ -298,10 +298,8 @@
   "939745": {
     "sots_id": 2000103120,
     "name": "Lorenzo Torriani",
-    "club": "AC Milan",
     "match_score": 1.0,
-    "matched_via": "team_roster",
-    "face_local": "photos/players_sots_lookup/2000103120.png"
+    "matched_via": "manual_override_8mag"
   },
   "323167": {
     "sots_id": 43266774,
@@ -5816,8 +5814,7 @@
     "sots_id": 2000336209,
     "name": "Alessandro Longoni",
     "match_score": 1.0,
-    "matched_via": "cross_club_dob_confirmed",
-    "face_local": "photos/players_sots_lookup/2000336209.png"
+    "matched_via": "manual_override_8mag"
   },
   "1058343": {
     "sots_id": 2000269264,
@@ -8497,8 +8494,7 @@
     "sots_id": 2000307484,
     "name": "Grady Makiobo",
     "match_score": 1.0,
-    "matched_via": "cross_club_dob_confirmed",
-    "face_local": "photos/players_sots_lookup/2000307484.png"
+    "matched_via": "manual_override_8mag"
   },
   "1013701": {
     "sots_id": 2000183258,
@@ -8525,8 +8521,7 @@
     "sots_id": 2000198110,
     "name": "Henry Camara",
     "match_score": 1.0,
-    "matched_via": "cross_club_dob_confirmed",
-    "face_local": "photos/players_sots_lookup/2000198110.png"
+    "matched_via": "manual_override_8mag"
   },
   "181768": {
     "sots_id": 19163503,
@@ -12755,5 +12750,131 @@
     "match_score": 1.0,
     "matched_via": "offline_match_dob_confirmed",
     "face_local": "photos/players_sots_lookup/2000245902.png"
+  },
+  "660342": {
+    "sots_id": 49047842,
+    "name": "Gabriel Charpentier",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1134304": {
+    "sots_id": 2000241198,
+    "name": "Joseph Liteta",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "699442": {
+    "sots_id": 96161950,
+    "name": "Kacper Urbański",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "374418": {
+    "sots_id": 96105431,
+    "name": "Mateusz Praszelik",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "160668": {
+    "sots_id": 91105244,
+    "name": "Antonio Čolak",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "268178": {
+    "sots_id": 96048686,
+    "name": "Arkadiusz Reca",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1061721": {
+    "sots_id": 2000227896,
+    "name": "Indrit Mavraj",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "255461": {
+    "sots_id": 96043133,
+    "name": "Przemysław Szymiński",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "386967": {
+    "sots_id": 96136102,
+    "name": "Przemysław Wiśniewski",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "991458": {
+    "sots_id": 2000193451,
+    "name": "Mateusz Skoczylas",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "898821": {
+    "sots_id": 2000098492,
+    "name": "Mattia Brugarello",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "919669": {
+    "sots_id": 2000124322,
+    "name": "Simone Cinquegrano",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1051116": {
+    "sots_id": 2000266831,
+    "name": "Andrea Caucci",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "920046": {
+    "sots_id": 2000310760,
+    "name": "Bilal Brusdeilins",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "991459": {
+    "sots_id": 2000150888,
+    "name": "Daniel Mikołajewski",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "957822": {
+    "sots_id": 2000184141,
+    "name": "Eddy Kouadio",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1008759": {
+    "sots_id": 2000204708,
+    "name": "Grigorios Politakis",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1200320": {
+    "sots_id": 2000384675,
+    "name": "Hjalte Lærke",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "928037": {
+    "sots_id": 2000157324,
+    "name": "Ioan Vermeșan",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1234457": {
+    "sots_id": 2000386592,
+    "name": "Marco Tiozzo",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1084276": {
+    "sots_id": 2000269983,
+    "name": "Michael Zeppieri",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
   }
 }

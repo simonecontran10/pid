@@ -2328,12 +2328,14 @@
     "fetched_at": "2026-05-06T20:41:36Z",
     "roster_club_id": 41107,
     "roster_club_name": "Milan Futuro",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000336209,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000336209.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000336209/alessandro-longoni",
     "current_club_id_original": 10958,
     "current_club_name_original": "Internal transfer: AC Milan Primavera; date: 31/01/2026",
-    "photo_local": "photos/players_tm/1074986.jpg"
+    "photo_local": "photos/players_tm/1074986.jpg",
+    "sortitoutsi_id": 2000336209,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000336209.png"
   },
   {
     "tm_player_id": 1058343,
@@ -4880,10 +4882,12 @@
     "fetched_at": "2026-05-05T21:19:12Z",
     "roster_club_id": 12819,
     "roster_club_name": "Napoli Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1051116.jpg"
+    "sortitoutsi_person_id": 2000266831,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000266831.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000266831/andrea-caucci",
+    "photo_local": "photos/players_tm/1051116.jpg",
+    "sortitoutsi_id": 2000266831,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000266831.png"
   },
   {
     "tm_player_id": 392524,
@@ -8562,12 +8566,14 @@
     "fetched_at": "2026-05-05T21:26:57Z",
     "roster_club_id": 5618,
     "roster_club_name": "Lecce Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000310760,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000310760.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000310760/bilal-brusdeilins",
     "photo_local": "photos/players_tm/920046.jpg",
     "current_club_id_original": 30326,
-    "current_club_name_original": "Returnee"
+    "current_club_name_original": "Returnee",
+    "sortitoutsi_id": 2000310760,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000310760.png"
   },
   {
     "tm_player_id": 423744,
@@ -11500,12 +11506,14 @@
     "fetched_at": "2026-05-05T21:33:00Z",
     "roster_club_id": 5243,
     "roster_club_name": "Parma Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000150888,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000150888.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000150888/daniel-mikolajewski",
     "photo_local": "photos/players_tm/991459.png",
     "current_club_id_original": 168,
-    "current_club_name_original": "Returnee"
+    "current_club_name_original": "Returnee",
+    "sortitoutsi_id": 2000150888,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000150888.png"
   },
   {
     "tm_player_id": 651569,
@@ -14686,12 +14694,14 @@
     "fetched_at": "2026-05-05T21:39:45Z",
     "roster_club_id": 430,
     "roster_club_name": "ACF Fiorentina",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000184141,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000184141.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000184141/eddy-kouadio",
     "photo_local": "photos/players_tm/957822.jpg",
     "current_club_id_original": 8505,
-    "current_club_name_original": "Internal transfer: Fiorentina Primavera; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Fiorentina Primavera; date: 01/07/2025",
+    "sortitoutsi_id": 2000184141,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000184141.png"
   },
   {
     "tm_player_id": 607854,
@@ -25201,12 +25211,14 @@
     "fetched_at": "2026-05-06T20:44:21Z",
     "roster_club_id": 41101,
     "roster_club_name": "Juventus Next Gen",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000307484,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000307484.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000307484/grady-makiobo",
     "current_club_id_original": 66530,
     "current_club_name_original": "New arrival",
-    "photo_local": "photos/players_tm/1318182.jpg"
+    "photo_local": "photos/players_tm/1318182.jpg",
+    "sortitoutsi_id": 2000307484,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000307484.png"
   },
   {
     "tm_player_id": 163222,
@@ -25305,10 +25317,12 @@
     "fetched_at": "2026-05-05T22:01:28Z",
     "roster_club_id": 12130,
     "roster_club_name": "Torino Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1008759.png"
+    "sortitoutsi_person_id": 2000204708,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000204708.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000204708/grigoris-politakis",
+    "photo_local": "photos/players_tm/1008759.png",
+    "sortitoutsi_id": 2000204708,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000204708.png"
   },
   {
     "tm_player_id": 249730,
@@ -25805,12 +25819,14 @@
     "fetched_at": "2026-05-06T20:47:27Z",
     "roster_club_id": 41110,
     "roster_club_name": "Atalanta U23",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000198110,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000198110.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000198110/henry-camara",
     "current_club_id_original": 11998,
     "current_club_name_original": "Internal transfer: Atalanta Primavera; date: 01/07/2025",
-    "photo_local": "photos/players_tm/955427.jpg"
+    "photo_local": "photos/players_tm/955427.jpg",
+    "sortitoutsi_id": 2000198110,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000198110.png"
   },
   {
     "tm_player_id": 181768,
@@ -25876,12 +25892,14 @@
     "fetched_at": "2026-05-05T22:02:46Z",
     "roster_club_id": 5618,
     "roster_club_name": "Lecce Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000384675,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000384675.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000384675/hjalte-laerke",
     "photo_local": "photos/players_tm/1200320.jpg",
     "current_club_id_original": 22110,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_id": 2000384675,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000384675.png"
   },
   {
     "tm_player_id": 1077175,
@@ -26249,10 +26267,12 @@
     "fetched_at": "2026-05-05T22:03:32Z",
     "roster_club_id": 16996,
     "roster_club_name": "Hellas Verona Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/928037.jpg"
+    "sortitoutsi_person_id": 2000157324,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000157324.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000157324/ioan-vermesan",
+    "photo_local": "photos/players_tm/928037.jpg",
+    "sortitoutsi_id": 2000157324,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000157324.png"
   },
   {
     "tm_player_id": 1075420,
@@ -28857,12 +28877,14 @@
     "fetched_at": "2026-05-05T22:08:57Z",
     "roster_club_id": 1390,
     "roster_club_name": "Cagliari Calcio",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000241198,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000241198.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000241198/joseph-liteta",
     "photo_local": "photos/players_tm/1134304.jpg",
     "current_club_id_original": 11676,
-    "current_club_name_original": "Internal transfer: Cagliari Primavera; date: 19/10/2025"
+    "current_club_name_original": "Internal transfer: Cagliari Primavera; date: 19/10/2025",
+    "sortitoutsi_id": 2000241198,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000241198.png"
   },
   {
     "tm_player_id": 567129,
@@ -33401,10 +33423,12 @@
     "fetched_at": "2026-05-06T20:41:24Z",
     "roster_club_id": 41107,
     "roster_club_name": "Milan Futuro",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/939745.jpg"
+    "sortitoutsi_person_id": 2000103120,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000103120.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000103120/lorenzo-torriani",
+    "photo_local": "photos/players_tm/939745.jpg",
+    "sortitoutsi_id": 2000103120,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000103120.png"
   },
   {
     "tm_player_id": 1061820,
@@ -37301,12 +37325,14 @@
     "fetched_at": "2026-05-05T22:31:38Z",
     "roster_club_id": 11008,
     "roster_club_name": "Juventus Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000386592,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000386592.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000386592/marco-tiozzo-pagio",
     "photo_local": "photos/players_tm/1234457.jpg",
     "current_club_id_original": 49567,
-    "current_club_name_original": "Internal transfer: Juventus Under 17; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Juventus Under 17; date: 01/07/2025",
+    "sortitoutsi_id": 2000386592,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000386592.png"
   },
   {
     "tm_player_id": 362981,
@@ -41743,10 +41769,12 @@
     "fetched_at": "2026-05-05T22:41:19Z",
     "roster_club_id": 12130,
     "roster_club_name": "Torino Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1084276.jpg"
+    "sortitoutsi_person_id": 2000269983,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000269983.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000269983/michael-zeppieri",
+    "photo_local": "photos/players_tm/1084276.jpg",
+    "sortitoutsi_id": 2000269983,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000269983.png"
   },
   {
     "tm_player_id": 564305,
@@ -59348,10 +59376,12 @@
     "fetched_at": "2026-05-06T13:48:25Z",
     "roster_club_id": 3522,
     "roster_club_name": "Winter signing",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/386967.jpg"
+    "sortitoutsi_person_id": 96136102,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96136102.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96136102/przemyslaw-wisniewski",
+    "photo_local": "photos/players_tm/386967.jpg",
+    "sortitoutsi_id": 96136102,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96136102.png"
   },
   {
     "tm_player_id": 630989,
@@ -61148,10 +61178,12 @@
     "fetched_at": "2026-05-06T13:52:25Z",
     "roster_club_id": 332,
     "roster_club_name": "Winter signing",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1061721.jpg"
+    "sortitoutsi_person_id": 2000227896,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000227896.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000227896/indrit-mavraj",
+    "photo_local": "photos/players_tm/1061721.jpg",
+    "sortitoutsi_id": 2000227896,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000227896.png"
   },
   {
     "tm_player_id": 489865,
@@ -62309,10 +62341,12 @@
     "fetched_at": "2026-05-06T13:55:12Z",
     "roster_club_id": 276,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/374418.jpg"
+    "sortitoutsi_person_id": 96105431,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96105431.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96105431/mateusz-praszelik",
+    "photo_local": "photos/players_tm/374418.jpg",
+    "sortitoutsi_id": 96105431,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96105431.png"
   },
   {
     "tm_player_id": 991458,
@@ -62342,10 +62376,12 @@
     "fetched_at": "2026-05-06T13:55:16Z",
     "roster_club_id": 41107,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/991458.png"
+    "sortitoutsi_person_id": 2000193451,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000193451.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000193451/mateusz-skoczylas",
+    "photo_local": "photos/players_tm/991458.png",
+    "sortitoutsi_id": 2000193451,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000193451.png"
   },
   {
     "tm_player_id": 1241426,
@@ -62536,10 +62572,12 @@
     "fetched_at": "2026-05-06T13:55:42Z",
     "roster_club_id": 130,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/660342.jpg"
+    "sortitoutsi_person_id": 49047842,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_49047842.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/49047842/gabriel-charpentier",
+    "photo_local": "photos/players_tm/660342.jpg",
+    "sortitoutsi_id": 49047842,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49047842.png"
   },
   {
     "tm_player_id": 1163778,
@@ -63210,10 +63248,12 @@
     "fetched_at": "2026-05-06T13:57:15Z",
     "roster_club_id": 3522,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/268178.jpg"
+    "sortitoutsi_person_id": 96048686,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96048686.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96048686/arkadiusz-reca",
+    "photo_local": "photos/players_tm/268178.jpg",
+    "sortitoutsi_id": 96048686,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96048686.png"
   },
   {
     "tm_player_id": 252608,
@@ -63276,10 +63316,12 @@
     "fetched_at": "2026-05-06T13:57:23Z",
     "roster_club_id": 1025,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/699442.jpg"
+    "sortitoutsi_person_id": 96161950,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96161950.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96161950/kacper-urbanski",
+    "photo_local": "photos/players_tm/699442.jpg",
+    "sortitoutsi_id": 96161950,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96161950.png"
   },
   {
     "tm_player_id": 618424,
@@ -63499,10 +63541,12 @@
     "fetched_at": "2026-05-06T13:57:54Z",
     "roster_club_id": 3522,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/160668.jpg"
+    "sortitoutsi_person_id": 91105244,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_91105244.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/91105244/antonio-colak",
+    "photo_local": "photos/players_tm/160668.jpg",
+    "sortitoutsi_id": 91105244,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/91105244.png"
   },
   {
     "tm_player_id": 225055,
@@ -82149,10 +82193,12 @@
     "fetched_at": "2026-05-06T14:42:43Z",
     "roster_club_id": 8970,
     "roster_club_name": "New arrival",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/255461.png"
+    "sortitoutsi_person_id": 96043133,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96043133.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96043133/przemyslaw-szyminski",
+    "photo_local": "photos/players_tm/255461.png",
+    "sortitoutsi_id": 96043133,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96043133.png"
   },
   {
     "tm_player_id": 239951,
@@ -91730,10 +91776,12 @@
     "fetched_at": "2026-05-06T20:40:55Z",
     "roster_club_id": 41119,
     "roster_club_name": "Inter U23",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/919669.jpg"
+    "sortitoutsi_person_id": 2000124322,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000124322.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000124322/simone-cinquegrano",
+    "photo_local": "photos/players_tm/919669.jpg",
+    "sortitoutsi_id": 2000124322,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000124322.png"
   },
   {
     "tm_player_id": 927911,
@@ -92695,12 +92743,14 @@
     "fetched_at": "2026-05-06T20:43:56Z",
     "roster_club_id": 41101,
     "roster_club_name": "Juventus Next Gen",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000098492,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000098492.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000098492/mattia-brugarello",
     "current_club_id_original": 1415,
     "current_club_name_original": "New arrival",
-    "photo_local": "photos/players_tm/898821.jpg"
+    "photo_local": "photos/players_tm/898821.jpg",
+    "sortitoutsi_id": 2000098492,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000098492.png"
   },
   {
     "tm_player_id": 163597,
