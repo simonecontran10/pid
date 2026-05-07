@@ -14,7 +14,7 @@ concurrency:
 jobs:
   daily-update:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 180
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
