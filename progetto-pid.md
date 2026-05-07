@@ -1243,3 +1243,19 @@ Script Python inline che copia i 4 loghi delle prime squadre nei file path delle
 - [ ] Lanciare i 2 blocchi di codice: copia fallback + tentativo download SortItOutSi
 - [ ] Verificare online che i loghi siano visibili
 - [ ] Decidere se SortItOutSi non ha loghi U23 (caso confermato): tenere fallback prima squadra (sembra OK visivamente perché Inter U23 = stemma Inter, Milan Futuro = stemma Milan, ecc.)
+
+### Risolto (8 mag mattina) — Loghi IT3 ✅
+**Diagnosi**: i 4 file in `data/photos/clubs_sots/{tm_club_id}.png` mancavano fisicamente, anche se `clubs.json` li referenziava. Online il browser cercava i file → 404 → placeholder.
+
+**Fix**:
+1. Fallback prima squadra (Python `shutil.copy` da 46.png/5.png/506.png/800.png ai path U23)
+2. Tentativo download SortItOutSi U23 reali:
+   - **Juventus Next Gen** (sots=43457016, 26865 bytes): logo U23 dedicato ✓
+   - **Atalanta U23** (sots=2000277208, 28536 bytes): logo U23 dedicato ✓
+   - **Inter U23** (sots=2000475415): solo placeholder GIF 43 bytes → resta fallback Inter Milan
+   - **Milan Futuro** (sots=2000376493): solo placeholder GIF 43 bytes → resta fallback AC Milan
+
+Risultato online: 4/4 loghi visibili correttamente.
+
+### Nota su WebP-as-PNG nella cartella clubs_sots
+Tutti i loghi `clubs_sots/*.png` sono in realtà WebP con estensione fasulla (legacy `download_photos.py` che non controlla il formato del content servito da SortItOutSi). Il browser li gestisce comunque su Chrome/Safari/Firefox moderni. Non serve fix immediato.
