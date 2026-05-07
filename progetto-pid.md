@@ -1311,3 +1311,36 @@ Restano nel repo per ora (sono utili se in futuro vorrai disabilitare GitHub Act
 - [ ] Test workflow daily manuale (Actions → Run workflow) per verificare che gira senza errori
 - [ ] Verificare il primo run automatico domani notte (03:00 UTC = ~05:00 ITA)
 - [ ] Eventualmente eliminare `auto_update_daily.sh`, `auto_update_full.sh`, e i 3 `.plist` launchd se non li usi più
+
+
+## 8 mag 2026 (mattina) — Fix flash bottone "Aggiorna ora" + test workflow GitHub Actions
+
+### Fix flash al ricarico
+Sequenza problematica: HTML caricava `<button>Aggiorna ora</button>` visibile, poi JS partiva e lo nascondeva con `display:none`. In mezzo, ~200-500ms di flash visibile. Fix: rimosso il bottone (e la progress bar inutile) **direttamente dall'HTML**, non solo nascosto via JS. Resta solo `#sidebar-last-update` con la data, e JS aggiunge dinamicamente il box "Auto-update / nightly".
+
+`setupUpdateButton()` aggiornato: usa `#sidebar-last-update.parentElement` come ancoraggio (il bottone non esiste più nel DOM).
+
+### Test workflow daily — run #1 manuale
+Lanciato dal tab Actions di GitHub per validare il setup prima del primo cron automatico.
+
+Step osservati ✅:
+- Set up job: 1s
+- Checkout repo: 3s
+- Setup Python: 2s
+- Install dependencies: 6s
+- Hash pre-run players_stats.json: 0s
+- Run stats refresh: in corso (atteso 25-40 min)
+
+Step ancora da verificare al termine:
+- Hash post-run + check changes
+- Upload to Cloudflare R2 (se players_stats cambiato)
+- Commit and push if changed
+
+### File modificati
+- `frontend/index.html` (rimosso #sidebar-update-btn + #sidebar-update-progress)
+- `frontend/app.js` (setupUpdateButton riscritto, ancoraggio via #sidebar-last-update)
+
+### Verifiche pendenti
+- [ ] Esito completo workflow daily run #1 (~30-40 min)
+- [ ] Verifica commit autonomo da `github-actions[bot]`
+- [ ] Conferma cron automatico domani notte (03:00 UTC)
