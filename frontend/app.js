@@ -3267,8 +3267,46 @@ function renderGridsPanel() {
 
   // Listeners
   document.getElementById("grids-formation")?.addEventListener("change", e => {
-    state.grids.formation = e.target.value;
-    state.grids.assigned = {}; // reset perché slot diversi
+    const oldFormation = state.grids.formation;
+    const newFormation = e.target.value;
+    const oldPositions = FORMATIONS[oldFormation] || FORMATIONS["4-3-3"];
+    const newPositions = FORMATIONS[newFormation] || FORMATIONS["4-3-3"];
+
+    // Raggruppa giocatori del vecchio modulo per macro-ruolo
+    // (Goalkeeper / Defender / Midfield / Attack)
+    const byRole = { Goalkeeper: [], Defender: [], Midfield: [], Attack: [] };
+    for (const slot of oldPositions) {
+      const players = _gridsAssignedFor(slot.id);
+      if (!players.length) continue;
+      const role = _slotRoleGeneral(slot);
+      if (!role || !byRole[role]) continue;
+      for (const pid of players) {
+        if (pid) byRole[role].push(pid);
+      }
+    }
+
+    // Distribuisci round-robin sui slot del nuovo modulo
+    const newAssigned = {};
+    const newSlotsByRole = { Goalkeeper: [], Defender: [], Midfield: [], Attack: [] };
+    for (const slot of newPositions) {
+      const role = _slotRoleGeneral(slot);
+      if (role && newSlotsByRole[role]) newSlotsByRole[role].push(slot.id);
+    }
+
+    for (const role of Object.keys(byRole)) {
+      const players = byRole[role];
+      const slots = newSlotsByRole[role];
+      if (!slots.length) continue;
+      // Primo round: titolari
+      for (let i = 0; i < players.length; i++) {
+        const slotId = slots[i % slots.length];
+        if (!newAssigned[slotId]) newAssigned[slotId] = [];
+        newAssigned[slotId].push(players[i]);
+      }
+    }
+
+    state.grids.formation = newFormation;
+    state.grids.assigned = newAssigned;
     state.grids.selectedSlot = null;
     _saveGrids();
     renderGridsPanel();
