@@ -448,15 +448,19 @@ function clubLogo(c) {
 
 function competitionLogo(compCode) {
   if (!compCode) return null;
-  const known = { IT1: "png", IT2: "png", IT3: "png", IJ1: "png", PL1: "png", PL2: "png", SDL: "png", CIT: "png", SCI: "png", "23AF": "png", ACLE: "svg", ACL2: "svg", ES1: "svg" };
-  // SA2P (Saudi Second Division League) → usa il logo curato SDL.png
-  // ES1 → riusa il logo di ACL2
-  const code = compCode === "ES1" ? "ACL2" : compCode === "SA2P" ? "SDL" : compCode;
-  const ext = known[code];
-  if (ext) return _photoUrl(`photos/competitions/${code}.${ext}`);
-  const nationalCodes = ["FS","WMQ1","AFAC","ACQA","ARCP","FIWC","AGUC","WAF1","WC","20WC","U17W","OLYM","GOCU"];
-  if (nationalCodes.includes(compCode)) return _photoUrl("photos/branding/logo.png");
-  return null;
+  // Prima i casi noti con estensione esplicita non-PNG
+  const knownNonPng = { ACLE: "svg", ACL2: "svg", ES1: "svg" };
+  // ES1 → riusa il logo di ACL2 (legacy fix)
+  // SA2P → usa SDL.png
+  let code = compCode;
+  if (compCode === "ES1" && knownNonPng[compCode]) code = "ACL2";
+  if (compCode === "SA2P") code = "SDL";
+  // Tenta prima il file PNG (default per la maggior parte). Se non c'è, fallback su SVG noto.
+  const ext = knownNonPng[code] || "png";
+  const url = _photoUrl(`photos/competitions/${code}.${ext}`);
+  return url;
+  // Nota: il browser farà 404 se il file non esiste, e il frontend mostrerà il fallback (barra colorata).
+  // I file PNG vengono scaricati con `download_competition_logos.py`.
 }
 
 function totalGoals2025(pid) {
@@ -1472,7 +1476,19 @@ function _renderClubCareerBox(stats) {
 function _renderNationalCareerBox(stats) {
   const list = stats?.national_career;
   if (!Array.isArray(list) || !list.length) return "";
-  const flagUrl = _photoUrl("photos/branding/logo.png");
+  // Trova il profilo del giocatore per dedurre la nazionalità
+  const pid = stats?.tm_player_id;
+  const profile = pid != null ? state.players.find(x => x.tm_player_id === pid) : null;
+  const country = (profile?.citizenships?.[0]) || stats?.nationality || "National";
+  const flagUrl = profile ? nationFlag(profile) : _photoUrl("photos/branding/logo.png");
+  // Helper per costruire il nome locale a partire dalla categoria + country del giocatore
+  // (i dati TM scrappati hanno team_name hardcoded "Italy ..." anche per giocatori non-italiani:
+  // bug scraper, fixiamo qui lato render).
+  const buildTeamName = (cat) => {
+    if (!cat || cat === "A") return country;
+    if (cat === "Olympic") return `${country} Olympic`;
+    return `${country} ${cat}`;
+  };
   // Ordinamento gerarchico fisso: A → U23 → U22 → U21 → U20 → U19 → U18 → U17 → U16 → U15 → Olympic → altre
   const CAT_ORDER = { "A": 0, "U23": 1, "U22": 2, "U21": 3, "U20": 4, "U19": 5, "U18": 6, "U17": 7, "U16": 8, "U15": 9, "Olympic": 10 };
   const sorted = [...list].sort((a, b) => {
@@ -1485,11 +1501,12 @@ function _renderNationalCareerBox(stats) {
   const GRID_TPL = "1fr 38px 38px 64px";
   const rows = sorted.map(nt => {
     const goalsHot = (nt.goals||0) >= 5;
+    const teamName = buildTeamName(nt.category);
     return `
     <div style="display: grid; grid-template-columns: ${GRID_TPL}; gap: 12px; align-items: center; padding: 8px 12px; border-bottom: 0.5px solid var(--border);">
       <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
         ${flagUrl ? `<img src="${flagUrl}" style="width: 20px; height: 20px; object-fit: cover; border-radius: 3px; flex-shrink: 0;"/>` : ""}
-        <span class="truncate" style="font-size: 13px; color: var(--text-1); font-weight: 500;">${escapeHtml(nt.team_name)}</span>
+        <span class="truncate" style="font-size: 13px; color: var(--text-1); font-weight: 500;">${escapeHtml(teamName)}</span>
       </div>
       <span class="stat-cell" style="font-size: 14px; font-weight: 600; color: ${nt.caps?"var(--text-1)":"var(--text-3)"}; text-align: center; font-variant-numeric: tabular-nums;">${nt.caps||0}</span>
       <span class="stat-cell" style="font-size: 14px; font-weight: 600; color: ${goalsHot?"var(--hot)":(nt.goals?"var(--text-1)":"var(--text-3)")}; text-align: center; font-variant-numeric: tabular-nums;">${nt.goals||0}</span>
@@ -4299,32 +4316,149 @@ function _saveMinutesSelection() {
 // Ritorna [{code, name, type:"club"|"national", apps, minutes}, ...] ordinato per minuti desc.
 // Mappatura codici TM → label leggibile e nome esteso (per tooltip/PDF)
 const COMP_LABEL = {
-  IT1: { short: "SA",   full: "Serie A" },
-  IT2: { short: "SB",   full: "Serie B" },
-  IT3: { short: "U23",  full: "Seconde Squadre" },
-  IJ1: { short: "P1",   full: "Primavera 1" },
-  PL1: { short: "EKS",  full: "Ekstraklasa" },
-  PL2: { short: "1L",   full: "1 Liga (Polonia)" },
-  CIT: { short: "CIT",  full: "Coppa Italia" },
-  SCI: { short: "SCI",  full: "Supercoppa Italiana" },
-  ACLE: { short: "UCL", full: "UEFA Champions League" },
-  ACL2: { short: "UEL", full: "UEFA Europa League" },
-  ES1:  { short: "UECL", full: "UEFA Conference League" },
-  // Codici noti (per tooltip; non hanno colonna dedicata, finiscono in ESTERO)
-  BOS1: { short: "BOS1", full: "Bosnia Premijer Liga" },
-  BIHP: { short: "BIHP", full: "Bosnia Kup BiH" },
-  CR19: { short: "CR19", full: "Croatia Prva HNL — Juniori" },
+  // === Italia (PID core) ===
+  IT1:  { short: "SA",   full: "Serie A" },
+  IT2:  { short: "SB",   full: "Serie B" },
+  IT3:  { short: "U23",  full: "Seconde Squadre" },
+  IT3A: { short: "C-A",  full: "Serie C Girone A" },
+  IT3B: { short: "C-B",  full: "Serie C Girone B" },
+  IT3C: { short: "C-C",  full: "Serie C Girone C" },
+  IT3O: { short: "C-CP", full: "Coppa Serie C" },
+  IT3P: { short: "C-PO", full: "Serie C Playoff" },
+  IT4:  { short: "SD",   full: "Serie D" },
+  IT4A: { short: "D-A",  full: "Serie D Girone A" },
+  IT4B: { short: "D-B",  full: "Serie D Girone B" },
+  IT4C: { short: "D-C",  full: "Serie D Girone C" },
+  IT4D: { short: "D-D",  full: "Serie D Girone D" },
+  IT4E: { short: "D-E",  full: "Serie D Girone E" },
+  IT4F: { short: "D-F",  full: "Serie D Girone F" },
+  IT4G: { short: "D-G",  full: "Serie D Girone G" },
+  IT4H: { short: "D-H",  full: "Serie D Girone H" },
+  IT4I: { short: "D-I",  full: "Serie D Girone I" },
+  IT4P: { short: "D-PO", full: "Serie D Playoff" },
+  ITC4: { short: "ITC4", full: "Coppa Italia Serie D" },
+  CIT:  { short: "CIT",  full: "Coppa Italia" },
+  CITP: { short: "CITP", full: "Coppa Italia Serie C" },
+  SCI:  { short: "SCI",  full: "Supercoppa Italiana" },
+  SCIC: { short: "SCC",  full: "Supercoppa Serie C" },
+  SCIJ: { short: "SCJ",  full: "Supercoppa Primavera" },
+  ITPO: { short: "ITPO", full: "Italia Playoff" },
+  IJ1:  { short: "P1",   full: "Primavera 1" },
+  IJ2A: { short: "P2A",  full: "Primavera 2 A" },
+  IJ2B: { short: "P2B",  full: "Primavera 2 B" },
+  IJSC: { short: "CP",   full: "Coppa Primavera" },
+  ITJ1: { short: "U17",  full: "Under 17 Italia" },
+  ITJ2: { short: "U16",  full: "Under 16 Italia" },
+  ITJ3: { short: "U15",  full: "Under 15 Italia" },
+  ITJ4: { short: "U18",  full: "Under 18 Italia" },
+  ITJ5: { short: "U17C", full: "Under 17 Coppa" },
+  ITJ6: { short: "U18C", full: "Under 18 Coppa" },
+  ITJ7: { short: "U16C", full: "Under 16 Coppa" },
+  ITJE: { short: "ITJE", full: "Under Italia (group E)" },
+  ITJF: { short: "ITJF", full: "Under Italia (group F)" },
+  ITJP: { short: "ITJP", full: "Under Italia Playoff" },
+  IT18: { short: "U18",  full: "Under 18 Italia" },
+
+  // === Polonia (PID core) ===
+  PL1:  { short: "EKS",  full: "Ekstraklasa" },
+  PL2:  { short: "1L",   full: "1 Liga (Polonia)" },
+  PL2L: { short: "1LP",  full: "1 Liga Promotion" },
+  PL31: { short: "2L1",  full: "2 Liga Group 1" },
+  PL32: { short: "2L2",  full: "2 Liga Group 2" },
+  PL33: { short: "2L3",  full: "2 Liga Group 3" },
+  PL34: { short: "2L4",  full: "2 Liga Group 4" },
+  PLSC: { short: "EKSC", full: "Ekstraklasa Cup" },
+  PLIC: { short: "PLIC", full: "Polish Pro League Int Cup" },
+  PLZJ: { short: "PLZJ", full: "Polish Junior League" },
+  POPU: { short: "PUC",  full: "Polish Cup (Puchar)" },
+  POSB: { short: "POSB", full: "Polish Lower Div" },
+  BAPO: { short: "BAPO", full: "Polish Reg League" },
+  BAPL: { short: "BAPL", full: "Polish Reg League" },
+
+  // === Top 5 europei ===
+  BL1:  { short: "BL",   full: "Bundesliga" },
+  BL2:  { short: "2BL",  full: "2. Bundesliga" },
+  BL3:  { short: "3LIG", full: "3. Liga" },
+  DFB:  { short: "DFB",  full: "DFB-Pokal" },
+  DFL:  { short: "DFL",  full: "DFL-Supercup" },
+  DFBJ: { short: "DFBJ", full: "DFB-Pokal Junioren" },
+  GB1:  { short: "PL",   full: "Premier League" },
+  GB2:  { short: "CHA",  full: "Championship" },
+  GB3:  { short: "L1G",  full: "League One" },
+  GB4:  { short: "L2G",  full: "League Two" },
+  FAC:  { short: "FA",   full: "FA Cup" },
+  FAYC: { short: "FAY",  full: "FA Youth Cup" },
+  FACS: { short: "CS",   full: "Community Shield" },
+  ES1:  { short: "LL",   full: "La Liga" },
+  ES2:  { short: "LL2",  full: "La Liga 2" },
+  ES3A: { short: "P1",   full: "Primera RFEF Group 1" },
+  ES3B: { short: "P2",   full: "Primera RFEF Group 2" },
+  ES3C: { short: "T3",   full: "Tercera RFEF" },
+  ES3D: { short: "T3",   full: "Tercera RFEF" },
+  ES3E: { short: "T3",   full: "Tercera RFEF" },
+  CDR:  { short: "CDR",  full: "Copa del Rey" },
+  FR1:  { short: "L1",   full: "Ligue 1" },
+  FR2:  { short: "L2",   full: "Ligue 2" },
+  FRC:  { short: "CDF",  full: "Coupe de France" },
+  L1:   { short: "L1",   full: "Ligue 1" },
+  L2:   { short: "L2",   full: "Ligue 2" },
+  L3:   { short: "N1",   full: "National 1" },
+  NL1:  { short: "ERE",  full: "Eredivisie" },
+  NL2:  { short: "ED",   full: "Eerste Divisie" },
+  NLC:  { short: "KNVB", full: "KNVB Beker" },
+  NLP:  { short: "NLP",  full: "KNVB Beker (giovanili)" },
+  PO1:  { short: "LP1",  full: "Liga Portugal Betclic" },
+  PO2:  { short: "LP2",  full: "Liga Portugal 2" },
+  POCC: { short: "TDP",  full: "Taça de Portugal" },
+  PUSB: { short: "LP1",  full: "Liga Portugal Betclic" },
+
+  // === Belgio ===
+  BE1:  { short: "BE1",  full: "Pro League" },
+  BE2:  { short: "BE2",  full: "Challenger Pro League" },
+  CCB:  { short: "CCB",  full: "Croky Cup" },
+
+  // === UEFA ===
+  ACLE: { short: "UCL",  full: "UEFA Champions League" },
+  ACL2: { short: "UEL",  full: "UEFA Europa League" },
+  CL:   { short: "UCL",  full: "UEFA Champions League" },
+  CLQ:  { short: "UCLQ", full: "UCL Qualifying" },
+  EL:   { short: "UEL",  full: "UEFA Europa League" },
+  ELQ:  { short: "UELQ", full: "UEL Qualifying" },
+  UCOL: { short: "UECL", full: "UEFA Conference League" },
+  ECLQ: { short: "UECLQ",full: "UECL Qualifying" },
+  UEFA: { short: "USC",  full: "UEFA Super Cup" },
+  "19YL": { short: "UYL",full: "UEFA Youth League" },
+
+  // === National Teams ===
+  WC:   { short: "WC",   full: "Mondiali" },
+  WMQ1: { short: "WMQ",  full: "Qualificazioni Mondiali UEFA" },
+  WMQ2: { short: "WMQ",  full: "Qualificazioni Mondiali" },
+  WMQ3: { short: "WMQ",  full: "Qualificazioni Mondiali" },
+  WMQ4: { short: "WMQ",  full: "Qualificazioni Mondiali" },
+  WMQ5: { short: "WMQ",  full: "Qualificazioni Mondiali" },
+  WMQ6: { short: "WMQ",  full: "Qualificazioni Mondiali" },
+  EURO: { short: "EU",   full: "UEFA Euro" },
+  EMQ:  { short: "EMQ",  full: "Qualificazioni Euro" },
+  "21EU": { short: "U21",full: "Under 21 Euro" },
+  U21Q: { short: "U21Q", full: "Under 21 Qualifying" },
+  "19EU": { short: "U19",full: "Under 19 Euro" },
+  U19Q: { short: "U19Q", full: "Under 19 Qualifying" },
+  "17EU": { short: "U17",full: "Under 17 Euro" },
+  U17Q: { short: "U17Q", full: "Under 17 Qualifying" },
+  "20WC": { short: "U20W",full: "Mondiali Under 20" },
+  "17WC": { short: "U17W",full: "Mondiali Under 17" },
+  FIWC: { short: "FCC",  full: "FIFA Confederations Cup" },
+  UNLA: { short: "UNLA", full: "UEFA Nations League A" },
+  UNLB: { short: "UNLB", full: "UEFA Nations League B" },
+  FS:   { short: "FRD",  full: "Friendly" },
+  "23AF": { short: "AFC23", full: "AFC U23 Asian Cup" },
+  "23OF": { short: "OFC23", full: "OFC U23" },
+  OLYM: { short: "OLYM", full: "Olimpiadi" },
   AGUC: { short: "AGUC", full: "Arabian Gulf Cup" },
   GOCU: { short: "GOCU", full: "Gulf Cup of Nations" },
-  BE1:  { short: "BE1",  full: "Belgium Jupiler Pro League" },
-  CCB:  { short: "CCB",  full: "Belgium Croky Cup" },
-  FR1:  { short: "FR1",  full: "France Ligue 1" },
-  FR2:  { short: "FR2",  full: "France Ligue 2" },
-  FRC:  { short: "FRC",  full: "Coupe de France" },
-  EL:   { short: "EL",   full: "UEFA Europa League" },
-  "23AF": { short: "U23 AC", full: "AFC U23 Asian Cup" },
-  AL21: { short: "AL21", full: "Albania Kategoria Superiore U21" },
-  ALB1: { short: "ALB1", full: "Albania Kategoria Superiore" },
+  AFAC: { short: "AFAC", full: "AFC Asian Cup" },
+  ACQA: { short: "ACQA", full: "AFC Asian Cup Qualifying" },
+  ARCP: { short: "ARC",  full: "Arab Cup" },
 };
 // Codici club esclusi del tutto (non mostrati)
 // KLUB=Club Friendly, FIC1=Club Friendly Cup, ARCP=Arab Cup, PLIC=Pro League International Cup
