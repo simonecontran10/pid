@@ -1498,9 +1498,36 @@ function _renderNationalCareerBox(stats) {
     return `${country} ${cat}`;
   };
 
+  // Step 1: applica lookup a OGNI voce per dedurre country+category corretti.
+  // Se 2 voci diverse (es. cat="A" e cat="U21") puntano allo stesso team_id e quindi alla stessa
+  // (country, category) reale, le fondiamo sommando caps/goals/assists/minutes.
+  // Caso tipico: scraper TM raggruppa erroneamente partite U21 sotto cat="A" mantenendo team_id U21
+  // (es. Aarón Martín: voce "A" 10 caps + voce "U21" 8 caps che condividono team_id 9567 = Spain U21).
+  const merged = new Map();  // key: "country||category" → entry sommata
+  for (const nt of list) {
+    const info = resolveTeamInfo(nt);
+    const key = `${info.country}||${info.category}`;
+    const existing = merged.get(key);
+    if (existing) {
+      existing.caps     += (nt.caps     || 0);
+      existing.goals    += (nt.goals    || 0);
+      existing.assists  += (nt.assists  || 0);
+      existing.minutes  += (nt.minutes  || 0);
+    } else {
+      merged.set(key, {
+        country: info.country,
+        category: info.category,
+        caps:    nt.caps    || 0,
+        goals:   nt.goals   || 0,
+        assists: nt.assists || 0,
+        minutes: nt.minutes || 0,
+      });
+    }
+  }
+
   // Ordinamento gerarchico fisso: A → U23 → U22 → U21 → U20 → U19 → U18 → U17 → U16 → U15 → Olympic → altre
   const CAT_ORDER = { "A": 0, "U23": 1, "U22": 2, "U21": 3, "U20": 4, "U19": 5, "U18": 6, "U17": 7, "U16": 8, "U15": 9, "Olympic": 10 };
-  const sorted = [...list].sort((a, b) => {
+  const sorted = [...merged.values()].sort((a, b) => {
     const ra = CAT_ORDER[a.category] ?? 99;
     const rb = CAT_ORDER[b.category] ?? 99;
     if (ra !== rb) return ra - rb;
@@ -1510,10 +1537,9 @@ function _renderNationalCareerBox(stats) {
   const GRID_TPL = "1fr 38px 38px 64px";
   const rows = sorted.map(nt => {
     const goalsHot = (nt.goals||0) >= 5;
-    const info = resolveTeamInfo(nt);
-    const teamName = buildTeamName(info.country, info.category);
+    const teamName = buildTeamName(nt.country, nt.category);
     // Bandiera: lookup country → file PNG nazionale (es. "Morocco" → photos/national/Morocco.png)
-    const flagFname = info.country.replace(/'/g, "").replace(/,/g, "").replace(/\s+/g, "-");
+    const flagFname = nt.country.replace(/'/g, "").replace(/,/g, "").replace(/\s+/g, "-");
     const flagUrl = _photoUrl(`photos/national/${flagFname}.png`);
     return `
     <div style="display: grid; grid-template-columns: ${GRID_TPL}; gap: 12px; align-items: center; padding: 8px 12px; border-bottom: 0.5px solid var(--border);">
