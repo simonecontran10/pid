@@ -1375,3 +1375,35 @@ Cron automatico alle 03:00 UTC = 05:00 ITA estate. Al risveglio dovrei vedere:
 - Parallelizzare richieste TM
 - Smart caching skip giocatori con stats aggiornate < 7gg
 - GitHub Actions limit free: 2000 min/mese, al pacing attuale (~95 min/notte) sarebbero ~2850 min/mese, si supera. Verificare consumo dopo 1 settimana di run
+
+## 8 mag 2026 (mattina/pomeriggio) — Loghi competizioni + fix Carriera Nazionale
+
+### Problema 1 — Loghi competizioni mancanti nei modali giocatori
+Sintomo: nelle sezioni "Carriera per Competizione" e "Ultime Partite" molte competizioni mostravano solo una barretta colorata verticale (no logo) o il codice tecnico (es. "ES3C", "CDR", "DFB" invece di "Tercera RFEF", "Copa del Rey", "DFB-Pokal").
+
+Causa: `competitionLogo()` aveva solo 13 codici hardcoded (IT1, IT2, IT3, IJ1, PL1, PL2, CIT, SCI, ACLE, ACL2, ES1, SDL, "23AF"). Tutti gli altri 800+ codici TM ritornavano null.
+
+Fix:
+1. **Loghi**: scaricati 534 PNG da TM CDN (`https://tmssl.akamaized.net/images/logo/homepageWappen150x150/{code_lower}.png`) per tutti i codici con freq>=3 nei dati reali + tutti gli override curati. Script `download_competition_logos.py` (root). 9 falliti (BL1, BL2, BL3, WC, FACS, ACQA, JUSÖ, PL3W, PL3Z), recuperati BL1 da Wikipedia.
+2. **Logica generica**: `competitionLogo()` ora cerca semplicemente `photos/competitions/{code}.png` per qualsiasi codice (più 2 eccezioni SVG: ACLE, ACL2). Browser fa 404 silenzioso se file mancante.
+3. **Nomi italianizzati**: `COMP_LABEL` esteso da 22 a 130+ entries con nomi belli (Premier League, Bundesliga, Tercera RFEF, Copa del Rey, ecc.) e short labels (PL, BL, T3, CDR).
+
+### Problema 2 — Carriera Nazionale mostra "Italy" anche per giocatori non-italiani
+Sintomo: nel profilo di Rabiot (francese) la "Carriera Nazionale" mostrava "Italy / Italy U21 / Italy U19 / Italy U17" con il logo PID al posto della bandiera francese.
+
+Causa duplice:
+1. **Bug scraping `stats.py` riga 252**: `national_team_label(cat)` veniva chiamato senza parametro `country`, quindi cadeva nel default `TARGET_NATIONALITY = "Italy"` per TUTTI i giocatori. Anche Rabiot aveva `team_name: "Italy"` salvato in `national_career`.
+2. **Bug rendering `_renderNationalCareerBox` riga 1479**: `flagUrl = _photoUrl("photos/branding/logo.png")` hardcoded sul logo PID, indipendente dalla nazionalità.
+
+Fix lato frontend (immediato, non richiede ri-scraping):
+- `flagUrl = nationFlag(profile)` dove `profile = state.players.find(...)` → bandiera del giocatore (Francia/Polonia/Slovenia/ecc.)
+- Helper `buildTeamName(cat)` che costruisce dinamicamente il nome dalla nazionalità + categoria, ignorando il `team_name` nei dati: `"A" → country`, `"U23" → country + " U23"`, `"Olympic" → country + " Olympic"`.
+
+### TODO long-term
+- [ ] Fix scraper `stats.py` riga 252: passare il country del giocatore corrente a `national_team_label(cat, country=...)`. Così i prossimi update notturni avranno dati puliti senza dover sovrascrivere lato frontend. Richiede ri-scraping di tutti i 2858 giocatori (~95 min).
+- [ ] Loghi mancanti: BL2, BL3, WC, FACS — non disponibili su TM CDN, recuperati BL1 da Wikipedia ma URL fragili (cambiano nel tempo). Per i prossimi 4 → cercare manualmente
+
+### File modificati/creati
+- `frontend/app.js` (+108 righe COMP_LABEL, +helper buildTeamName, +fix Carriera Nazionale, +competitionLogo() generico)
+- `download_competition_logos.py` (nuovo)
+- `data/photos/competitions/*.png` (+534 file, 1 sovrascritto BL1 da Wikipedia)
