@@ -252,6 +252,27 @@ function _renderAuthUI() {
   if (lbl) lbl.textContent = window.cloudAuth.user?.email || "";
   const btn = document.getElementById("auth-logout");
   if (btn) btn.style.display = window.cloudAuth.user ? "" : "none";
+
+  // Bottone sidebar: quando loggato mostra l'username (parte prima della @) + onclick logout.
+  // Quando non loggato è cosmetico (l'auth-gate fullscreen blocca comunque l'accesso).
+  const sidebarAuthBtn = document.getElementById("sidebar-auth-btn");
+  const sidebarAuthLabel = document.getElementById("sidebar-auth-label");
+  if (sidebarAuthBtn && sidebarAuthLabel) {
+    if (window.cloudAuth.user) {
+      const email = window.cloudAuth.user.email || "";
+      const username = email.split("@")[0] || email;
+      const shortName = username.length > 16 ? username.slice(0, 14) + "…" : username;
+      sidebarAuthLabel.textContent = `👤 ${shortName}`;
+      sidebarAuthBtn.title = `${email} — clicca per uscire`;
+      sidebarAuthBtn.onclick = async () => {
+        if (confirm(`Vuoi disconnetterti da ${email}?`)) {
+          await cloudSignOut();
+        }
+      };
+    } else {
+      sidebarAuthBtn.style.display = "none";
+    }
+  }
 }
 
 function _wireAuthGateForm() {

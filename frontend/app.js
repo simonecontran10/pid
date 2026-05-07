@@ -5586,114 +5586,27 @@ function _formatEta(seconds) {
 }
 
 function setupUpdateButton() {
+  // Il bottone "Aggiorna ora" è stato rimosso: il sito è statico su Vercel,
+  // gli aggiornamenti dati avvengono via GitHub Actions (vedi .github/workflows/auto_update_*.yml).
+  // Mostro solo info statica "Ultimo aggiornamento" letta da data/last_update.json.
   const btn = document.getElementById("sidebar-update-btn");
-  const icon = document.getElementById("sidebar-update-icon");
-  const label = document.getElementById("sidebar-update-label");
   const progress = document.getElementById("sidebar-update-progress");
-  const pct = document.getElementById("sidebar-update-pct");
-  const eta = document.getElementById("sidebar-update-eta");
-  const bar = document.getElementById("sidebar-update-bar");
-  if (!btn) return;
-  label.textContent = t("update_now");
+  if (btn) btn.style.display = "none";
+  if (progress) progress.style.display = "none";
 
-  let pollInterval = null;
-
-  const setRunning = (running) => {
-    btn.disabled = running;
-    icon.style.animation = running ? "spin 1s linear infinite" : "";
-    label.textContent = running ? t("update_running") : t("update_now");
-    progress.style.display = running ? "block" : "none";
-  };
-
-  const stopPolling = () => {
-    if (pollInterval) { clearInterval(pollInterval); pollInterval = null; }
-  };
-
-  const setProgress = (p, etaSec) => {
-    pct.textContent = `${p}%`;
-    bar.style.width = p + "%";
-    if (etaSec == null) {
-      eta.textContent = "·  —";
-    } else {
-      const mins = Math.ceil(etaSec / 60);
-      const label = currentLang === "it"
-        ? (etaSec < 60 ? `· ${etaSec}s` : `· ~${mins} min`)
-        : (etaSec < 60 ? `· ${etaSec}s left` : `· ~${mins} min left`);
-      eta.textContent = label;
-    }
-  };
-
-  const pollStatus = async () => {
-    try {
-      const s = await _apiGet("/update/status");
-      const { percent, etaSeconds } = _parseUpdateProgress(s);
-      setProgress(percent, etaSeconds);
-      if (!s.running && s.completed_at) {
-        stopPolling();
-        if (s.exit_code === 0) {
-          setProgress(100, 0);
-          label.textContent = t("update_completed");
-          icon.style.animation = "";
-          setTimeout(() => location.reload(), 3000);
-        } else {
-          setRunning(false);
-          label.textContent = t("update_failed");
-          pct.style.color = "#EF4444";
-          bar.style.background = "#EF4444";
-          setTimeout(() => {
-            pct.style.color = "";
-            bar.style.background = "";
-            label.textContent = t("update_now");
-            progress.style.display = "none";
-          }, 6000);
-        }
-      }
-    } catch (e) {
-      stopPolling();
-      setRunning(false);
-      label.textContent = t("update_backend_unavailable");
-      setTimeout(() => { label.textContent = t("update_now"); }, 5000);
-    }
-  };
-
-  btn.addEventListener("click", async () => {
-    if (btn.disabled) return;
-    try {
-      await _apiPost("/update");
-      setRunning(true);
-      setProgress(0, null);
-      pollInterval = setInterval(pollStatus, 2000);
-    } catch (e) {
-      label.textContent = t("update_backend_unavailable");
-      setTimeout(() => { label.textContent = t("update_now"); }, 5000);
-    }
-  });
-
-  // Al boot: health-check del backend.
-  // Se NON è raggiungibile (deploy Vercel: solo statico) → nascondi il pulsante e mostra info "auto-update".
-  // Se è raggiungibile (locale con `bash api/run.sh`) → bottone normale + ripristina eventuale job in corso.
-  _apiGet("/update/status").then(s => {
-    btn.style.display = ""; // visibile (default)
-    if (s.running) {
-      setRunning(true);
-      const { percent, etaSeconds } = _parseUpdateProgress(s);
-      setProgress(percent, etaSeconds);
-      pollInterval = setInterval(pollStatus, 2000);
-    }
-  }).catch(() => {
-    // Backend non disponibile → nascondi il bottone e mostra info auto-update statica
-    btn.style.display = "none";
-    if (progress) progress.style.display = "none";
-    const updateBox = btn.parentElement;
-    if (updateBox && !document.getElementById("auto-update-info")) {
-      const info = document.createElement("div");
-      info.id = "auto-update-info";
-      info.className = "sidebar-label";
-      info.style.cssText = "margin-top: 8px; padding: 6px 8px; background: rgba(255,255,255,0.03); color: var(--text-3); border: 0.5px solid var(--border); border-radius: 6px; font-size: 10px; line-height: 1.3; text-align: center;";
-      info.innerHTML = `<div style="font-weight: 600; color: var(--text-2); margin-bottom: 2px;">⏱ ${currentLang==="it"?"Auto-update":"Auto-update"}</div><div>${currentLang==="it"?"ogni 2 giorni":"every 2 days"}</div>`;
-      updateBox.appendChild(info);
-    }
-  });
+  // Inserisci un riquadro "Auto-update" con la data dell'ultimo aggiornamento
+  // (la stringa data è già popolata in #sidebar-last-update da bootstrap()).
+  const updateBox = btn ? btn.parentElement : null;
+  if (updateBox && !document.getElementById("auto-update-info")) {
+    const info = document.createElement("div");
+    info.id = "auto-update-info";
+    info.className = "sidebar-label";
+    info.style.cssText = "margin-top: 8px; padding: 6px 8px; background: rgba(255,255,255,0.03); color: var(--text-3); border: 0.5px solid var(--border); border-radius: 6px; font-size: 10px; line-height: 1.4; text-align: center;";
+    const labelIT = "Auto-update", labelEN = "Auto-update";
+    const tipIT = "ogni notte", tipEN = "nightly";
+    info.innerHTML = `<div style="font-weight: 600; color: var(--text-2); margin-bottom: 2px;">⏱ ${currentLang==="it"?labelIT:labelEN}</div><div>${currentLang==="it"?tipIT:tipEN}</div>`;
+    updateBox.appendChild(info);
+  }
 }
 
 // ============ INIT ============

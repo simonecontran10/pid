@@ -1,0 +1,122 @@
+name: Auto Update Full (seasonal)
+
+# Aggiornamento completo (rosters + nuovi profili + foto + stats).
+# Gira UNA VOLTA A SETTIMANA (lunedì 02:00 UTC) MA solo nelle finestre stagionali:
+#  - Mercato estivo:  15 giugno → 15 settembre
+#  - Mercato invernale: 1 gennaio → 15 febbraio
+# Negli altri periodi il workflow esce subito senza fare nulla.
+on:
+  schedule:
+    - cron: "0 2 * * 1"  # ogni lunedì alle 02:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: auto-update
+  cancel-in-progress: false
+
+jobs:
+  full-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240  # fino a 4h (run completo può durare 1-2h)
+    steps:
+      - name: Check seasonal window
+        id: window
+        run: |
+          MM=$(date -u +%m)
+          DD=$(date -u +%d)
+          IN_WINDOW="false"
+          # Mercato estivo: 15 giugno → 15 settembre
+          if [ "$MM" = "06" ] && [ "$DD" -ge 15 ]; then IN_WINDOW="true"; fi
+          if [ "$MM" = "07" ] || [ "$MM" = "08" ]; then IN_WINDOW="true"; fi
+          if [ "$MM" = "09" ] && [ "$DD" -le 15 ]; then IN_WINDOW="true"; fi
+          # Mercato invernale: 1 gennaio → 15 febbraio
+          if [ "$MM" = "01" ]; then IN_WINDOW="true"; fi
+          if [ "$MM" = "02" ] && [ "$DD" -le 15 ]; then IN_WINDOW="true"; fi
+          # Run manuale: forza esecuzione anche fuori finestra
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then IN_WINDOW="true"; fi
+          echo "in_window=$IN_WINDOW" >> $GITHUB_OUTPUT
+          echo "Mese=$MM Giorno=$DD → in_window=$IN_WINDOW"
+
+      - name: Skip if outside window
+        if: steps.window.outputs.in_window != 'true'
+        run: |
+          echo "Fuori finestra mercato. Skip."
+          exit 0
+
+      - name: Checkout repo
+        if: steps.window.outputs.in_window == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        if: steps.window.outputs.in_window == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        if: steps.window.outputs.in_window == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          pip install boto3 python-dotenv
+
+      - name: Hash pre-run
+        if: steps.window.outputs.in_window == 'true'
+        id: pre
+        run: |
+          if [ -f data/players_stats.json ]; then
+            echo "hash=$(md5sum data/players_stats.json | awk '{print $1}')" >> $GITHUB_OUTPUT
+          else
+            echo "hash=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run full update
+        if: steps.window.outputs.in_window == 'true'
+        run: python3 run_update.py
+
+      - name: Hash post-run + check changes
+        if: steps.window.outputs.in_window == 'true'
+        id: post
+        run: |
+          POST_HASH=""
+          if [ -f data/players_stats.json ]; then
+            POST_HASH=$(md5sum data/players_stats.json | awk '{print $1}')
+          fi
+          echo "hash=$POST_HASH" >> $GITHUB_OUTPUT
+          if [ "${{ steps.pre.outputs.hash }}" != "$POST_HASH" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload to Cloudflare R2
+        if: steps.window.outputs.in_window == 'true' && steps.post.outputs.changed == 'true'
+        env:
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
+        run: python3 upload_to_r2.py data/players_stats.json
+
+      - name: Commit and push if changed
+        if: steps.window.outputs.in_window == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # Aggiungi tutti i JSON dati + foto nuove
+          git add data/ 2>/dev/null || true
+          # Escludi players_stats.json (su R2)
+          git reset data/players_stats.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No git changes to commit"
+            exit 0
+          fi
+          git commit -m "auto: full update ($(date -u +%Y-%m-%d))"
+          git push

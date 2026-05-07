@@ -1,0 +1,87 @@
+name: Auto Update Daily (stats only)
+
+# Gira ogni notte alle 03:00 UTC (≈ 04:00 italiana inverno, 05:00 estate)
+# Aggiorna solo i dati delle partite (run_stats.py --refresh): ~25-40 min
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:  # permette run manuale dal tab Actions
+
+concurrency:
+  group: auto-update
+  cancel-in-progress: false
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+          # boto3+dotenv se non già in requirements (per upload_to_r2.py)
+          pip install boto3 python-dotenv
+
+      - name: Hash pre-run players_stats.json
+        id: pre
+        run: |
+          if [ -f data/players_stats.json ]; then
+            echo "hash=$(md5sum data/players_stats.json | awk '{print $1}')" >> $GITHUB_OUTPUT
+          else
+            echo "hash=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run stats refresh
+        run: python3 run_stats.py --refresh
+
+      - name: Hash post-run + check changes
+        id: post
+        run: |
+          POST_HASH=""
+          if [ -f data/players_stats.json ]; then
+            POST_HASH=$(md5sum data/players_stats.json | awk '{print $1}')
+          fi
+          echo "hash=$POST_HASH" >> $GITHUB_OUTPUT
+          if [ "${{ steps.pre.outputs.hash }}" != "$POST_HASH" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload to Cloudflare R2
+        if: steps.post.outputs.changed == 'true'
+        env:
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
+        run: python3 upload_to_r2.py data/players_stats.json
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # Aggiungi solo i file dati / metadata, non players_stats.json (che è su R2)
+          git add data/last_update.json data/players_main.json data/players_static.json data/players_all.json data/clubs.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No git changes to commit"
+            exit 0
+          fi
+          git commit -m "auto: daily stats refresh ($(date -u +%Y-%m-%d))"
+          git push
