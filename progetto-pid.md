@@ -1259,3 +1259,55 @@ Risultato online: 4/4 loghi visibili correttamente.
 
 ### Nota su WebP-as-PNG nella cartella clubs_sots
 Tutti i loghi `clubs_sots/*.png` sono in realtà WebP con estensione fasulla (legacy `download_photos.py` che non controlla il formato del content servito da SortItOutSi). Il browser li gestisce comunque su Chrome/Safari/Firefox moderni. Non serve fix immediato.
+
+## 8 mag 2026 — Automazione cloud + cosmetica sidebar
+
+### Bottone "Accedi" → username + logout
+`cloud_sync.js _renderAuthUI()` esteso: quando `cloudAuth.user` è valorizzato, il bottone `#sidebar-auth-btn` mostra `👤 {username}` (parte prima della @ dell'email, troncata a 14 char), tooltip con email completa, click → confirm dialog → `cloudSignOut()`. Quando l'utente non è loggato il bottone è nascosto (l'auth-gate fullscreen ha già il proprio form, il bottone diventa ridondante).
+
+### Rimozione bottone "Aggiorna ora"
+Riscritto `setupUpdateButton()` in `frontend/app.js`: rimossi i fetch a `_apiGet("/update/status")` (causa errori CORS in console su pid-nine.vercel.app), rimosso bottone `#sidebar-update-btn` (nascosto via `display:none`), mostrato solo badge "⏱ Auto-update / nightly".
+
+### GitHub Actions per auto-update in cloud
+Creati 2 workflow in `.github/workflows/`:
+
+**`auto_update_daily.yml`** — Schedule `cron: 0 3 * * *` (03:00 UTC, ~05:00 ITA estate / ~04:00 ITA inverno):
+- Solo `run_stats.py --refresh` (25-40 min) per aggiornare presenze/minuti partite
+- Diff hash di `players_stats.json` → upload R2 solo se cambiato
+- Commit autonomo `auto: daily stats refresh (YYYY-MM-DD)` su file metadata + push
+- Anche manuale via `workflow_dispatch` (tab Actions → Run workflow)
+
+**`auto_update_full.yml`** — Schedule `cron: 0 2 * * 1` (lunedì 02:00 UTC) ma con guardia stagionale:
+- `run_update.py` (rosters + nuovi profili + foto + stats, 1-2h)
+- Esecuzione SOLO nelle finestre mercato:
+  - Estivo: 15 giugno → 15 settembre
+  - Invernale: 1 gennaio → 15 febbraio
+- Fuori finestra il workflow esce subito senza fare nulla
+- Anche manuale via `workflow_dispatch` (forza esecuzione anche fuori finestra)
+
+### GitHub Secrets configurati
+Aggiunte 5 variabili in repo Settings → Secrets and variables → Actions:
+- `R2_ENDPOINT`
+- `R2_ACCESS_KEY_ID` (RUOTATA dopo esposizione accidentale in screenshot)
+- `R2_SECRET_ACCESS_KEY` (RUOTATA)
+- `R2_BUCKET` = `pid-data`
+- `R2_PUBLIC_URL` = `https://pub-aa9d173290684b36a9f35e79d4d388c2.r2.dev`
+
+⚠️ Sicurezza: durante il setup è stata esposta accidentalmente la coppia `R2_ACCESS_KEY_ID` + `R2_SECRET_ACCESS_KEY` in uno screenshot di GitHub. Procedura: Cloudflare Dashboard → R2 → Manage API Tokens → Roll del token con ID `f9fa819b...` → nuove credenziali → aggiornato `.env` locale + GitHub Secrets.
+
+### `requirements.txt` creato
+Necessario per `pip install -r requirements.txt` in GitHub Actions:
+### File modificati/creati
+- `frontend/app.js` (riscritto setupUpdateButton, ~110 righe)
+- `frontend/cloud_sync.js` (esteso _renderAuthUI per username sidebar)
+- `.github/workflows/auto_update_daily.yml` (nuovo)
+- `.github/workflows/auto_update_full.yml` (nuovo)
+- `requirements.txt` (nuovo)
+
+### Vecchi script `auto_update_*.sh` (locale launchd)
+Restano nel repo per ora (sono utili se in futuro vorrai disabilitare GitHub Actions e tornare a launchd locale). I file `.daily_update.lock` e `.full_update.lock` non sono più creati dagli script su Mac perché ora gira tutto in cloud.
+
+### TODO
+- [ ] Test workflow daily manuale (Actions → Run workflow) per verificare che gira senza errori
+- [ ] Verificare il primo run automatico domani notte (03:00 UTC = ~05:00 ITA)
+- [ ] Eventualmente eliminare `auto_update_daily.sh`, `auto_update_full.sh`, e i 3 `.plist` launchd se non li usi più
