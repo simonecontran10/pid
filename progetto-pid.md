@@ -1344,3 +1344,34 @@ Step ancora da verificare al termine:
 - [ ] Esito completo workflow daily run #1 (~30-40 min)
 - [ ] Verifica commit autonomo da `github-actions[bot]`
 - [ ] Conferma cron automatico domani notte (03:00 UTC)
+
+## 8 mag 2026 (mattina, conclusione) — Test workflow + timeout bump
+
+Run manuale daily #1 ha processato 1420/2858 giocatori in 90 min (~30 giocatori/min, ~50% del lavoro), poi timeout di GitHub Actions ha cancellato il job. Pipeline funzionava regolarmente — solo questione di velocità (cloud runner Ubuntu più lento del Mac locale).
+
+Fix: bump timeout da 90 a 180 min in auto_update_daily.yml (commit 9474b74). Il prossimo run cron stanotte alle 03:00 UTC avrà tempo sufficiente.
+
+Output run #1 ultime righe:
+[1390/2858] Patrizio Masini ETA: 46m59s
+[1400/2858] Pervis Estupinan ETA: 46m40s
+[1410/2858] Pietro Baccelli ETA: 46m20s
+[1420/2858] Pietro Leonardelli ETA: 46m01s
+Error: The operation was canceled.
+
+### Commit della giornata 8 mag mattina
+- c415f8a: 25 foto manuali + i18n leghe IJ1/PL1/PL2
+- 1fa546b: fix New arrival / Returnee / Internal transfer placeholder
+- 9474b74: timeout workflow daily 90 -> 180 min
+
+Totale 25 commits in 18 ore di lavoro.
+
+### Atteso domattina
+Cron automatico alle 03:00 UTC = 05:00 ITA estate. Al risveglio dovrei vedere:
+- Run "Auto Update Daily #2" verde
+- Commit autonomo da github-actions[bot]: "auto: daily stats refresh (2026-05-08)"
+
+### TODO ottimizzazioni future
+- Ridurre sleep tra fetch run_stats.py (attenzione rate limit TM)
+- Parallelizzare richieste TM
+- Smart caching skip giocatori con stats aggiornate < 7gg
+- GitHub Actions limit free: 2000 min/mese, al pacing attuale (~95 min/notte) sarebbero ~2850 min/mese, si supera. Verificare consumo dopo 1 settimana di run
