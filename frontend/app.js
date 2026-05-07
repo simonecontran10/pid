@@ -2226,7 +2226,7 @@ function renderCallupPanel() {
                 <span class="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] rounded-md"
                       style="background: ${state.callup.store.currentName===n?"var(--accent-bg)":"rgba(255,255,255,0.04)"}; color: ${state.callup.store.currentName===n?"var(--accent)":"var(--text-2)"}; border: 0.5px solid var(--border);">
                   <button class="callup-load-btn" data-name="${escapeHtml(n)}" style="background: none; border: none; padding: 0; color: inherit; font-size: inherit; cursor: pointer;">
-                    ${escapeHtml(n)} <span class="stat-cell" style="color: var(--text-3); font-size: 9px;">(${state.callup.store.lists[n].length})</span>
+                    ${escapeHtml(n)} <span class="stat-cell" style="color: var(--text-3); font-size: 9px;">(${_callupIds(state.callup.store.lists[n]).length})</span>
                   </button>
                   <button class="callup-delete-btn" data-name="${escapeHtml(n)}" title="${currentLang==='it'?'Cancella lista':'Delete list'}"
                           style="background: none; border: none; padding: 0 2px; color: var(--text-3); font-size: 14px; line-height: 1; cursor: pointer; margin-left: 2px;">×</button>
@@ -2356,7 +2356,8 @@ function renderCallupPanel() {
 
   panel.querySelectorAll(".callup-load-btn").forEach(b => b.addEventListener("click", () => {
     const name = b.dataset.name;
-    state.callup.currentIds = [...(state.callup.store.lists[name] || [])];
+    const entry = state.callup.store.lists[name];
+    state.callup.currentIds = [..._callupIds(entry)];
     state.callup.store.currentName = name;
     saveCallups(state.callup.store);
     renderCallupPanel();
@@ -2377,7 +2378,16 @@ function renderCallupPanel() {
   document.getElementById("callup-save")?.addEventListener("click", () => {
     const name = (document.getElementById("callup-list-name")?.value || "").trim();
     if (!name) { alert(currentLang==="it"?"Dai un nome alla lista":"Give the list a name"); return; }
-    state.callup.store.lists[name] = [...state.callup.currentIds];
+    const now = new Date().toISOString();
+    const existing = state.callup.store.lists[name];
+    let prevMeta = null;
+    if (existing && !Array.isArray(existing) && existing._meta) prevMeta = existing._meta;
+    state.callup.store.lists[name] = {
+      ids: [...state.callup.currentIds],
+      _meta: prevMeta
+        ? { ...prevMeta, updated_at: now }
+        : { created_by: _currentUsername(), created_at: now, updated_at: now },
+    };
     state.callup.store.currentName = name;
     saveCallups(state.callup.store);
     renderCallupPanel();
@@ -2859,7 +2869,7 @@ function importCallupToMinutes(callupName) {
 // Importa una convocazione salvata nella griglia tattica corrente:
 // distribuisce i giocatori per macroruolo nei slot della formazione (round-robin)
 function importCallupToGrid(callupName) {
-  const ids = state.callup?.store?.lists?.[callupName] || [];
+  const ids = _callupIds(state.callup?.store?.lists?.[callupName]);
   if (!ids.length) return 0;
   const positions = FORMATIONS[state.grids.formation] || FORMATIONS["4-3-3"];
   // Raggruppa slot per macroruolo, mantenendo l'ordine dichiarato
@@ -3133,7 +3143,7 @@ function renderGridsPanel() {
           <button id="grids-save" class="px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">${t("save_btn")}</button>
           <select id="grids-import-callup" class="filter-select" style="font-size: 11px; padding: 4px 8px; max-width: 180px;" title="${escapeHtml(t("import_callup"))}">
             <option value="">⤓ ${escapeHtml(t("import_callup"))}</option>
-            ${Object.keys(state.callup?.store?.lists || {}).sort().map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)} (${(state.callup.store.lists[n]||[]).length})</option>`).join("")}
+            ${Object.keys(state.callup?.store?.lists || {}).sort().map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)} (${_callupIds(state.callup.store.lists[n]).length})</option>`).join("")}
           </select>
         </div>
 
@@ -3274,9 +3284,14 @@ function renderGridsPanel() {
   document.getElementById("grids-save")?.addEventListener("click", () => {
     const name = (document.getElementById("grids-list-name")?.value || "").trim();
     if (!name) { alert(currentLang==="it"?"Dai un nome alla griglia":"Give the grid a name"); return; }
+    const now = new Date().toISOString();
+    const prevMeta = state.grids.store.lists[name]?._meta;
     state.grids.store.lists[name] = {
       formation: state.grids.formation,
       assigned: JSON.parse(JSON.stringify(state.grids.assigned)),
+      _meta: prevMeta
+        ? { ...prevMeta, updated_at: now }
+        : { created_by: _currentUsername(), created_at: now, updated_at: now },
     };
     state.grids.store.currentName = name;
     _saveGrids();
@@ -3288,7 +3303,8 @@ function renderGridsPanel() {
     const name = e.target.value;
     if (!name) return;
     const lists = state.callup?.store?.lists || {};
-    if (!lists[name] || !lists[name].length) {
+    const ids = _callupIds(lists[name]);
+    if (!ids.length) {
       alert(t("import_callup_empty"));
       e.target.value = "";
       return;
@@ -4955,7 +4971,7 @@ function renderMinutesPanel() {
             <span style="font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">${escapeHtml(t("import_callup"))}</span>
             <select id="minutes-import-callup" class="filter-select" style="font-size: 12px; padding: 4px 8px; font-weight: 600; max-width: 200px;">
               <option value="">${escapeHtml(t("import_callup_placeholder"))}</option>
-              ${Object.keys(state.callup?.store?.lists || {}).sort().map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)} (${(state.callup.store.lists[n]||[]).length})</option>`).join("")}
+              ${Object.keys(state.callup?.store?.lists || {}).sort().map(n => `<option value="${escapeHtml(n)}">${escapeHtml(n)} (${_callupIds(state.callup.store.lists[n]).length})</option>`).join("")}
             </select>
             <span class="ml-auto" style="font-size: 10px; color: var(--text-3);">${selectedList.length} ${currentLang==="it"?"selezionati":"selected"}</span>
           </div>
@@ -5563,6 +5579,7 @@ function setActiveTab(route) {
   setVisible("compare-panel", route === "compare");
   setVisible("callup-panel", route === "callup");
   setVisible("grids-panel", route === "grids");
+  setVisible("saves-panel", route === "saves");
   setVisible("minutes-panel", route === "minutes");
   setVisible("filters", route === "home");
   setVisible("stats-bar", route === "home");
@@ -5571,6 +5588,7 @@ function setActiveTab(route) {
   if (route === "list") renderListPanel();
   if (route === "favorites") renderFavoritesPanel();
   if (route === "grids") renderGridsPanel();
+  if (route === "saves") renderSavesPanel();
   if (route === "minutes") renderMinutesPanel();
 }
 
@@ -5769,6 +5787,428 @@ function setupUpdateButton() {
     const tipIT = "ogni notte", tipEN = "nightly";
     info.innerHTML = `<div style="font-weight: 600; color: var(--text-2); margin-bottom: 2px;">⏱ ${currentLang==="it"?labelIT:labelEN}</div><div>${currentLang==="it"?tipIT:tipEN}</div>`;
     updateBox.appendChild(info);
+  }
+}
+
+// ============ SALVATAGGI (overview griglie + convocazioni) ============
+// Pagina centrale che mostra tutti i salvataggi salvati (grids + callups)
+// con metadata (creato_da, created_at, updated_at) + azioni (carica, duplica, esporta, elimina)
+// + import da file JSON.
+
+function _currentUsername() {
+  // Username = parte prima della @ dell'email loggato. Fallback "anonimo" se non loggato.
+  const email = window.cloudAuth?.user?.email || "";
+  if (!email) return "anonimo";
+  return (email.split("@")[0] || "anonimo").trim();
+}
+
+function _formatTs(iso) {
+  if (!iso) return "—";
+  try {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    const now = new Date();
+    const sameDay = d.toDateString() === now.toDateString();
+    const yesterday = new Date(now); yesterday.setDate(now.getDate() - 1);
+    const isYesterday = d.toDateString() === yesterday.toDateString();
+    const time = d.toLocaleTimeString(currentLang === "it" ? "it-IT" : "en-US", { hour: "2-digit", minute: "2-digit" });
+    if (sameDay) return `${currentLang === "it" ? "oggi" : "today"} ${time}`;
+    if (isYesterday) return `${currentLang === "it" ? "ieri" : "yesterday"} ${time}`;
+    const dateStr = d.toLocaleDateString(currentLang === "it" ? "it-IT" : "en-US", { day: "2-digit", month: "2-digit", year: "2-digit" });
+    return `${dateStr} ${time}`;
+  } catch { return "—"; }
+}
+
+// Backfill metadata su salvataggi vecchi che non li hanno.
+// Per griglie e convocazioni lo store contiene un dict { name → data }. Aggiungiamo _meta a ogni voce.
+function _ensureMetaGrids() {
+  const lists = state.grids?.store?.lists || {};
+  let changed = false;
+  const username = _currentUsername();
+  const now = new Date().toISOString();
+  for (const [name, data] of Object.entries(lists)) {
+    if (!data || typeof data !== "object") continue;
+    if (!data._meta) {
+      data._meta = { created_by: username, created_at: now, updated_at: now };
+      changed = true;
+    }
+  }
+  if (changed) _saveGrids();
+}
+
+function _ensureMetaCallups() {
+  const lists = state.callup?.store?.lists || {};
+  let changed = false;
+  const username = _currentUsername();
+  const now = new Date().toISOString();
+  for (const [name, data] of Object.entries(lists)) {
+    // Le convocazioni sono salvate come array (lista pid), non come oggetto.
+    // Per aggiungere metadata trasformiamo gli array in { ids: [...], _meta: {...} }
+    // Backward-compatible: il vecchio codice continua a funzionare leggendo .ids o iterando direttamente.
+    if (Array.isArray(data)) {
+      lists[name] = { ids: [...data], _meta: { created_by: username, created_at: now, updated_at: now } };
+      changed = true;
+    } else if (data && typeof data === "object" && !data._meta) {
+      data._meta = { created_by: username, created_at: now, updated_at: now };
+      changed = true;
+    }
+  }
+  if (changed) saveCallups(state.callup.store);
+}
+
+// Helper: legge gli ids di una convocazione (sia formato array legacy che oggetto nuovo)
+function _callupIds(entry) {
+  if (Array.isArray(entry)) return entry;
+  if (entry && Array.isArray(entry.ids)) return entry.ids;
+  return [];
+}
+
+// Touch: aggiorna updated_at di una entry (chiamata quando viene editata)
+function _touchGridSave(name) {
+  const entry = state.grids?.store?.lists?.[name];
+  if (!entry) return;
+  if (!entry._meta) entry._meta = { created_by: _currentUsername(), created_at: new Date().toISOString() };
+  entry._meta.updated_at = new Date().toISOString();
+  _saveGrids();
+}
+function _touchCallupSave(name) {
+  const lists = state.callup?.store?.lists || {};
+  const entry = lists[name];
+  if (!entry) return;
+  // Migra al volo se è ancora array
+  if (Array.isArray(entry)) {
+    lists[name] = {
+      ids: [...entry],
+      _meta: { created_by: _currentUsername(), created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    };
+  } else if (entry && typeof entry === "object") {
+    if (!entry._meta) entry._meta = { created_by: _currentUsername(), created_at: new Date().toISOString() };
+    entry._meta.updated_at = new Date().toISOString();
+  }
+  saveCallups(state.callup.store);
+}
+
+// Esporta una griglia o convocazione come download .json
+function _downloadJSON(filename, payload) {
+  try {
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 500);
+  } catch (e) {
+    alert("Errore export: " + e.message);
+  }
+}
+
+function exportGridSave(name) {
+  const entry = state.grids?.store?.lists?.[name];
+  if (!entry) return;
+  const payload = {
+    type: "pid_grid_save",
+    version: 1,
+    name,
+    formation: entry.formation || "4-3-3",
+    assigned: entry.assigned || {},
+    _meta: entry._meta || {},
+    exported_at: new Date().toISOString(),
+    exported_by: _currentUsername(),
+  };
+  _downloadJSON(`griglia_${name.replace(/[^a-z0-9_-]/gi, "_")}.json`, payload);
+}
+
+function exportCallupSave(name) {
+  const entry = state.callup?.store?.lists?.[name];
+  if (!entry) return;
+  const ids = _callupIds(entry);
+  const meta = (entry && !Array.isArray(entry) && entry._meta) || {};
+  const payload = {
+    type: "pid_callup_save",
+    version: 1,
+    name,
+    ids,
+    _meta: meta,
+    exported_at: new Date().toISOString(),
+    exported_by: _currentUsername(),
+  };
+  _downloadJSON(`convocazione_${name.replace(/[^a-z0-9_-]/gi, "_")}.json`, payload);
+}
+
+// Importa file JSON e aggiunge a store (rinomina automatica se collisione)
+function _resolveImportName(baseName, existingNames) {
+  if (!existingNames.has(baseName)) return baseName;
+  let i = 2;
+  while (existingNames.has(`${baseName} (${i})`)) i++;
+  return `${baseName} (${i})`;
+}
+
+async function importSavesFromFile(file) {
+  if (!file) return;
+  let payload;
+  try {
+    const text = await file.text();
+    payload = JSON.parse(text);
+  } catch (e) {
+    alert("File JSON non valido.");
+    return;
+  }
+  if (!payload || typeof payload !== "object" || !payload.type) {
+    alert("Formato non riconosciuto. Atteso un file esportato da PID.");
+    return;
+  }
+  const username = _currentUsername();
+  const now = new Date().toISOString();
+  if (payload.type === "pid_grid_save") {
+    state.grids.store = state.grids.store || { lists: {}, currentName: "" };
+    const existing = new Set(Object.keys(state.grids.store.lists));
+    const name = _resolveImportName(payload.name || "Importato", existing);
+    state.grids.store.lists[name] = {
+      formation: payload.formation || "4-3-3",
+      assigned: payload.assigned || {},
+      _meta: {
+        created_by: payload._meta?.created_by || payload.exported_by || username,
+        created_at: payload._meta?.created_at || payload.exported_at || now,
+        updated_at: now,
+        imported_from: payload.exported_by || null,
+      },
+    };
+    _saveGrids();
+    alert(`Importato come "${name}"`);
+  } else if (payload.type === "pid_callup_save") {
+    state.callup.store = state.callup.store || { lists: {}, currentName: "" };
+    const existing = new Set(Object.keys(state.callup.store.lists));
+    const name = _resolveImportName(payload.name || "Importato", existing);
+    state.callup.store.lists[name] = {
+      ids: Array.isArray(payload.ids) ? [...payload.ids] : [],
+      _meta: {
+        created_by: payload._meta?.created_by || payload.exported_by || username,
+        created_at: payload._meta?.created_at || payload.exported_at || now,
+        updated_at: now,
+        imported_from: payload.exported_by || null,
+      },
+    };
+    saveCallups(state.callup.store);
+    alert(`Importato come "${name}"`);
+  } else {
+    alert(`Tipo file sconosciuto: "${payload.type}"`);
+    return;
+  }
+  renderSavesPanel();
+}
+
+// Carica un salvataggio griglia → setta state.grids e attiva tab grids
+function loadGridSave(name) {
+  const entry = state.grids?.store?.lists?.[name];
+  if (!entry) return;
+  state.grids.formation = entry.formation || "4-3-3";
+  state.grids.assigned = JSON.parse(JSON.stringify(entry.assigned || {})); // deep copy
+  state.grids.store.currentName = name;
+  _saveGrids();
+  setActiveTab("grids");
+}
+
+// Carica una convocazione → setta state.callup.currentIds + attiva tab
+function loadCallupSave(name) {
+  const entry = state.callup?.store?.lists?.[name];
+  if (!entry) return;
+  const ids = _callupIds(entry);
+  state.callup.currentIds = [...ids];
+  state.callup.store.currentName = name;
+  saveCallups(state.callup.store);
+  // Sync state secondario per evitare race con altri renderer
+  try { localStorage.setItem("pid_callup_active", JSON.stringify(state.callup.currentIds)); } catch {}
+  setActiveTab("callup");
+}
+
+// Duplica
+function duplicateGridSave(name) {
+  const entry = state.grids?.store?.lists?.[name];
+  if (!entry) return;
+  const existing = new Set(Object.keys(state.grids.store.lists));
+  const newName = _resolveImportName(`${name} (copia)`, existing);
+  const now = new Date().toISOString();
+  state.grids.store.lists[newName] = {
+    formation: entry.formation || "4-3-3",
+    assigned: JSON.parse(JSON.stringify(entry.assigned || {})),
+    _meta: {
+      created_by: _currentUsername(),
+      created_at: now,
+      updated_at: now,
+      duplicated_from: name,
+    },
+  };
+  _saveGrids();
+  renderSavesPanel();
+}
+
+function duplicateCallupSave(name) {
+  const entry = state.callup?.store?.lists?.[name];
+  if (!entry) return;
+  const existing = new Set(Object.keys(state.callup.store.lists));
+  const newName = _resolveImportName(`${name} (copia)`, existing);
+  const now = new Date().toISOString();
+  state.callup.store.lists[newName] = {
+    ids: [..._callupIds(entry)],
+    _meta: {
+      created_by: _currentUsername(),
+      created_at: now,
+      updated_at: now,
+      duplicated_from: name,
+    },
+  };
+  saveCallups(state.callup.store);
+  renderSavesPanel();
+}
+
+function deleteGridSave(name) {
+  if (!confirm(`Eliminare la griglia "${name}"?`)) return;
+  delete state.grids?.store?.lists?.[name];
+  if (state.grids?.store?.currentName === name) state.grids.store.currentName = "";
+  _saveGrids();
+  renderSavesPanel();
+}
+
+function deleteCallupSave(name) {
+  if (!confirm(`Eliminare la convocazione "${name}"?`)) return;
+  delete state.callup?.store?.lists?.[name];
+  if (state.callup?.store?.currentName === name) state.callup.store.currentName = "";
+  saveCallups(state.callup.store);
+  renderSavesPanel();
+}
+
+// Render della pagina
+function renderSavesPanel() {
+  const panel = document.getElementById("saves-panel");
+  if (!panel) return;
+  // Migra/backfill metadati al primo render
+  _ensureMetaGrids();
+  _ensureMetaCallups();
+
+  const grids = state.grids?.store?.lists || {};
+  const callups = state.callup?.store?.lists || {};
+
+  const T = (it, en) => currentLang === "it" ? it : en;
+
+  const buildGridRow = (name, entry) => {
+    const meta = entry._meta || {};
+    const slotCount = Object.values(entry.assigned || {}).reduce((a, arr) => a + (Array.isArray(arr) ? arr.length : 0), 0);
+    return `
+      <div class="saves-row" style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr auto; gap: 12px; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 0.5px solid var(--border); border-radius: 8px; margin-bottom: 6px;">
+        <div style="min-width: 0;">
+          <div class="truncate" style="font-size: 13px; font-weight: 600; color: var(--text-1);">${escapeHtml(name)}</div>
+          <div class="truncate" style="font-size: 10px; color: var(--text-3); margin-top: 2px;">${entry.formation || "4-3-3"} · ${slotCount} ${T("giocatori", "players")}</div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-2);">👤 ${escapeHtml(meta.created_by || "—")}</div>
+        <div style="font-size: 11px; color: var(--text-3);">${T("Creato", "Created")}: <span style="color: var(--text-2);">${_formatTs(meta.created_at)}</span></div>
+        <div style="font-size: 11px; color: var(--text-3);">${T("Modificato", "Modified")}: <span style="color: var(--text-2);">${_formatTs(meta.updated_at)}</span></div>
+        <div style="display: flex; gap: 4px;">
+          <button class="save-action-btn" data-act="load-grid" data-name="${escapeHtml(name)}" title="${T("Carica", "Load")}">📂</button>
+          <button class="save-action-btn" data-act="dup-grid" data-name="${escapeHtml(name)}" title="${T("Duplica", "Duplicate")}">📋</button>
+          <button class="save-action-btn" data-act="exp-grid" data-name="${escapeHtml(name)}" title="${T("Esporta", "Export")}">📤</button>
+          <button class="save-action-btn" data-act="del-grid" data-name="${escapeHtml(name)}" title="${T("Elimina", "Delete")}" style="color: #EF4444;">🗑</button>
+        </div>
+      </div>`;
+  };
+
+  const buildCallupRow = (name, entry) => {
+    const meta = (entry && !Array.isArray(entry) && entry._meta) || {};
+    const ids = _callupIds(entry);
+    return `
+      <div class="saves-row" style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr auto; gap: 12px; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 0.5px solid var(--border); border-radius: 8px; margin-bottom: 6px;">
+        <div style="min-width: 0;">
+          <div class="truncate" style="font-size: 13px; font-weight: 600; color: var(--text-1);">${escapeHtml(name)}</div>
+          <div class="truncate" style="font-size: 10px; color: var(--text-3); margin-top: 2px;">${ids.length} ${T("giocatori", "players")}</div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-2);">👤 ${escapeHtml(meta.created_by || "—")}</div>
+        <div style="font-size: 11px; color: var(--text-3);">${T("Creato", "Created")}: <span style="color: var(--text-2);">${_formatTs(meta.created_at)}</span></div>
+        <div style="font-size: 11px; color: var(--text-3);">${T("Modificato", "Modified")}: <span style="color: var(--text-2);">${_formatTs(meta.updated_at)}</span></div>
+        <div style="display: flex; gap: 4px;">
+          <button class="save-action-btn" data-act="load-callup" data-name="${escapeHtml(name)}" title="${T("Carica", "Load")}">📂</button>
+          <button class="save-action-btn" data-act="dup-callup" data-name="${escapeHtml(name)}" title="${T("Duplica", "Duplicate")}">📋</button>
+          <button class="save-action-btn" data-act="exp-callup" data-name="${escapeHtml(name)}" title="${T("Esporta", "Export")}">📤</button>
+          <button class="save-action-btn" data-act="del-callup" data-name="${escapeHtml(name)}" title="${T("Elimina", "Delete")}" style="color: #EF4444;">🗑</button>
+        </div>
+      </div>`;
+  };
+
+  const gridRows = Object.entries(grids).map(([n, e]) => buildGridRow(n, e)).join("");
+  const callupRows = Object.entries(callups).map(([n, e]) => buildCallupRow(n, e)).join("");
+
+  const empty = (txt) => `<div style="padding: 24px 14px; text-align: center; color: var(--text-3); font-size: 12px; background: rgba(255,255,255,0.02); border: 0.5px dashed var(--border); border-radius: 8px;">${txt}</div>`;
+
+  panel.innerHTML = `
+    <style>
+      .save-action-btn { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; transition: background 120ms ease; }
+      .save-action-btn:hover { background: rgba(255,255,255,0.08); }
+      .saves-section-title { font-size: 11px; font-weight: 700; color: var(--text-1); text-transform: uppercase; letter-spacing: 0.06em; }
+      .saves-import-btn { font-size: 11px; padding: 6px 10px; background: var(--accent-bg); color: var(--accent); border: 0.5px solid rgba(111,224,168,0.30); border-radius: 6px; cursor: pointer; font-weight: 600; }
+      .saves-import-btn:hover { background: rgba(111,224,168,0.16); }
+    </style>
+    <input type="file" id="saves-import-file" accept="application/json,.json" class="hidden"/>
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;">
+        <h2 style="font-size: 18px; font-weight: 700; color: var(--text-1);">💾 ${T("Salvataggi", "Saves")}</h2>
+        <span style="font-size: 12px; color: var(--text-3);">${T("Tutti i tuoi salvataggi in un posto", "All your saves in one place")}</span>
+      </div>
+
+      <!-- GRIGLIE -->
+      <section style="margin-bottom: 24px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="saves-section-title">⚽ ${T("Griglie", "Grids")}</span>
+            <span style="font-size: 11px; color: var(--text-3); padding: 2px 8px; background: rgba(255,255,255,0.06); border-radius: 999px;">${Object.keys(grids).length}</span>
+          </div>
+          <button class="saves-import-btn" data-act="import-grid">📥 ${T("Importa", "Import")}</button>
+        </div>
+        ${gridRows || empty(T("Nessuna griglia salvata. Vai su 'Griglie' per crearne una.", "No saved grids. Go to 'Grids' to create one."))}
+      </section>
+
+      <!-- CONVOCAZIONI -->
+      <section style="background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="saves-section-title">📋 ${T("Convocazioni", "Call-ups")}</span>
+            <span style="font-size: 11px; color: var(--text-3); padding: 2px 8px; background: rgba(255,255,255,0.06); border-radius: 999px;">${Object.keys(callups).length}</span>
+          </div>
+          <button class="saves-import-btn" data-act="import-callup">📥 ${T("Importa", "Import")}</button>
+        </div>
+        ${callupRows || empty(T("Nessuna convocazione salvata. Vai su 'Convocazione' per crearne una.", "No saved call-ups. Go to 'Call-up' to create one."))}
+      </section>
+    </div>
+  `;
+
+  // Event delegation per le azioni
+  panel.querySelectorAll(".save-action-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const act = btn.dataset.act;
+      const name = btn.dataset.name;
+      switch (act) {
+        case "load-grid": loadGridSave(name); break;
+        case "dup-grid": duplicateGridSave(name); break;
+        case "exp-grid": exportGridSave(name); break;
+        case "del-grid": deleteGridSave(name); break;
+        case "load-callup": loadCallupSave(name); break;
+        case "dup-callup": duplicateCallupSave(name); break;
+        case "exp-callup": exportCallupSave(name); break;
+        case "del-callup": deleteCallupSave(name); break;
+      }
+    });
+  });
+
+  // Import buttons
+  const fileInput = panel.querySelector("#saves-import-file");
+  panel.querySelectorAll('[data-act^="import-"]').forEach(btn => {
+    btn.addEventListener("click", () => fileInput.click());
+  });
+  if (fileInput) {
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files?.[0];
+      if (file) await importSavesFromFile(file);
+      e.target.value = ""; // reset
+    });
   }
 }
 
