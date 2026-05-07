@@ -6130,11 +6130,11 @@ function renderSavesPanel() {
         <div style="font-size: 11px; color: var(--text-2);">👤 ${escapeHtml(meta.created_by || "—")}</div>
         <div style="font-size: 11px; color: var(--text-3);">${T("Creato", "Created")}: <span style="color: var(--text-2);">${_formatTs(meta.created_at)}</span></div>
         <div style="font-size: 11px; color: var(--text-3);">${T("Modificato", "Modified")}: <span style="color: var(--text-2);">${_formatTs(meta.updated_at)}</span></div>
-        <div style="display: flex; gap: 4px;">
-          <button class="save-action-btn" data-act="load-grid" data-name="${escapeHtml(name)}" title="${T("Carica", "Load")}">📂</button>
-          <button class="save-action-btn" data-act="dup-grid" data-name="${escapeHtml(name)}" title="${T("Duplica", "Duplicate")}">📋</button>
-          <button class="save-action-btn" data-act="exp-grid" data-name="${escapeHtml(name)}" title="${T("Esporta", "Export")}">📤</button>
-          <button class="save-action-btn" data-act="del-grid" data-name="${escapeHtml(name)}" title="${T("Elimina", "Delete")}" style="color: #EF4444;">🗑</button>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button class="save-action-btn" data-act="load-grid" data-name="${escapeHtml(name)}">📂 ${T("Carica", "Load")}</button>
+          <button class="save-action-btn" data-act="dup-grid" data-name="${escapeHtml(name)}">📋 ${T("Duplica", "Duplicate")}</button>
+          <button class="save-action-btn" data-act="exp-grid" data-name="${escapeHtml(name)}">⬇️ ${T("Esporta", "Export")}</button>
+          <button class="save-action-btn save-action-btn--danger" data-act="del-grid" data-name="${escapeHtml(name)}">🗑 ${T("Elimina", "Delete")}</button>
         </div>
       </div>`;
   };
@@ -6151,11 +6151,11 @@ function renderSavesPanel() {
         <div style="font-size: 11px; color: var(--text-2);">👤 ${escapeHtml(meta.created_by || "—")}</div>
         <div style="font-size: 11px; color: var(--text-3);">${T("Creato", "Created")}: <span style="color: var(--text-2);">${_formatTs(meta.created_at)}</span></div>
         <div style="font-size: 11px; color: var(--text-3);">${T("Modificato", "Modified")}: <span style="color: var(--text-2);">${_formatTs(meta.updated_at)}</span></div>
-        <div style="display: flex; gap: 4px;">
-          <button class="save-action-btn" data-act="load-callup" data-name="${escapeHtml(name)}" title="${T("Carica", "Load")}">📂</button>
-          <button class="save-action-btn" data-act="dup-callup" data-name="${escapeHtml(name)}" title="${T("Duplica", "Duplicate")}">📋</button>
-          <button class="save-action-btn" data-act="exp-callup" data-name="${escapeHtml(name)}" title="${T("Esporta", "Export")}">📤</button>
-          <button class="save-action-btn" data-act="del-callup" data-name="${escapeHtml(name)}" title="${T("Elimina", "Delete")}" style="color: #EF4444;">🗑</button>
+        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+          <button class="save-action-btn" data-act="load-callup" data-name="${escapeHtml(name)}">📂 ${T("Carica", "Load")}</button>
+          <button class="save-action-btn" data-act="dup-callup" data-name="${escapeHtml(name)}">📋 ${T("Duplica", "Duplicate")}</button>
+          <button class="save-action-btn" data-act="exp-callup" data-name="${escapeHtml(name)}">⬇️ ${T("Esporta", "Export")}</button>
+          <button class="save-action-btn save-action-btn--danger" data-act="del-callup" data-name="${escapeHtml(name)}">🗑 ${T("Elimina", "Delete")}</button>
         </div>
       </div>`;
   };
@@ -6167,14 +6167,16 @@ function renderSavesPanel() {
 
   panel.innerHTML = `
     <style>
-      .save-action-btn { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 14px; transition: background 120ms ease; }
-      .save-action-btn:hover { background: rgba(255,255,255,0.08); }
+      .save-action-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 10px; background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 500; color: var(--text-2); transition: background 120ms ease, color 120ms ease; white-space: nowrap; }
+      .save-action-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-1); }
+      .save-action-btn--danger { color: #FCA5A5; }
+      .save-action-btn--danger:hover { background: rgba(239,68,68,0.12); color: #EF4444; }
       .saves-section-title { font-size: 11px; font-weight: 700; color: var(--text-1); text-transform: uppercase; letter-spacing: 0.06em; }
       .saves-import-btn { font-size: 11px; padding: 6px 10px; background: var(--accent-bg); color: var(--accent); border: 0.5px solid rgba(111,224,168,0.30); border-radius: 6px; cursor: pointer; font-weight: 600; }
       .saves-import-btn:hover { background: rgba(111,224,168,0.16); }
     </style>
     <input type="file" id="saves-import-file" accept="application/json,.json" class="hidden"/>
-    <div style="max-width: 1200px; margin: 0 auto;">
+    <div style="width: 100%;">
       <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px;">
         <h2 style="font-size: 18px; font-weight: 700; color: var(--text-1);">💾 ${T("Salvataggi", "Saves")}</h2>
         <span style="font-size: 12px; color: var(--text-3);">${T("Tutti i tuoi salvataggi in un posto", "All your saves in one place")}</span>
