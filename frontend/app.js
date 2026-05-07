@@ -124,6 +124,27 @@ async function bootstrap() {
     state.clubsById.set(c.tm_club_id, c);
     state.clubsById.set(String(c.tm_club_id), c);
   }
+
+  // Sanitize current_club_name: TM marca temporaneamente i giocatori appena trasferiti
+  // come "New arrival" / "Returnee" / "Internal transfer: X; date: Y" invece del nome del club.
+  // Sostituiamo questi placeholder col nome del club derivato da current_club_id (o roster_club_id come fallback).
+  const isPlaceholderName = (s) => {
+    if (!s) return true;
+    if (s === "New arrival" || s === "Returnee") return true;
+    if (s.startsWith("Internal transfer")) return true;
+    if (s.startsWith("Loan ")) return true;
+    return false;
+  };
+  for (const p of state.players) {
+    if (isPlaceholderName(p.current_club_name)) {
+      const cid = p.current_club_id || p.roster_club_id;
+      const club = cid != null ? state.clubsById.get(cid) : null;
+      if (club && club.name) {
+        p.current_club_name = club.name;
+      }
+    }
+  }
+
   state.lastUpdate = lastUpdate;
 
   document.getElementById("stat-players").textContent = state.players.length;
