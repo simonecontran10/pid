@@ -1146,5 +1146,17 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 618,
+    "name": "AS Saint-Étienne",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/618",
+    "slug": "as-saint-etienne",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]

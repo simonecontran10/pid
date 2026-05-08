@@ -94392,5 +94392,37 @@
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/984593.jpg"
+  },
+  {
+    "tm_player_id": 1202299,
+    "full_name": "Nadir El Jamali",
+    "name_arabic": "نادر الجمالي",
+    "date_of_birth": "2007-04-17",
+    "age": 19,
+    "height_cm": 180,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Attacking Midfield",
+    "position_others": [
+      "Right Winger"
+    ],
+    "place_of_birth": "Paris",
+    "citizenships": [
+      "France",
+      "Morocco"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 618,
+    "current_club_name": "Saint-Étienne",
+    "shirt_number": 31,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/default.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1202299",
+    "fetched_at": "2026-05-08T20:50:36Z",
+    "roster_club_id": 618,
+    "roster_club_name": "Saint-Étienne",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null
   }
 ]
