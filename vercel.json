@@ -1,29 +1,75 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/frontend/index.html" },
-    { "source": "/export-pptx", "destination": "/api/main" },
-    { "source": "/clubs", "destination": "/api/main" },
-    { "source": "/clubs/(.*)", "destination": "/api/main" },
-    { "source": "/players", "destination": "/api/main" },
-    { "source": "/players/(.*)", "destination": "/api/main" },
-    { "source": "/search", "destination": "/api/main" },
-    { "source": "/compare", "destination": "/api/main" },
-    { "source": "/stats/(.*)", "destination": "/api/main" },
-    { "source": "/update", "destination": "/api/main" },
-    { "source": "/update/status", "destination": "/api/main" },
-    { "source": "/reload", "destination": "/api/main" }
+    {
+      "source": "/",
+      "destination": "/frontend/index.html"
+    },
+    {
+      "source": "/export-pptx",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/admin-add-player",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/clubs",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/clubs/(.*)",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/players",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/players/(.*)",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/search",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/compare",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/stats/(.*)",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/update",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/update/status",
+      "destination": "/api/main"
+    },
+    {
+      "source": "/reload",
+      "destination": "/api/main"
+    }
   ],
   "headers": [
     {
       "source": "/data/:path*",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=60, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=60, must-revalidate"
+        }
       ]
     },
     {
       "source": "/data/photos/:path*",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=300" }
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300"
+        }
       ]
     }
   ],

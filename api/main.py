@@ -425,6 +425,76 @@ def export_pptx(payload: dict = Body(...)):
     )
 
 
+
+
+
+# ============ ADMIN: ADD PLAYER FROM TM URL ============
+import os as _os
+import urllib.request as _urlreq
+import urllib.error as _urlerr
+import json as _json_admin
+
+@app.post("/admin-add-player")
+def admin_add_player(payload: dict = Body(...)):
+    """Triggera il workflow GitHub Actions add_player.yml.
+    
+    Payload atteso:
+    {
+        "url": "https://www.transfermarkt.com/.../profil/spieler/123456",
+        "admin_email": "simonecontran10@gmail.com"  // opzionale, verifica future
+    }
+    
+    Richiede secret env GITHUB_PAT (GitHub Personal Access Token con repo+workflow access).
+    """
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Payload deve essere un oggetto JSON")
+    
+    url = payload.get("url", "").strip()
+    if not url:
+        raise HTTPException(status_code=400, detail="Campo 'url' mancante")
+    
+    # Validazione URL
+    import re
+    if not re.search(r'transfermarkt\.com.*spieler/\d+', url):
+        raise HTTPException(status_code=400, detail="URL non valido (deve contenere transfermarkt.com/.../spieler/<id>)")
+    
+    pat = _os.environ.get("GITHUB_PAT")
+    if not pat:
+        raise HTTPException(status_code=500, detail="GITHUB_PAT non configurato sul server")
+    
+    # Trigger del workflow GitHub Actions
+    api_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_player.yml/dispatches"
+    body = _json_admin.dumps({
+        "ref": "main",
+        "inputs": {"url": url}
+    }).encode("utf-8")
+    
+    req = _urlreq.Request(
+        api_url,
+        data=body,
+        method="POST",
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {pat}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "Content-Type": "application/json",
+        },
+    )
+    
+    try:
+        with _urlreq.urlopen(req, timeout=15) as resp:
+            status = resp.status
+            if status == 204:
+                return {"success": True, "message": "Workflow triggered successfully"}
+            else:
+                raise HTTPException(status_code=502, detail=f"GitHub API returned {status}")
+    except _urlerr.HTTPError as e:
+        body_err = e.read().decode("utf-8", errors="replace")
+        raise HTTPException(status_code=502, detail=f"GitHub API error {e.code}: {body_err[:200]}")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Errore: {type(e).__name__}: {e}")
+
+
 # ============ VERCEL SERVERLESS HANDLER ============
 # Vercel cerca una variabile chiamata `handler` come entry point per ASGI apps
 try:

@@ -1,0 +1,72 @@
+name: Admin - Add Player from TM URL
+
+# Triggerable manualmente o da chiamata API
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL Transfermarkt del giocatore (es. https://www.transfermarkt.com/.../profil/spieler/123456)"
+        required: true
+        type: string
+
+concurrency:
+  group: add-player
+  cancel-in-progress: false
+
+jobs:
+  add-player:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install boto3 python-dotenv
+
+      - name: Validate URL
+        run: |
+          URL="${{ github.event.inputs.url }}"
+          if ! echo "$URL" | grep -qE 'transfermarkt\.com.*spieler/[0-9]+'; then
+            echo "❌ URL non valido: $URL"
+            exit 1
+          fi
+          echo "✓ URL valido: $URL"
+
+      - name: Run add_players.py
+        run: |
+          echo "${{ github.event.inputs.url }}" | python3 add_players.py
+
+      - name: Run enrich_sortitoutsi.py
+        run: python3 enrich_sortitoutsi.py || true
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No git changes to commit"
+            exit 0
+          fi
+          git commit -m "auto: add player from TM URL ($(date -u +%Y-%m-%d))"
+          # Retry push se push concurrent
+          for i in 1 2 3; do
+            if git pull --rebase origin main && git push; then
+              exit 0
+            fi
+            sleep 5
+          done
+          exit 1
