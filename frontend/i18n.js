@@ -4,7 +4,7 @@
  */
 const I18N = {
   en: {
-    title: "Player Intelligence Database",
+    title: "Players Intelligence Database",
     subtitle: "",
     players: "Players",
     clubs: "Clubs",
@@ -213,7 +213,7 @@ const I18N = {
     month_jan: "Jan", month_feb: "Feb", month_mar: "Mar", month_apr: "Apr", month_may: "May", month_jun: "Jun",
   },
   it: {
-    title: "Player Intelligence Database",
+    title: "Players Intelligence Database",
     subtitle: "",
     players: "Giocatori",
     clubs: "Club",

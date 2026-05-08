@@ -1,5 +1,5 @@
 /**
- * Player Intelligence Database (PID) — frontend dark high-contrast.
+ * Players Intelligence Database (PID) — frontend dark high-contrast.
  *
  * Modalità statica: legge JSON da ../data/. In deploy build_deploy.sh sostituisce
  * DATA_BASE con "./data".
