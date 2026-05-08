@@ -2839,8 +2839,8 @@ const FORMATIONS = {
     { id: "RCM", x: 60, y: 48, label: "CM"  },
     { id: "LCM", x: 40, y: 48, label: "CM"  },
     { id: "LM",  x: 12, y: 50, label: "LM"  },
-    { id: "RAM", x: 70, y: 75, label: "RAM" },
-    { id: "LAM", x: 30, y: 75, label: "LAM" },
+    { id: "RAM", x: 78, y: 75, label: "RAM" },
+    { id: "LAM", x: 22, y: 75, label: "LAM" },
     { id: "ST",  x: 50, y: 86, label: "ST"  },
   ],
 };
@@ -3322,13 +3322,13 @@ const _PPTX_SLOT_MAP_BY_SYSTEM = {
     "RCB":  "RCB1",
     "CB":   "CB1",
     "LCB":  "LCB1",
-    "RM":   "RFB1",   // esterno di centrocampo → terzino alto template
+    "RM":   "RFB1",
     "LM":   "LFB1",
     "RCM":  "RCM1",
     "LCM":  "LCM1",
-    "RW":   "RW1",
+    "RAM":  "RW1",
+    "LAM":  "LW1",
     "ST":   "ST1",
-    "LW":   "LW1",
   },
   "4-3-3": {
     "GK":   "GK1",
