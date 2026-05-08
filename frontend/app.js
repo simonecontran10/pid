@@ -610,11 +610,11 @@ function renderClubs() {
     return `
       <button class="player-card rounded-lg flex flex-col items-center justify-center text-center gap-1 p-2" data-cid="${c.tm_club_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
         ${logo
-          ? `<img src="${logo}" alt="${escapeHtml(c.name)}" class="w-10 h-10 object-contain flex-shrink-0" loading="lazy"/>`
+          ? `<img src="${logo}" alt="${escapeHtml(prettyClubName(c.name))}" class="w-10 h-10 object-contain flex-shrink-0" loading="lazy"/>`
           : `<div class="w-10 h-10 rounded flex items-center justify-center font-bold text-base flex-shrink-0" style="background: var(--accent-bg); color: var(--accent);">${(c.name||"?")[0]}</div>`
         }
         <div class="flex flex-col items-center justify-center min-w-0 w-full">
-          <div class="text-[10px] font-semibold leading-tight truncate w-full" style="color: var(--text-1);">${escapeHtml(c.name)}</div>
+          <div class="text-[10px] font-semibold leading-tight truncate w-full" style="color: var(--text-1);">${escapeHtml(prettyClubName(c.name))}</div>
           <div class="text-[9px] mt-0.5 stat-cell" style="color: var(--accent);">${nPlayers}</div>
         </div>
       </button>`;
@@ -912,9 +912,9 @@ function openPlayerModal(pid) {
         })()}
         ${p.current_club_name ? `
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 14px 18px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 0.5px solid var(--border); flex-shrink: 0; min-width: 150px;">
-            ${clubLogoUrl ? `<img src="${clubLogoUrl}" style="width: 64px; height: 64px; object-fit: contain;" alt=""/>` : `<div style="width: 64px; height: 64px; border-radius: 8px; background: var(--accent-bg); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700;">${(p.current_club_name||"?")[0]}</div>`}
+            ${clubLogoUrl ? `<img src="${clubLogoUrl}" style="width: 64px; height: 64px; object-fit: contain;" alt=""/>` : `<div style="width: 64px; height: 64px; border-radius: 8px; background: var(--accent-bg); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700;">${(prettyClubName(p.current_club_name)||"?")[0]}</div>`}
             <div style="text-align: center;">
-              <div style="font-size: 14px; font-weight: 600; color: var(--text-1); line-height: 1.2;">${escapeHtml(p.current_club_name)}</div>
+              <div style="font-size: 14px; font-weight: 600; color: var(--text-1); line-height: 1.2;">${escapeHtml(prettyClubName(p.current_club_name))}</div>
               <div style="font-size: 11px; color: var(--text-3); line-height: 1.2; margin-top: 3px;">${escapeHtml(club?.league_name || "")}</div>
             </div>
           </div>` : ""}
