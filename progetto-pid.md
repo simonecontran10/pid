@@ -2246,3 +2246,234 @@ Branch: feature/pptx-export (in attesa di merge)
 Production: main su pid-nine.vercel.app (con bug fix Griglie del 91e5453)
 Preview: pid-git-feature-pptx-export-...vercel.app
 ```
+## 8 mag 2026 (mattina, completamento) — Export PPT live verificato su 5 sistemi + 3-4-2-1 aggiunto
+
+### Sessione di rifinitura sui sistemi multipli
+
+Continuazione mattutina. Stato di partenza: bottone export PPT online sul preview Vercel funzionante, ma con mappature slot frontend → template solo per il 4-2-3-1 testato. Test live degli altri sistemi e fix dei bug emersi sistema per sistema.
+
+### Bug scoperti e risolti durante test live multi-sistema
+
+#### Bug 4 — `_PPTX_SLOT_MAP` globale non funziona per il 3-4-3
+
+Il **3-4-3** frontend usa id `RM`/`LM` per gli **esterni di centrocampo**. Nella mappa globale precedente avevo `RM → RW1, LM → LW1` (corretto per il 4-4-2 dove RM/LM sono ali in attacco), ma sbagliato per il 3-4-3 dove RM/LM sono **terzini alti** (template `RFB1/LFB1`).
+
+**Fix**: trasformata la mappa globale `_PPTX_SLOT_MAP` in mappa **per sistema** `_PPTX_SLOT_MAP_BY_SYSTEM` con un dizionario per ognuno dei 6 sistemi:
+
+```js
+const _PPTX_SLOT_MAP_BY_SYSTEM = {
+  "3-5-2": { GK: "GK1", RCB: "RCB1", CB: "CB1", ..., RWB: "RFB1", LWB: "LFB1", ... },
+  "3-4-3": { GK: "GK1", ..., RM: "RFB1", LM: "LFB1", ... },  // RM = esterno cc
+  "3-4-2-1": { ... },
+  "4-3-3": { GK: "GK1", RB: "RFB1", LB: "LFB1", ..., RW: "RW1", LW: "LW1" },
+  "4-2-3-1": { GK: "GK1", RB: "RFB1", ..., RDM: "RCM1", LDM: "LCM1", RAM: "RW1", LAM: "LW1", CAM: "ST1B" },
+  "4-4-2": { ..., RM: "RW1", LM: "LW1" }  // RM = esterno cc → ala template
+};
+
+function _gridsMapSlot(sysName, frontendSlot) {
+  return (_PPTX_SLOT_MAP_BY_SYSTEM[sysName] || {})[frontendSlot] || frontendSlot;
+}
+```
+
+#### Bug 5 — `fill_pressing_slide` lasciava cerchi con label letterale
+
+Quando il sistema scelto non usava tutti i cerchi Set A del template (es. nel 4-2-3-1 mancano `Cm1`/`Cb1`), i cerchi restanti mostravano la label originale del template (Cm1, Cb1, ecc.) invece di essere riempiti con un giocatore.
+
+Inizialmente avevo creato `hide_unused_pressing_set_a_circles()` che spostava fuori canvas i cerchi non usati. Approccio sbagliato: il template ha **11 cerchi Set A**, e ogni sistema ha **11 titolari**. La logica giusta è **riempirli tutti** indipendentemente dalle label originali.
+
+**Fix**: `fill_pressing_slide` riscritta per:
+- Riempire SEMPRE il cerchio "Gk1" col portiere (slot GK1 dal payload)
+- Riempire i restanti 10 cerchi Set A coi 10 outfield titolari **nell'ordine z-order** del template (`spTree`)
+- L'utente Simone poi sposta i cerchi a mano nelle posizioni di pressing volute
+
+```python
+def fill_pressing_slide(pressing_slide, players, system=None):
+    SET_A_LABELS = {"gk1","rcb1","cb1","lcb1","rfb1","lfb1","rcm1","cm1","lcm1","st1","st1b","rw1","lw1"}
+    
+    gk_titolare = None
+    outfield_titolari = []
+    for slot, plist in players.items():
+        if not plist: continue
+        if slot.upper() == "GK1":
+            gk_titolare = plist[0]
+        else:
+            outfield_titolari.append(plist[0])
+    
+    # ... riempi gk_group col portiere, set_a_groups coi 10 outfield (zip)
+```
+
+Funzione helper `_fill_pressing_circle()` che gestisce un singolo cerchio: sostituisce label esterna (cognome Title Case) e numero interno (numero di maglia).
+
+#### Bug 6 — Bug accidentale: regex sostituzione greedy mangia LOGO_ITALIA_HASH
+
+Durante la riscrittura di `fill_pressing_slide` con un `re.sub` greedy, ho accidentalmente cancellato la definizione `LOGO_ITALIA_HASH = "af7418bf37"`. Causava `NameError` al runtime.
+
+**Fix**: ripristinata la costante. Lezione: usare regex **non-greedy** (`.*?`) o pattern più stretti quando si sostituiscono blocchi multi-funzione.
+
+#### Aggiunta sistema 3-4-2-1 al frontend
+
+Il **3-4-2-1** era nel template (slide 3) e nella mappa `_PPTX_SLOT_MAP_BY_SYSTEM`, ma **non in `FORMATIONS`** del frontend. Il dropdown del Modulo aveva solo 5 opzioni (4-3-3, 4-4-2, 3-5-2, 4-2-3-1, 3-4-3). Aggiunto:
+
+```js
+"3-4-2-1": [
+  { id: "GK",  x: 50, y: 8 },
+  { id: "RCB", x: 70, y: 25 }, { id: "CB", x: 50, y: 23 }, { id: "LCB", x: 30, y: 25 },
+  { id: "RM",  x: 88, y: 50 }, { id: "RCM", x: 60, y: 48 }, { id: "LCM", x: 40, y: 48 }, { id: "LM",  x: 12, y: 50 },
+  { id: "RAM", x: 70, y: 75 }, { id: "LAM", x: 30, y: 75 },
+  { id: "ST",  x: 50, y: 86 }
+]
+```
+
+3 difensori + 4 centrocampisti + 2 trequartisti laterali + 1 punta.
+
+### Test live verificati
+
+Dal preview URL (`pid-git-feature-pptx-export-...vercel.app`):
+
+| Sistema   | Stato test live | Note |
+|-----------|----|------|
+| 3-5-2     | ✅ verificato | Logo + nome JUVENTUS auto-rilevato, 22 card, 11 foto, 11 cerchi pressing colorati Juve |
+| 3-4-3     | ✅ verificato | Esterni cc RM/LM mappati a RFB1/LFB1 (post fix Bug 4) |
+| 4-3-3     | ✅ verificato | Conceição RW + Yıldız LW corretti |
+| 4-2-3-1   | ✅ verificato | Trequartista (CAM → ST1B), mediani difensivi (RDM/LDM → RCM1/LCM1), trequartisti laterali (RAM/LAM → RW1/LW1) |
+| 4-4-2     | ✅ verificato | RM/LM in attacco → RW1/LW1, ST1+ST1B come 2 punte |
+| 3-4-2-1   | ⏳ da testare (post add a FORMATIONS) | |
+
+### Stato attuale repo
+
+Branch: `feature/pptx-export` (ancora **non mergato in main**)
+
+Commit del branch:
+```
+8d9c17b — feat: PPT export endpoint + bottone Griglie (initial)
+165197e — fix: usa state.players invece di window._players
+f984923 — fix: aggiungi mappatura slot RDM/LDM/RAM/LAM (4-2-3-1)
+2437eaf — fix: mappa slot frontend->template PER SISTEMA (3-4-3 RM/LM)
+[next]  — feat: fill_pressing_slide riempie sempre tutti gli 11 cerchi
+[next]  — feat: aggiunge sistema 3-4-2-1 al frontend FORMATIONS
+```
+
+### TODO finale prima del merge → main
+
+1. **Test 3-4-2-1 live** dopo deploy del fix FORMATIONS
+2. **Merge `feature/pptx-export` → `main`** così il bottone va in produzione su `pid-nine.vercel.app`
+3. **Cleanup**: cancellare `*.bak_pre_*` (`api/main.py.bak_pre_export`)
+4. **Verifica run notturno** auto_update_daily.yml (Locatelli stats — punto pendente di stamattina)
+5. **Bug 3 in pausa** — `team_name` rilevato dalla griglia funziona quando i giocatori hanno tutti `club_name` valorizzato (caso normale). Quando l'utente mette giocatori di squadre diverse, default "TEAM" + logo Italia. Accettabile.
+
+### Lezioni apprese
+
+1. **Mappature slot non-banali**: ogni sistema ha id frontend diversi per gli stessi ruoli (RM/LM possono essere terzini alti o ali in attacco a seconda del sistema). Mappa per-sistema obbligatoria.
+2. **Template Sassuolo originale**: alcune label sono "legacy" del 3-5-2. Riusare il template per altri sistemi richiede di **riempire** sempre tutti i cerchi (non hide).
+3. **Regex sostituzione codice**: usare pattern stretti e non-greedy. La perdita silenziosa di `LOGO_ITALIA_HASH` è stata recuperata solo grazie a `git show HEAD:file`.
+4. **Test multi-sistema indispensabile**: il 3-5-2 funzionava ma 5 altri sistemi avevano bug diversi che sarebbero emersi solo in produzione live.
+## 8 mag 2026 (mattina, FINALIZZAZIONE) — Export PPT in PRODUZIONE su pid-nine.vercel.app
+
+### Completamento test 3-4-2-1 + cosmetica + merge in main
+
+#### Fix conclusivi sul branch feature/pptx-export
+
+1. **Sistema 3-4-2-1 testato live** — funzionante. Inizialmente i 2 trequartisti laterali (LAM/RAM) avevano foto ma non card sotto, perché la mappa per `3-4-2-1` non aveva `RAM/LAM`. Aggiunti come:
+   - `RAM → RW1` (template — usa lo spazio dell'ala destra)
+   - `LAM → LW1` (template — usa lo spazio dell'ala sinistra)
+   - `RM → RFB1`, `LM → LFB1` (esterni di centrocampo come terzini alti)
+   - `ST → ST1` (punta singola)
+
+2. **Allargamento posizioni RAM/LAM nelle Griglie** — i due trequartisti laterali nel 3-4-2-1 erano troppo vicini al centro (x=70 e x=30). Spostati a x=80 e x=20 per migliore visibilità nel pitch SVG.
+
+3. **Rinominato bottone export** — "📥 PPT" → "Esporta PPTX" (più chiaro). Modificata chiave `export_pptx` in `frontend/i18n.js`.
+
+#### Test live finale - 6/6 sistemi verificati
+
+| Sistema   | Test live | Stato |
+|-----------|-----------|-------|
+| 3-5-2     | ✅        | Tutti gli 11 pieni + colori squadra |
+| 3-4-3     | ✅        | RM/LM mappati a RFB1/LFB1 |
+| 3-4-2-1   | ✅        | RAM/LAM mappati a RW1/LW1 |
+| 4-3-3     | ✅        | Conceição RW + Yıldız LW |
+| 4-2-3-1   | ✅        | CAM trequartista in ST1B + RDM/LDM mediani |
+| 4-4-2     | ✅        | RM/LM ali in attacco → RW1/LW1 |
+
+#### Merge in main → produzione live
+
+```
+git checkout main
+git pull origin main
+git merge feature/pptx-export
+git push origin main
+```
+
+Vercel deploya la production: il bottone "Esporta PPTX" è ora **live su `pid-nine.vercel.app`**.
+
+### Stato finale dell'export PPT
+
+```
+Sito:        pid-nine.vercel.app (production)
+Bottone:     "Esporta PPTX" nella toolbar Griglie
+Endpoint:    POST /export-pptx (FastAPI + Mangum su Vercel)
+Generator:   scripts/pptx_generator/ (template + 6 sistemi mappati)
+Foto:        data/photos/players_sots_lookup/ (filesystem locale)
+Loghi:       scripts/pptx_generator/assets/loghi_squadre/ (PNG per squadra)
+Colori:      scripts/pptx_generator/assets/colori_squadre.json (24 squadre Serie A)
+```
+
+### Caratteristiche dell'export
+
+- **Auto-detect squadra**: dedotto dal `club_name` della maggioranza dei titolari
+- **Logo squadra**: cercato in `loghi_squadre/{slug_squadra}.png`, fallback Italia
+- **Cerchi pressing colorati per squadra**: dalla mappa `colori_squadre.json`
+- **Tutti gli 11 cerchi pressing sempre pieni**: GK in posizione + 10 outfield in ordine z-order
+- **Foto giocatori**: sostituzione automatica dal filesystem repo
+- **Cognomi puliti**: solo ultima parola (Locatelli, Kalulu) salvo eccezioni (Di Gregorio, Joao Mario)
+- **Foot D/S**: per giocatori ambidestri "D/S" con S in rosso bold
+- **Logo squadra dimensioni per slide**: cover 2.6cm, formazione 1.6cm, pressing 1.1cm
+- **Match info generici**: "Stadio – Città – Paese", "GG Mese 2026 – HH:MM", "Serie A 2026/27 – Xª giornata", "COACH Nome Cognome" (popolabili in futuro da form modale)
+- **Strisce viola template**: alto-sx in primo piano, basso-dx dietro al campo
+
+### Sintesi sessione 7-8 mag (2 giorni)
+
+**Punto di partenza** (7 mag mattina): zero infrastruttura PPT
+**Punto di arrivo** (8 mag mattina): bottone live in produzione, 6 sistemi supportati, 18 commit nel branch
+
+**Bug critici risolti durante il percorso**:
+1. ImagePart condivise (foto duplicate)
+2. SYSTEM_TO_SLIDE_INDEX shift slide template
+3. ST1B come trequartista nel 4-2-3-1
+4. window._players → state.players
+5. Mappa _PPTX_SLOT_MAP globale → per sistema
+6. fill_pressing_slide → riempi sempre tutti gli 11 cerchi
+7. LOGO_ITALIA_HASH cancellato accidentalmente da regex greedy
+8. Mappature RM/LM specifiche per sistema (esterno cc vs ala alta)
+9. RAM/LAM nel 3-4-2-1 → RW1/LW1
+10. Mancanza FORMATIONS["3-4-2-1"] nel frontend
+
+### TODO post-rilascio
+
+1. **Verifica run notturno** auto_update_daily.yml + Locatelli stats su R2 (punto pendente da stamattina)
+2. **Form modale match_info**: per ora i match info sono hardcoded generici. Aggiungere modale dove l'utente inserisce stadio/data/avversario/competizione/coach prima di esportare
+3. **Cleanup branch feature/pptx-export**: opzionale, può essere cancellato (`git branch -d feature/pptx-export` + `git push origin --delete feature/pptx-export`)
+4. **Documentazione utente**: spiegare ai giocatori del PID come usare l'export
+
+### File modificati nella sessione totale (7-8 mag)
+
+```
+M  api/main.py                                  (+103 righe)
+M  api/requirements.txt                         (+3 righe: pptx, Pillow, mangum)
+M  frontend/app.js                              (+200 righe: bottone, helpers, mappa, FORMATIONS 3-4-2-1)
+M  frontend/i18n.js                             (+8 righe: chiavi PPTX, label "Esporta PPTX")
+M  vercel.json                                  (rewrites + functions config)
+M  progetto-pid.md                              (+1500 righe diario)
+A  .vercelignore
+A  scripts/pptx_generator/                      (~25KB generator + assets ~3.7MB template)
+```
+
+### PROMPT DI RIPRESA (per la prossima sessione)
+
+> Ciao Claude, riprendo PID. Stato:
+> 
+> 1. ✅ Generator PowerPoint LIVE in produzione su `pid-nine.vercel.app`. Bottone "Esporta PPTX" nella pagina Griglie. Tutti i 6 sistemi (3-5-2, 3-4-3, 3-4-2-1, 4-3-3, 4-2-3-1, 4-4-2) testati e funzionanti.
+> 2. ⏳ Da verificare: run notturno auto_update_daily.yml di stanotte 03:00 UTC → Locatelli stats su R2.
+> 3. 🔄 Possibili miglioramenti futuri:
+>    - Form modale per match_info (stadio/data/avversario/competizione/coach)
+>    - Documentazione utente per il bottone export
+>    - Cleanup branch `feature/pptx-export`
