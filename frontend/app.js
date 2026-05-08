@@ -3303,6 +3303,12 @@ const _PPTX_SLOT_MAP = {
   "ST":   "ST1",
   // Trequartista nel 4-2-3-1 → ST1B
   "CAM":  "ST1B",
+  // 4-2-3-1: mediani difensivi (DM) → mediani template
+  "RDM":  "RCM1",
+  "LDM":  "LCM1",
+  // 4-2-3-1: trequartisti laterali (AM = Attacking Midfielder) → ali template
+  "RAM":  "RW1",
+  "LAM":  "LW1",
 };
 
 function _gridsBuildPptxPayload() {
