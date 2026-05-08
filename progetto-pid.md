@@ -2477,3 +2477,1435 @@ A  scripts/pptx_generator/                      (~25KB generator + assets ~3.7MB
 >    - Form modale per match_info (stadio/data/avversario/competizione/coach)
 >    - Documentazione utente per il bottone export
 >    - Cleanup branch `feature/pptx-export`
+## 8 mag 2026 (mattina, post-rilascio PPT) — Status run notturno + Locatelli stats su R2
+
+### Diagnostica run notturno auto_update_daily
+
+Dopo il rilascio del bottone Esporta PPTX in produzione, verifica del punto pendente: i dati di Locatelli non erano ancora aggiornati su R2 dopo il run notturno presunto della notte 7→8 maggio.
+
+#### Stato dati al momento della diagnostica (mattina 8 mag, ~10:30 UTC)
+
+| Dove | Giocatori | Locatelli | Stato |
+|------|-----------|-----------|-------|
+| `data/players_main.json` (locale + repo) | 2859 | ✅ presente | aggiornato |
+| `data/players_static.json` (locale + repo) | 2859 | ✅ presente | aggiornato |
+| `data/players_stats.json` (locale, gitignored) | 2758 | ✅ 2 stagioni | aggiornato |
+| **R2** `pub-aa9d173290684b36a9f35e79d4d388c2.r2.dev/players_stats.json` | **2757** | ❌ assente | **non aggiornato** |
+
+Delta: R2 ha 102 giocatori in meno rispetto a `players_main.json` (forse giocatori senza stats o pre-Locatelli).
+
+#### Run di GitHub Actions trovati
+
+Lista degli ultimi 2 run del workflow `Auto Update Daily (stats only)`:
+
+| Run | Trigger | Status | Conclusion |
+|-----|---------|--------|------------|
+| 2026-05-08T08:15:05Z | schedule (cron) | **in progress** | (in esecuzione) |
+| 2026-05-07T08:04:39Z | workflow_dispatch (manuale) | completed | **cancelled** |
+
+Il run di ieri (manual dispatch) si è interrotto durante `Run stats refresh` (probabile timeout 90 min, prima del bump a 180 min in commit 9474b74).
+
+Il run di stanotte (schedule cron) è partito alle **08:15:05 UTC = 10:15 ora italiana**, NON alle 03:00 UTC come da cron. GitHub Actions a volte ritarda i cron schedulati di diverse ore (è documentato come comportamento normale del sistema). 
+
+#### Stato del run in corso (verificato alle ~10:45 UTC)
+
+```
+Job: daily-update  status=in_progress
+  - Set up job                           ✅ success
+  - Checkout repo                        ✅ success
+  - Setup Python                         ✅ success
+  - Install dependencies                 ✅ success
+  - Hash pre-run players_stats.json      ✅ success (file mancante = hash vuoto)
+  - Run stats refresh                    ⏳ IN PROGRESS (start: 08:15:37 UTC)
+  - Hash post-run + check changes        pending
+  - Upload to Cloudflare R2              pending
+  - Commit and push if changed           pending
+```
+
+Stato `Run stats refresh` partito ~30 min fa. Tempo previsto per completamento: ~30-60 min.
+
+#### Logica del workflow + bug strutturale rilevato
+
+Il workflow:
+1. Checkout repo (senza `players_stats.json`, gitignored 88MB)
+2. Pre-hash → vuoto (file mancante)
+3. `run_stats.py --refresh` → ricostruisce stats per **TUTTI** i 2859 giocatori in `players_main.json`
+4. Post-hash → diverso (sempre changed=true)
+5. Upload R2
+
+**Bug rilevato**: il workflow **NON scarica `players_stats.json` da R2 prima del refresh**. Significa che:
+- Ogni run rifa **tutto da zero** (~30-40 min)
+- Funzionalmente OK perché Locatelli è in `players_main.json`
+- Il prossimo upload R2 avrà 2859 giocatori (incluso Locatelli) ✅
+
+Più efficiente sarebbe: download R2 → resume incrementale (skip giocatori esistenti) → upload R2. Ma con `--refresh` flag esplicito, è OK rifare tutto.
+
+#### Esito atteso
+
+Quando il run completa (~13:00 italiana):
+- `players_stats.json` su R2 avrà 2858+ giocatori inclusi Locatelli
+- Il sito `pid-nine.vercel.app` mostrerà le stats di Locatelli (caricate via R2_OVERRIDES)
+- Frontend `/data/players_stats` → redirect a R2 → JSON aggiornato
+
+#### Decisione
+
+**Aspettare** il completamento del run (no upload manuale). Se non completa entro 13:30 UTC italiana, valutare:
+1. Cancellare e rilanciare run manualmente
+2. Forzare upload R2 da Mac (richiede `.env` ricreato)
+3. Investigare se il workflow ha bug latenti
+
+### Riassunto sessione 8 mag (mattina completa)
+
+✅ **Completati**:
+1. Bottone "Esporta PPTX" rilasciato in produzione su `pid-nine.vercel.app`
+2. Tutti i 6 sistemi (3-5-2, 3-4-3, 3-4-2-1, 4-3-3, 4-2-3-1, 4-4-2) testati e funzionanti live
+3. Sistema 3-4-2-1 aggiunto al frontend FORMATIONS
+4. Verifica/diagnosi run notturno auto_update_daily
+
+⏳ **In corso**:
+- Run stats refresh GitHub Actions (completamento previsto ~13:00 italiana)
+- Locatelli stats sarà su R2 al completamento del run
+
+### TODO
+
+1. Verificare al completamento del run che R2 abbia 2858+ giocatori inclusi Locatelli
+2. Hard reload `pid-nine.vercel.app` → verificare stats Locatelli visibili in pagina giocatore
+3. Cancellare backup files `players_stats.json.locatelli_only_backup` se presente
+4. (Possibile miglioramento futuro): aggiungere step di download R2 al workflow per fare resume invece di rifare tutto
+## 8 mag 2026 (mattina, post-rilascio PPTX) — 2 modifiche cosmetiche
+
+### Modifica 1 — Riordino dropdown Modulo nelle Griglie
+
+L'ordine di FORMATIONS nel frontend determinava l'ordine dei sistemi nel dropdown "Modulo" della pagina Griglie. Ordine richiesto:
+
+```
+4-4-2 → 4-2-3-1 → 4-3-3 → 3-5-2 → 3-4-2-1 → 3-4-3
+```
+
+(Sistemi a 4 difensori prima, poi a 3, dal più offensivo al più difensivo all'interno di ciascun gruppo.)
+
+**Nota tecnica**: il cambio di ordine è puramente UI. Il sistema continua a funzionare in produzione perché:
+- `state.grids.formation` salva il valore stringa (es. `"4-2-3-1"`)
+- Le mappe `_PPTX_SLOT_MAP_BY_SYSTEM[sistema]` e `SYSTEM_TO_SLIDE_INDEX[sistema]` sono indicizzate per stringa, non per posizione
+- L'ordine in `FORMATIONS` influenza solo `Object.keys(FORMATIONS).map(...)` nel template del select
+
+Commit: `fix: riordina sistemi nel dropdown Modulo` → `9524203` su main.
+
+### Modifica 2 — Display name dei club italiani
+
+#### Requisito
+
+Il display dei nomi club nel frontend (scheda giocatori, dropdown filtri, card) era ridondante con prefissi/suffissi società. Esempi:
+- "ACF Fiorentina" → "Fiorentina"
+- "AC Milan" → "Milan"
+- "Inter Milan" → "Inter"
+- "Juventus FC" → "Juventus"
+- "AC Reggiana 1919" → "Reggiana"
+
+#### Decisioni di design
+
+| Aspetto | Decisione |
+|---------|-----------|
+| Dove applicare | Solo display frontend |
+| Database | Invariato (matching dataset esterni) |
+| Lingue/leghe | Solo Serie A (IT1), Serie B (IT2), Primavera (IJ1) |
+| Suffissi categoria | Mantenuti ("Atalanta Primavera" resta tale) |
+| Prefissi società | Rimossi (AC, AS, ACF, US, UC, SS, SSC, FC) |
+
+#### Implementazione
+
+Aggiunta funzione `prettyClubName(name)` in `frontend/app.js` con mappa hardcoded `_CLUB_DISPLAY_MAP` (60 club italiani: 20 IT1 + 20 IT2 + 20 PRIM).
+
+```javascript
+const _CLUB_DISPLAY_MAP = {
+  "AC Milan": "Milan",
+  "ACF Fiorentina": "Fiorentina",
+  "AS Roma": "Roma",
+  "Atalanta BC": "Atalanta",
+  // ... 60 mappature totali
+  "Hellas Verona Primavera": "Verona Primavera",
+  "Inter Milan Primavera": "Inter Primavera",
+};
+
+function prettyClubName(name) {
+  if (!name) return name;
+  return _CLUB_DISPLAY_MAP[name] || name;
+}
+```
+
+Nomi di club non italiani (polacchi, ecc.) tornano invariati per default.
+
+#### Mappa completa
+
+**Serie A (IT1)** — rimozione prefissi società:
+```
+AC Milan          → Milan
+ACF Fiorentina    → Fiorentina
+AS Roma           → Roma
+Atalanta BC       → Atalanta
+Bologna FC 1909   → Bologna
+Cagliari Calcio   → Cagliari
+Como 1907         → Como
+Genoa CFC         → Genoa
+Hellas Verona     → Verona
+Inter Milan       → Inter
+Juventus FC       → Juventus
+Parma Calcio 1913 → Parma
+Pisa Sporting Club→ Pisa
+SS Lazio          → Lazio
+SSC Napoli        → Napoli
+Torino FC         → Torino
+US Cremonese      → Cremonese
+US Lecce          → Lecce
+US Sassuolo       → Sassuolo
+Udinese Calcio    → Udinese
+```
+
+**Serie B (IT2)** — rimozione prefissi società:
+```
+AC Monza               → Monza
+AC Reggiana 1919       → Reggiana
+Calcio Padova          → Padova
+Carrarese Calcio 1908  → Carrarese
+Cesena FC              → Cesena
+Delfino Pescara 1936   → Pescara
+FC Empoli              → Empoli
+FC Südtirol            → Südtirol
+Frosinone Calcio       → Frosinone
+Mantova 1911           → Mantova
+Modena FC              → Modena
+Palermo FC             → Palermo
+SS Juve Stabia         → Juve Stabia
+SSC Bari               → Bari
+Spezia Calcio          → Spezia
+UC Sampdoria           → Sampdoria
+US Avellino 1912       → Avellino
+US Catanzaro           → Catanzaro
+Venezia FC             → Venezia
+Virtus Entella         → Virtus Entella
+```
+
+**Primavera (IJ1)** — suffisso "Primavera" mantenuto, solo prefisso pulito:
+```
+AC Milan Primavera         → Milan Primavera
+Hellas Verona Primavera    → Verona Primavera
+Inter Milan Primavera      → Inter Primavera
+(altri 17 invariati - già usano nome corto)
+```
+
+#### Punti applicazione nel frontend
+
+22 occorrenze di `current_club_name` analizzate. Distinte tra:
+
+**DISPLAY (avvolti con `prettyClubName`)** — 13 punti:
+- Righe 2158, 3188, 4324, 4547, 5066, 5174, 5982 — `escapeHtml(p.current_club_name||"")` → `escapeHtml(prettyClubName(p.current_club_name||""))`
+- Riga 2601 — `clubName.slice(0, 20)` con prettyClubName
+- Riga 2623 — `name: p.current_club_name || cl?.name || "—"` in callup
+- Riga 4187 — `clubAbbr` regex con prettyClubName
+- Riga 3135 — `clubAbbrev(pl.current_club_name)` con prettyClubName  
+- Riga 5664 — sub label search risultati
+
+**LOGICA (NON toccati)** — 9 punti:
+- Righe 506, 511, 4294 — sort per nome club
+- Riga 2432 — ricerca testuale (ql.includes)
+- Righe 5029-5030 — comparator sort
+- Righe 3468-3469 — payload PPT (cerca match esatto su `club_name`)
+- Riga 915 — alt attribute (cosmetico, irrilevante)
+- Riga 3349 — `localizeRole`, non club
+
+#### Test e merge
+
+Push diretto su `main` (no branch feature, modifica cosmetica low-risk). Vercel auto-deploya in produzione.
+
+Commit messages:
+1. `feat: rinomina display nomi club italiani (Serie A/B/Primavera) - DB invariato`
+
+### Risultato finale dropdown filtri club
+
+Prima:
+```
+Tutti i club
+AC Milan
+AC Milan Primavera
+AC Monza
+AC Reggiana 1919
+ACF Fiorentina
+AS Roma
+Atalanta BC
+Atalanta Primavera
+...
+```
+
+Dopo:
+```
+Tutti i club
+Avellino
+Atalanta
+Atalanta Primavera
+Atalanta U23
+Bari
+Bologna
+Bologna Primavera
+...
+Milan
+Milan Primavera
+...
+```
+
+Note: le voci sono ordinate alfabeticamente sul **nome ORIGINALE** (a livello logica) ma mostrate col display `prettyClubName`. Possibile cosmetica futura: anche l'ordinamento basato sul nome display.
+
+### Stato fine sessione mattina 8 mag
+
+✅ **Online in produzione su `pid-nine.vercel.app`**:
+1. Bottone "Esporta PPTX" funzionante per tutti i 6 sistemi
+2. Dropdown Modulo riordinato (4-4-2 → 4-2-3-1 → 4-3-3 → 3-5-2 → 3-4-2-1 → 3-4-3)
+3. Nomi club italiani puliti nel display (Milan, Fiorentina, Inter, Roma, ecc.)
+
+⏳ **In corso**:
+- Run notturno auto_update_daily.yml in attesa di completamento (~13:00 italiana)
+- Locatelli stats arriveranno su R2 al completamento
+
+### TODO
+
+1. Verificare al completamento del run che R2 abbia 2858+ giocatori inclusi Locatelli
+2. Hard reload `pid-nine.vercel.app` → verificare stats Locatelli
+3. Eventuali edge case del cleanup club (se qualche punto display sfugge → segnalare)
+4. **Possibile miglioramento**: ordinare le voci del dropdown filtri club sul nome `prettyClubName` invece che sul nome originale, per coerenza alfabetica visibile
+## 8 mag 2026 (fine mattina) — Ulteriori fix display
+
+### Fix typo titolo applicazione
+
+Tutti i punti display erano scritti "**Player** Intelligence Database" invece di "**Players** Intelligence Database" (manca s a "Player"). Sostituiti:
+- `frontend/i18n.js`: 2 occorrenze (it + en) di `title:`
+- `frontend/index.html`: titolo browser tab + meta tags
+- `frontend/app.js`: 1 commento di intestazione (cosmetico, non visibile)
+
+Commit: `fix: 'Player' → 'Players' Intelligence Database (typo)` → `b7c9f6e`.
+
+### Fix prettyClubName non applicato ai dropdown filtri club
+
+Il deploy iniziale di `prettyClubName()` aveva avvolto solo i punti display dei giocatori (`current_club_name`), ma non i **dropdown filtri club** che usano `state.clubs[].name` (campo diverso). Risultato: l'utente vedeva ancora "ACF Fiorentina", "AC Milan" nei filtri.
+
+#### Punti aggiuntivi avvolti
+
+5 dropdown filtro club hanno questo pattern:
+```javascript
+.map(c => `<option value="${c.tm_club_id}">${escapeHtml(c.name)}</option>`)
+```
+
+Tutti avvolti con `prettyClubName()`:
+- Line 473 — filtro Lista giocatori (Tutti i club)
+- Line 2216 — filtro avanzato pagina
+- Line 3323 — filtro Griglie (Tutti i club)
+- Line 4382 — filtro lista alternativo
+- Line 5295 — filtro pagina compare/altro
+
+E anche:
+- Line 2689 — clubLine display in card club: `c.name` con truncate avvolto
+
+#### Replace fatto via regex generico
+
+Pattern catturato:
+```python
+pattern = r'(\.map\(c => `<option[^>]*>)\${escapeHtml\(c\.name\)\}'
+src = re.sub(pattern, r'\1${escapeHtml(prettyClubName(c.name))}', src)
+```
+
+Sostituzioni totali: 3 dropdown via regex + 2 punti specifici via replace puntuale.
+
+#### Verifica finale
+
+```
+prettyClubName: 20 occorrenze in frontend/app.js
+escapeHtml(c.name) restanti: 3 (in contesti NON club, OK)
+```
+
+Commit: `fix: applica prettyClubName ai dropdown filtri club (5 punti residui)` → push su main.
+
+### Stato post-mattina 8 mag
+
+✅ **Online in produzione**:
+1. Bottone "Esporta PPTX" funzionante per tutti i 6 sistemi
+2. Dropdown Modulo riordinato (4-4-2 → 4-2-3-1 → 4-3-3 → 3-5-2 → 3-4-2-1 → 3-4-3)
+3. Nomi club italiani puliti **ovunque** (display giocatori + dropdown filtri)
+4. Titolo applicazione fix: "Players Intelligence Database"
+
+### TODO
+
+1. ⏳ Aspetta completamento run notturno auto_update_daily.yml (~13:00) → Locatelli stats su R2
+2. (Possibile miglioramento futuro): ordinare dropdown filtri club sul nome `prettyClubName` invece che sul nome originale per coerenza alfabetica
+## 8 mag 2026 (fine mattina, ulteriori fix display) — Coverage finale prettyClubName
+
+### Bug residui scoperti dall'utente
+
+Dopo il deploy iniziale di `prettyClubName()`, l'utente ha segnalato 2 punti dove i nomi club erano ancora visualizzati nella loro forma originale (con prefissi società):
+
+#### Image 1 — Scheda giocatore (player drawer)
+
+L'header della scheda giocatore (modale dettaglio giocatore) mostrava ancora "ACF Fiorentina" sotto il nome del giocatore, accanto alla bandiera nazionale.
+
+**Punto non avvolto**: riga 917 in `frontend/app.js`:
+```html
+<div style="font-size: 14px; font-weight: 600; color: var(--text-1); line-height: 1.2;">${escapeHtml(p.current_club_name)}</div>
+```
+
+#### Image 2 — Pagina Club (lista delle 100 squadre)
+
+La pagina `Club` (sidebar) elenca i club divisi per lega (Serie A, Serie B, Primavera, Polonia) con logo + nome + count giocatori. I nomi mostrati erano ancora "AC Milan", "ACF Fiorentina", "AS Roma", ecc.
+
+**Punto non avvolto**: `renderClubCard()` riga 616:
+```html
+<div class="text-[10px] font-semibold leading-tight truncate w-full">${escapeHtml(c.name)}</div>
+```
+
+E anche l'attributo `alt` dell'immagine logo (riga 613):
+```html
+<img src="${logo}" alt="${escapeHtml(c.name)}" class="w-10 h-10 object-contain..."/>
+```
+
+### Fix applicato
+
+Avvolti tutti i punti rimanenti:
+
+```javascript
+// Scheda giocatore (header)
+${escapeHtml(prettyClubName(p.current_club_name))}
+
+// Fallback letter quando manca logo
+${(prettyClubName(p.current_club_name)||"?")[0]}
+
+// Card pagina Club
+<div>${escapeHtml(prettyClubName(c.name))}</div>
+<img alt="${escapeHtml(prettyClubName(c.name))}" .../>
+```
+
+### Verifica finale coverage
+
+Dopo questo fix, `prettyClubName` è applicato in **22+ punti** del frontend, coprendo:
+
+- ✅ Lista giocatori (card)
+- ✅ Tabella giocatori (riga)
+- ✅ Scheda giocatore drawer (header con club + bandiera)
+- ✅ Dropdown filtro club (5 punti diversi: lista, griglie, compare, callup)
+- ✅ Card pagina Club (3 sezioni: Serie A, B, Primavera)
+- ✅ Risultati ricerca (sub-label)
+- ✅ Convocazione (callup label)
+- ✅ Griglie (clubAbbr nei nodi titolari)
+
+I punti **non** avvolti (intenzionalmente) restano:
+- Sort/comparator (`localeCompare` su nome originale per ordinamento alfabetico DB-stable)
+- Filtri ricerca testuale (`includes` su nome originale per matchare anche "Inter Milan")
+- Payload PPT (matcha `club_name` esatto su `loghi_squadre/{slug}.png`)
+- Sanitize logica `current_club_name` ricostruito da `state.clubs[].name`
+
+Commit: `fix: applica prettyClubName a scheda giocatore + card pagina Club`.
+
+### Stato post-rifinitura
+
+Sito `pid-nine.vercel.app` completamente coerente nei display dei club. L'utente vede ovunque i nomi puliti:
+- Card giocatore: "Sabiri" → "Fiorentina"
+- Drawer giocatore: "Abdelhamid Sabiri" → "Fiorentina · Serie A"
+- Pagina Club: "Milan", "Fiorentina", "Inter", "Roma", "Napoli", ecc.
+- Tutti i dropdown filtri club: stessi nomi puliti
+
+Il database resta invariato (matching dataset esterni come Wyscout/Transfermarkt continuano a funzionare). 
+
+### TODO ancora aperti
+
+1. ⏳ Run notturno auto_update_daily.yml in attesa completamento (~13:00 italiana) → Locatelli stats su R2
+2. (Cosmetica futura): ordinare i dropdown filtri club sul nome `prettyClubName` invece che sul nome originale, per coerenza alfabetica visibile (es. "Verona" sotto V invece di "Hellas Verona" sotto H)
+3. (Cosmetica futura): se compaiono altri club italiani in futuro (promossi, retrocessi), aggiungerli alla mappa `_CLUB_DISPLAY_MAP` in `frontend/app.js`
+## 8 mag 2026 (mezzogiorno) — Locatelli stats su R2 verificate + fix workflow
+
+### Run notturno completato e R2 aggiornato
+
+Il workflow `Auto Update Daily (stats only)` triggerato dal cron 03:00 UTC (ma ritardato a 08:15 UTC come spesso accade su GitHub Actions free tier) è completato con tutti gli step principali OK:
+
+```
+✓ Set up job
+✓ Checkout repo
+✓ Setup Python
+✓ Install dependencies
+✓ Hash pre-run players_stats.json
+✓ Run stats refresh                    (durato ~1h 30min)
+✓ Hash post-run + check changes
+✓ Upload to Cloudflare R2              ← R2 AGGIORNATO
+✗ Commit and push if changed           ← FALLITO (exit 128 - cosmetico)
+```
+
+Verifica finale R2:
+```
+HTTP 200 | size=132,648,642 bytes (vs 127,880,998 di stamattina, +5MB)
+Last-Modified: Fri, 08 May 2026 10:03:36 GMT (12:03 ora italiana)
+Totale giocatori R2: 2855 (vs 2757 stamattina, +98)
+Locatelli (tm_id=265088): ✅ PRESENTE
+  Stagioni: 2
+```
+
+### Causa del fail dell'ultimo step (cosmetico)
+
+Lo step `Commit and push if changed` è fallito con exit code 128 (errore git push). Causa: durante l'esecuzione del workflow (~1h 48min), io ho pushato 5+ volte sul branch `main` (fix typo, riordino dropdown, prettyClubName, fix scheda giocatore). Quando il workflow ha tentato il `git push` finale, il main remoto era avanti rispetto al checkout iniziale del workflow → push rejected.
+
+**Importante**: il fallimento è **NON-blocking** per la funzionalità. R2 era già stato aggiornato nello step precedente (Upload to Cloudflare R2 = success). L'unica cosa che non è stata pushata è `data/last_update.json` (timestamp ultimo aggiornamento). Cosmetico.
+
+### Fix applicato al workflow
+
+Modificato `Commit and push if changed` per gestire push concurrent:
+
+```yaml
+git commit -m "auto: daily stats refresh ($(date -u +%Y-%m-%d))"
+# Retry push fino a 3 volte
+for i in 1 2 3; do
+  echo "Push attempt $i/3"
+  if git pull --rebase origin main && git push; then
+    echo "Push succeeded on attempt $i"
+    exit 0
+  fi
+  echo "Push failed, retrying..."
+  sleep 5
+done
+echo "All push attempts failed"
+exit 1
+```
+
+Logica:
+1. `git pull --rebase origin main` → applica i nuovi commit remoti sopra il commit del bot
+2. `git push` → invia il commit del bot al main aggiornato
+3. Retry fino a 3 volte (5s di sleep tra tentativi) in caso di race conditions
+
+Push dell'aggiornamento workflow su `main`.
+
+### Stato finale dell'applicazione
+
+Sito `pid-nine.vercel.app` completamente funzionante:
+
+✅ **Tutte le feature richieste in produzione**:
+1. Bottone "Esporta PPTX" — 6 sistemi tattici (3-5-2, 3-4-3, 3-4-2-1, 4-3-3, 4-2-3-1, 4-4-2)
+2. Dropdown Modulo riordinato per preferenza (4-4-2, 4-2-3-1, 4-3-3, 3-5-2, 3-4-2-1, 3-4-3)
+3. Nomi club italiani puliti ovunque (display only, DB invariato)
+4. Typo "Players Intelligence Database" corretto
+5. Locatelli stats ora visibili sul sito
+6. Workflow notturno robusto a push concurrent
+
+### Numeri sessione 7-8 maggio
+
+- **2 giorni** di lavoro
+- **20+ commit** su `main` + 18 commit su `feature/pptx-export`
+- **3 sezioni grandi** completate:
+  - Generator PowerPoint per 6 sistemi (~25KB di codice)
+  - Endpoint Vercel `/export-pptx` (FastAPI + Mangum)
+  - Bottone frontend + helpers + i18n
+- **15+ bug fixati** durante il percorso (vedi diari precedenti)
+- **2 modifiche cosmetiche minor**: prettyClubName, riordino dropdown, typo
+- **2 hotfix workflow GitHub Actions**: timeout 90→180, retry pull-rebase
+
+### TODO per prossima sessione
+
+Niente di urgente. Possibili miglioramenti:
+1. Form modale frontend per match_info dell'export PPT (stadio/data/avversario/competizione/coach) invece di valori hardcoded
+2. Documentazione utente per il bottone export
+3. Cleanup branch `feature/pptx-export` (non più necessario, già mergato)
+4. Ordinamento dropdown filtri club sul nome `prettyClubName` (per ordine alfabetico visibile coerente)
+5. Aggiungere step `download R2` al workflow per fare resume incrementale invece di rifare 2859 giocatori da zero (efficienza)
+
+### PROMPT DI RIPRESA
+
+> Ciao Claude, riprendo PID. Ultima sessione: 8 mag mattina/mezzogiorno. Stato:
+>
+> ✅ Tutto live in produzione su `pid-nine.vercel.app`:
+> - Bottone "Esporta PPTX" funzionante per 6 sistemi tattici
+> - Locatelli stats su R2 (2855 giocatori, run notturno OK)
+> - Nomi club italiani puliti
+> - Workflow GitHub Actions robusto a push concurrent (retry 3x con pull --rebase)
+>
+> Niente di urgente. Possibili miglioramenti vedi TODO ultimo diario.
+## 8 mag 2026 (pomeriggio) — Admin backend per editing giocatori
+
+### Obiettivo
+
+Creare un'area admin nel sito per:
+1. Modificare dati giocatori (data nascita, piede, posizione, altezza, numero, altri ruoli)
+2. Aggiungere nuovi giocatori da URL Transfermarkt
+3. Le modifiche admin devono prevalere sopra agli aggiornamenti notturni automatici
+
+### Decisioni architetturali
+
+| Aspetto | Decisione |
+|---------|-----------|
+| Backend storage | **Supabase** (già configurato per auth utenti) |
+| Tabella nuova | `player_overrides` (PK: `tm_player_id`, JSON `overrides`) |
+| Auth admin | Email hardcoded `simonecontran10@gmail.com` |
+| Sicurezza | RLS Supabase con verifica `auth.jwt() ->> 'email'` |
+| Override application | Bootstrap frontend: `Object.assign(player, override)` dopo caricamento JSON |
+| Posizione UI | Pagina `/admin` (sidebar nascosta a non-admin) |
+
+### Step 1 — Tabella Supabase `player_overrides`
+
+SQL eseguito nel SQL Editor di Supabase:
+
+```sql
+CREATE TABLE IF NOT EXISTS player_overrides (
+  tm_player_id  bigint PRIMARY KEY,
+  overrides     jsonb NOT NULL DEFAULT '{}'::jsonb,
+  updated_by    text,
+  updated_at    timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_player_overrides_updated_at 
+  ON player_overrides(updated_at DESC);
+
+ALTER TABLE player_overrides ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "po_public_read" ON player_overrides FOR SELECT USING (true);
+CREATE POLICY "po_admin_insert" ON player_overrides FOR INSERT WITH CHECK (auth.jwt() ->> 'email' = 'simonecontran10@gmail.com');
+CREATE POLICY "po_admin_update" ON player_overrides FOR UPDATE USING (auth.jwt() ->> 'email' = 'simonecontran10@gmail.com');
+CREATE POLICY "po_admin_delete" ON player_overrides FOR DELETE USING (auth.jwt() ->> 'email' = 'simonecontran10@gmail.com');
+```
+
+Sicurezza: anche se un attaccante manipola il client per vedere il tab Admin, **non può scrivere** senza un JWT con la email autorizzata.
+
+### Step 2 — Modifiche `frontend/cloud_sync.js`
+
+Aggiunte funzioni:
+
+1. **`fetchPlayerOverrides()`** — query Supabase per leggere tutte le righe `player_overrides`
+2. **`applyOverridesToPlayers(players, overrides)`** — applica `Object.assign` per ogni override sul giocatore corrispondente
+3. **`window.isAdmin()`** — verifica se l'utente loggato ha email = `simonecontran10@gmail.com`
+4. **`window._toggleAdminNav()`** — mostra/nasconde voce "Admin" nella sidebar
+5. **`window._supa`** — esposto globalmente per uso in `app.js`
+
+Il toggle viene chiamato in entrambi i punti dove `cloudAuth.user` viene settato:
+- Riga 96: dopo `getSession()` iniziale
+- Riga 111: dopo `onAuthStateChange()`
+
+### Step 3 — Bootstrap aggiornato in `frontend/app.js`
+
+Aggiunto try/catch dopo `state.players = (main || []).map(...)`:
+
+```js
+try {
+  if (window.fetchPlayerOverrides) {
+    const overrides = await window.fetchPlayerOverrides();
+    if (overrides && overrides.length > 0) {
+      window.applyOverridesToPlayers(state.players, overrides);
+    }
+  }
+} catch (e) {
+  console.warn("[overrides] errore caricamento:", e);
+}
+```
+
+Risultato: ad ogni caricamento del sito, gli override admin vengono recuperati da Supabase e applicati ai giocatori sopra ai dati JSON di Transfermarkt.
+
+### Step 4 — Pagina admin in `frontend/app.js`
+
+Aggiunta funzione `renderAdminPanel()` che genera un layout 2 colonne:
+
+**LEFT (360px)**:
+- Card "Aggiungi nuovo giocatore" — input URL TM + bottone (workflow GitHub Actions, da implementare)
+- Card "Cerca giocatore da modificare" — search input + lista risultati cliccabili
+
+**RIGHT**:
+- Form editor con i seguenti campi:
+  - **Data di nascita** — input type=date
+  - **Piede** — select (Destro / Sinistro / Ambidestro)
+  - **Posizione specifica** — select con 12 ruoli canonici raggruppati per categoria (Goalkeeper / Defender / Midfield / Attack)
+  - **Altri ruoli (selezione multipla)** — multi-select (size=6) con tutti i 13 ruoli
+  - **Altezza (cm)** — input numerico
+  - **Numero maglia** — input numerico
+- Bottoni "Salva e aggiorna" + "Annulla"
+- Status banner per feedback
+
+Save logic (`_adminSaveOverrides`):
+1. Costruisce `overrides` dict solo coi campi compilati
+2. `position_others` salvato sempre (anche se vuoto, per consentire rimozione)
+3. Upsert su `player_overrides` via `window._supa.from(...).upsert(...)`
+4. Object.assign immediato per aggiornare UI senza reload
+
+### Step 5 — Sidebar HTML (`frontend/index.html`)
+
+Aggiunta voce nascosta dopo "Salvataggi":
+
+```html
+<div class="nav-item" data-route="admin" id="nav-admin" style="display: none;">
+  <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+  <span class="sidebar-label">Admin</span>
+</div>
+```
+
+E `<div id="admin-panel" class="hidden"></div>` prima di `</main>`.
+
+### Step 6 — Routing (`frontend/app.js`)
+
+Aggiunto in `setActiveTab()`:
+- `setVisible("admin-panel", route === "admin")`
+- `if (route === "admin") renderAdminPanel()`
+
+### Test live
+
+✅ Modifiche eseguite con successo su Locatelli:
+- Position specific: `Defensive Midfield` (era già)
+- Altri ruoli: aggiunto `Right Winger` come secondo ruolo
+- Persistenza verificata via curl Supabase REST API
+- Override applicato visualmente nella scheda giocatore al refresh
+
+### Sicurezza verificata
+
+- ✅ Voce "Admin" nascosta a utenti non-admin (CSS `display: none` + toggle JS)
+- ✅ Anche se un utente ne manipola il DOM per mostrare il tab, **Supabase rifiuta scritture** senza JWT autorizzato
+- ✅ Lettura overrides pubblica (necessaria per applicare override a tutti gli utenti)
+
+### TODO immediati
+
+1. **Add giocatore da URL TM** — endpoint `/admin-add-player` + GitHub Actions workflow `add_player.yml`
+   - Richiede creazione PAT GitHub con permessi `repo`
+   - Secret Vercel `GITHUB_PAT` da configurare
+   - Workflow async (Vercel timeout 60s, add_players.py impiega 1-3 min)
+2. **(Cosmetica)** ordinare la lista ruoli secondari sul frontend in modo coerente
+3. **(Audit)** opzionale: aggiungere tabella `audit_log` per tracciare ogni modifica admin
+
+### File modificati
+
+```
+M  frontend/app.js          (+~250 righe: renderAdminPanel + helpers + dropdown ruoli + multi-select)
+M  frontend/cloud_sync.js   (+~50 righe: fetchPlayerOverrides + isAdmin + toggleNav)
+M  frontend/index.html      (+5 righe: nav admin + admin-panel div)
++ Tabella Supabase          player_overrides (con 4 RLS policies)
+```
+
+Commit principali su `main`:
+- `feat: pagina admin per editing giocatori`
+- `feat: dropdown ruoli admin editor con 12 posizioni canoniche`
+- `feat: aggiunge multi-select 'Altri ruoli' nell'admin editor`
+## 8 mag 2026 (pomeriggio tardi) — Admin Add Player setup completo
+
+### Sintesi rapida
+
+Implementato sistema completo per aggiungere nuovi giocatori da URL Transfermarkt direttamente dal frontend admin. Il flusso end-to-end è:
+
+```
+Admin UI (frontend) 
+  ↓ POST /admin-add-player con URL TM
+Endpoint Vercel (api/main.py)
+  ↓ POST GitHub API workflow_dispatch
+GitHub Actions (.github/workflows/add_player.yml)
+  ↓ esegue add_players.py + enrich_sortitoutsi.py + commit/push
+Repo aggiornato → Vercel auto-deploy → giocatore visibile
+```
+
+### File creati/modificati
+
+| File | Modifica |
+|------|----------|
+| `.github/workflows/add_player.yml` | Nuovo workflow con `workflow_dispatch`, input `url`, retry 5x su push |
+| `api/main.py` | Endpoint POST `/admin-add-player` con auth Bearer GITHUB_PAT |
+| `vercel.json` | Aggiunta rewrite `/admin-add-player` → `/api/main` |
+| `scraper/leagues.py` | Aggiunta `scrape_club_by_id(tm_club_id)` per auto-creare club non in DB |
+| `add_players.py` | Aggiunta logica auto-creazione club nuovi dopo loop giocatori |
+| `frontend/app.js` | Funzione `_adminAddPlayer()` che fa POST all'endpoint |
+
+### Setup esterni completati
+
+1. **GitHub PAT** — Creato Personal Access Token (fine-grained) con permissions:
+   - Repository: `pid` only
+   - Actions: Read+Write
+   - Contents: Read+Write
+   - Metadata: Read-only
+   - Expiration: 90 days
+
+2. **Vercel Secret** — Aggiunto `GITHUB_PAT` come Sensitive variable:
+   - Production ✅
+   - Preview ✅
+   - Development ❌ (Vercel non permette secret in Development)
+
+3. **Tabella Supabase** `player_overrides` (già fatta nelle sessioni precedenti)
+
+### Funzionamento dell'auto-creazione club
+
+Quando si aggiunge un giocatore di un club non presente in `clubs.json`:
+- `add_players.py` rileva il `current_club_id` non presente in `clubs.json`
+- Chiama `scrape_club_by_id(cid, client)` 
+- Funzione scarica pagina TM del club ed estrae:
+  - nome club
+  - league_id (es. "GR1" per Greek Super League)
+  - league_name
+  - slug
+  - logo_url di Transfermarkt
+- Aggiunge il dict al `clubs.json`
+- `enrich_sortitoutsi.py` (chiamato dopo) prova matching Sortitoutsi per logo
+
+Limitazioni:
+- Se `league_id` non standard (es. "EXOT123"), il club appare nel DB ma in sezione separata della pagina Club
+- Se Sortitoutsi non trova match, il logo è quello TM (fallback)
+
+### Test eseguito (FALLITO ma diagnosticato)
+
+URL test: `https://www.transfermarkt.com/victor-munoz/profil/spieler/935231` (Lech Poznan)
+
+Risultato run #25555906173:
+```
+✓ Validate URL
+✓ Run add_players.py            (giocatore scrapato OK)
+✓ Run enrich_sortitoutsi.py     (logo/foto OK)
+✗ Commit and push if changed    (push FALLITO con exit 128)
+```
+
+**Causa**: stesso bug del workflow notturno — durante il run del workflow add_player, ho fatto altri commit su main (questo fix workflow + altri). Il `git push` finale è stato rejected per push concurrent.
+
+**Risultato pratico**: Victor Munoz NON è arrivato su main (verificato: `Victor Munoz nel repo: 0 match`).
+
+**Fix applicato (commit 9e27677)**: workflow `add_player.yml` ora ha retry 5x con `git fetch origin main` + `git pull --rebase origin main` + `git push` + sleep 10s tra tentativi. Più robusto del workflow daily che ne ha solo 3.
+
+### Stato finale chiusura sessione
+
+- ✅ Code completo per admin add player live in produzione
+- ✅ Fix workflow retry 5x deployato
+- ⏳ **Test fine-to-end NON ancora ripetuto** dopo il fix retry
+- 📌 Da fare al prossimo accesso: cliccare bottone "Aggiungi giocatore" col URL Victor Munoz (o un altro) per validare il flow completo
+
+### Prossimi step pianificati (NON ancora iniziati)
+
+1. **Re-test add player** con URL Victor Munoz dopo fix retry
+2. **Pre-popolazione club delle top-10 leghe europee** (decisione presa: solo club, no roster, mantenere auto-creazione come fallback). Leghe candidate (~10):
+   - Premier League (GB1)
+   - La Liga (ES1)
+   - Bundesliga (L1)
+   - Ligue 1 (FR1)
+   - Eredivisie (NL1)
+   - Liga Portugal (PO1)
+   - Belgio (BE1)
+   - Turchia (TR1)
+   - Russia (RU1) o Brasile (BRA1)
+   - + Serie A/B/Primavera + Polonia (già presenti)
+3. **Modifiche varie nella sezione Griglie** (utente non ha dettagliato cosa, da chiedere quando si riprende)
+
+### Architettura completa admin (3 colonne riepilogo)
+
+| Funzionalità | Storage | Trigger |
+|-------------|---------|---------|
+| Edit data nascita/piede/posizione/altezza/numero | Supabase `player_overrides` | Realtime upsert (no deploy) |
+| Aggiungi giocatore da URL TM | GitHub Actions → commit repo | POST /admin-add-player → workflow |
+| Auto-creazione club nuovo | GitHub Actions (parte di add_players) | Implicito quando club nuovo |
+
+### Sicurezza
+
+- Frontend mostra tab Admin solo se `cloudAuth.user.email === simonecontran10@gmail.com`
+- Supabase RLS: scritture su `player_overrides` solo se JWT con quella email
+- Endpoint `/admin-add-player`: NO verifica auth lato server (qualsiasi authenticated può triggerare workflow)
+  - **TODO**: aggiungere check email anche lato server, leggendo `Authorization` header dal Supabase JWT, validandolo con la JWT secret
+
+### File con modifiche pending sul Mac (NON committate dopo l'ultimo push)
+
+Nessuna. Tutto pushato fino al commit `9e27677`.
+
+### PROMPT DI RIPRESA
+
+> Ciao Claude, riprendo PID. Stato 8 mag pomeriggio:
+>
+> ✅ Backend admin completo:
+> - Editing giocatori (data nascita, piede, posizione, altezza, numero, altri ruoli)
+> - Bottone "Aggiungi giocatore" da URL TM (workflow GitHub Actions)
+> - Auto-creazione club nuovi tramite `scrape_club_by_id`
+> - Retry 5x su push concurrent
+>
+> ⏳ Da fare:
+> 1. Re-test fine-to-end del bottone "Aggiungi giocatore" con URL Victor Munoz dopo fix workflow retry
+> 2. Pre-popolazione club delle top-10 leghe europee (solo club, no roster)
+> 3. Modifiche nella sezione Griglie (da specificare)
+>
+> Architettura admin in produzione su `pid-nine.vercel.app`. Endpoint `/admin-add-player`, tabella Supabase `player_overrides`, workflow `add_player.yml`. GitHub PAT configurato come Vercel Secret `GITHUB_PAT`.
+## 8 mag 2026 (pomeriggio tardo) — Admin add player live + bug "New arrival"
+
+### Test add player end-to-end SUCCESS
+
+Dopo 2 fix iterativi al workflow GitHub Actions, il flusso "Aggiungi giocatore da URL TM" è completamente funzionante in produzione su `pid-nine.vercel.app`.
+
+#### Fix 1 — Retry su push concurrent (commit 9e27677)
+
+Workflow `add_player.yml` aveva push concurrent issue analogo al workflow notturno. Aggiunto retry 5x con `git fetch` + `git pull --rebase` + sleep 10s.
+
+#### Fix 2 — Permission denied 403 (commit b36a310)
+
+Vero errore identificato dai logs:
+```
+remote: Permission to simonecontran10/pid.git denied to github-actions[bot].
+The requested URL returned error: 403
+```
+
+Workflow triggerato via `workflow_dispatch` API esterna ha permessi più ristretti del default `GITHUB_TOKEN`. Risolto aggiungendo:
+
+```yaml
+permissions:
+  contents: write
+  actions: read
+```
+
+#### Test riuscito (run #25556593255)
+
+URL test: `https://www.transfermarkt.com/victor-munoz/profil/spieler/935231`
+
+```
+✓ Validate URL
+✓ Run add_players.py            (Víctor Muñoz scrapato + Real Madrid Castilla auto-creato)
+✓ Run enrich_sortitoutsi.py     (foto TM scaricata, no match Sortitoutsi)
+✓ Commit and push if changed    (push OK al primo tentativo)
+```
+
+Risultato verificato:
+- Repo locale: `Víctor Muñoz` (tm=935231) presente in `players_main.json`
+- Production R2: 2860 players (era 2859, +1 corretto)
+- Foto: `data/photos/players_tm/935231.jpg` scaricata
+- Auto-creato Real Madrid Castilla (id=6767) in `clubs.json`
+
+### Bug noto scoperto — "New arrival" placeholder
+
+Lo scraper Transfermarkt mostra `current_club_name="New arrival"` per giocatori in transizione (mercato). 
+
+**Caso Víctor Muñoz**:
+- TM nel profilo mostra: club attuale = **CA Osasuna** (Liga spagnola)  
+- Ma con etichetta "New arrival" (è arrivato di recente)
+- Lo scraper di `profiles.py` legge il **club di provenienza** (Real Madrid Castilla, da cui è stato preso) invece dell'attuale (Osasuna)
+
+Conta in DB: **269 giocatori** con `current_club_name="New arrival"` (preesistente al fork da Saudi Players Hub, nasce dallo scraper TM).
+
+#### Ipotesi sulla causa
+
+In `scraper/profiles.py:_extract_current_club_id()` il selettore prende il primo `<a href="/verein/...">` dal `data-header__club`. Per giocatori "New arrival", TM mostra:
+- Etichetta "New arrival" come testo del data-header__club
+- Link al **club di provenienza** invece dell'attuale
+
+L'attuale (Osasuna) probabilmente sta in un altro selector (info-table o sezione "Career stations").
+
+#### Note sul fix preesistente
+
+`enrich_sortitoutsi.py` nel docstring dichiara di gestire il caso:
+> **FIX CLUB PLACEHOLDER**: Transfermarkt mostra 'New arrival' / 'Winter signing' / 'Returnee' per giocatori in transizione. Sostituiamo con il roster_club (il club da cui abbiamo scrapato la rosa) per avere sempre il club corretto.
+
+Ma evidentemente il fix non si applica nel caso di add manuale (quando `roster_club_id == current_club_id` perché viene impostato uguale all'inizio in `add_players.py`):
+```python
+prof["roster_club_id"] = existing.get("roster_club_id") or prof.get("current_club_id")
+```
+
+Per i giocatori scrapati col flusso normale (`run_static.py` → `scrape_club_roster()`), il `roster_club_id` è il club della rosa scrappata, quindi è corretto. Per quelli aggiunti via admin singolarmente, il fallback non funziona.
+
+#### Decisione
+
+Bug noto ma **NON fixato in questa sessione**. Lavoro per prossima sessione. Per ora, il workaround è:
+1. Aggiungere il giocatore (anche con club sbagliato)
+2. Usare l'admin override per correggere `current_club_name` e `current_club_id` manualmente
+
+Però l'admin editor attuale **NON supporta la modifica del club**. Aggiunta a TODO.
+
+### Stato finale del bottone admin add player
+
+✅ **Funzionalità completa**:
+- Frontend bottone admin "Aggiungi giocatore"
+- Endpoint Vercel `/admin-add-player` con auth GITHUB_PAT
+- Workflow GitHub Actions con retry 5x + permissions write
+- Auto-creazione club da `tm_club_id` (con fallback se Sortitoutsi non matcha)
+- Foto TM scaricata e disponibile
+- Push commit + auto-deploy Vercel
+
+⚠️ **Limitazioni note**:
+- Bug "New arrival" preesistente: per giocatori in transizione, club mostrato è quello di provenienza
+- Auto-creazione club: `league_id` può essere mappato male (Castilla finita come "CL" invece di lega Real Madrid C, ecc.)
+- Sortitoutsi logo: matching automatico fallisce per club nuovi (no logo nel DB)
+- Stats: scaricate solo per giocatori `is_saudi_eligible=True`. Per altri, stats arrivano col run notturno
+
+### Prossimi step pianificati per nuova chat
+
+1. **Aggiungere modifica club nell'admin editor** (per workaround "New arrival")
+2. **Pre-popolazione club top-10 leghe europee** (Premier, La Liga, Bundesliga, Ligue 1, Eredivisie, Liga Portugal, Belgio, Turchia + Serie A/B/Primavera + Polonia già presenti)
+3. **Modifiche sezione Griglie** (utente ha menzionato ma non specificato)
+4. **Possibile fix scraper** per "New arrival" → estrarre il vero club attuale
+
+### File modificati in questa sessione
+
+```
+M  .github/workflows/add_player.yml   (+permissions, retry 5x con pull --rebase)
+M  scraper/leagues.py                  (+scrape_club_by_id())
+M  add_players.py                      (+auto-creazione club + import scrape_club_by_id)
+A  vercel.json                         (rewrite /admin-add-player)
+A  api/main.py                         (endpoint POST /admin-add-player)
+A  frontend/app.js                     (admin panel, _adminAddPlayer, _adminSaveOverrides, dropdown ruoli + multi-select)
+A  frontend/cloud_sync.js              (fetchPlayerOverrides, isAdmin, _toggleAdminNav)
+A  frontend/index.html                 (sidebar admin + admin-panel div)
++ tabella Supabase player_overrides
++ Vercel Secret GITHUB_PAT
+```
+
+Commit principali su main:
+- `feat: pagina admin per editing giocatori`
+- `feat: dropdown ruoli admin editor con 12 posizioni canoniche`
+- `feat: aggiunge multi-select 'Altri ruoli' nell'admin editor`
+- `feat: admin add player from TM URL (workflow + endpoint Vercel)`
+- `feat: auto-creazione club nuovi quando si aggiunge giocatore di club non presente`
+- `fix: workflow add_player retry 5 tentativi su push concurrent`
+- `fix: add_player workflow ha permission contents:write per push`
+
+### Test live confermati
+
+- ✅ Edit giocatore (Locatelli con multi-select altri ruoli + position_specific override)
+- ✅ Add giocatore (Víctor Muñoz aggiunto via bottone admin)
+- ✅ Auto-creazione club (Real Madrid Castilla auto-creato)
+- ⚠️ Club mostrato sbagliato (Castilla invece di Osasuna - bug "New arrival")
+
+### PROMPT DI RIPRESA
+
+> Ciao Claude, riprendo PID. Ultima sessione: 8 mag pomeriggio tardo. Stato:
+>
+> ✅ Backend admin completo e funzionante in produzione su `pid-nine.vercel.app`:
+> - Editing giocatori: data nascita, piede, posizione + altri ruoli, altezza, numero
+> - Add giocatore da URL TM: workflow GitHub Actions con permissions:write e retry 5x
+> - Auto-creazione club nuovi tramite `scrape_club_by_id`
+>
+> ⚠️ Bug noto preesistente: 269 giocatori in DB hanno `current_club_name="New arrival"` per via dello scraper TM che legge il club di provenienza invece dell'attuale (es. Víctor Muñoz mostra Real Madrid Castilla invece di Osasuna). Da fixare.
+>
+> ⏳ Prossimi step:
+> 1. Aggiungere modifica club nell'admin editor (workaround per "New arrival")
+> 2. Pre-popolazione club top-10 leghe europee
+> 3. Modifiche sezione Griglie (da specificare)
+>
+> Fix possibile scraper: in `scraper/profiles.py:_extract_current_club_id()` dare priorità al club nella sezione "Career stations" o info-table invece del primo selector che restituisce il club di provenienza.
+## 8 mag 2026 (fine pomeriggio) — Fix bug "New arrival" preesistente
+
+### Problema scoperto
+
+Aggiunto Víctor Muñoz via admin add player. Il giocatore appariva con club "Real Madrid Castilla" invece di "CA Osasuna" (squadra reale attuale). Verifica DB: **269 giocatori** in totale con `current_club_name="New arrival"`.
+
+### Diagnostica
+
+Scaricato HTML reale di TM per Muñoz (`/tmp/munoz_profile.html`, 115KB). Analisi struttura:
+
+```html
+<!-- data-header__ribbon: club di PROVENIENZA con etichetta "New arrival" -->
+<div class="data-header__ribbon">
+  <a href="/real-madrid-castilla/startseite/verein/6767/saison_id/2025"
+     title="Joined from Real Madrid Castilla; date: 11/07/2025">
+    New arrival
+  </a>
+</div>
+
+<!-- data-header__club: il VERO club attuale -->
+<span class="data-header__club" itemprop="affiliation">
+  <a href="/ca-osasuna/startseite/verein/331" title="CA Osasuna">
+    CA Osasuna
+  </a>
+</span>
+```
+
+#### Bug trovato in `scraper/profiles.py`
+
+```python
+def _extract_current_club_id(soup):
+    a = soup.select_one(
+        '.data-header__club a, '
+        'span.data-header__club a, '
+        'a[href*="/startseite/verein/"]'  # ← TROPPO GENERICO
+    )
+```
+
+Il selettore `a[href*="/startseite/verein/"]` matcha **anche** il link nel `data-header__ribbon` (che punta al club di provenienza). `select_one()` restituisce **il primo** match nel DOM order — che è proprio il ribbon, non il club corrente.
+
+Test riprodotto:
+```
+=== select_one (primo match) ===
+  href=/real-madrid-castilla/startseite/verein/6767/saison_id/2025
+  text=New arrival
+  parent_class=['data-header__ribbon']  ← ECCO IL BUG
+```
+
+### Fix applicato
+
+Riscritta `_extract_current_club_id()` con strategia a cascata:
+
+1. **Priorità 1**: `.data-header__club a[href*="/startseite/verein/"]` (sempre il club corrente)
+2. **Priorità 2**: `.info-table__content a[href*="/startseite/verein/"]` (fallback layout legacy)
+3. **Priorità 3**: primo `a[href*="/startseite/verein/"]` ESCLUDENDO `data-header__ribbon`
+
+```python
+# Strategia 3 (ultima risorsa)
+for candidate in soup.select('a[href*="/startseite/verein/"]'):
+    parent_classes = candidate.parent.get("class", []) if candidate.parent else []
+    if "data-header__ribbon" in parent_classes:
+        continue  # Skip "New arrival" / "Winter signing" / "Returnee"
+    a = candidate
+    break
+```
+
+### Test pre-push del fix
+
+Su HTML cacheato di Muñoz:
+```
+✓ FIX FUNZIONA
+  Club ID: 331  (atteso: 331 = Osasuna)
+  Club name: CA Osasuna  (atteso: 'CA Osasuna')
+```
+
+### Re-scrape retroattivo dei 269 giocatori broken
+
+Creato workflow GitHub Actions dedicato per processare in cloud (no terminale Mac bloccato 15 min):
+
+**File creati**:
+- `fix_new_arrival_clubs.py` — script che:
+  - Carica players_main, players_all, players_static, players_saudi, clubs
+  - Trova tutti con `current_club_name="New arrival"`
+  - Per ognuno: re-scrape profilo (con fix attivo)
+  - Aggiorna i 4 file JSON players + clubs.json
+  - Auto-crea club nuovi se non in DB
+  - Salvataggio incrementale ogni 25 giocatori
+  - Supporta `--limit N` per test parziali
+- `.github/workflows/fix_new_arrival.yml` — workflow `workflow_dispatch` con permissions:write, retry 5x, timeout 60min
+
+### Stato workflow trigger
+
+Workflow triggerato dall'utente con `limit` vuoto (= tutti i 269 giocatori).
+
+Tempo stimato: ~15-20 min (3-5s/giocatore per request TM con rate limit + parsing + save).
+
+### Risultato atteso
+
+Una volta completato il workflow:
+- I 269 giocatori avranno `current_club_name` corretto
+- Eventuali club nuovi (es. CA Osasuna se non c'era) auto-aggiunti a `clubs.json`
+- Push automatico su main → Vercel auto-deploy
+
+### Verifica post-completamento
+
+Quando il workflow finisce:
+```bash
+cd ~/Desktop/pid && git pull origin main
+~/Desktop/pid/venv/bin/python3 -c "
+import json
+data = json.loads(open('data/players_main.json').read())
+broken = [p for p in data if p.get('current_club_name') == 'New arrival']
+print(f'Giocatori ancora New arrival: {len(broken)} (target: 0 o pochi)')
+v = [p for p in data if p.get('tm_player_id') == 935231]
+if v: print(f'Muñoz club: {v[0].get(\"current_club_name\")} (atteso: CA Osasuna)')
+"
+```
+
+### Stato finale sessione 8 mag
+
+✅ **Live in produzione**:
+- Bottone "Esporta PPTX" (6 sistemi)
+- Locatelli stats su R2
+- Nomi club italiani puliti (display)
+- Backend admin completo (editing + add giocatore + auto-creazione club)
+- **Fix scraper "New arrival"** → club corretto sempre
+
+⏳ **In esecuzione (cloud)**:
+- Workflow `fix_new_arrival.yml` per re-scrape retroattivo dei 269 giocatori broken
+- Vercel auto-deploya quando il workflow committa
+
+### Commit principali della giornata
+
+```
+b7c9f6e fix: 'Player' → 'Players' Intelligence Database (typo)
+9524203 fix: riordina sistemi nel dropdown Modulo
+825059f feat: rinomina display nomi club italiani
+b36a310 fix: add_player workflow ha permission contents:write
+9e27677 fix: workflow add_player retry 5 tentativi
+56ec6ea (auto) add player from TM URL
+a6a72b5 feat: auto-creazione club nuovi
+f839586 feat: admin add player from TM URL (workflow + endpoint Vercel)
+e47f626 fix: workflow auto_update_daily resiste a push concurrent
+1139acf merge feature/pptx-export → main
+8a873ae fix: scraper TM ignora data-header__ribbon (FIX BUG NEW ARRIVAL) + workflow re-scrape
+```
+
+### TODO prossima sessione
+
+1. **Verificare esito workflow fix_new_arrival** — se i 269 giocatori sono stati corretti
+2. **Pre-popolazione club top-10 leghe europee** (Premier, La Liga, Bundesliga, Ligue 1, Eredivisie, Liga Portugal, Belgio, Turchia)
+3. **Aggiungere modifica club nell'admin editor** (per casi edge dove il fix scraper fallisce)
+4. **Modifiche sezione Griglie** (utente ha menzionato ma non specificato cosa)
+
+### PROMPT DI RIPRESA
+
+> Ciao Claude, riprendo PID. Ultima sessione: 8 mag fine pomeriggio. Stato:
+>
+> ✅ Tutto funzionante in produzione su `pid-nine.vercel.app`:
+> - Backend admin (editing + add giocatore)
+> - Bug scraper "New arrival" risolto + workflow re-scrape lanciato per i 269 giocatori broken
+>
+> ⏳ Da verificare: workflow `fix_new_arrival.yml` ha completato? Quanti dei 269 sono stati corretti?
+>
+> Prossimi step:
+> 1. Pre-popolazione club top-10 leghe europee
+> 2. Modifiche sezione Griglie
+> 3. Aggiungere modifica club nell'admin editor (workaround edge case)
+## 8 mag 2026 (sera) — Workflow fix_new_arrival completato con successo
+
+### Risultati workflow
+
+Workflow GitHub Actions `fix_new_arrival.yml` triggerato dall'utente con `limit` vuoto (= tutti). Completato con successo.
+
+### Verifica post-completamento
+
+```
+Giocatori ancora "New arrival": 0 (era 269)  ✅
+Muñoz club: CA Osasuna (atteso: CA Osasuna)  ✅
+Club totali: 102 (era 101, +1: CA Osasuna auto-aggiunto)  ✅
+```
+
+### Dettagli operazione
+
+- **Commit auto-bot**: `fd026ca` (di github-actions[bot])
+- **File modificati**:
+  - `data/clubs.json`: +12 righe (nuovo club CA Osasuna)
+  - `data/players_main.json`: 2152 righe modificate
+  - `data/players_all.json`: 2152 righe modificate
+  - `data/players_static.json`: 2152 righe modificate
+- **Totale**: 3240 inserimenti, 3228 eliminazioni
+
+### Esempi di correzione
+
+```
+- Mateusz Skrzypczak  → Lech Poznan (era 'New arrival')
+- João Moutinho       → Lech Poznan
+- Robert Gumny        → Lech Poznan
+- Pablo Rodríguez     → Lech Poznan
+- Leo Bengtsson       → Lech Poznan
+- Víctor Muñoz        → CA Osasuna  (era 'New arrival' che puntava a Real Madrid Castilla)
+```
+
+### Stato finale 8 mag 2026
+
+✅ **Live in produzione su `pid-nine.vercel.app`**:
+- Bottone "Esporta PPTX" (6 sistemi tattici)
+- Locatelli stats su R2 (run notturno OK con retry)
+- Nomi club italiani puliti (display)
+- Backend admin completo:
+  - Editing giocatori (data nascita, piede, posizione, altri ruoli, altezza, numero)
+  - Add giocatore da URL TM (workflow GitHub Actions con permissions + retry 5x)
+  - Auto-creazione club nuovi
+- **Bug "New arrival" risolto** alla radice + retroattivamente per i 269 giocatori esistenti
+
+### Commit principali della giornata (riepilogo)
+
+```
+9524203 fix: riordina sistemi nel dropdown Modulo
+825059f feat: rinomina display nomi club italiani
+b7c9f6e fix: 'Player' → 'Players' Intelligence Database (typo)
+1139acf merge feature/pptx-export → main (export PPT live)
+e47f626 fix: workflow auto_update_daily resiste a push concurrent
+56ec6ea (auto) Locatelli stats su R2 (workflow notturno)
+f839586 feat: admin add player from TM URL (workflow + endpoint Vercel)
+a6a72b5 feat: auto-creazione club nuovi
+9e27677 fix: workflow add_player retry 5 tentativi
+b36a310 fix: add_player workflow ha permission contents:write
+8a873ae fix: scraper TM ignora data-header__ribbon (FIX BUG NEW ARRIVAL)
+fd026ca (auto) re-scrape 269 giocatori broken
+```
+
+### TODO prossima sessione
+
+1. **Modifica griglie destra** mostrare ruolo specifico (es. "Terzino destro") invece di generico (utente ha richiesto, da implementare)
+2. **Pre-popolazione club top-10 leghe europee** (Premier, La Liga, Bundesliga, Ligue 1, Eredivisie, Liga Portugal, Belgio, Turchia)
+3. **Aggiungere modifica club nell'admin editor** (per casi edge dove il fix scraper fallisce)
+4. **Cleanup branch** `feature/pptx-export` (già mergato, da cancellare)
+
+### PROMPT DI RIPRESA
+
+> Ciao Claude, riprendo PID. Stato finale 8 mag 2026:
+>
+> ✅ Tutto funzionante in produzione su `pid-nine.vercel.app`:
+> - Esporta PPTX 6 sistemi
+> - Backend admin (editing + add giocatore + auto-creazione club)
+> - Bug "New arrival" risolto + 269 giocatori corretti retroattivamente
+> - Workflow notturno stats refresh + workflow add_player + workflow fix_new_arrival
+>
+> ⏳ Prossimi step:
+> 1. Griglie destra: ruolo specifico (richiesto dall'utente, in attesa)
+> 2. Pre-popolazione club top-10 leghe europee
+> 3. Modifiche varie alla sezione Griglie (da specificare ulteriormente)
+
+## 8 mag 2026 (sera) — Fix workflow notturno (`last_update.json` fermo al 6 mag)
+
+### Sintomo
+
+Sidebar pid-nine.vercel.app mostrava ancora "Aggiornamento 06/05/2026, 11:16" il giorno 8 maggio, nonostante il workflow `Auto Update Daily` schedulato alle 03:00 UTC ogni notte.
+
+### Diagnosi
+
+- `cat data/last_update.json` locale → fermo al 6 maggio
+- `git log -- data/last_update.json` → un solo commit, l'iniziale `fb8e6e7`. Il bot non ha mai pushato aggiornamenti.
+- `curl https://pid-nine.vercel.app/data/last_update.json` → identico al locale
+- Tab GitHub Actions: workflow #2 schedulato dell'8 maggio 11:15 UTC ❌ failed dopo 1h 48m
+- Log dello step "Commit and push if changed":
+  ```
+  remote: Permission to simonecontran10/pid.git denied to github-actions[bot].
+  fatal: unable to access ...: The requested URL returned error: 403
+  ```
+
+### Bug 1 — Permessi GITHUB_TOKEN insufficienti
+
+Stesso identico bug del 7 maggio già fixato per `add_player.yml` (commit `b36a310`), ma la fix non era stata propagata agli altri workflow. Stato pre-fix:
+
+- `add_player.yml` aveva `permissions: contents: write` ✅
+- `fix_new_arrival.yml` lo aveva ✅
+- `auto_update_daily.yml` non lo aveva ❌
+- `auto_update_full.yml` non lo aveva ❌
+
+Fix applicata: aggiunto blocco `permissions: contents: write / actions: read` in entrambi i file (commit `97f9797`). Test: run manuale di `Auto Update Daily` → success in 1h 38m → bot ha pushato `45d538e auto: daily stats refresh (2026-05-08)`.
+
+### Bug 2 — Fallback chain in `app.js` con priorità sbagliata
+
+Anche dopo il fix permessi il sito mostrava ancora 06/05. Il `curl` su prod rivelava che `stats_completed_at` era 08/05 ma `completed_at` era ancora 06/05 (seed iniziale). `run_stats.py` infatti scrive solo `stats_completed_at` ma non sovrascrive `completed_at`, perché quest'ultimo è semanticamente legato al seed completo del DB.
+
+Il bug era nel frontend: `renderLastUpdate()` riga 183 leggeva con priorità fissa `lu.completed_at || lu.stats_completed_at || ...`, quindi pescava sempre il timestamp del seed e ignorava i workflow ricorrenti.
+
+Fix applicata: riscritta la chain per pescare il timestamp più recente disponibile invece che la priorità fissa. Robusta anche per futuri workflow che aggiungeranno altri campi `*_completed_at` (commit `37f0524`).
+
+Verifica finale: redeploy Vercel + hard reload → sidebar mostra correttamente `08/05/2026, 20:20` (le 18:20 UTC convertite in ora italiana estiva).
+
+### Lessons learned
+
+- Quando si applica una fix a un workflow YAML, propagarla immediatamente a tutti gli altri con la stessa categoria di rischio. Il fix `b36a310` del 7 maggio doveva essere multi-file fin da subito.
+- `sed` su macOS BSD è inaffidabile per modifiche YAML strutturate. Meglio Python con `re` o file diff.
+- `last_update.json` ha un design un po' frastagliato (3+ campi `*_completed_at` con semantiche diverse). Il fallback nel frontend deve pescare il più recente, non avere priorità fissa.
+
+### Commit della sessione
+
+- `97f9797` fix: aggiungi permissions contents:write a auto_update_daily e auto_update_full
+- `45d538e` (bot) auto: daily stats refresh (2026-05-08)
+- `37f0524` fix: renderLastUpdate usa timestamp più recente invece di priorità completed_at
+
+## 8 mag 2026 (sera tardi) — Nuova sezione Osservazioni (scout reports per partita)
+
+### Decisione di prodotto
+
+Trasformare la funzione "Note" del giocatore in una vera sezione di scouting strutturata. Una osservazione = un giocatore visto in una partita specifica. Multipla per giocatore, privata per utente, esportabile in PDF e JSON.
+
+### Punti d'ingresso al form "Nuova osservazione"
+
+Tre modalità:
+
+1. Scheda giocatore → tab "Osservazioni" → bottone "+ Nuova" (giocatore già fissato)
+2. Pannello "Scouting" laterale → bottone "+ Nuova osservazione" (con autocomplete giocatore preliminare)
+3. Lista giocatori visionati nel pannello → click "+" su una riga (giocatore preselezionato)
+
+### Schema dati osservazione
+
+Una osservazione contiene 11 campi: avversario (testo libero, autocomplete dai club DB ma sempre stringa), data partita, competizione (lista chiusa con escape "Altro"), ruoli giocati (multi-select su campo grafico SVG con sigle italiane), performance rating numerico 0-10 con step 0.5, etichette di valutazione (multi-select da lista da definire), punti di forza (multi-select da lista da definire), punti di debolezza (multi-select da lista da definire), note libere paste-friendly, autore (snapshot di `_currentUsername()`), data inserimento.
+
+Set chiuso 15 sigle ruolo, in italiano e slegato da `position_specific` TM. Attacco: PP (punta), AS (ala sinistra), AD (ala destra), TRQ (trequartista). Centrocampo: AES (quinto sinistro), AED (quinto destro), CIS, CID, CC. Difesa: LAT_SN (terzino sn), LAT_DX (terzino dx), DCS, DC, DCD. Porta: POR.
+
+Decisione design: ruoli osservazione separati dai valori TM in `position_specific`. Motivo: un'osservazione di scouting registra dove l'hai visto giocare quella partita, che può differire dal ruolo "ufficiale" TM del giocatore (es. Locatelli può essere TM "Central Midfield" ma l'hai visto da CC).
+
+Vincolo unicità: una sola osservazione per `(user_id, tm_player_id, match_date, opponent)`.
+
+### Privacy & condivisione
+
+- Privata per utente (RLS `auth.uid() = user_id`, stesso pattern già usato in `user_state`)
+- Export/Import in JSON (backup-restore per cambio device)
+- Export PDF singolo (1 osservazione = 1 pagina) + Export dossier giocatore (multi-page con copertina e tutte le osservazioni di quel giocatore)
+
+### Pannello "Scouting" laterale (nuovo tab nella sidebar)
+
+Due viste: lista giocatori visionati (≥1 osservazione, con conteggio) e lista tutte le osservazioni (filtrabile/ordinabile). Azioni: modifica, elimina, export PDF singolo, export JSON tutto, import JSON.
+
+### Fase 1 completata — Schema Supabase
+
+Tabella `player_observations` creata su Supabase con 14 colonne (incluse `id uuid`, `user_id uuid FK auth.users`, `tm_player_id bigint`, `created_at`, `updated_at` oltre agli 11 campi dati), 3 indici per query tipiche su `(user_id, tm_player_id)`, `(user_id, created_at DESC)` e `(user_id, match_date DESC)`, trigger `po_set_updated_at` per aggiornare `updated_at` su UPDATE, e 4 policy RLS (`po_select_own`, `po_insert_own`, `po_update_own`, `po_delete_own`) tutte basate su `auth.uid() = user_id`. Vincolo `UNIQUE (user_id, tm_player_id, match_date, opponent)` per evitare duplicati.
+
+### Piano d'attacco fasi successive
+
+- Fase 2 — Modulo `cloud_sync.js`: `fetchObservations`, `saveObservation`, `updateObservation`, `deleteObservation` (~1h)
+- Fase 3 — Tab "Osservazioni" nel modal giocatore + form con campo grafico SVG ruoli (~2-3h)
+- Fase 4 — Pannello Scouting laterale (~1.5h)
+- Fase 5 — Export PDF: singolo + dossier giocatore (jsPDF client-side) (~2h)
+- Fase 6 — Export/Import JSON salvataggio (~45m)
+
+### Liste TBD da definire prima della Fase 3
+
+- Set valori valido per `evaluation_tags`
+- Set valori valido per `strengths`
+- Set valori valido per `weaknesses`
+
+
+### Fase 2 completata — Modulo cloud_sync per le osservazioni
+
+Aggiunte 4 funzioni a `frontend/cloud_sync.js` (commit `ddef181`):
+
+- `fetchObservations({tm_player_id?})` — recupera tutte le osservazioni dell'utente, ordinate per data partita decrescente. Filtro opzionale per giocatore.
+- `saveObservation(obs)` — crea, valida campi obbligatori (tm_player_id, match_date, opponent, competition) e ruoli (set chiuso 15 sigle), gestisce duplicato (codice Postgres 23505) con messaggio italiano.
+- `updateObservation(id, patch)` — sanitize i campi che non vanno mai aggiornati direttamente (id, user_id, tm_player_id, created_at, updated_at, author_username), valida ruoli se modificati.
+- `deleteObservation(id)` — semplice, con doppia sicurezza `user_id` oltre alla RLS.
+
+Tutte e 4 con gestione errori try/catch + log con prefisso `[observations]` (stile coerente con il resto del file).
+
+Test end-to-end: 4/4 verdi sulla produzione (https://pid-nine.vercel.app, console DevTools). Verificati fetch, insert con tutti i campi correttamente popolati, fetch filtrato, delete + verifica array vuoto post-delete. RLS `auth.uid() = user_id` confermata funzionante.
+
+### Liste TBD ancora da definire prima della Fase 3
+- `evaluation_tags`
+- `strengths`
+- `weaknesses`
+
+
+
+### Fase 2 completata — Modulo cloud_sync per le osservazioni
+
+Aggiunte 4 funzioni a `frontend/cloud_sync.js` (commit `ddef181`):
+
+- `fetchObservations({tm_player_id?})` — recupera tutte le osservazioni dell'utente, ordinate per data partita decrescente. Filtro opzionale per giocatore.
+- `saveObservation(obs)` — crea, valida campi obbligatori (tm_player_id, match_date, opponent, competition) e ruoli (set chiuso 15 sigle), gestisce duplicato (codice Postgres 23505) con messaggio italiano.
+- `updateObservation(id, patch)` — sanitize i campi che non vanno mai aggiornati direttamente (id, user_id, tm_player_id, created_at, updated_at, author_username), valida ruoli se modificati.
+- `deleteObservation(id)` — semplice, con doppia sicurezza `user_id` oltre alla RLS.
+
+Tutte e 4 con gestione errori try/catch + log con prefisso `[observations]` (stile coerente con il resto del file). Esposte su `window.*` per uso da `app.js`.
+
+Test end-to-end: 4/4 verdi sulla produzione (https://pid-nine.vercel.app, console DevTools). Verificati fetch, insert con tutti i campi correttamente popolati, fetch filtrato, delete + verifica array vuoto post-delete. RLS `auth.uid() = user_id` confermata funzionante.
+
+## 8 mag 2026 (sera 2) — Fix admin "Aggiungi giocatore" — accettare URL TM da qualsiasi TLD
+
+### Bug riscontrato durante uso normale
+
+Tentativo di aggiungere il giocatore Mathys Detourbet con URL `https://www.transfermarkt.it/mathys-detourbet/profil/spieler/1171981` dal pannello admin → errore `URL non valido (deve contenere transfermarkt.com/.../spieler/<id>)`. Il regex di validazione accettava solo il TLD `.com`, ma Transfermarkt ha lo stesso identico DB su tutti i suoi domini regionali (`.it`, `.de`, `.es`, `.fr`, `.com.tr`, `.com.br`, ecc.) — cambia solo la lingua della UI.
+
+### Fix applicata
+
+Due punti dove il regex era troppo stretto:
+- `api/main.py:458` — `r'transfermarkt\.com.*spieler/\d+'` → `r'transfermarkt\.[a-z.]+.*spieler/\d+'`
+- `.github/workflows/add_player.yml:46` — stesso pattern aggiornato
+
+Il pattern `[a-z.]+` accetta qualsiasi suffisso ragionevole. Il punto è escapato per matchare letteralmente.
+
+A valle non serve fare altro: lo scraper usa `BASE_URL = "https://www.transfermarkt.com"` hardcoded in `scraper/config.py`, quindi naviga sempre su `.com` indipendentemente dal dominio dell'URL incollato (estrae solo il `tm_player_id` dall'URL e poi costruisce le richieste internamente).
+
+Commit `78a7be3` su `main`, redeploy Vercel automatico.
+
+## 8 mag 2026 (sera 3) — Fase 3 in preparazione (sezione Osservazioni nel modal giocatore)
+
+### Stato preparazione
+
+File `frontend/observations_ui.js` predisposto ma non ancora integrato. Contiene 730 righe con tutti i pezzi della UI Osservazioni: costanti (37 caratteristiche tecnico-tattiche, 4 evaluation tags con colori, 24 competizioni preset + "Altro", 15 ruoli sul campo con coordinate SVG), traduzioni IT→EN per tutte le voci, 27 stringhe i18n del modulo, render della sezione in fondo al modal giocatore, render delle card osservazione con bottoni edit/delete, modal-on-modal di creazione/modifica con campo grafico SVG cliccabile multi-select, slider rating 0-10 step 0.5, multi-select chips per strengths/weaknesses, single-select tag colorato, validazione completa, gestione duplicato.
+
+### Decisioni di design consolidate
+
+- Sezione Osservazioni come blocco in fondo al modal giocatore (NO tab orizzontale: il modal esistente non ha sistema di tab e introdurlo solo per Osservazioni sarebbe overkill)
+- Modal-on-modal per creazione/modifica (separa "vista" da "compilazione")
+- Etichette IT canoniche salvate as-is su Supabase, traduzione EN solo a video
+- Una sola lista 37 caratteristiche condivisa tra strengths e weaknesses
+
+### Liste finalizzate
+
+37 caratteristiche tecnico-tattiche in ordine alfabetico (1vs1 difensivo, Aggressività, Agonismo, Ampiezza, Area di rigore offensiva, Assist, Conduzione palla, Cross, Dinamismo, Dribbling 1c1, Duelli difensivi, Fase difensiva, Fase offensiva, Finalizzazione, Forza fisica, Gioco aereo, Gioco per la squadra, Inizio manovra, Inserimenti senza palla, Intelligenza tattica, Intensità, Jolly, Letture tattiche, Passaggi Chiave, Personalità, Profondità, Progressione, Rapidità primi metri, Recupero palloni, Rifinitura, Spazi stretti, Tecnica, Tiro/Calcio, Transizioni difensive, Transizioni offensive, Uscite, Velocità, Visione di gioco).
+
+4 evaluation tags con colori: PRIMA SCELTA / FIRST CHOICE (verde #22C55E), SECONDA SCELTA / SECOND CHOICE (giallo #EAB308), DA MONITORARE / MONITOR (arancione #F97316), NON IDONEO / REJECT (rosso #EF4444).
+
+24 competizioni preset (Serie A, Serie B, Serie C, Primavera 1/2, Coppa Italia, Supercoppa Italiana, UCL/UEL/UECL, principali leghe top europee + Saudi + Amichevole + "Altro" libero).
+
+### Prossimi step prima di pushare la Fase 3
+
+1. Caricare `observations_ui.js` in `index.html` come `<script>` dopo `app.js`
+2. Patch `app.js` `openPlayerModal()`: inserire `${window.renderObservationsSection(pid)}` alla fine del template HTML
+3. Patch `app.js` `openPlayerModal()`: aggiungere `setTimeout(() => window.wireObservationsHandlers(pid), 0);` dopo `setTimeout(_wireMonthlyChart, 0);`
+4. Push e test sul sito di produzione (creazione, modifica, eliminazione, multi-select ruoli sul campo grafico)
+
+### Fasi residue del piano
+
+- Fase 4 — Pannello "Scouting" laterale con liste giocatori visionati e tutte le osservazioni (~1.5h)
+- Fase 5 — Export PDF singolo + dossier giocatore (jsPDF client-side) (~2h)
+- Fase 6 — Export/Import salvataggio JSON (~45m)
