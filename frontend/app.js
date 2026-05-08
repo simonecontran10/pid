@@ -3359,7 +3359,7 @@ function renderGridsPanel() {
                     <span class="truncate">${escapeHtml(p.full_name)}</span>
                     ${birthYear(p) ? `<span class="stat-cell flex-shrink-0" style="color: var(--text-3); font-weight: 400; font-size: 10px;">'${birthYear(p).slice(-2)}</span>` : ""}
                   </div>
-                  <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(localizeRole(p.position_general))} · ${escapeHtml(prettyClubName(p.current_club_name||""))}</div>
+                  <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(localizeRole(p.position_specific || p.position_general))} · ${escapeHtml(prettyClubName(p.current_club_name||""))}</div>
                 </div>
                 <span class="stat-cell flex-shrink-0" style="font-size: 11px; font-weight: 600; color: ${mins>0?'var(--accent)':'var(--text-3)'}; min-width: 38px; text-align: right;">${mins}'</span>
               </div>`;
