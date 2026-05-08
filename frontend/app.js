@@ -6766,7 +6766,30 @@ function renderAdminEditor(p) {
       </div>
       <div>
         <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Posizione specifica</label>
-        <input id="admin-edit-position" type="text" value="${escapeHtml(fmt(p.position_specific))}" placeholder="es. Centrocampista centrale" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+        <select id="admin-edit-position" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);">
+          <option value="" ${!p.position_specific ? "selected" : ""}>—</option>
+          <optgroup label="Goalkeeper">
+            <option value="Goalkeeper" ${p.position_specific === "Goalkeeper" ? "selected" : ""}>Goalkeeper</option>
+          </optgroup>
+          <optgroup label="Defender">
+            <option value="Centre-Back" ${p.position_specific === "Centre-Back" ? "selected" : ""}>Centre-Back</option>
+            <option value="Right-Back" ${p.position_specific === "Right-Back" ? "selected" : ""}>Right-Back</option>
+            <option value="Left-Back" ${p.position_specific === "Left-Back" ? "selected" : ""}>Left-Back</option>
+          </optgroup>
+          <optgroup label="Midfield">
+            <option value="Defensive Midfield" ${p.position_specific === "Defensive Midfield" ? "selected" : ""}>Defensive Midfield</option>
+            <option value="Central Midfield" ${p.position_specific === "Central Midfield" ? "selected" : ""}>Central Midfield</option>
+            <option value="Attacking Midfield" ${p.position_specific === "Attacking Midfield" ? "selected" : ""}>Attacking Midfield</option>
+            <option value="Right Midfield" ${p.position_specific === "Right Midfield" ? "selected" : ""}>Right Midfield</option>
+            <option value="Left Midfield" ${p.position_specific === "Left Midfield" ? "selected" : ""}>Left Midfield</option>
+          </optgroup>
+          <optgroup label="Attack">
+            <option value="Centre-Forward" ${p.position_specific === "Centre-Forward" ? "selected" : ""}>Centre-Forward</option>
+            <option value="Second Striker" ${p.position_specific === "Second Striker" ? "selected" : ""}>Second Striker</option>
+            <option value="Right Winger" ${p.position_specific === "Right Winger" ? "selected" : ""}>Right Winger</option>
+            <option value="Left Winger" ${p.position_specific === "Left Winger" ? "selected" : ""}>Left Winger</option>
+          </optgroup>
+        </select>
       </div>
       <div class="grid grid-cols-2 gap-3">
         <div>
