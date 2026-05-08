@@ -62,11 +62,18 @@ jobs:
             exit 0
           fi
           git commit -m "auto: add player from TM URL ($(date -u +%Y-%m-%d))"
-          # Retry push se push concurrent
-          for i in 1 2 3; do
-            if git pull --rebase origin main && git push; then
-              exit 0
+          # Retry push fino a 5 volte (gestisce push concurrent durante il workflow)
+          for i in 1 2 3 4 5; do
+            echo "Push attempt $i/5"
+            git fetch origin main
+            if git pull --rebase origin main; then
+              if git push; then
+                echo "Push succeeded on attempt $i"
+                exit 0
+              fi
             fi
-            sleep 5
+            echo "Push failed on attempt $i, sleeping 10s..."
+            sleep 10
           done
+          echo "All push attempts failed - committed locally but not pushed"
           exit 1
