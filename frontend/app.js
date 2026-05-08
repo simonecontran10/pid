@@ -2155,7 +2155,7 @@ function renderCallupPanel() {
           <div class="text-sm font-semibold truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)}</div>
           <div class="text-xs truncate flex items-center gap-1.5 mt-0.5" style="color: var(--text-3);">
             ${logo ? `<img src="${logo}" class="w-4 h-4 object-contain"/>` : ""}
-            <span class="truncate">${escapeHtml(p.current_club_name||"")}</span>
+            <span class="truncate">${escapeHtml(prettyClubName(p.current_club_name||""))}</span>
             <span class="ml-1 stat-cell">${birthYear(p)||""}</span>
             <span class="ml-1 px-1.5 py-0.5 rounded" style="background: var(--accent-bg); color: var(--accent); font-size: 11px;">${escapeHtml(localizeRole(p.position_general))}</span>
           </div>
@@ -2598,7 +2598,7 @@ async function exportCallupPDF(callupList) {
         try { pdf.addImage(cLogo, "PNG", margin + 119, y + 0.5, 7, 7); } catch (e) {}
       }
       pdf.setFont("helvetica","normal"); pdf.setFontSize(10); pdf.setTextColor(60,60,60);
-      const clubName = (p.current_club_name || "").slice(0, 20);
+      const clubName = prettyClubName(p.current_club_name || "").slice(0, 20);
       const clubX = cLogo ? (margin + 128) : (margin + 120);
       pdf.text(clubName, clubX, y + 5, { maxWidth: pageW - margin - clubX - 18 });
 
@@ -2620,7 +2620,7 @@ async function exportCallupPDF(callupList) {
       if (!clubAgg.has(cid)) {
         const cl = state.clubsById.get(cid);
         clubAgg.set(cid, {
-          name: p.current_club_name || (cl?.name) || "—",
+          name: prettyClubName(p.current_club_name || cl?.name || "") || "—",
           logoUrl: cl ? clubLogo(cl) : null,
           count: 0,
         });
@@ -2764,6 +2764,83 @@ async function exportCallupPDF(callupList) {
 // ============ GRIDS (campo tattico) ============
 // Posizioni in % (x=0..100 sinistra→destra, y=0..100 porta nostra→avanti)
 // Y bassa = portiere/difesa nostra, Y alta = attacco
+
+// ============================================================
+//  Display name dei club italiani (Serie A/B/Primavera).
+//  Rinomina solo a livello di display; il nome reale nel DB resta invariato.
+//  Mappa solo i club italiani; gli altri (polacchi ecc.) tornano invariati.
+// ============================================================
+const _CLUB_DISPLAY_MAP = {
+  // Serie A
+  "AC Milan": "Milan",
+  "ACF Fiorentina": "Fiorentina",
+  "AS Roma": "Roma",
+  "Atalanta BC": "Atalanta",
+  "Bologna FC 1909": "Bologna",
+  "Cagliari Calcio": "Cagliari",
+  "Como 1907": "Como",
+  "Genoa CFC": "Genoa",
+  "Hellas Verona": "Verona",
+  "Inter Milan": "Inter",
+  "Juventus FC": "Juventus",
+  "Parma Calcio 1913": "Parma",
+  "Pisa Sporting Club": "Pisa",
+  "SS Lazio": "Lazio",
+  "SSC Napoli": "Napoli",
+  "Torino FC": "Torino",
+  "US Cremonese": "Cremonese",
+  "US Lecce": "Lecce",
+  "US Sassuolo": "Sassuolo",
+  "Udinese Calcio": "Udinese",
+  // Serie B
+  "AC Monza": "Monza",
+  "AC Reggiana 1919": "Reggiana",
+  "Calcio Padova": "Padova",
+  "Carrarese Calcio 1908": "Carrarese",
+  "Cesena FC": "Cesena",
+  "Delfino Pescara 1936": "Pescara",
+  "FC Empoli": "Empoli",
+  "FC Südtirol": "Südtirol",
+  "Frosinone Calcio": "Frosinone",
+  "Mantova 1911": "Mantova",
+  "Modena FC": "Modena",
+  "Palermo FC": "Palermo",
+  "SS Juve Stabia": "Juve Stabia",
+  "SSC Bari": "Bari",
+  "Spezia Calcio": "Spezia",
+  "UC Sampdoria": "Sampdoria",
+  "US Avellino 1912": "Avellino",
+  "US Catanzaro": "Catanzaro",
+  "Venezia FC": "Venezia",
+  "Virtus Entella": "Virtus Entella",
+  // Primavera (suffisso "Primavera" mantenuto)
+  "AC Milan Primavera": "Milan Primavera",
+  "Atalanta Primavera": "Atalanta Primavera",
+  "Bologna Primavera": "Bologna Primavera",
+  "Cagliari Primavera": "Cagliari Primavera",
+  "Cesena Primavera": "Cesena Primavera",
+  "Cremonese Primavera": "Cremonese Primavera",
+  "Fiorentina Primavera": "Fiorentina Primavera",
+  "Frosinone Primavera": "Frosinone Primavera",
+  "Genoa Primavera": "Genoa Primavera",
+  "Hellas Verona Primavera": "Verona Primavera",
+  "Inter Milan Primavera": "Inter Primavera",
+  "Juventus Primavera": "Juventus Primavera",
+  "Lazio Primavera": "Lazio Primavera",
+  "Lecce Primavera": "Lecce Primavera",
+  "Monza Primavera": "Monza Primavera",
+  "Napoli Primavera": "Napoli Primavera",
+  "Parma Primavera": "Parma Primavera",
+  "Roma Primavera": "Roma Primavera",
+  "Sassuolo Primavera": "Sassuolo Primavera",
+  "Torino Primavera": "Torino Primavera",
+};
+
+function prettyClubName(name) {
+  if (!name) return name;
+  return _CLUB_DISPLAY_MAP[name] || name;
+}
+
 const FORMATIONS = {
   "4-4-2": [
     { id: "GK",  x: 50, y: 8,  label: "GK" },
@@ -3055,7 +3132,7 @@ function renderGridsPanel() {
             if (!pl) return "";
             const isStarter = idx === 0;
             const yr = yrShort(birthYear(pl) || "");
-            const club = clubAbbrev(pl.current_club_name || "");
+            const club = clubAbbrev(prettyClubName(pl.current_club_name || ""));
             const mins = seasonMinutes(pid);
             const foot = footShort(pl.foot);
             const subParts = [];
@@ -3108,7 +3185,7 @@ function renderGridsPanel() {
             <img src="${playerPhoto(p)}" class="w-7 h-7 rounded-full object-cover flex-shrink-0" style="background: var(--surface-2);"/>
             <div class="flex-1 min-w-0">
               <div class="text-xs font-medium truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)}</div>
-              <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(p.current_club_name||"")}</div>
+              <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(prettyClubName(p.current_club_name||""))}</div>
             </div>
             <button class="grid-move-up" data-slot="${pos.id}" data-idx="${idx}" ${idx===0?"disabled":""} title="${currentLang==='it'?'su':'up'}"
                     style="width: 22px; height: 22px; border-radius: 4px; background: rgba(255,255,255,0.05); border: 0.5px solid var(--border); color: ${idx===0?'var(--text-3)':'var(--text-2)'}; cursor: ${idx===0?'not-allowed':'pointer'}; font-size: 11px;">↑</button>
@@ -3269,7 +3346,7 @@ function renderGridsPanel() {
                     <span class="truncate">${escapeHtml(p.full_name)}</span>
                     ${birthYear(p) ? `<span class="stat-cell flex-shrink-0" style="color: var(--text-3); font-weight: 400; font-size: 10px;">'${birthYear(p).slice(-2)}</span>` : ""}
                   </div>
-                  <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(localizeRole(p.position_general))} · ${escapeHtml(p.current_club_name||"")}</div>
+                  <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(localizeRole(p.position_general))} · ${escapeHtml(prettyClubName(p.current_club_name||""))}</div>
                 </div>
                 <span class="stat-cell flex-shrink-0" style="font-size: 11px; font-weight: 600; color: ${mins>0?'var(--accent)':'var(--text-3)'}; min-width: 38px; text-align: right;">${mins}'</span>
               </div>`;
@@ -4107,7 +4184,7 @@ async function exportGridPDF() {
         const isStarter = i === 0;
         const yr = (birthYear(pl) || "").toString().slice(-2);
         const club = state.clubsById.get(pl.current_club_id);
-        const clubAbbr = (pl.current_club_name || "").replace(/\s(SFC|FC|SC|Club|Riad)\b.*$/, "").slice(0, 12);
+        const clubAbbr = prettyClubName(pl.current_club_name || "").replace(/\s(SFC|FC|SC|Club|Riad)\b.*$/, "").slice(0, 12);
         const mins = seasonMins(pl.tm_player_id);
         const foot = footMap[(pl.foot||"").toLowerCase()] || "—";
 
@@ -4244,7 +4321,7 @@ function renderListPanel() {
         <span class="truncate" style="font-size: 12px; color: var(--text-2);">${escapeHtml(localizeRole(p.position_specific || p.position_general))}</span>
         <div class="flex items-center gap-2 min-w-0">
           ${clubLogoUrl ? `<img src="${clubLogoUrl}" class="w-5 h-5 object-contain flex-shrink-0"/>` : ""}
-          <span class="truncate text-[12px]" style="color: var(--text-2);">${escapeHtml(p.current_club_name||"")}</span>
+          <span class="truncate text-[12px]" style="color: var(--text-2);">${escapeHtml(prettyClubName(p.current_club_name||""))}</span>
         </div>
         <div class="text-center stat-cell" style="font-size: 13px; color: var(--text-1);">${apps}</div>
         <div class="text-center stat-cell" style="font-size: 13px; font-weight: 600; color: ${goals>=5?'var(--hot)':(goals?'var(--text-1)':'var(--text-3)')};">${goals}</div>
@@ -4467,7 +4544,7 @@ function renderCompare() {
           <div class="font-semibold text-sm truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)} <span class="stat-cell" style="color: var(--text-3); font-weight: 400; font-size: 12px;">${birthYear(p) ? "'"+birthYear(p).slice(-2) : ""}</span></div>
           <div class="text-xs truncate flex items-center gap-1.5" style="color: var(--text-3);">
             ${clubLogoUrl ? `<img src="${clubLogoUrl}" class="w-3.5 h-3.5 object-contain flex-shrink-0"/>` : ""}
-            <span class="truncate">${escapeHtml(p.current_club_name||"")}</span>
+            <span class="truncate">${escapeHtml(prettyClubName(p.current_club_name||""))}</span>
             <span class="ml-1 px-1 py-0.5 rounded" style="background: var(--accent-bg); color: var(--accent); font-size: 10px;">${escapeHtml(localizeRole(p.position_specific||p.position_general))}</span>
           </div>
         </div>
@@ -4986,7 +5063,7 @@ function renderMinutesPanel() {
           <div class="text-[12px] font-semibold truncate" style="color: var(--text-1); line-height: 1.2;">${escapeHtml(p.full_name)}</div>
           <div class="text-[10px] truncate flex items-center gap-1 mt-0.5" style="color: var(--text-3); line-height: 1.2;">
             ${logo ? `<img src="${logo}" class="w-3 h-3 object-contain"/>` : ""}
-            <span class="truncate">${escapeHtml(p.current_club_name||"")}</span>
+            <span class="truncate">${escapeHtml(prettyClubName(p.current_club_name||""))}</span>
           </div>
         </div>
         <span class="stat-cell text-[10px] font-semibold" style="color: ${mins>0?'var(--accent)':'var(--text-3)'};">${mins}'</span>
@@ -5094,7 +5171,7 @@ function renderMinutesPanel() {
               </div>
               <div class="flex items-center gap-1.5 mt-0.5 text-[10px]" style="color: var(--text-3); line-height: 1.2;">
                 ${clubLogoUrl ? `<img src="${clubLogoUrl}" class="w-3 h-3 object-contain flex-shrink-0"/>` : ""}
-                <span class="truncate">${escapeHtml(p.current_club_name||"")}</span>
+                <span class="truncate">${escapeHtml(prettyClubName(p.current_club_name||""))}</span>
                 <span>·</span>
                 <span style="color: var(--accent); font-weight: 500; white-space: nowrap;">${escapeHtml(localizeRole(p.position_general))}</span>
               </div>
@@ -5584,7 +5661,7 @@ async function exportMinutesPDF(selectedList) {
 
       pdf.setFont("helvetica", "normal"); pdf.setFontSize(7);
       pdf.setTextColor(120, 120, 130);
-      const sub = `${p.current_club_name || ""} · ${localizeRole(p.position_general) || ""}`;
+      const sub = `${prettyClubName(p.current_club_name || "")} · ${localizeRole(p.position_general) || ""}`;
       const subTrim = sub.length > 36 ? sub.slice(0, 34) + "…" : sub;
       pdf.text(subTrim, margin + 11, y + 9);
 
@@ -5902,7 +5979,7 @@ function setupSearch() {
           <img src="${playerPhoto(p)}" class="w-7 h-7 rounded-full object-cover flex-shrink-0" style="background: var(--surface-2);"/>
           <div class="min-w-0 flex-1">
             <div class="text-sm font-medium truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)}${yr ? ` <span class="stat-cell" style="color: var(--text-3); font-weight: 400;">'${yr.slice(-2)}</span>` : ""}</div>
-            <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(p.current_club_name||"")} · ${escapeHtml(localizeRole(p.position_specific||p.position_general))}</div>
+            <div class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(prettyClubName(p.current_club_name||""))} · ${escapeHtml(localizeRole(p.position_specific||p.position_general))}</div>
           </div>
         </button>`;
         }).join("")}
