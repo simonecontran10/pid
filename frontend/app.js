@@ -3274,42 +3274,94 @@ function renderGridsPanel() {
 // Mappatura slot frontend (FORMATIONS) → slot template (PHOTO_POSITION_MAPS)
 // R* nel template = lato dx campo dal pdv giocatore = sx schermo
 // L* nel template = lato sx campo dal pdv giocatore = dx schermo
-const _PPTX_SLOT_MAP = {
-  "GK":   "GK1",
-  // 4-3-3 / 4-4-2 / 4-2-3-1: terzini RB/LB
-  "RB":   "RFB1",
-  "LB":   "LFB1",
-  // 3-5-2 / 3-4-3 / 3-4-2-1: wing-back
-  "RWB":  "RFB1",
-  "LWB":  "LFB1",
-  // Difensori centrali
-  "RCB":  "RCB1",
-  "CB":   "CB1",
-  "LCB":  "LCB1",
-  // Centrocampisti
-  "RCM":  "RCM1",
-  "CM":   "CM1",
-  "LCM":  "LCM1",
-  // 4-4-2 ha RM/LM (centrocampisti laterali) → li mappiamo come ali nel template
-  "RM":   "RW1",
-  "LM":   "LW1",
-  // 4-3-3 / 3-4-3 / 3-4-2-1 / 4-2-3-1: ali
-  "RW":   "RW1",
-  "LW":   "LW1",
-  // 3-5-2: due punte
-  "RST":  "ST1",
-  "LST":  "ST1B",
-  // Single ST
-  "ST":   "ST1",
-  // Trequartista nel 4-2-3-1 → ST1B
-  "CAM":  "ST1B",
-  // 4-2-3-1: mediani difensivi (DM) → mediani template
-  "RDM":  "RCM1",
-  "LDM":  "LCM1",
-  // 4-2-3-1: trequartisti laterali (AM = Attacking Midfielder) → ali template
-  "RAM":  "RW1",
-  "LAM":  "LW1",
+// Mappa slot frontend → slot template, PER SISTEMA.
+// R* = lato dx campo dal pdv giocatore = sx schermo
+// L* = lato sx campo dal pdv giocatore = dx schermo
+const _PPTX_SLOT_MAP_BY_SYSTEM = {
+  "3-5-2": {
+    "GK":   "GK1",
+    "RCB":  "RCB1",
+    "CB":   "CB1",
+    "LCB":  "LCB1",
+    "RWB":  "RFB1",   // wing-back nel template = full-back
+    "LWB":  "LFB1",
+    "RCM":  "RCM1",
+    "CM":   "CM1",
+    "LCM":  "LCM1",
+    "RST":  "ST1",
+    "LST":  "ST1B",
+  },
+  "3-4-3": {
+    "GK":   "GK1",
+    "RCB":  "RCB1",
+    "CB":   "CB1",
+    "LCB":  "LCB1",
+    "RM":   "RFB1",   // esterno di centrocampo nel 3-4-3 → terzino alto template
+    "LM":   "LFB1",
+    "RCM":  "RCM1",
+    "LCM":  "LCM1",
+    "RW":   "RW1",
+    "ST":   "ST1",
+    "LW":   "LW1",
+  },
+  "3-4-2-1": {
+    "GK":   "GK1",
+    "RCB":  "RCB1",
+    "CB":   "CB1",
+    "LCB":  "LCB1",
+    "RM":   "RFB1",   // esterno di centrocampo → terzino alto template
+    "LM":   "LFB1",
+    "RCM":  "RCM1",
+    "LCM":  "LCM1",
+    "RW":   "RW1",
+    "ST":   "ST1",
+    "LW":   "LW1",
+  },
+  "4-3-3": {
+    "GK":   "GK1",
+    "RB":   "RFB1",
+    "RCB":  "RCB1",
+    "LCB":  "LCB1",
+    "LB":   "LFB1",
+    "RCM":  "RCM1",
+    "CM":   "CM1",
+    "LCM":  "LCM1",
+    "RW":   "RW1",
+    "ST":   "ST1",
+    "LW":   "LW1",
+  },
+  "4-2-3-1": {
+    "GK":   "GK1",
+    "RB":   "RFB1",
+    "RCB":  "RCB1",
+    "LCB":  "LCB1",
+    "LB":   "LFB1",
+    "RDM":  "RCM1",   // mediano difensivo dx → mediano template
+    "LDM":  "LCM1",
+    "RAM":  "RW1",    // trequartista laterale dx → ala template
+    "LAM":  "LW1",
+    "CAM":  "ST1B",   // trequartista centrale → ST1B template
+    "ST":   "ST1",
+  },
+  "4-4-2": {
+    "GK":   "GK1",
+    "RB":   "RFB1",
+    "RCB":  "RCB1",
+    "LCB":  "LCB1",
+    "LB":   "LFB1",
+    "RM":   "RW1",    // nel 4-4-2 RM/LM sono esterni di centrocampo → ali template
+    "RCM":  "RCM1",
+    "LCM":  "LCM1",
+    "LM":   "LW1",
+    "RST":  "ST1",
+    "LST":  "ST1B",
+  },
 };
+
+function _gridsMapSlot(sysName, frontendSlot) {
+  const sysMap = _PPTX_SLOT_MAP_BY_SYSTEM[sysName] || {};
+  return sysMap[frontendSlot] || frontendSlot;
+}
 
 function _gridsBuildPptxPayload() {
   // 1. Trova il club della maggioranza dei titolari per dedurre team_name
@@ -3340,7 +3392,7 @@ function _gridsBuildPptxPayload() {
   const playersOut = {};
   for (const pos of positions) {
     const slotFrontend = pos.id;
-    const slotTemplate = _PPTX_SLOT_MAP[slotFrontend] || slotFrontend;
+    const slotTemplate = _gridsMapSlot(state.grids.formation, slotFrontend);
     const ids = _gridsAssignedFor(pos.id);
     if (!ids || ids.length === 0) continue;
     const list = [];
