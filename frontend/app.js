@@ -6791,6 +6791,16 @@ function renderAdminEditor(p) {
           </optgroup>
         </select>
       </div>
+      <div>
+        <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Altri ruoli (selezione multipla)</label>
+        <select id="admin-edit-position-others" multiple size="6" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);">
+          ${["Goalkeeper","Centre-Back","Right-Back","Left-Back","Defensive Midfield","Central Midfield","Attacking Midfield","Right Midfield","Left Midfield","Centre-Forward","Second Striker","Right Winger","Left Winger"].map(role => {
+            const isSel = Array.isArray(p.position_others) && p.position_others.includes(role);
+            return `<option value="${role}" ${isSel ? "selected" : ""}>${role}</option>`;
+          }).join("")}
+        </select>
+        <div class="text-[10px] mt-1" style="color: var(--text-3);">Tieni premuto Cmd/Ctrl per selezione multipla</div>
+      </div>
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Altezza (cm)</label>
@@ -6826,12 +6836,18 @@ async function _adminSaveOverrides(pid) {
   const height = document.getElementById("admin-edit-height")?.value;
   const number = document.getElementById("admin-edit-number")?.value;
   
+  // Multi-select altri ruoli
+  const othersSelect = document.getElementById("admin-edit-position-others");
+  const others = othersSelect ? Array.from(othersSelect.selectedOptions).map(o => o.value) : [];
+  
   const overrides = {};
   if (dob) overrides.date_of_birth = dob;
   if (foot) overrides.foot = foot;
   if (pos) overrides.position_specific = pos;
   if (height) overrides.height_cm = parseInt(height, 10);
   if (number) overrides.shirt_number = parseInt(number, 10);
+  // position_others: salvato sempre (anche se vuoto, per consentire rimozione)
+  overrides.position_others = others;
   
   // Uso il client Supabase globale già inizializzato
   if (!window._supa) {
