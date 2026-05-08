@@ -13,6 +13,10 @@ concurrency:
   group: add-player
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   add-player:
     runs-on: ubuntu-latest
