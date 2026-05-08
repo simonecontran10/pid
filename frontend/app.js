@@ -3309,7 +3309,7 @@ function _gridsBuildPptxPayload() {
   // 1. Trova il club della maggioranza dei titolari per dedurre team_name
   const positions = FORMATIONS[state.grids.formation] || [];
   const titolariIds = positions.map(p => _gridsAssignedFor(p.id)[0]).filter(Boolean);
-  const playersData = window._players || [];
+  const playersData = state.players || [];
   const idxById = {};
   playersData.forEach(p => { idxById[String(p.tm_player_id)] = p; });
   
