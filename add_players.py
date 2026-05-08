@@ -35,12 +35,14 @@ from scraper.config import (
     PLAYERS_SAUDI_FILE,
     PLAYERS_STATIC_FILE,
     PLAYERS_STATS_FILE,
+    CLUBS_FILE,
     SEASONS,
 )
 from scraper.filter_target import is_target_eligible as is_saudi_eligible  # alias, da rinominare in cleanup futuro
 from scraper.http_client import TransfermarktClient
 from scraper.profiles import scrape_player_profile
 from scraper.stats import scrape_player_stats
+from scraper.leagues import scrape_club_by_id
 
 PLAYERS_ALL_FILE = DATA_DIR / "players_all.json"
 
@@ -142,6 +144,42 @@ def main() -> None:
     _save(PLAYERS_SAUDI_FILE, list(saudi_by_id.values()))
     _save(PLAYERS_STATIC_FILE, list(saudi_by_id.values()))
     _save(PLAYERS_STATS_FILE, list(stats_by_id.values()))
+
+    # ============ AUTO-CREAZIONE CLUB ============
+    # Per ogni giocatore aggiunto/aggiornato, verifico che il suo current_club_id sia in clubs.json
+    # Se manca, scrape il club da TM e lo aggiungo
+    print("\n→ Verifica club nuovi...")
+    clubs_data = _load(CLUBS_FILE, [])
+    existing_club_ids = {int(c.get("tm_club_id")) for c in clubs_data if c.get("tm_club_id")}
+    
+    new_club_ids = set()
+    for pid in ids:
+        prof = profiles_by_id.get(pid)
+        if not prof:
+            continue
+        ccid = prof.get("current_club_id")
+        if ccid and int(ccid) not in existing_club_ids:
+            new_club_ids.add(int(ccid))
+    
+    n_clubs_added = 0
+    if new_club_ids:
+        print(f"  Trovati {len(new_club_ids)} club nuovi da scrapare")
+        for cid in new_club_ids:
+            try:
+                club = scrape_club_by_id(cid, client)
+                if club:
+                    clubs_data.append(club)
+                    n_clubs_added += 1
+                    print(f"  + {club['name']} ({club['league_id']})")
+                else:
+                    print(f"  ✗ scrape_club_by_id({cid}) fallito")
+            except Exception as e:
+                print(f"  ✗ club {cid}: {type(e).__name__}: {e}")
+        if n_clubs_added > 0:
+            _save(CLUBS_FILE, clubs_data)
+            print(f"  Salvati {n_clubs_added} nuovi club a {CLUBS_FILE.name}")
+    else:
+        print("  Nessun club nuovo da aggiungere")
 
     elapsed = int(time.monotonic() - started)
     print(f"\n{'='*60}")
