@@ -1158,5 +1158,17 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 1003,
+    "name": "Leicester City",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/1003",
+    "slug": "leicester-city",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]

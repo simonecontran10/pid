@@ -94424,5 +94424,39 @@
     "sortitoutsi_person_id": null,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null
+  },
+  {
+    "tm_player_id": 1245948,
+    "full_name": "Jeremy Monga",
+    "name_arabic": "Jeremy Ngola Monga",
+    "date_of_birth": "2009-07-10",
+    "age": 16,
+    "height_cm": 179,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Right Winger",
+      "Left Midfield"
+    ],
+    "place_of_birth": "Coventry",
+    "citizenships": [
+      "England",
+      "Zambia"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 1003,
+    "current_club_name": "Leicester",
+    "shirt_number": 28,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1245948-1744091689.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1245948",
+    "fetched_at": "2026-05-08T20:57:58Z",
+    "roster_club_id": 1003,
+    "roster_club_name": "Leicester",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1245948.jpg"
   }
 ]
