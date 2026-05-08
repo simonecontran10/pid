@@ -180,8 +180,16 @@ function renderLastUpdate() {
     console.warn("renderLastUpdate: state.lastUpdate è null/undefined — il file last_update.json non è stato caricato");
     return;
   }
-  // Fallback chain: completed_at → stats_completed_at → static_completed_at → started_at
-  const ts = lu.completed_at || lu.stats_completed_at || lu.static_completed_at || lu.started_at;
+  // Fallback chain: usa il timestamp più recente disponibile.
+  // Priorità ai campi scritti dai workflow ricorrenti (stats_completed_at, static_completed_at)
+  // perché completed_at viene scritto solo dal seed iniziale e non si aggiorna piu.
+  const candidates = [lu.stats_completed_at, lu.static_completed_at, lu.completed_at, lu.updated_at, lu.started_at]
+    .filter(Boolean)
+    .map(s => ({ s, d: new Date(s) }))
+    .filter(x => !isNaN(x.d.getTime()));
+  const ts = candidates.length
+    ? candidates.sort((a, b) => b.d - a.d)[0].s
+    : null;
   if (!ts) {
     console.warn("renderLastUpdate: nessun timestamp trovato in last_update.json", lu);
     return;
