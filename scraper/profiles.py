@@ -203,9 +203,33 @@ def _extract_full_name(soup: BeautifulSoup) -> Optional[str]:
 
 
 def _extract_current_club_id(soup: BeautifulSoup) -> tuple[Optional[int], Optional[str]]:
-    a = soup.select_one('.data-header__club a, span.data-header__club a, a[href*="/startseite/verein/"]')
+    """Estrae il club CORRENTE del giocatore.
+    
+    IMPORTANTE: Transfermarkt mostra giocatori in transizione con 'New arrival' /
+    'Winter signing' / 'Returnee' nel data-header__ribbon — quel link punta al
+    CLUB DI PROVENIENZA, non quello attuale. Diamo priorità a .data-header__club
+    che contiene sempre il club corrente, e ignoriamo data-header__ribbon.
+    """
+    # Strategia 1 (priorità): .data-header__club (sempre il club corrente)
+    a = soup.select_one('.data-header__club a[href*="/startseite/verein/"]')
+    
+    # Strategia 2: info-table-content (fallback per layout legacy)
+    if a is None:
+        a = soup.select_one('.info-table__content a[href*="/startseite/verein/"]')
+    
+    # Strategia 3 (ultima risorsa): primo link a /startseite/verein/ NON in ribbon
+    if a is None:
+        for candidate in soup.select('a[href*="/startseite/verein/"]'):
+            parent_classes = candidate.parent.get("class", []) if candidate.parent else []
+            # Escludi i link "New arrival/Winter signing/Returnee" del ribbon
+            if "data-header__ribbon" in parent_classes:
+                continue
+            a = candidate
+            break
+    
     if a is None:
         return None, None
+    
     href = a.get("href", "")
     m = re.search(r"/verein/(\d+)", href)
     name = _clean(a.get_text(" ", strip=True)) or _clean(a.get("title") or "")
