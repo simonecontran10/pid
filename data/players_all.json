@@ -94358,5 +94358,39 @@
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/1171981.jpg"
+  },
+  {
+    "tm_player_id": 984593,
+    "full_name": "Triston Rowe",
+    "name_arabic": null,
+    "date_of_birth": "2006-10-02",
+    "age": 19,
+    "height_cm": 183,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Right Midfield",
+      "Centre-Back"
+    ],
+    "place_of_birth": "Sandwell",
+    "citizenships": [
+      "England",
+      "Jamaica"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 30204,
+    "current_club_name": "FC Annecy",
+    "shirt_number": 2,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/984593-1746641384.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/984593",
+    "fetched_at": "2026-05-08T20:47:10Z",
+    "roster_club_id": 30204,
+    "roster_club_name": "FC Annecy",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/984593.jpg"
   }
 ]
