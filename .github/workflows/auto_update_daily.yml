@@ -84,4 +84,15 @@ jobs:
             exit 0
           fi
           git commit -m "auto: daily stats refresh ($(date -u +%Y-%m-%d))"
-          git push
+          # Retry push fino a 3 volte (per gestire push concurrent fatti durante il workflow)
+          for i in 1 2 3; do
+            echo "Push attempt $i/3"
+            if git pull --rebase origin main && git push; then
+              echo "Push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "Push failed, retrying..."
+            sleep 5
+          done
+          echo "All push attempts failed"
+          exit 1
