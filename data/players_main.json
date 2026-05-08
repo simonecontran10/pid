@@ -94325,5 +94325,38 @@
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/935231.jpg"
+  },
+  {
+    "tm_player_id": 1171981,
+    "full_name": "Mathys Detourbet",
+    "name_arabic": null,
+    "date_of_birth": "2007-04-29",
+    "age": 19,
+    "height_cm": 178,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Centre-Forward",
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Troyes",
+    "citizenships": [
+      "France"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 1095,
+    "current_club_name": "Troyes",
+    "shirt_number": 11,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1171981-1749199277.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1171981",
+    "fetched_at": "2026-05-08T20:36:34Z",
+    "roster_club_id": 1095,
+    "roster_club_name": "Troyes",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1171981.jpg"
   }
 ]
