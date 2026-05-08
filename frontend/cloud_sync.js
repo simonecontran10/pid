@@ -473,3 +473,191 @@ function _toggleAdminNav() {
 }
 window._toggleAdminNav = _toggleAdminNav;
 
+
+// ============================================================
+//  PLAYER OBSERVATIONS (scout reports per partita)
+//  Tabella: public.player_observations
+//  Privacy: ogni utente vede solo le proprie (RLS auth.uid() = user_id)
+//  Schema completo: vedi diario sezione "8 mag 2026 (sera tardi)"
+// ============================================================
+
+// Set chiuso di sigle ruolo valide (validazione lato app, non SQL)
+window.OBSERVATION_ROLES = [
+  "PP", "AS", "AD", "TRQ",
+  "AES", "AED", "CIS", "CID", "CC",
+  "LAT_SN", "LAT_DX", "DCS", "DC", "DCD",
+  "POR",
+];
+
+/**
+ * Recupera tutte le osservazioni dell'utente loggato.
+ * @param {Object} [opts]
+ * @param {number} [opts.tm_player_id] — se passato, filtra per giocatore
+ * @returns {Promise<Array>} array di osservazioni (vuoto se errore o non loggato)
+ */
+async function fetchObservations(opts = {}) {
+  if (!_supa || !window.cloudAuth.user) return [];
+  try {
+    let query = _supa
+      .from("player_observations")
+      .select("*")
+      .eq("user_id", window.cloudAuth.user.id)
+      .order("match_date", { ascending: false })
+      .order("created_at", { ascending: false });
+
+    if (opts.tm_player_id != null) {
+      query = query.eq("tm_player_id", opts.tm_player_id);
+    }
+
+    const { data, error } = await query;
+    if (error) {
+      console.warn("[observations] fetch error:", error.message);
+      return [];
+    }
+    return data || [];
+  } catch (e) {
+    console.warn("[observations] fetch exception:", e);
+    return [];
+  }
+}
+
+/**
+ * Crea una nuova osservazione. user_id e author_username vengono settati automaticamente.
+ * @param {Object} obs — i campi dell'osservazione (tm_player_id, match_date, opponent, ecc.)
+ * @returns {Promise<{data: Object|null, error: string|null}>} record creato + eventuale errore
+ */
+async function saveObservation(obs) {
+  if (!_supa) return { data: null, error: "supabase non inizializzato" };
+  if (!window.cloudAuth.user) return { data: null, error: "non autenticato" };
+
+  // Validazione minima dei campi obbligatori
+  if (!obs.tm_player_id || !obs.match_date || !obs.opponent || !obs.competition) {
+    return { data: null, error: "campi obbligatori mancanti (tm_player_id, match_date, opponent, competition)" };
+  }
+
+  // Validazione ruoli (devono essere nel set chiuso)
+  const roles = Array.isArray(obs.roles_played) ? obs.roles_played : [];
+  const invalid = roles.filter(r => !window.OBSERVATION_ROLES.includes(r));
+  if (invalid.length) {
+    return { data: null, error: `ruoli non validi: ${invalid.join(", ")}` };
+  }
+
+  const record = {
+    user_id: window.cloudAuth.user.id,
+    tm_player_id: obs.tm_player_id,
+    match_date: obs.match_date,
+    opponent: obs.opponent,
+    competition: obs.competition,
+    performance_rating: obs.performance_rating ?? null,
+    roles_played: roles,
+    evaluation_tags: Array.isArray(obs.evaluation_tags) ? obs.evaluation_tags : [],
+    strengths: Array.isArray(obs.strengths) ? obs.strengths : [],
+    weaknesses: Array.isArray(obs.weaknesses) ? obs.weaknesses : [],
+    notes: obs.notes ?? null,
+    author_username: window.cloudAuth.user.email || null,
+  };
+
+  try {
+    const { data, error } = await _supa
+      .from("player_observations")
+      .insert(record)
+      .select()
+      .single();
+
+    if (error) {
+      // Errore duplicato (vincolo UNIQUE)
+      if (error.code === "23505") {
+        return { data: null, error: "osservazione già presente per questo giocatore in questa partita" };
+      }
+      console.warn("[observations] save error:", error.message);
+      return { data: null, error: error.message };
+    }
+    console.log("[observations] saved", data.id);
+    return { data, error: null };
+  } catch (e) {
+    console.warn("[observations] save exception:", e);
+    return { data: null, error: String(e) };
+  }
+}
+
+/**
+ * Aggiorna un'osservazione esistente. La RLS impedisce di modificare quelle altrui.
+ * @param {string} id — uuid dell'osservazione
+ * @param {Object} patch — solo i campi da modificare (NON includere user_id, id, created_at)
+ * @returns {Promise<{data: Object|null, error: string|null}>}
+ */
+async function updateObservation(id, patch) {
+  if (!_supa || !window.cloudAuth.user) return { data: null, error: "non autenticato" };
+  if (!id) return { data: null, error: "id mancante" };
+
+  // Sanitize: rimuovi campi che non vanno mai aggiornati direttamente
+  const safePatch = { ...patch };
+  delete safePatch.id;
+  delete safePatch.user_id;
+  delete safePatch.created_at;
+  delete safePatch.updated_at;
+  delete safePatch.tm_player_id; // se vuoi cambiare giocatore meglio creare nuova osservazione
+  delete safePatch.author_username;
+
+  // Se aggiorni i ruoli, valida
+  if (safePatch.roles_played) {
+    const invalid = safePatch.roles_played.filter(r => !window.OBSERVATION_ROLES.includes(r));
+    if (invalid.length) {
+      return { data: null, error: `ruoli non validi: ${invalid.join(", ")}` };
+    }
+  }
+
+  try {
+    const { data, error } = await _supa
+      .from("player_observations")
+      .update(safePatch)
+      .eq("id", id)
+      .eq("user_id", window.cloudAuth.user.id) // doppia sicurezza oltre alla RLS
+      .select()
+      .single();
+
+    if (error) {
+      console.warn("[observations] update error:", error.message);
+      return { data: null, error: error.message };
+    }
+    console.log("[observations] updated", id);
+    return { data, error: null };
+  } catch (e) {
+    console.warn("[observations] update exception:", e);
+    return { data: null, error: String(e) };
+  }
+}
+
+/**
+ * Cancella un'osservazione. La RLS impedisce di cancellare quelle altrui.
+ * @param {string} id — uuid dell'osservazione
+ * @returns {Promise<{ok: boolean, error: string|null}>}
+ */
+async function deleteObservation(id) {
+  if (!_supa || !window.cloudAuth.user) return { ok: false, error: "non autenticato" };
+  if (!id) return { ok: false, error: "id mancante" };
+
+  try {
+    const { error } = await _supa
+      .from("player_observations")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", window.cloudAuth.user.id);
+
+    if (error) {
+      console.warn("[observations] delete error:", error.message);
+      return { ok: false, error: error.message };
+    }
+    console.log("[observations] deleted", id);
+    return { ok: true, error: null };
+  } catch (e) {
+    console.warn("[observations] delete exception:", e);
+    return { ok: false, error: String(e) };
+  }
+}
+
+// Esposizione globale per uso in app.js
+window.fetchObservations = fetchObservations;
+window.saveObservation = saveObservation;
+window.updateObservation = updateObservation;
+window.deleteObservation = deleteObservation;
