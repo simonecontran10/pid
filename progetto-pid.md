@@ -2049,3 +2049,200 @@ ls -la
 >    Test: `python3 test_run.py` → `test_output/juve_3_5_2.pptx`.
 > 4. 🔄 Da fare: mappare 5 altri sistemi (4-3-3, 4-4-2, 4-2-3-1, 3-4-3, 3-4-2-1), endpoint Vercel, bottone frontend.
 
+## 8 mag 2026 (mattina) — Rilascio bottone "Esporta PowerPoint" online
+
+### Sessione di rilascio: dal generator standalone al bottone live nel sito PID
+
+Ripresa da ieri sera. Stato di partenza: generator funzionante per tutti i 6 sistemi in locale, testato su 3-5-2/4-3-3/4-2-3-1. Obiettivo di oggi: rilasciare endpoint Vercel + bottone frontend.
+
+### Decisioni di design prese stamattina
+
+1. **Foto giocatori da filesystem locale** (NON da R2 come nel piano originale di progetto.md). Motivazione: le foto sono già nel repo (48 MB), già servite come static files da Vercel per il frontend. Filesystem = velocità (1ms vs 50-200ms per HTTP), zero dipendenze esterne, single source of truth, coerenza dev/prod, automatico (push = deploy). Decisione overrideata rispetto al progetto.md originale che prevedeva "Da R2 al runtime, no fallback locale" — quella era valida quando le foto NON erano nel repo.
+
+2. **Architettura backend**: estendere `api/main.py` esistente (FastAPI + Mangum per ASGI→serverless Vercel) invece di creare endpoint separati. Coerente con il pattern del progetto.
+
+3. **Endpoint URL pattern**: `/export-pptx` (no prefisso `/api/`, Vercel rewrites gestiscono il routing).
+
+### Implementazione step by step
+
+#### Step 1 — Cleanup file backup accumulati
+
+Rimossi tutti i `*.bak_v3` ... `*.bak_v14` dal `pptx_generator/` (14 file accumulati durante la sessione di ieri). Cancellati anche `__pycache__/` e `test_output/`.
+
+#### Step 2 — `.vercelignore`
+
+Creato per escludere dal deploy:
+```
+scripts/pptx_generator/test_output/
+**/*.bak*
+**/__pycache__/
+**/.DS_Store
+venv/
+raw/
+progetto-pid.md
+progetto_saudi_REFERENCE.md
+```
+
+#### Step 3 — `api/requirements.txt` esteso
+
+```
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-pptx>=0.6.23
+Pillow>=10.0
+mangum>=0.17
+```
+
+**Mangum** è l'adapter ASGI→Lambda/Vercel per FastAPI. Senza di esso, le rotte API ritornano 404 anche se `api/main.py` è correttamente buildato.
+
+#### Step 4 — Endpoint `/export-pptx` in `api/main.py`
+
+Aggiunto in fondo al file esistente:
+
+```python
+@app.post("/export-pptx")
+def export_pptx(payload: dict = Body(...)):
+    # Validazione team_name, system, players
+    # Import lazy del generator da scripts/pptx_generator/
+    # Path asset: scripts/pptx_generator/assets/template_pid.pptx
+    # Foto: data/photos/players_sots_lookup/
+    # Output: tempfile, ritornato come FileResponse con Content-Disposition attachment
+    return FileResponse(..., media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation")
+```
+
+Headers di response includono stats: `X-Stats-Card-Filled`, `X-Stats-Photos-Replaced`, `X-Stats-Pressing-Filled`. Utili per debug client side.
+
+#### Step 5 — Mangum handler in fondo a `main.py`
+
+```python
+try:
+    from mangum import Mangum
+    handler = Mangum(app, lifespan="off")
+except ImportError:
+    pass  # In dev mode (uvicorn) Mangum non serve
+```
+
+#### Step 6 — `vercel.json` esteso
+
+Aggiunte rewrites esplicite per ogni endpoint API + config function:
+
+```json
+"rewrites": [
+    { "source": "/export-pptx", "destination": "/api/main" },
+    { "source": "/clubs", "destination": "/api/main" },
+    { "source": "/players", "destination": "/api/main" },
+    ...
+],
+"functions": {
+    "api/main.py": {
+        "maxDuration": 60,
+        "memory": 1024
+    }
+}
+```
+
+**Importante**: prima del fix, le rotte API live (`/clubs`, `/search`) ritornavano 404 in produzione. Il sito era effettivamente solo frontend statico. Aggiungere le rewrites + Mangum ha attivato il backend Python.
+
+#### Step 7 — Bottone frontend "📥 PPT" + helpers JS
+
+In `frontend/app.js`:
+- Bottone `<button id="grids-export-pptx">${t("export_pptx")}</button>` dopo "Esporta PDF"
+- Helper `_gridsBuildPptxPayload()` che:
+  - Trova il club della maggioranza dei titolari per dedurre `team_name`
+  - Mappa slot frontend → template via `_PPTX_SLOT_MAP`
+  - Estrae `sots_id` da `sortitoutsi_person_id` o regex su `sortitoutsi_face_local_lookup`
+  - Costruisce payload completo con titolari + riserve in ordine
+- Funzione `_gridsExportPptx(buttonEl)` async che:
+  - Disabilita bottone con loading state
+  - POST a `/export-pptx` con payload JSON
+  - Riceve blob, crea URL.createObjectURL, triggera `<a download>`
+- Handler agganciato al click
+
+#### Step 8 — i18n keys
+
+Aggiunte in `i18n.js`:
+- `export_pptx`, `export_pptx_loading`, `export_pptx_error`, `export_pptx_empty`
+
+### Bug critici scoperti durante test live
+
+#### Bug 1 — `window._players` non esiste
+
+Il dataset giocatori sta in `state.players`, non in `window._players` come avevo assunto. Fix: replace `window._players` → `state.players` in `_gridsBuildPptxPayload`.
+
+#### Bug 2 — Mappatura slot mancante per 4-2-3-1
+
+Il frontend `FORMATIONS["4-2-3-1"]` usa id slot **diversi** dagli altri sistemi:
+- `RDM` (right defensive midfielder)
+- `LDM` (left defensive midfielder)
+- `RAM` (right attacking midfielder)
+- `LAM` (left attacking midfielder)
+
+Mentre gli altri sistemi usano `RCM/LCM/RW/LW`. Fix: estesa `_PPTX_SLOT_MAP`:
+
+```js
+"RDM":  "RCM1",
+"LDM":  "LCM1",
+"RAM":  "RW1",
+"LAM":  "LW1",
+```
+
+#### Bug 3 — `club_name` `???` nel dataset
+
+Il campo `club_name` in `players_main.json` non è popolato. Il bottone non riesce a dedurre il `team_name` dalla griglia. Conseguenza: `team_name="team"` (default) e quindi:
+- Logo squadra: usa logo Italia di default (placeholder)
+- Titolo: "TEAM" invece di "JUVENTUS"
+- Cerchi pressing: colore di default (Sassuolo arancione)
+
+**Decisione**: per ora lasciamo così. L'export funziona ma con logo + nome generici. In futuro, quando sarà chiaro come popolare `club_name`, sistemeremo.
+
+### Push branch `feature/pptx-export`
+
+Branch creato e pushato. Vercel auto-deploya preview URL: `pid-git-feature-pptx-export-simone-contran-s-projects.vercel.app`.
+
+### Stato attuale del bottone live
+
+- ✅ Endpoint `/export-pptx` raggiungibile e risponde HTTP 200
+- ✅ Bottone clickabile, payload costruito correttamente con `state.players`
+- ✅ Download del file `team_<system>.pptx` triggerato automaticamente
+- ✅ Tutti i giocatori del 4-2-3-1 ora con foto + card (post fix Bug 2)
+- ⚠️ Logo + nome team generici (Bug 3 da fixare in futuro)
+- ⚠️ Colori cerchi pressing default (richiede fix `team_name` rilevazione)
+
+### File modificati nel commit `feature/pptx-export`
+
+```
+M  api/main.py                                    (+103 righe — endpoint + Mangum)
+M  api/requirements.txt                           (+3 righe — pptx, Pillow, Mangum)
+M  frontend/app.js                                (+150 righe — helpers + bottone + handler)
+M  frontend/i18n.js                               (+4 righe per lingua — chiavi PPTX)
+M  vercel.json                                    (rewrites espliciti + functions config)
+M  progetto-pid.md
+A  .vercelignore                                  (nuovo)
+A  scripts/pptx_generator/__init__.py             (nuovo)
+A  scripts/pptx_generator/constants.py            (nuovo)
+A  scripts/pptx_generator/generator.py            (~25KB)
+A  scripts/pptx_generator/assets/template_pid.pptx (3.7MB)
+A  scripts/pptx_generator/assets/colori_squadre.json
+A  scripts/pptx_generator/assets/loghi_squadre/*.png (~17 loghi)
+```
+
+Totale: 32 file changed, ~2511 insertions.
+
+### Punti aperti / TODO
+
+1. **Bug 3 da risolvere**: come dedurre `team_name` dalla griglia quando `club_name` non è popolato? Opzioni:
+   - (a) Popolare `club_name` in `players_main.json` (vediamo dove sta il club ID)
+   - (b) Aggiungere un campo "Squadra" nel modale frontend che l'utente compila
+   - (c) Lookup `tm_club_id → club_name` via `clubs.json`
+2. **Form modale match_info**: per ora hardcoded "Stadio – Città – Paese", "GG Mese 2026 – HH:MM". L'utente dovrà poter inserire questi dati dal frontend.
+3. **Test visivo altri 3 sistemi sul preview live**: 4-4-2, 3-4-3, 3-4-2-1 mai testati visivamente in produzione.
+4. **Verificare run notturno** auto_update_daily.yml di stanotte (3:00 UTC). Locatelli stats da R2.
+5. **Merge feature/pptx-export → main** una volta che tutti i sistemi sono testati e Bug 3 risolto.
+
+### Stato repo
+
+```
+Branch: feature/pptx-export (in attesa di merge)
+Production: main su pid-nine.vercel.app (con bug fix Griglie del 91e5453)
+Preview: pid-git-feature-pptx-export-...vercel.app
+```

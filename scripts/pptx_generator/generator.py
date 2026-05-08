@@ -277,36 +277,133 @@ def _find_number_textbox_in_pressing_group(grp):
     return None
 
 
-def fill_pressing_slide(pressing_slide, players_dict):
-    count = 0
-    for press_label, formation_code in PRESSING_LABEL_TO_PLACEHOLDER.items():
-        grp, label_tb = _find_pressing_group_by_label(pressing_slide, press_label)
-        if grp is None:
+def fill_pressing_slide(pressing_slide, players, system=None):
+    """Riempie i cerchi Set A della slide pressing.
+    
+    Logica:
+    - Il cerchio "Gk1" (portiere) viene riempito col titolare di GK1 dal payload
+    - Gli altri 10 cerchi Set A vengono riempiti coi 10 outfield titolari nell'ordine in cui appaiono nello spTree (z-order del template)
+    
+    Args:
+        pressing_slide: la slide pressing
+        players: dict slot → [titolare, riserve...]
+        system: nome del sistema (non usato qui, kept per retrocompatibilità)
+    
+    Returns:
+        numero di cerchi riempiti (0-11)
+    """
+    # Set A label dei cerchi (case-insensitive)
+    SET_A_LABELS = {"gk1","rcb1","cb1","lcb1","rfb1","lfb1","rcm1","cm1","lcm1","st1","st1b","rw1","lw1"}
+    
+    # Estrai i titolari dal payload (primo elemento di ogni slot)
+    gk_titolare = None
+    outfield_titolari = []
+    for slot, plist in players.items():
+        if not plist:
             continue
-        player_list = players_dict.get(formation_code)
-        if not player_list:
+        titolare = plist[0]
+        if slot.upper() == "GK1":
+            gk_titolare = titolare
+        else:
+            outfield_titolari.append(titolare)
+    
+    # Trova i 11 cerchi Set A nella slide pressing in ordine z-order
+    set_a_groups = []
+    gk_group = None
+    for sh in pressing_slide.shapes:
+        if sh.shape_type != 6:  # GROUP
             continue
-        titolare = player_list[0]
-        surname = _short_surname(titolare.get("name", ""))
-        if surname:
-            run = label_tb.text_frame.paragraphs[0].runs[0]
-            run.text = " ".join(w.capitalize() for w in surname.split())
-        number_tb = _find_number_textbox_in_pressing_group(grp)
-        if number_tb:
-            number = str(titolare.get("number", ""))
-            if number:
-                run = number_tb.text_frame.paragraphs[0].runs[0]
-                run.text = number
-        count += 1
-    return count
+        # Trova label esterna
+        label = None
+        for c in sh.shapes:
+            if c.has_text_frame and c.shape_type != 6:
+                t = c.text_frame.text.strip()
+                if t and not t.isdigit():
+                    label = t
+                    break
+        if label and label.lower() in SET_A_LABELS:
+            if label.lower() == "gk1":
+                gk_group = sh
+            else:
+                set_a_groups.append(sh)
+    
+    filled = 0
+    
+    # 1. Riempi Gk1 col portiere
+    if gk_group and gk_titolare:
+        if _fill_pressing_circle(gk_group, gk_titolare):
+            filled += 1
+    
+    # 2. Riempi i restanti cerchi Set A coi 10 outfield (in ordine)
+    for circle, titolare in zip(set_a_groups, outfield_titolari):
+        if _fill_pressing_circle(circle, titolare):
+            filled += 1
+    
+    return filled
 
 
-# ============================================================
-#  STEP 6 — SOSTITUZIONE LOGO SQUADRA
-# ============================================================
-
-LOGO_ITALIA_HASH = "af7418bf37"
-
+def _fill_pressing_circle(group_shape, player):
+    """Sostituisce label e numero in un singolo cerchio pressing.
+    
+    Struttura del gruppo:
+    - GROUP (esterno)
+        - GROUP (interno)
+            - AUTO_SHAPE Ovale
+            - TEXT_BOX numero (es. "1", "5", ecc.)
+        - TEXT_BOX label esterna (es. "Gk1", "Rcb1", "TER S", ecc.)
+    
+    Sostituisce:
+    - TEXT_BOX label esterna → cognome titolare (Title Case, ultima parola)
+    - TEXT_BOX numero interno → numero di maglia
+    """
+    if not player:
+        return False
+    
+    # Trova TextBox label esterna (figlio diretto del gruppo, contiene testo non numerico)
+    label_tb = None
+    inner_group = None
+    for c in group_shape.shapes:
+        if c.shape_type == 6:
+            inner_group = c
+        elif c.has_text_frame:
+            t = c.text_frame.text.strip()
+            if t and not t.isdigit():
+                label_tb = c
+    
+    if not label_tb:
+        return False
+    
+    # Sostituisci cognome
+    surname = _short_surname(player.get("name", ""))
+    surname_titlecase = surname.title() if surname else ""
+    
+    # Mantengo lo stile del primo run e ci metto il nuovo testo
+    para = label_tb.text_frame.paragraphs[0]
+    if para.runs:
+        para.runs[0].text = surname_titlecase
+        # Pulisco run extra
+        for r in para.runs[1:]:
+            r._r.getparent().remove(r._r)
+    else:
+        label_tb.text_frame.text = surname_titlecase
+    
+    # Sostituisci numero interno (TextBox dentro inner_group)
+    number = str(player.get("number", "")).strip()
+    if inner_group and number:
+        for c in inner_group.shapes:
+            if c.has_text_frame:
+                t = c.text_frame.text.strip()
+                if t and t.isdigit():
+                    para_n = c.text_frame.paragraphs[0]
+                    if para_n.runs:
+                        para_n.runs[0].text = number
+                        for r in para_n.runs[1:]:
+                            r._r.getparent().remove(r._r)
+                    else:
+                        c.text_frame.text = number
+                    break
+    
+    return True
 
 def _replace_picture_blob(pic_shape, new_image_path, preserve_aspect=False, target_size_cm=None):
     """Sostituisce il blob immagine. 
@@ -400,6 +497,9 @@ def _replace_picture_blob(pic_shape, new_image_path, preserve_aspect=False, targ
         except Exception:
             pass  # In caso di errori, lascia stretchato
     return True
+
+
+LOGO_ITALIA_HASH = "af7418bf37"
 
 
 def replace_team_logos_all_slides(slides, new_logo_path):
@@ -816,6 +916,58 @@ def load_team_colors(team_name, colori_dir):
 
 
 
+
+
+# ============================================================
+#  STEP 8b — NASCONDI CERCHI PRESSING SET A NON USATI NEL SISTEMA
+# ============================================================
+
+# Mappa sistema → set di slot Set A effettivamente usati nel layout pressing.
+# Cerchi del template che non sono in questa lista vanno nascosti (spostati fuori canvas).
+PRESSING_SET_A_USED = {
+    "3-5-2":   {"Gk1","Rcb1","Cb1","Lcb1","Rfb1","Lfb1","Rcm1","Cm1","Lcm1","St1","St1b"},
+    "3-4-3":   {"Gk1","Rcb1","Cb1","Lcb1","Rfb1","Lfb1","Rcm1","Lcm1","Rw1","St1","Lw1"},
+    "3-4-2-1": {"Gk1","Rcb1","Cb1","Lcb1","Rfb1","Lfb1","Rcm1","Lcm1","Rw1","St1","Lw1"},
+    "4-3-3":   {"Gk1","Rfb1","Rcb1","Lcb1","Lfb1","Rcm1","Cm1","Lcm1","Rw1","St1","Lw1"},
+    "4-2-3-1": {"Gk1","Rfb1","Rcb1","Lcb1","Lfb1","Rcm1","Lcm1","St1b","Rw1","Lw1","St1"},
+    "4-4-2":   {"Gk1","Rfb1","Rcb1","Lcb1","Lfb1","Rcm1","Lcm1","Rw1","Lw1","St1","St1b"},
+}
+
+
+def hide_unused_pressing_set_a_circles(pressing_slide, system):
+    """Sposta fuori canvas i cerchi Set A che non sono usati nel sistema scelto.
+    Esempio: per 4-2-3-1 nasconde Cb1 e Cm1 (presenti nel template ma non usati)."""
+    used = PRESSING_SET_A_USED.get(system)
+    if not used:
+        return 0
+    
+    PRESSING_SET_A_LABELS_LOWER = {"Gk1","Rfb1","Rcb1","Cb1","Lcb1","Lfb1","Rcm1","Cm1","Lcm1","St1","St1b","Rw1","Lw1"}
+    
+    hidden = 0
+    for sh in pressing_slide.shapes:
+        if sh.shape_type != 6:
+            continue
+        # Trova label esterna del gruppo
+        label = None
+        for c in sh.shapes:
+            if c.has_text_frame and c.shape_type != 6:
+                t = c.text_frame.text.strip()
+                if t and not t.isdigit():
+                    label = t
+                    break
+        if label not in PRESSING_SET_A_LABELS_LOWER:
+            continue
+        if label in used:
+            continue  # OK, va lasciato visibile
+        # Sposta fuori canvas (in alto a sinistra fuori area)
+        from pptx.util import Inches
+        sh.left = Inches(-20)
+        sh.top = Inches(-20)
+        hidden += 1
+    return hidden
+
+
+
 # ============================================================
 #  ENTRY POINT
 # ============================================================
@@ -934,7 +1086,8 @@ def generate_pptx(payload, template_path, output_path, loghi_dir=None, photos_di
         if team_colors:
             pressing_recolored = recolor_pressing_set_a(pressing_slide, team_colors)
 
-    pressing_filled = fill_pressing_slide(pressing_slide, players)
+    pressing_filled = fill_pressing_slide(pressing_slide, players, system)
+    pressing_hidden = 0  # legacy, kept for stats compatibility
 
     # Sostituisce foto giocatori del template con quelle reali
     photos_stats = {"replaced": 0}
@@ -969,6 +1122,7 @@ def generate_pptx(payload, template_path, output_path, loghi_dir=None, photos_di
         "card_skipped_missing": fill_stats["skipped_missing"],
         "pressing_filled": pressing_filled,
         "pressing_recolored": pressing_recolored,
+        "pressing_hidden": pressing_hidden,
         "logo_replaced": logo_replaced,
         "logo_path": str(logo_path) if logo_path else None,
         "output": str(output_path),
