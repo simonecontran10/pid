@@ -470,7 +470,7 @@ function populateClubFilter() {
   const sel = document.getElementById("filter-club");
   const opts = [...state.clubs]
     .sort((a,b) => (a.name||"").localeCompare(b.name||""))
-    .map(c => `<option value="${c.tm_club_id}">${escapeHtml(c.name)}</option>`);
+    .map(c => `<option value="${c.tm_club_id}">${escapeHtml(prettyClubName(c.name))}</option>`);
   sel.innerHTML = `<option value="">${t("filter_all_clubs")}</option>${opts.join("")}`;
 }
 
@@ -2213,7 +2213,7 @@ function renderCallupPanel() {
           </select>
           <select id="callup-club" class="filter-select" style="font-size: 12px;">
             <option value="">${t("filter_all_clubs")}</option>
-            ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(f.club)===String(c.tm_club_id)?"selected":""}>${escapeHtml(c.name)}</option>`).join("")}
+            ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(f.club)===String(c.tm_club_id)?"selected":""}>${escapeHtml(prettyClubName(c.name))}</option>`).join("")}
           </select>
           <input id="callup-year-min" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="${t("filter_year_min")}" value="${f.yearMin||""}"
                  class="w-24 outline-none text-sm px-2 py-1.5 rounded-md stat-cell" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
@@ -2686,7 +2686,7 @@ async function exportCallupPDF(callupList) {
         try { pdf.addImage(logo, "PNG", rx + 1, ry + 1, 6, 6); } catch {}
       }
       pdf.setFont("helvetica","normal"); pdf.setFontSize(9); pdf.setTextColor(40,40,50);
-      const clubLine = (c.name || "").length > 28 ? c.name.slice(0, 26) + "…" : c.name;
+      const clubLine = (() => { const n = prettyClubName(c.name || ""); return n.length > 28 ? n.slice(0, 26) + "…" : n; })();
       pdf.text(clubLine, rx + 9, ry + 5.2);
       // Count a destra della colonna, in verde
       pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(15, 110, 86);
@@ -3320,7 +3320,7 @@ function renderGridsPanel() {
           </select>
           <select id="grids-filter-club" class="filter-select flex-1 min-w-[100px]" style="font-size: 11px; padding: 4px 6px;">
             <option value="">${t("filter_all_clubs")}</option>
-            ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(state.grids.filterClub)===String(c.tm_club_id)?"selected":""}>${escapeHtml(c.name)}</option>`).join("")}
+            ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(state.grids.filterClub)===String(c.tm_club_id)?"selected":""}>${escapeHtml(prettyClubName(c.name))}</option>`).join("")}
           </select>
         </div>
         <div class="flex gap-1 mb-1.5">
@@ -4379,7 +4379,7 @@ function renderListPanel() {
     </div>`;
 
   const clubOptions = [...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||""))
-    .map(c => `<option value="${c.tm_club_id}" ${String(f.club)===String(c.tm_club_id)?"selected":""}>${escapeHtml(c.name)}</option>`).join("");
+    .map(c => `<option value="${c.tm_club_id}" ${String(f.club)===String(c.tm_club_id)?"selected":""}>${escapeHtml(prettyClubName(c.name))}</option>`).join("");
 
   panel.innerHTML = `
     <div class="rounded-xl mb-4 p-4" style="background: var(--surface); border: 0.5px solid var(--border);">
@@ -5292,7 +5292,7 @@ function renderMinutesPanel() {
 
         <select id="minutes-club" class="filter-select mb-1.5" style="font-size: 11px; padding: 4px 8px;">
           <option value="">${t("filter_all_clubs")}</option>
-          ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(f.club)===String(c.tm_club_id)?"selected":""}>${escapeHtml(c.name)}</option>`).join("")}
+          ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(f.club)===String(c.tm_club_id)?"selected":""}>${escapeHtml(prettyClubName(c.name))}</option>`).join("")}
         </select>
 
         <div class="flex gap-1 mb-2">
