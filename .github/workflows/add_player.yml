@@ -43,7 +43,7 @@ jobs:
       - name: Validate URL
         run: |
           URL="${{ github.event.inputs.url }}"
-          if ! echo "$URL" | grep -qE 'transfermarkt\.com.*spieler/[0-9]+'; then
+          if ! echo "$URL" | grep -qE 'transfermarkt\.[a-z.]+.*spieler/[0-9]+'; then
             echo "❌ URL non valido: $URL"
             exit 1
           fi

@@ -455,7 +455,7 @@ def admin_add_player(payload: dict = Body(...)):
     
     # Validazione URL
     import re
-    if not re.search(r'transfermarkt\.com.*spieler/\d+', url):
+    if not re.search(r'transfermarkt\.[a-z.]+.*spieler/\d+', url):
         raise HTTPException(status_code=400, detail="URL non valido (deve contenere transfermarkt.com/.../spieler/<id>)")
     
     pat = _os.environ.get("GITHUB_PAT")
