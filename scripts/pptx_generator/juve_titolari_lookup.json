@@ -1,0 +1,90 @@
+{
+  "GK1": {
+    "name": "Michele Di Gregorio",
+    "tm_player_id": 301238,
+    "sots_id": 43161669,
+    "height": 187,
+    "foot": "right",
+    "number": 16
+  },
+  "RCB1": {
+    "name": "Federico Gatti",
+    "tm_player_id": 509022,
+    "sots_id": 43491384,
+    "height": 190,
+    "foot": "right",
+    "number": 4
+  },
+  "CB1": {
+    "name": "Bremer",
+    "tm_player_id": 516716,
+    "sots_id": 19270493,
+    "height": 188,
+    "foot": "right",
+    "number": 3
+  },
+  "LCB1": {
+    "name": "Pierre Kalulu",
+    "tm_player_id": 585949,
+    "sots_id": 49045184,
+    "height": 182,
+    "foot": "right",
+    "number": 15
+  },
+  "RWB1": {
+    "name": "Andrea Cambiaso",
+    "tm_player_id": 459658,
+    "sots_id": 43339195,
+    "height": 182,
+    "foot": "both",
+    "number": 27
+  },
+  "RCM1": {
+    "name": "Khéphren Thuram",
+    "tm_player_id": 463618,
+    "sots_id": 49038952,
+    "height": 192,
+    "foot": "right",
+    "number": 19
+  },
+  "CM1": {
+    "name": "Manuel Locatelli",
+    "tm_player_id": 265088,
+    "sots_id": 43167354,
+    "height": 185,
+    "foot": "right",
+    "number": 5
+  },
+  "LCM1": {
+    "name": "Teun Koopmeiners",
+    "tm_player_id": 360518,
+    "sots_id": 37057982,
+    "height": 184,
+    "foot": "left",
+    "number": 8
+  },
+  "LWB1": {
+    "name": "Juan Cabal",
+    "tm_player_id": 686965,
+    "sots_id": 76064373,
+    "height": 186,
+    "foot": "left",
+    "number": 32
+  },
+  "RST1": {
+    "name": "Kenan Yıldız",
+    "tm_player_id": 845654,
+    "sots_id": 2000138835,
+    "height": 187,
+    "foot": "both",
+    "number": 10
+  },
+  "LST1": {
+    "name": "Dušan Vlahović",
+    "tm_player_id": 357498,
+    "sots_id": 62182055,
+    "height": 190,
+    "foot": "left",
+    "number": 9
+  }
+}

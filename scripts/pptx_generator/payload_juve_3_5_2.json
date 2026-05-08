@@ -1,0 +1,195 @@
+{
+  "team_name": "juventus",
+  "system": "3-5-2",
+  "match_info": {
+    "stadio": "Stadio – Città – Paese",
+    "data": "GG Mese 2026 – HH:MM",
+    "competizione": "Serie A 2026/27 – Xª giornata",
+    "coach": "Nome Cognome"
+  },
+  "players": {
+    "GK1": [
+      {
+        "name": "Michele Di Gregorio",
+        "number": "16",
+        "height": 187,
+        "foot": "right",
+        "sots_id": 43161669
+      },
+      {
+        "name": "Mattia Perin",
+        "number": "1",
+        "height": 188,
+        "foot": "right",
+        "sots_id": 43044345
+      }
+    ],
+    "RCB1": [
+      {
+        "name": "Federico Gatti",
+        "number": "4",
+        "height": 190,
+        "foot": "right",
+        "sots_id": 43491384
+      },
+      {
+        "name": "Daniele Rugani",
+        "number": "3",
+        "height": 190,
+        "foot": "right",
+        "sots_id": 43083931
+      }
+    ],
+    "CB1": [
+      {
+        "name": "Bremer",
+        "number": "3",
+        "height": 188,
+        "foot": "right",
+        "sots_id": 19270493
+      },
+      {
+        "name": "Vasilije Adžić",
+        "number": "17",
+        "height": 185,
+        "foot": "right",
+        "sots_id": 2000241044
+      }
+    ],
+    "LCB1": [
+      {
+        "name": "Pierre Kalulu",
+        "number": "15",
+        "height": 182,
+        "foot": "right",
+        "sots_id": 49045184
+      },
+      {
+        "name": "Lloyd Kelly",
+        "number": "6",
+        "height": 189,
+        "foot": "left",
+        "sots_id": 29158244
+      }
+    ],
+    "RFB1": [
+      {
+        "name": "Andrea Cambiaso",
+        "number": "27",
+        "height": 182,
+        "foot": "both",
+        "sots_id": 43339195
+      },
+      {
+        "name": "Filip Kostić",
+        "number": "18",
+        "height": 184,
+        "foot": "left",
+        "sots_id": 62070416
+      }
+    ],
+    "RCM1": [
+      {
+        "name": "Khéphren Thuram",
+        "number": "19",
+        "height": 192,
+        "foot": "right",
+        "sots_id": 49038952
+      },
+      {
+        "name": "Fabio Miretti",
+        "number": "21",
+        "height": 180,
+        "foot": "right",
+        "sots_id": 43500510
+      }
+    ],
+    "CM1": [
+      {
+        "name": "Manuel Locatelli",
+        "number": "5",
+        "height": 185,
+        "foot": "right",
+        "sots_id": 43167354
+      }
+    ],
+    "LCM1": [
+      {
+        "name": "Teun Koopmeiners",
+        "number": "8",
+        "height": 184,
+        "foot": "left",
+        "sots_id": 37057982
+      },
+      {
+        "name": "Weston McKennie",
+        "number": "22",
+        "height": 185,
+        "foot": "right",
+        "sots_id": 72048035
+      }
+    ],
+    "LFB1": [
+      {
+        "name": "Juan Cabal",
+        "number": "32",
+        "height": 186,
+        "foot": "left",
+        "sots_id": 76064373
+      },
+      {
+        "name": "Emil Holm",
+        "number": "2",
+        "height": 191,
+        "foot": "right",
+        "sots_id": 93085044
+      }
+    ],
+    "ST1": [
+      {
+        "name": "Kenan Yıldız",
+        "number": "10",
+        "height": 187,
+        "foot": "both",
+        "sots_id": 2000138835
+      },
+      {
+        "name": "Francisco Conceição",
+        "number": "7",
+        "height": 170,
+        "foot": "left",
+        "sots_id": 83261140
+      }
+    ],
+    "ST1B": [
+      {
+        "name": "Dušan Vlahović",
+        "number": "9",
+        "height": 190,
+        "foot": "left",
+        "sots_id": 62182055
+      },
+      {
+        "name": "Jonathan David",
+        "number": "30",
+        "height": 178,
+        "foot": "both",
+        "sots_id": 18108540
+      },
+      {
+        "name": "Loïs Openda",
+        "number": "20",
+        "height": 177,
+        "foot": "right",
+        "sots_id": 18101745
+      },
+      {
+        "name": "Arkadiusz Milik",
+        "number": "14",
+        "height": 186,
+        "foot": "left",
+        "sots_id": 96026541
+      }
+    ]
+  }
+}

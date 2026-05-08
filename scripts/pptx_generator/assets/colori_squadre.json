@@ -1,0 +1,127 @@
+{
+  "_default": {
+    "fill": "000000",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "juventus": {
+    "fill": "FFFFFF",
+    "border": "000000",
+    "text": "000000"
+  },
+  "milan": {
+    "fill": "DD1A21",
+    "border": "000000",
+    "text": "FFFFFF"
+  },
+  "ac milan": {
+    "fill": "DD1A21",
+    "border": "000000",
+    "text": "FFFFFF"
+  },
+  "inter": {
+    "fill": "0033A0",
+    "border": "000000",
+    "text": "FFFFFF"
+  },
+  "internazionale": {
+    "fill": "0033A0",
+    "border": "000000",
+    "text": "FFFFFF"
+  },
+  "roma": {
+    "fill": "8E1B22",
+    "border": "F0BC42",
+    "text": "F0BC42"
+  },
+  "as roma": {
+    "fill": "8E1B22",
+    "border": "F0BC42",
+    "text": "F0BC42"
+  },
+  "lazio": {
+    "fill": "87CEEB",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "napoli": {
+    "fill": "12A0D7",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "atalanta": {
+    "fill": "1B4F8A",
+    "border": "000000",
+    "text": "FFFFFF"
+  },
+  "fiorentina": {
+    "fill": "5A348B",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "bologna": {
+    "fill": "8E1B22",
+    "border": "1B2C5C",
+    "text": "FFFFFF"
+  },
+  "torino": {
+    "fill": "8E1B22",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "genoa": {
+    "fill": "C8102E",
+    "border": "1B2C5C",
+    "text": "FFFFFF"
+  },
+  "udinese": {
+    "fill": "000000",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "sassuolo": {
+    "fill": "EE4F17",
+    "border": "000000",
+    "text": "000000"
+  },
+  "como": {
+    "fill": "1B4F8A",
+    "border": "FFFFFF",
+    "text": "FFFFFF"
+  },
+  "parma": {
+    "fill": "FFD700",
+    "border": "1B4F8A",
+    "text": "1B4F8A"
+  },
+  "lecce": {
+    "fill": "FFD700",
+    "border": "C8102E",
+    "text": "C8102E"
+  },
+  "verona": {
+    "fill": "FFD700",
+    "border": "1B2C5C",
+    "text": "1B2C5C"
+  },
+  "hellas verona": {
+    "fill": "FFD700",
+    "border": "1B2C5C",
+    "text": "1B2C5C"
+  },
+  "cagliari": {
+    "fill": "C8102E",
+    "border": "1B2C5C",
+    "text": "FFFFFF"
+  },
+  "pisa": {
+    "fill": "1B4F8A",
+    "border": "000000",
+    "text": "FFFFFF"
+  },
+  "cremonese": {
+    "fill": "C8102E",
+    "border": "404040",
+    "text": "FFFFFF"
+  }
+}

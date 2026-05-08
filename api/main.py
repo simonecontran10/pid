@@ -320,3 +320,116 @@ def player_stats(player_id: int) -> dict:
     if not s:
         raise HTTPException(404, "Stats not found")
     return s
+
+
+
+# ============ EXPORT PPTX ENDPOINT ============
+import sys as _sys
+import tempfile as _tempfile
+from fastapi import Body
+from fastapi.responses import FileResponse, JSONResponse
+
+# Aggiungo scripts/ a sys.path per importare il generator come modulo
+_SCRIPTS_DIR = ROOT / "scripts"
+if str(_SCRIPTS_DIR) not in _sys.path:
+    _sys.path.insert(0, str(_SCRIPTS_DIR))
+
+
+@app.post("/export-pptx")
+def export_pptx(payload: dict = Body(...)):
+    """Genera un PowerPoint dal payload della Griglia.
+    
+    Payload atteso:
+    {
+        "team_name": "juventus",
+        "system": "4-3-3",
+        "match_info": {
+            "stadio": "Allianz Stadium – Torino – Italia",
+            "data": "12 Maggio 2026 – 20:45",
+            "competizione": "Serie A 2025/26 – 36ª giornata",
+            "coach": "Igor Tudor"
+        },
+        "players": {
+            "GK1": [{"name": "...", "number": "1", "height": 187, "foot": "right", "sots_id": 123}, ...],
+            "RCB1": [...],
+            ...
+        }
+    }
+    
+    Ritorna: file .pptx come download.
+    """
+    # Validazione minima
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Payload deve essere un oggetto JSON")
+    
+    team_name = payload.get("team_name")
+    system = payload.get("system")
+    players = payload.get("players")
+    
+    if not team_name:
+        raise HTTPException(status_code=400, detail="Campo 'team_name' mancante")
+    if not system:
+        raise HTTPException(status_code=400, detail="Campo 'system' mancante")
+    if not players or not isinstance(players, dict):
+        raise HTTPException(status_code=400, detail="Campo 'players' mancante o non valido")
+    
+    # Import lazy del generator
+    try:
+        from pptx_generator import generator as pptx_generator
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail=f"Generator non disponibile: {e}")
+    
+    # Path degli asset
+    assets_dir = _SCRIPTS_DIR / "pptx_generator" / "assets"
+    template_path = assets_dir / "template_pid.pptx"
+    loghi_dir = assets_dir / "loghi_squadre"
+    photos_dir = ROOT / "data" / "photos" / "players_sots_lookup"
+    
+    if not template_path.exists():
+        raise HTTPException(status_code=500, detail=f"Template non trovato: {template_path}")
+    
+    # Output in tempdir
+    safe_team = "".join(c for c in team_name if c.isalnum() or c in "-_").lower() or "team"
+    safe_system = system.replace("-", "_")
+    out_filename = f"{safe_team}_{safe_system}.pptx"
+    
+    with _tempfile.NamedTemporaryFile(suffix=".pptx", delete=False) as tmp:
+        out_path = Path(tmp.name)
+    
+    try:
+        stats = pptx_generator.generate_pptx(
+            payload,
+            template_path,
+            out_path,
+            loghi_dir=loghi_dir,
+            photos_dir=photos_dir,
+        )
+    except Exception as e:
+        # Cleanup tempfile in caso di errore
+        try:
+            out_path.unlink()
+        except Exception:
+            pass
+        raise HTTPException(status_code=500, detail=f"Errore generazione PPTX: {e}")
+    
+    return FileResponse(
+        path=str(out_path),
+        media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        filename=out_filename,
+        headers={
+            "Cache-Control": "no-store",
+            "X-Stats-Card-Filled": str(stats.get("card_filled", 0)),
+            "X-Stats-Photos-Replaced": str(stats.get("photos_replaced", 0)),
+            "X-Stats-Pressing-Filled": str(stats.get("pressing_filled", 0)),
+        },
+    )
+
+
+# ============ VERCEL SERVERLESS HANDLER ============
+# Vercel cerca una variabile chiamata `handler` come entry point per ASGI apps
+try:
+    from mangum import Mangum
+    handler = Mangum(app, lifespan="off")
+except ImportError:
+    # In dev mode (uvicorn) Mangum non serve
+    pass

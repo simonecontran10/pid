@@ -3158,6 +3158,7 @@ function renderGridsPanel() {
           <span class="ml-auto text-xs stat-cell" style="color: var(--text-3);">${positions.filter(p => _gridsAssignedFor(p.id).length > 0).length} / 11</span>
           <button id="grids-to-callup" class="text-[11px] px-2 py-1 rounded-md" style="background: var(--accent-bg); color: var(--accent); border: 0.5px solid rgba(111,224,168,0.30); font-weight: 600;">${t("add_to_callup")}</button>
           <button id="grids-export-pdf" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(96,165,250,0.10); color: var(--info); border: 0.5px solid rgba(96,165,250,0.20);">${t("export_pdf")}</button>
+          <button id="grids-export-pptx" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(245,158,11,0.10); color: #F59E0B; border: 0.5px solid rgba(245,158,11,0.20);">${t("export_pptx")}</button>
           <button id="grids-clear" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(239,68,68,0.10); color: #EF4444; border: 0.5px solid rgba(239,68,68,0.20);">${t("clear_btn")}</button>
         </div>
 
@@ -3266,7 +3267,149 @@ function renderGridsPanel() {
     </div>`;
 
   // Listeners
-  document.getElementById("grids-formation")?.addEventListener("change", e => {
+
+// ============================================================
+//  EXPORT POWERPOINT — Pagina Griglie
+// ============================================================
+// Mappatura slot frontend (FORMATIONS) → slot template (PHOTO_POSITION_MAPS)
+// R* nel template = lato dx campo dal pdv giocatore = sx schermo
+// L* nel template = lato sx campo dal pdv giocatore = dx schermo
+const _PPTX_SLOT_MAP = {
+  "GK":   "GK1",
+  // 4-3-3 / 4-4-2 / 4-2-3-1: terzini RB/LB
+  "RB":   "RFB1",
+  "LB":   "LFB1",
+  // 3-5-2 / 3-4-3 / 3-4-2-1: wing-back
+  "RWB":  "RFB1",
+  "LWB":  "LFB1",
+  // Difensori centrali
+  "RCB":  "RCB1",
+  "CB":   "CB1",
+  "LCB":  "LCB1",
+  // Centrocampisti
+  "RCM":  "RCM1",
+  "CM":   "CM1",
+  "LCM":  "LCM1",
+  // 4-4-2 ha RM/LM (centrocampisti laterali) → li mappiamo come ali nel template
+  "RM":   "RW1",
+  "LM":   "LW1",
+  // 4-3-3 / 3-4-3 / 3-4-2-1 / 4-2-3-1: ali
+  "RW":   "RW1",
+  "LW":   "LW1",
+  // 3-5-2: due punte
+  "RST":  "ST1",
+  "LST":  "ST1B",
+  // Single ST
+  "ST":   "ST1",
+  // Trequartista nel 4-2-3-1 → ST1B
+  "CAM":  "ST1B",
+};
+
+function _gridsBuildPptxPayload() {
+  // 1. Trova il club della maggioranza dei titolari per dedurre team_name
+  const positions = FORMATIONS[state.grids.formation] || [];
+  const titolariIds = positions.map(p => _gridsAssignedFor(p.id)[0]).filter(Boolean);
+  const playersData = window._players || [];
+  const idxById = {};
+  playersData.forEach(p => { idxById[String(p.tm_player_id)] = p; });
+  
+  // Conta i club dei titolari
+  const clubCount = {};
+  for (const pid of titolariIds) {
+    const pl = idxById[String(pid)];
+    if (pl && pl.club_name) {
+      clubCount[pl.club_name] = (clubCount[pl.club_name] || 0) + 1;
+    }
+  }
+  // Club con più giocatori
+  let teamName = "team";
+  let max = 0;
+  for (const [club, n] of Object.entries(clubCount)) {
+    if (n > max) { max = n; teamName = club; }
+  }
+  // Normalizza: lowercase, rimuovi spazi e accenti
+  const teamSlug = teamName.toLowerCase().replace(/\s+/g, "").replace(/[àáâã]/g, "a").replace(/[èéê]/g, "e").replace(/[ìí]/g, "i").replace(/[òóô]/g, "o").replace(/[ùú]/g, "u");
+
+  // 2. Costruisci players dict per il payload
+  const playersOut = {};
+  for (const pos of positions) {
+    const slotFrontend = pos.id;
+    const slotTemplate = _PPTX_SLOT_MAP[slotFrontend] || slotFrontend;
+    const ids = _gridsAssignedFor(pos.id);
+    if (!ids || ids.length === 0) continue;
+    const list = [];
+    for (const pid of ids) {
+      const pl = idxById[String(pid)];
+      if (!pl) continue;
+      // Estraggo sots_id da sortitoutsi_face_local_lookup o sortitoutsi_person_id
+      let sotsId = pl.sortitoutsi_person_id || null;
+      if (!sotsId && pl.sortitoutsi_face_local_lookup) {
+        const m = String(pl.sortitoutsi_face_local_lookup).match(/(\d+)\.png$/);
+        if (m) sotsId = parseInt(m[1], 10);
+      }
+      list.push({
+        name: pl.full_name || pl.name || "",
+        number: pl.shirt_number != null ? String(pl.shirt_number) : "",
+        height: pl.height_cm || 0,
+        foot: pl.foot || "right",
+        sots_id: sotsId,
+      });
+    }
+    if (list.length > 0) playersOut[slotTemplate] = list;
+  }
+  
+  return {
+    team_name: teamSlug,
+    system: state.grids.formation,
+    match_info: {
+      stadio: "Stadio – Città – Paese",
+      data: "GG Mese 2026 – HH:MM",
+      competizione: "Serie A 2026/27 – Xª giornata",
+      coach: "Nome Cognome",
+    },
+    players: playersOut,
+  };
+}
+
+async function _gridsExportPptx(buttonEl) {
+  const originalText = buttonEl.innerText;
+  buttonEl.disabled = true;
+  buttonEl.innerText = "⏳ " + (t("export_pptx_loading") || "Generazione...");
+  try {
+    const payload = _gridsBuildPptxPayload();
+    if (Object.keys(payload.players).length === 0) {
+      alert(t("export_pptx_empty") || "Nessun giocatore assegnato. Aggiungi i titolari prima di esportare.");
+      return;
+    }
+    const resp = await fetch("/export-pptx", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!resp.ok) {
+      const errText = await resp.text();
+      throw new Error("HTTP " + resp.status + ": " + errText);
+    }
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${payload.team_name}_${payload.system.replace(/-/g, "_")}.pptx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error("Export PPTX errore:", err);
+    alert((t("export_pptx_error") || "Errore export PowerPoint:") + "\n" + err.message);
+  } finally {
+    buttonEl.disabled = false;
+    buttonEl.innerText = originalText;
+  }
+}
+
+
+    document.getElementById("grids-formation")?.addEventListener("change", e => {
     const oldFormation = state.grids.formation;
     const newFormation = e.target.value;
     const oldPositions = FORMATIONS[oldFormation] || FORMATIONS["4-3-3"];
@@ -3320,6 +3463,9 @@ function renderGridsPanel() {
   });
 
   // Esporta PDF A4 verticale (campo + tabella riserve)
+  document.getElementById("grids-export-pptx")?.addEventListener("click", (e) => {
+    _gridsExportPptx(e.currentTarget);
+  });
   document.getElementById("grids-export-pdf")?.addEventListener("click", async () => {
     await exportGridPDF();
   });

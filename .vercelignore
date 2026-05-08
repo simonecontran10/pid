@@ -1,0 +1,28 @@
+# Test outputs locali
+scripts/pptx_generator/test_output/
+
+# Backup files
+**/*.bak*
+**/*.bak_*
+
+# Cache python
+**/__pycache__/
+*.pyc
+
+# Macros macOS
+**/.DS_Store
+
+# Venv locale
+venv/
+.venv/
+
+# Raw data scraping
+raw/
+
+# Documentazione interna (resta nel repo ma non deployata)
+progetto-pid.md
+progetto_saudi_REFERENCE.md
+
+# IDE
+.vscode/
+.idea/

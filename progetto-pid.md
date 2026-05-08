@@ -1596,3 +1596,456 @@ Recovery: git clone fresh da GitHub (71 MB), ricostruito venv. Tutto il lavoro r
 - Custom domain pid.vercel.app
 - Cleanup naming legacy saudi_*
 - Niente .env locale, GitHub Actions sufficiente
+# PID — Export PowerPoint dalla pagina Griglie
+
+**Data inizio**: 7 maggio 2026
+**Stato**: discovery template completata. Pronti a scrivere il generatore PID-native.
+
+## Obiettivo finale
+
+Bottone **"📥 Esporta PowerPoint"** nella pagina Griglie del PID. Click → genera un `.pptx` con la stessa grafica del progetto `team_presenter` (cover + rosa + slide 3 "Pressing"), ma:
+
+- Dati formazione presi dalla griglia attiva del PID (non da PDF Wyscout)
+- Foto giocatori da R2 (`players_sots/{id}.png` → fallback `players_curated/{tm_id}.png`)
+- Architettura serverless: Vercel Python function `/api/export-pptx`
+- Pipeline 100% automatica e online
+
+## Architettura target (ribadita)
+
+```
+Frontend Griglie  ──POST──▶  Vercel /api/export-pptx  ──fetch──▶  R2 (foto)
+                                          │
+                                          ▼
+                              .pptx generato → response
+```
+
+## Giro 1 — Strategia "wrapper monkey-patch" (ABBANDONATA)
+
+**Idea iniziale (BRIEF.md)**: riusare `team_presenter.py` come libreria importata, bypassare il parsing PDF tramite 4 monkey-patch:
+1. `extract_players_from_pdf` → ritorna fake players dal JSON
+2. `extract_starters_from_page6` → ritorna `{number: "ST"}`
+3. `assign_players_to_slots` → ritorna assignment fisso
+4. `apply_feet` → no-op
+
+Wrapper Python locale `export_grid_pptx.py` come step 1, poi adattamento a Vercel come step 2.
+
+### Cosa è andato bene
+
+- I 4 monkey-patch funzionano (concetto valido)
+- Ho generato con successo `JUVENTUS_433_PID.pptx` con 11 titolari + slide 3 colorata + logo Juve
+
+### Cosa è andato male (e perché abbandoniamo)
+
+1. **`Player` dataclass aveva 6 campi obbligatori**, non 4 come dedotto inizialmente. Firma esatta:
+   ```python
+   @dataclass
+   class Player:
+       number: str        # PRIMO campo
+       name: str
+       position: str      # canonica: "GK", "RCB", "LCB", "RB", "LB", "DMF", ...
+       height: int
+       minutes: int
+       foot: str = "D"
+   ```
+   Ho dovuto patchare il wrapper 2 volte per indovinare la firma corretta.
+
+2. **`position` letta in 12+ punti** del codice post-assignment (riga 1198, 1346, 1478, 1489, ecc.) per logica riserve. Ho dovuto inventare una mappatura `slot_key → position` per ogni sistema (4-3-3, 3-5-2, ecc.).
+
+3. **`pdfplumber` import top-level** in `team_presenter.py`. Anche col monkey-patch, l'import iniziale falliva. Soluzione: stub di `pdfplumber`, `fitz`, `pypdf`, `PyPDF2` in `sys.modules` prima di `import team_presenter`.
+
+4. **Decisione utente: 5 riserve per ruolo**. Il template `template.pptx` originale supporta max 3 giocatori per slot (titolare + R + R2). Per estendere bisognerebbe modificare il template Sassuolo o monkey-patchare anche `LAYOUTS` e `SYSTEM_MAPPING` runtime. Troppo invasivo.
+
+5. **Decisione utente: niente più minutaggi/posizioni dal codice**. La griglia PID ordina già i giocatori. Tutta la logica di selezione automatica di team_presenter (cascata starters, riserve per zona, ecc.) diventa rumore.
+
+### Verdetto
+
+Il wrapper era **debito tecnico per riusare un sistema progettato per un altro scopo** (parsing PDF Wyscout → squadra Sassuolo). Ogni richiesta nuova (5 riserve, ordine custom, no-PDF) richiede patch sopra patch. Abbandonato.
+
+## Giro 2 — Generatore PID-native (STRADA SCELTA)
+
+**Approccio**: scriviamo codice nostro che genera il PPT da zero, prendendo solo:
+- **Coordinate** dei layout (LAYOUT_4_3_3, ecc.) — geometricamente corrette, le copio
+- **`slide3_pressing.py`** — modulo già auto-contenuto, lo importiamo direttamente
+- **Asset grafici**: `grafiche_fiorentina.pptx` (sorgente slide 3), `colori_squadre.json`, `loghi_squadre/`
+
+**NON riusiamo**:
+- `team_presenter.py` come libreria
+- I 4 monkey-patch
+- Lo stub di pdfplumber
+- Il `template.pptx` legato ai nomi-Sassuolo
+
+**Strada implementativa scelta** (Strada 1):
+- Template-scheletro vuoto (solo sfondo, campo, strisce decorative, header)
+- Tutti i gruppi giocatore generati da zero in Python via `python-pptx`
+- Posso ricreare ogni "card giocatore" in 30-40 righe Python
+
+### Vantaggi vs wrapper
+
+| Aspetto | Wrapper monkey-patch | Generatore PID-native |
+|---|---|---|
+| File coinvolti | wrapper + team_presenter (modificato dal `.command`) | un solo file PID |
+| Dep PDF | stub di 4 moduli | nessuna |
+| Dataclass da indovinare | sì (Player a 6 campi) | no |
+| Logica riserve | algoritmi di team_presenter | indice 0=titolare, 1=R, 2=R2, ... |
+| Bundle Vercel | ~25 MB (con pdfplumber stubato male) | ~300 KB |
+| Maintainability | bassa (ogni modifica → un nuovo monkey-patch) | alta |
+| Rischio rompere flusso Wyscout team_presenter | alto | zero (intoccato) |
+
+## Discovery template — risultati
+
+### Slide 1 (cover)
+**[ANCORA DA ESEGUIRE]** — comando python pronto in chat
+
+### Slide 2 (rosa) — COMPLETATA
+
+**Dimensioni slide**: 10.00" × 5.62" (16:9 ridotto)
+
+**Anatomia di un "card giocatore"** (ogni gruppo è strutturato così, identico per tutti i 26):
+
+```
+GROUP "card giocatore" 1.60" × 0.24"
+├─ AUTO_SHAPE — rettangolo arrotondato (background)
+├─ TEXT_BOX — "COGNOME ALTEZZA Cm"
+│              font: Avenir Next Condensed 8pt
+│              BOLD se titolare (color #scheme = bianco)
+│              REGULAR se riserva (color default)
+├─ GROUP "numero" — pallino + numero maglia
+│   ├─ AUTO_SHAPE Ovale 0.19×0.19
+│   └─ TEXT_BOX numero (Avenir Next Condensed 8pt)
+└─ GROUP "piede" — pallino + D/S
+    ├─ AUTO_SHAPE Ovale 0.19×0.19
+    └─ TEXT_BOX D/S (Avenir Next Condensed 8pt)
+                  - "S" → BOLD #FF0000 (rosso)
+                  - "D" → regular nero
+```
+
+**Foto giocatori**: 11 PICTURE separate, ognuna 0.59" × 0.59" (cerchio).
+
+**Sfondo decorativo template** (da preservare):
+- Gruppi "Strisce diagonali" sx + dx (pattern grafico)
+- "Immagine 29" — disegno del campo, 7.50"×6.07"
+- Header bar: parallelogramma con "CARRARESE" 24pt + "SISTEMA DI GIOCO 3-5-2" 14pt
+- "COACH Nicola Antonio Calabro" 12pt
+- Ovale 24 (logo squadra zone) + Picture 2 (logo)
+- Logo Serie A top-right (Immagine 27, 0.87×0.87)
+
+**Coordinate slot** (LAYOUT_4_3_3, copiate da `team_presenter.py`):
+
+| Slot | (X, Y) inch |
+|---|---|
+| GK_T | (4.20, 0.85) |
+| GK_R1 | (4.20, 1.06) |
+| DIF_1 | (1.80, 1.88) |
+| DIF_1R | (1.80, 2.09) |
+| ... | (vedi LAYOUT_4_3_3) |
+
+Stessa struttura per gli altri 5 sistemi: 3-5-2, 4-4-2, 4-2-3-1, 3-4-3, 3-4-2-1.
+
+**Spaziatura riserve**: 0.21" verticali (Y +0.21 per ogni riga aggiuntiva). Per slot R3, R4, R5 useremo Y + 0.21 × N.
+
+### Slide 3 (pressing) — IL MODULO SI RIUSA TAL QUALE
+
+`slide3_pressing.py` (49 KB) è **già auto-contenuto e ben modulare**. Non lo tocchiamo.
+Funzione entry point: `installa_e_patcha_slide3(work_dir, template_path, system, assignment, team_name)`.
+Logica: copia slide 6 da `grafiche_fiorentina.pptx`, ricolora cerchietti, sostituisce logo, GK fisso nero pieno, numeri auto-contrasto.
+
+Lo importeremo direttamente dal nostro generatore PID, **senza** bisogno di importare `team_presenter`.
+
+## Decisioni operative chiavi
+
+| Domanda | Risposta utente |
+|---|---|
+| Quante slide nel PPT? | TUTTE e 3 |
+| Distribuzione asset Vercel? | Bundle + R2 al runtime |
+| Sistema di gioco? | Quello scelto in Griglie |
+| Posizioni titolari? | Fornite da Griglie, no calcolo |
+| Riserve max per ruolo? | 5 (sovrapposizione accettabile in casi rari) |
+| Slot vuoti? | Lasciare vuoti (team_presenter già nasconde a -20,-20) |
+| Posizionamento riserve? | Come team_presenter originale (R, R2, ecc., ordine = ordine JSON) |
+| Foto giocatori? | Da R2 al runtime, no fallback locale |
+| Dipendenza da team_presenter.py? | Nessuna |
+| Dipendenza da `.command`? | Nessuna (PID flow indipendente) |
+| Modifica template Sassuolo originale? | NO, intoccato |
+
+## Stato — pronti per il piano operativo
+
+**Discovery completata**: slide 2. Manca solo slide 1 (1 comando da lanciare).
+
+**Step successivi (DA APPROVARE PRIMA DI SCRIVERE CODICE)**:
+
+1. **Discovery slide 1** (utente lancia ultimo grep)
+2. **Piano operativo dettagliato** — Claude propone:
+   - Struttura cartelle PID per nuova feature
+   - File Python da creare (e cosa fanno)
+   - Asset da preparare manualmente (template_pid.pptx vuoto, ecc.)
+   - Tempistica per step
+3. **Approvazione utente** del piano
+4. **Implementazione step by step**
+
+## File chiave per riprendere conversazione
+
+- `~/Desktop/team_presenter/` — sistema Wyscout originale, **intoccato**
+- `~/Desktop/team_presenter/team_presenter.py` — riferimento per coordinate (LAYOUTS, SYSTEM_MAPPING)
+- `~/Desktop/team_presenter/slide3_pressing.py` — modulo da importare/copiare nel PID
+- `~/Desktop/team_presenter/assets/grafiche_fiorentina.pptx` — sorgente slide 3 pressing
+- `~/Desktop/team_presenter/assets/loghi_squadre/` — loghi (juventus.png, inter.png, ecc.)
+- `~/Desktop/team_presenter/assets/colori_squadre.json` — palette ricolorazione
+- `~/Desktop/pid/venv/` — venv di lavoro PID (ha python-pptx, Pillow, PIL — manca pdfplumber, OK)
+- `~/Desktop/pid/` — repo PID, branch main
+- `https://pid-nine.vercel.app/` — sito PID
+
+## Quando ripartire dopo reset
+
+> Ciao Claude, sto continuando l'integrazione "Esporta PowerPoint" nel mio PID. Ho letto la sezione "PID — Export PowerPoint" del progetto-pid.md. Stato: discovery slide 2 completata, generatore PID-native (Strada 1) confermato, prossimo step = discovery slide 1 + piano operativo. Procediamo.
+# PID — Export PowerPoint
+
+## CHECKPOINT 7 maggio 2026 — sera tardi (post-implementazione 1)
+
+### COSA FUNZIONA OGGI
+
+Il generator (`~/Desktop/pid/scripts/pptx_generator/generator.py`) produce un PPT
+end-to-end con questi step:
+
+1. **Apertura template** `template_pid.pptx` (8 slide)
+2. **Selezione 3 slide** (cover + slide del sistema scelto + pressing) e cancellazione delle altre
+3. **Sostituzione testi header**:
+   - Cover: stadio, data, competizione (gestito splittando i 3 paragrafi)
+   - Formazione: SQUADRA, sistema (3-5-2 → 4-3-3 ecc.), COACH Nome Cognome
+4. **Riempimento card giocatore** (slide formazione):
+   - Per ogni chiave del JSON players (es. `RCB1`) → sostituisce cognome + altezza + numero + piede
+   - Cognome in MAIUSCOLO ("BREMER 188 Cm"), gestione nomi composti (Joao Mario, Di Gregorio)
+   - Piede `S` (sinistro) → rosso bold, `D` (destro) → nero
+5. **Nascondi placeholder non usati** spostandoli a (-20, -20)
+6. **Riempi cerchietti pressing** (Set A: Gk1/Rcb1/Cm1/St1/St1b/ecc.) con cognomi titolari in **Title Case** ("Bremer", "Joao Mario", "Di Gregorio")
+   - Set B (POR/TER S/CEN D/ALA D/TREQ./ATT) lasciato intatto
+7. **Sostituzione logo squadra**: il logo Italia (placeholder per la squadra studiata)
+   viene sostituito con `assets/loghi_squadre/{team}.png` in tutte le 3 slide.
+   Logo Fiorentina è fisso e non si tocca.
+
+### CONVENZIONE JSON DI INPUT (consolidata)
+
+Le chiavi del JSON sono direttamente i codici placeholder del template (RCB1, ST1B, ecc.).
+Il **primo elemento di ogni lista** è il titolare, gli altri sono riserve in ordine.
+Il codice piazza automaticamente in `*1` (titolare), `*2` (1ª riserva), `*3` (2ª riserva),
+`*4` (3ª riserva, solo CM/RCM/LCM).
+
+Esempio:
+```json
+{
+  "team_name": "juventus",
+  "system": "3-5-2",
+  "match_info": {
+    "stadio": "Allianz Stadium – Torino – Italia",
+    "data": "12 Maggio 2026 – 20:45",
+    "competizione": "Serie A 2025/26 – 36ª giornata",
+    "coach": "Igor Tudor"
+  },
+  "players": {
+    "GK1":  [{"name": "Di Gregorio", "number": "29", "height": 195, "foot": "right"}],
+    "RCB1": [{"name": "Bremer",  "number": "3",  "height": 188, "foot": "right"}],
+    ...
+  }
+}
+```
+
+### FILE PYTHON ATTUALI
+
+```
+~/Desktop/pid/scripts/pptx_generator/
+├─ __init__.py                    ✅ (vuoto, serve per import)
+├─ constants.py                   ✅ (mappa SISTEMA→SLIDE_INDEX, costanti R2)
+├─ generator.py                   ✅ (orchestratore completo, ~27KB)
+├─ test_run.py                    ✅ (script di test)
+├─ payload_juve_3_5_2.json        ✅ (payload Juve 3-5-2 con dati inventati)
+├─ assets/
+│  ├─ template_pid.pptx           ✅ (8 slide, costruito a mano in PowerPoint)
+│  ├─ loghi_squadre/              ✅ (PNG dei loghi, juventus.png da aggiungere se manca)
+│  └─ ...
+├─ slide3_pressing.py             ⚠️  copiato da team_presenter ma NON USATO (per ora)
+└─ test_output/
+   └─ juve_3_5_2.pptx             ← output di test
+```
+
+### COSA NON È ANCORA FATTO (in priorità)
+
+1. **Foto giocatori da R2** — l'ultimo pezzo grosso. Sostituire le 11 foto Sassuolo
+   nella slide formazione con quelle reali scaricate da
+   `https://pub-aa9d173290684b36a9f35e79d4d388c2.r2.dev/players_sots/{sots_id}.png`.
+   Richiede:
+   - Aggiunta campo `sots_id` nei payload
+   - Pipeline download paralleli con cache `/tmp/foto_giocatori/`
+   - Sostituzione PICTURE shape per ogni titolare
+   - Gestione foto mancante (404 da R2)
+
+2. **Cover slide** — decidere come gestire:
+   - "VS" (testo decorativo)
+   - Logo Fiorentina sulla destra (placeholder squadra di casa generica)
+
+3. **Nomi lunghi** che vanno a capo nelle card formazione:
+   - "Joao Mario 178 Cm" si spezza su 2 righe
+   - "Koopmeiners 184 Cm" idem
+   - Soluzione possibile: allargare textbox, troncare cognome, ridurre font size
+
+4. **Test su altri sistemi** (4-3-3, 4-4-2, 4-2-3-1, 3-4-3, 3-4-2-1).
+   Il generator dovrebbe già funzionare grazie alle slide template separate, ma serve verifica.
+
+5. **Vercel deployment**:
+   - Spostare in `~/Desktop/pid/api/export-pptx.py` (Vercel Python serverless)
+   - `requirements.txt`: python-pptx, Pillow, requests (per R2)
+   - `vercel.json`: maxDuration 60, memory 1024
+   - Bundle del template + loghi nella function
+
+6. **Frontend bottone** "📥 Esporta PowerPoint" nella pagina Griglie del PID:
+   - Costruisce il payload JSON dalla griglia attiva
+   - POST a `/api/export-pptx`
+   - Riceve il blob del PPT e lo fa scaricare al browser
+
+### STORICO DELLE ITERAZIONI DI OGGI
+
+**Mattina/pomeriggio**:
+- Discovery template Sassuolo originale (team_presenter)
+- Setup struttura `pptx_generator/` nel PID
+- Tentativo wrapper monkey-patch su team_presenter — abbandonato (Player dataclass + position lookup ovunque)
+- Decisione: scrivere generator nativo PID
+
+**Pomeriggio/sera**:
+- Simone costruisce manualmente `template_pid.pptx` (8 slide, una per sistema)
+- Allineamento convenzione naming (R*=lato dx campo, L*=lato sx campo dal pdv giocatore)
+- Conferma mappa slide→sistema: 2=3-5-2, 3=3-4-3, 4=3-4-2-1, 5=4-3-3, 6=4-2-3-1, 7=4-4-2
+- Decisione: JSON usa direttamente i codici template (no DIF_R/CC_C/ATT_L)
+
+**Sera tardi (questa sessione)**:
+- Scrittura `generator.py` con strategia mista python-pptx + manipolazione XML
+- Primo test passato: PPT con 3 slide visivamente corretto
+- Aggiunta riempimento pressing (Set A → cognomi titolari)
+- Aggiunta sostituzione logo squadra (Italia → Juve via hash MD5 dell'immagine)
+- Bug fix: counter logo (più PICTURE condividono la stessa image part)
+- Modifica: cognomi pressing in Title Case invece di MAIUSCOLO
+
+### PROMPT DI RIPRESA (per chat futura)
+
+> Ciao Claude, riprendo "Esporta PowerPoint" del PID. Allego BRIEF.md.
+> Stato: generator.py funzionante per 3-5-2 (cover+formazione+pressing+logo).
+> Manca: foto giocatori da R2, cover VS/logo Fiorentina, test altri sistemi, Vercel.
+> Prossimo step: foto giocatori. Procediamo.
+## 7-8 mag 2026 (notte) — Export PowerPoint completato per 3-5-2
+
+### Sessione di sviluppo intensa: dal generator base a versione production-ready
+
+Continuazione del generator dopo i fix dei 2 bug Griglie + add Locatelli. In questa sessione il generator è stato completato fino a stato pubblicabile per il sistema 3-5-2. Riassunto delle modifiche cronologico.
+
+### Modifiche al generator.py
+
+1. **Fix cognomi pressing** — cognomi titolari in **Title Case** ("Bremer", "Joao Mario", "Di Gregorio") invece di MAIUSCOLO. Set B avversari (POR/TER S/CEN D/ALA D/TREQ./ATT) lasciato intatto.
+
+2. **Sostituzione foto giocatori** — funzione `replace_player_photos()` aggiunta. Sostituisce le 11 PICTURE 0.59"×0.59" del template con foto reali dei giocatori da `data/photos/players_sots_lookup/{sots_id}.png` (file locale, niente R2). Mappatura `PHOTO_POSITION_MAPS["3-5-2"]` con 11 coordinate precise (left, top in inch) → slot ID. Tolerance ±0.15".
+
+3. **Aggiornamento payload** — file `juve_titolari_lookup.json` generato dinamicamente da `players_static.json`. Estrazione `sots_id` dal path `sortitoutsi_face_local_lookup` (regex `/(\d+)\.png$`). Tutti gli 11 titolari + 12 riserve (totale 23 giocatori) con dati corretti.
+
+4. **Mappatura slot frontend → template** — il frontend usa nomi tipo `RWB1/LWB1/RST1/LST1`, il template costruito a mano ha `RFB1/LFB1/ST1/ST1B`. Aggiunta tabella di traduzione nel payload builder.
+
+5. **Cognomi → solo ultima parola** — `_short_surname()` ridisegnata: default = ultima parola (Locatelli, Kalulu, Thuram). Eccezione: particelle (Di, Van, De → "Di Gregorio"). Eccezione hardcoded: "Joao Mario", "Thuram-Ulien".
+
+6. **Foot=both** → "D/S" — `_foot_to_letter()` esteso. Rendering: "D/" in nero regolare + "S" in rosso bold. Gestiti Cambiaso, Yıldız, David.
+
+7. **Logo squadra dimensioni per slide** — invece di stretchare il logo Italia alle dimensioni del placeholder, ora **mantiene proporzioni** via Pillow (`PIL.Image`) e usa **target_size_cm fisso** in base alla slide:
+   - Cover (slide 0): **2.6 cm**
+   - Formazione (slide 1): **1.6 cm**
+   - Pressing (slide 2): **1.1 cm**
+
+8. **Z-order strisce** — funzioni `bring_stripes_to_front()` (Gruppo 9, alto-sx, off-canvas, in primo piano) + `send_stripes_to_back()` (Gruppo 13, basso-dx, dietro all'`Immagine 29` sfondo campo). Identificate per posizione: alto-sx via `(left<-1, top<-1)`, basso-dx via `(left>4, top<0, w>8)`.
+
+9. **Textbox COACH allargato** — passa da 2.23" a 3.5" (espande a sx mantenendo bordo dx). Risolve "COACH Nome Cognome" che andava a capo.
+
+10. **Sistema colori squadra in pressing** — `assets/colori_squadre.json` con mappa squadra→{fill, border, text}. Funzione `recolor_pressing_set_a()` ricolora i 10 cerchi Set A (esclude Gk1 che resta nero per convenzione). Per Juventus: `fill=FFFFFF, border=000000, text=000000` (bianconero classico). 24 squadre Serie A mappate.
+    - **CRITICO**: la chiamata a `recolor_pressing_set_a()` deve venire **PRIMA** di `fill_pressing_slide()`, sennò le label ("Gk1", "Rcb1", ecc.) vengono sostituite con i cognomi prima della ricolorazione.
+
+11. **Valori generici cover/coach** — payload usa placeholder generici:
+    - Cover: `Stadio – Città – Paese`, `GG Mese 2026 – HH:MM`, `Serie A 2026/27 – Xª giornata`
+    - Slide 2: `COACH Nome Cognome`
+    Stati pronti per il bottone export reale (verranno popolati dalla griglia + form).
+
+### Stato attuale: stato finale pre-publish
+
+```
+~/Desktop/pid/scripts/pptx_generator/
+├─ __init__.py                        1 byte
+├─ constants.py                       1.4K  (mappa SISTEMA→SLIDE_INDEX)
+├─ generator.py                       ~22K  (orchestratore completo)
+├─ test_run.py                        1.2K  (script di test)
+├─ payload_juve_3_5_2.json            ~9K   (23 giocatori Juve con sots_id veri)
+├─ juve_titolari_lookup.json          ~4K   (cache titolari)
+├─ assets/
+│  ├─ template_pid.pptx               3.7M  (8 slide, costruito a mano)
+│  ├─ loghi_squadre/
+│  │  └─ juventus.png                 PNG quadrato
+│  └─ colori_squadre.json             24 squadre Serie A
+└─ test_output/
+   └─ juve_3_5_2.pptx                 ~5MB output verificato
+```
+
+### Funziona end-to-end per 3-5-2:
+- ✅ Cover (header dinamico, logo squadra 2.6 cm, "VS" + Fiorentina fissa)
+- ✅ Formazione (11 foto reali + 12 riserve testo, cognomi soli, foot D/S/D/S, logo 1.6 cm, strisce alto-sx in primo piano, strisce basso-dx dietro al campo)
+- ✅ Pressing (cognomi titolari Title Case, cerchi Set A bianchi+bordo nero per Juve, logo 1.1 cm)
+
+### Architettura confermata
+
+**Generator standalone** (no DB access):
+```
+1. Frontend Griglie → click "Esporta PPT"
+2. Frontend serializza griglia in JSON nel formato del generator
+3. POST /api/export-pptx con quel JSON
+4. Endpoint Vercel (Python) → riceve JSON → genera PPT → ritorna blob
+5. Frontend triggera download
+```
+
+**Foto giocatori**: lette da `data/photos/players_sots_lookup/` direttamente (cartella nel repo, dispatchate al deploy Vercel). Niente R2 per le foto giocatori (ridondante).
+
+### Convenzione naming consolidata
+
+- **Slot template**: `{POSITION}{NUM}[B]` es. `RCB1`, `LCB1`, `CB1`, `RFB1`, `LFB1`, `RCM1`, `CM1`, `LCM1`, `ST1`, `ST1B`, `GK1`
+- **Primo elemento lista players** = titolare, successivi = riserve
+- **R\*** = lato destro del campo dal pdv giocatore = **sx schermo**
+- **L\*** = lato sinistro del campo dal pdv giocatore = **dx schermo**
+
+### Cosa resta TODO
+
+1. **Mappature foto/slot per altri 5 sistemi**: 4-3-3, 4-4-2, 4-2-3-1, 3-4-3, 3-4-2-1. Estrarre coordinate PICTURE da slide template + scrivere `PHOTO_POSITION_MAPS[sistema]`.
+
+2. **Mappature slot frontend → template per altri sistemi** — la convenzione `RWB→RFB`, `RST/LST→ST/ST1B` va replicata.
+
+3. **Endpoint Vercel** `/api/export-pptx`:
+   - `requirements.txt`: python-pptx, Pillow
+   - `vercel.json`: maxDuration 60, memory 1024
+   - Bundle template + loghi + colori_squadre.json + foto giocatori
+
+4. **Bottone frontend** "📥 Esporta PowerPoint" nella pagina Griglie:
+   - Helper `gridToPayload(grid, players_dataset)` → costruisce JSON
+   - Form modale per match_info (stadio, data, competizione, coach, sistema)
+   - POST `/api/export-pptx` → riceve blob → download triggered
+
+### Cleanup file dopo session
+
+- **Da cancellare** (backup/cache): tutti i `*.bak_*` in `scripts/pptx_generator/` (almeno 9 backup accumulati durante questa sessione)
+- **Da tenere**: `juve_titolari_lookup.json` come reference, `payload_juve_3_5_2.json.bak_pre_photos` (versione pre-foto per debug)
+
+### Comando cleanup
+
+```bash
+cd ~/Desktop/pid/scripts/pptx_generator
+rm -f generator.py.bak_pre_photos generator.py.bak_v3 generator.py.bak_v4 generator.py.bak_v5 generator.py.bak_v6 generator.py.bak_v7 generator.py.bak_v8 generator.py.bak_v9 generator.py.bak_v10
+rm -f test_run.py.bak_pre_photos
+ls -la
+```
+
+### PROMPT DI RIPRESA
+
+> Ciao Claude, riprendo PID. Stato (8 mag mattina):
+> 1. ✅ Bug fix cambio modulo Griglie (commit 91e5453)
+> 2. ⏳ Locatelli aggiunto al dataset, aspetto run notturno per stats su R2
+> 3. ✅ Generator PowerPoint completo per 3-5-2 (cover + formazione + pressing + colori squadra). 
+>    File: `~/Desktop/pid/scripts/pptx_generator/`. 
+>    Test: `python3 test_run.py` → `test_output/juve_3_5_2.pptx`.
+> 4. 🔄 Da fare: mappare 5 altri sistemi (4-3-3, 4-4-2, 4-2-3-1, 3-4-3, 3-4-2-1), endpoint Vercel, bottone frontend.
+

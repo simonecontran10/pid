@@ -1,6 +1,17 @@
 {
   "rewrites": [
-    { "source": "/", "destination": "/frontend/index.html" }
+    { "source": "/", "destination": "/frontend/index.html" },
+    { "source": "/export-pptx", "destination": "/api/main" },
+    { "source": "/clubs", "destination": "/api/main" },
+    { "source": "/clubs/(.*)", "destination": "/api/main" },
+    { "source": "/players", "destination": "/api/main" },
+    { "source": "/players/(.*)", "destination": "/api/main" },
+    { "source": "/search", "destination": "/api/main" },
+    { "source": "/compare", "destination": "/api/main" },
+    { "source": "/stats/(.*)", "destination": "/api/main" },
+    { "source": "/update", "destination": "/api/main" },
+    { "source": "/update/status", "destination": "/api/main" },
+    { "source": "/reload", "destination": "/api/main" }
   ],
   "headers": [
     {
@@ -15,5 +26,11 @@
         { "key": "Cache-Control", "value": "public, max-age=300" }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/main.py": {
+      "maxDuration": 60,
+      "memory": 1024
+    }
+  }
 }
