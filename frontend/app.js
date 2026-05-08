@@ -2830,6 +2830,19 @@ const FORMATIONS = {
     { id: "ST",  x: 50, y: 84, label: "ST" },
     { id: "LW",  x: 14, y: 80, label: "LW" },
   ],
+  "3-4-2-1": [
+    { id: "GK",  x: 50, y: 8,  label: "GK"  },
+    { id: "RCB", x: 70, y: 25, label: "CB"  },
+    { id: "CB",  x: 50, y: 23, label: "CB"  },
+    { id: "LCB", x: 30, y: 25, label: "CB"  },
+    { id: "RM",  x: 88, y: 50, label: "RM"  },
+    { id: "RCM", x: 60, y: 48, label: "CM"  },
+    { id: "LCM", x: 40, y: 48, label: "CM"  },
+    { id: "LM",  x: 12, y: 50, label: "LM"  },
+    { id: "RAM", x: 70, y: 75, label: "RAM" },
+    { id: "LAM", x: 30, y: 75, label: "LAM" },
+    { id: "ST",  x: 50, y: 86, label: "ST"  },
+  ],
 };
 
 state.grids = state.grids || {
