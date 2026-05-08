@@ -25,6 +25,7 @@ const _supa = window.supabase
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
     })
   : null;
+window._supa = _supa;  // espongo per uso in app.js (admin panel)
 
 window.cloudAuth = { user: null, ready: false };
 
@@ -92,6 +93,7 @@ async function cloudInitAuth() {
 
   const { data: { session } } = await _supa.auth.getSession();
   window.cloudAuth.user = session?.user || null;
+  if (window._toggleAdminNav) window._toggleAdminNav();
   window.cloudAuth.ready = true;
   _renderAuthUI();
 
@@ -106,6 +108,7 @@ async function cloudInitAuth() {
   _supa.auth.onAuthStateChange(async (event, session) => {
     const wasUser = window.cloudAuth.user;
     window.cloudAuth.user = session?.user || null;
+  if (window._toggleAdminNav) window._toggleAdminNav();
     _renderAuthUI();
     if (event === "SIGNED_IN" && !wasUser) {
       _hideAuthGate();
@@ -402,3 +405,71 @@ function _showLoginModal({ forced = false, mode = "signin" } = {}) {
 document.addEventListener("DOMContentLoaded", () => {
   cloudInitAuth();
 });
+
+// ============================================================
+//  PLAYER OVERRIDES — modifiche manuali admin che sovrascrivono
+//  i dati Transfermarkt. Caricate ad ogni bootstrap.
+// ============================================================
+async function fetchPlayerOverrides() {
+  if (!_supa) return [];
+  try {
+    const { data, error } = await _supa
+      .from("player_overrides")
+      .select("tm_player_id, overrides");
+    if (error) {
+      console.warn("[overrides] fetch error:", error);
+      return [];
+    }
+    return data || [];
+  } catch (e) {
+    console.warn("[overrides] fetch exception:", e);
+    return [];
+  }
+}
+
+function applyOverridesToPlayers(players, overridesList) {
+  if (!Array.isArray(players) || !Array.isArray(overridesList)) return players;
+  const overrideMap = {};
+  for (const row of overridesList) {
+    if (row && row.tm_player_id != null) {
+      overrideMap[String(row.tm_player_id)] = row.overrides || {};
+    }
+  }
+  let count = 0;
+  for (const p of players) {
+    const ov = overrideMap[String(p.tm_player_id)];
+    if (ov && Object.keys(ov).length > 0) {
+      Object.assign(p, ov);
+      count++;
+    }
+  }
+  if (count > 0) console.log(`[overrides] applied ${count} player overrides`);
+  return players;
+}
+
+window.fetchPlayerOverrides = fetchPlayerOverrides;
+window.applyOverridesToPlayers = applyOverridesToPlayers;
+
+// ============================================================
+//  Detect ADMIN
+// ============================================================
+window.ADMIN_EMAIL = "simonecontran10@gmail.com";
+window.isAdmin = function() {
+  return window.cloudAuth && window.cloudAuth.user && 
+         window.cloudAuth.user.email === window.ADMIN_EMAIL;
+};
+
+// ============================================================
+//  Toggle visibility nav item Admin (visibile solo per admin)
+// ============================================================
+function _toggleAdminNav() {
+  const navAdmin = document.getElementById("nav-admin");
+  if (!navAdmin) return;
+  if (window.isAdmin && window.isAdmin()) {
+    navAdmin.style.display = "";
+  } else {
+    navAdmin.style.display = "none";
+  }
+}
+window._toggleAdminNav = _toggleAdminNav;
+

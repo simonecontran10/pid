@@ -118,6 +118,19 @@ async function bootstrap() {
     if (wyscoutByTm.has(p.tm_player_id)) p.wyscout = wyscoutByTm.get(p.tm_player_id);
     return p;
   });
+
+  // Applica overrides admin (modifiche manuali sopra ai dati TM)
+  try {
+    if (window.fetchPlayerOverrides) {
+      const overrides = await window.fetchPlayerOverrides();
+      if (overrides && overrides.length > 0) {
+        window.applyOverridesToPlayers(state.players, overrides);
+        // Aggiorno anche state.statsById (mappa tm_id → stats)
+      }
+    }
+  } catch (e) {
+    console.warn("[overrides] errore caricamento:", e);
+  }
   state.stats = stats || [];
   state.statsById = new Map(state.stats.map(s => [s.tm_player_id, s]));
   // Chiavi sia int che string per essere compatibile con opponent_club_id (string da API)
@@ -5939,6 +5952,7 @@ function setActiveTab(route) {
   setVisible("grids-panel", route === "grids");
   setVisible("saves-panel", route === "saves");
   setVisible("minutes-panel", route === "minutes");
+  setVisible("admin-panel", route === "admin");
   setVisible("filters", route === "home");
   setVisible("stats-bar", route === "home");
   if (route === "compare") renderCompare();
@@ -5948,6 +5962,7 @@ function setActiveTab(route) {
   if (route === "grids") renderGridsPanel();
   if (route === "saves") renderSavesPanel();
   if (route === "minutes") renderMinutesPanel();
+  if (route === "admin") renderAdminPanel();
 }
 
 // ============ SEARCH ============
@@ -6622,3 +6637,240 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+
+// ============================================================
+//  ADMIN PANEL — solo per admin (simonecontran10@gmail.com)
+// ============================================================
+function renderAdminPanel() {
+  const panel = document.getElementById("admin-panel");
+  if (!panel) return;
+  
+  if (!window.isAdmin || !window.isAdmin()) {
+    panel.innerHTML = `
+      <div class="rounded-xl p-6 text-center" style="background: var(--surface); border: 0.5px solid var(--border);">
+        <h2 class="text-base font-bold mb-2" style="color: var(--text-1);">Area riservata</h2>
+        <p class="text-sm" style="color: var(--text-2);">Solo l'amministratore puo accedere a questa pagina.</p>
+      </div>`;
+    return;
+  }
+  
+  const editingPid = state.adminEditingPid || null;
+  const editingPlayer = editingPid ? state.players.find(p => String(p.tm_player_id) === String(editingPid)) : null;
+  
+  panel.innerHTML = `
+    <div class="grid gap-4" style="grid-template-columns: 360px minmax(0, 1fr); align-items: start;">
+      <div class="flex flex-col gap-3">
+        <div class="rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
+          <h3 class="text-sm font-bold mb-2" style="color: var(--text-1);">Aggiungi nuovo giocatore</h3>
+          <input id="admin-add-url" type="text" placeholder="https://www.transfermarkt.com/.../profil/spieler/..."
+                 class="w-full text-xs px-2 py-1.5 rounded-md mb-2" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+          <button id="admin-add-submit" class="w-full px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">
+            Aggiungi giocatore
+          </button>
+          <div id="admin-add-status" class="text-[11px] mt-2" style="color: var(--text-3);"></div>
+        </div>
+        <div class="rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
+          <h3 class="text-sm font-bold mb-2" style="color: var(--text-1);">Cerca giocatore da modificare</h3>
+          <input id="admin-search" type="text" placeholder="Nome o club..."
+                 class="w-full text-xs px-2 py-1.5 rounded-md mb-2" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"
+                 value="${escapeHtml(state.adminSearchQ || "")}"/>
+          <div id="admin-search-results" class="flex flex-col gap-1 max-h-[400px] overflow-y-auto"></div>
+        </div>
+      </div>
+      <div class="rounded-xl p-4" style="background: var(--surface); border: 0.5px solid var(--border);">
+        ${editingPlayer ? renderAdminEditor(editingPlayer) : `
+          <div class="text-center py-8" style="color: var(--text-3);">
+            <div class="text-sm">Seleziona un giocatore dalla ricerca per modificarlo.</div>
+          </div>`}
+      </div>
+    </div>
+  `;
+  
+  const searchInput = document.getElementById("admin-search");
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      state.adminSearchQ = e.target.value;
+      _renderAdminSearchResults();
+    });
+    _renderAdminSearchResults();
+  }
+  
+  const addBtn = document.getElementById("admin-add-submit");
+  if (addBtn) addBtn.addEventListener("click", _adminAddPlayer);
+  
+  if (editingPlayer) {
+    const saveBtn = document.getElementById("admin-save");
+    if (saveBtn) saveBtn.addEventListener("click", () => _adminSaveOverrides(editingPlayer.tm_player_id));
+  }
+}
+
+function _renderAdminSearchResults() {
+  const container = document.getElementById("admin-search-results");
+  if (!container) return;
+  const q = (state.adminSearchQ || "").toLowerCase().trim();
+  if (q.length < 2) {
+    container.innerHTML = `<div class="text-[11px] py-2" style="color: var(--text-3);">Inserisci almeno 2 caratteri.</div>`;
+    return;
+  }
+  const matches = state.players.filter(p => {
+    const name = (p.full_name || p.name || "").toLowerCase();
+    const club = (p.current_club_name || "").toLowerCase();
+    return name.includes(q) || club.includes(q);
+  }).slice(0, 30);
+  if (matches.length === 0) {
+    container.innerHTML = `<div class="text-[11px] py-2" style="color: var(--text-3);">Nessun risultato.</div>`;
+    return;
+  }
+  container.innerHTML = matches.map(p => `
+    <button class="text-left px-2 py-1.5 rounded-md flex items-center justify-between gap-2"
+            data-pid="${p.tm_player_id}"
+            style="background: var(--surface-2); border: 0.5px solid var(--border);">
+      <div class="flex flex-col min-w-0">
+        <span class="text-xs font-semibold truncate" style="color: var(--text-1);">${escapeHtml(p.full_name || p.name || "")}</span>
+        <span class="text-[10px] truncate" style="color: var(--text-3);">${escapeHtml(prettyClubName(p.current_club_name) || "")}</span>
+      </div>
+    </button>
+  `).join("");
+  container.querySelectorAll('button[data-pid]').forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.adminEditingPid = btn.dataset.pid;
+      renderAdminPanel();
+    });
+  });
+}
+
+function renderAdminEditor(p) {
+  const fmt = v => v == null ? "" : String(v);
+  const dob = fmt(p.date_of_birth || "").split("T")[0];
+  return `
+    <div class="flex items-center gap-3 mb-4">
+      <div class="flex-1">
+        <h2 class="text-base font-bold" style="color: var(--text-1);">${escapeHtml(p.full_name || p.name || "")}</h2>
+        <div class="text-xs" style="color: var(--text-3);">${escapeHtml(prettyClubName(p.current_club_name) || "")} - TM ID ${p.tm_player_id}</div>
+      </div>
+    </div>
+    <div class="flex flex-col gap-3">
+      <div>
+        <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Data di nascita</label>
+        <input id="admin-edit-dob" type="date" value="${dob}" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+      </div>
+      <div>
+        <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Piede</label>
+        <select id="admin-edit-foot" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);">
+          <option value="" ${!p.foot ? "selected" : ""}>—</option>
+          <option value="right" ${p.foot === "right" ? "selected" : ""}>Destro</option>
+          <option value="left" ${p.foot === "left" ? "selected" : ""}>Sinistro</option>
+          <option value="both" ${p.foot === "both" ? "selected" : ""}>Ambidestro</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Posizione specifica</label>
+        <input id="admin-edit-position" type="text" value="${escapeHtml(fmt(p.position_specific))}" placeholder="es. Centrocampista centrale" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Altezza (cm)</label>
+          <input id="admin-edit-height" type="number" min="150" max="220" value="${fmt(p.height_cm)}" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+        </div>
+        <div>
+          <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Numero maglia</label>
+          <input id="admin-edit-number" type="number" min="0" max="99" value="${fmt(p.shirt_number)}" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 mt-2">
+        <button id="admin-save" class="flex-1 px-3 py-2 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">Salva e aggiorna</button>
+        <button id="admin-cancel" onclick="state.adminEditingPid=null; renderAdminPanel();" class="px-3 py-2 text-xs font-semibold rounded-md" style="background: rgba(239,68,68,0.10); color: #EF4444; border: 0.5px solid rgba(239,68,68,0.20);">Annulla</button>
+      </div>
+      <div id="admin-save-status" class="text-[11px] mt-1" style="color: var(--text-3);"></div>
+    </div>
+  `;
+}
+
+async function _adminSaveOverrides(pid) {
+  const status = document.getElementById("admin-save-status");
+  if (status) status.textContent = "Salvataggio in corso...";
+  
+  const player = state.players.find(p => String(p.tm_player_id) === String(pid));
+  if (!player) {
+    if (status) status.textContent = "Errore: giocatore non trovato.";
+    return;
+  }
+  
+  const dob = document.getElementById("admin-edit-dob")?.value || null;
+  const foot = document.getElementById("admin-edit-foot")?.value || null;
+  const pos = document.getElementById("admin-edit-position")?.value?.trim() || null;
+  const height = document.getElementById("admin-edit-height")?.value;
+  const number = document.getElementById("admin-edit-number")?.value;
+  
+  const overrides = {};
+  if (dob) overrides.date_of_birth = dob;
+  if (foot) overrides.foot = foot;
+  if (pos) overrides.position_specific = pos;
+  if (height) overrides.height_cm = parseInt(height, 10);
+  if (number) overrides.shirt_number = parseInt(number, 10);
+  
+  // Uso il client Supabase globale già inizializzato
+  if (!window._supa) {
+    if (status) status.textContent = "Errore: Supabase non inizializzato.";
+    return;
+  }
+  
+  const { error } = await window._supa
+    .from("player_overrides")
+    .upsert({ 
+      tm_player_id: parseInt(pid, 10), 
+      overrides, 
+      updated_by: window.cloudAuth.user.email 
+    }, { onConflict: "tm_player_id" });
+  
+  if (error) {
+    if (status) status.textContent = "Errore: " + error.message;
+    console.error("[admin] save error:", error);
+    return;
+  }
+  
+  Object.assign(player, overrides);
+  
+  if (status) status.textContent = "Salvato con successo!";
+  setTimeout(() => {
+    if (status) status.textContent = "";
+    state.adminEditingPid = null;
+    renderAdminPanel();
+  }, 1500);
+}
+
+async function _adminAddPlayer() {
+  const status = document.getElementById("admin-add-status");
+  const input = document.getElementById("admin-add-url");
+  if (!input || !status) return;
+  const url = input.value.trim();
+  if (!url) {
+    status.textContent = "Inserisci un URL Transfermarkt.";
+    return;
+  }
+  if (!url.includes("transfermarkt") || !url.match(/spieler\/(\d+)/)) {
+    status.textContent = "URL non valido (deve contenere /spieler/<id>).";
+    return;
+  }
+  status.textContent = "Trigger workflow in corso...";
+  
+  try {
+    const resp = await fetch("/admin-add-player", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url }),
+    });
+    if (!resp.ok) {
+      const errText = await resp.text();
+      status.textContent = "Errore: " + errText;
+      return;
+    }
+    const data = await resp.json();
+    status.textContent = "Workflow avviato. Aggiornamento dati tra ~5 min.";
+    input.value = "";
+  } catch (e) {
+    status.textContent = "Errore connessione: " + e.message;
+  }
+}
+

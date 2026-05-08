@@ -170,6 +170,12 @@
     <span class="sidebar-label" data-i18n="nav_saves">Salvataggi</span>
   </div>
 
+  <!-- Admin: visibile SOLO per simonecontran10@gmail.com (toggle in JS) -->
+  <div class="nav-item" data-route="admin" id="nav-admin" style="display: none;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <span class="sidebar-label">Admin</span>
+  </div>
+
   <div class="mt-auto px-3 py-2" style="border-top: 0.5px solid var(--border);">
     <div class="text-[10px] uppercase tracking-wider" style="color: var(--text-3);" data-i18n="last_update">Aggiornamento</div>
     <div class="text-[11px] mt-0.5 stat-cell sidebar-label" id="sidebar-last-update" style="color: var(--text-2);">—</div>
@@ -256,6 +262,10 @@
     <div id="saves-panel" class="hidden"></div>
     <div id="minutes-panel" class="hidden"></div>
   </section>
+
+
+  <!-- Admin panel (visibile solo per admin) -->
+  <div id="admin-panel" class="hidden"></div>
 
 </main>
 
