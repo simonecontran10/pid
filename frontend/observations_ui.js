@@ -624,7 +624,7 @@ function _obsComposeHtml(player, editing, prefill) {
             </div>
             <div>
               <label class="obs-label">${window.obsT("f_opponent")} *</label>
-              <input id="obs-opponent" type="text" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base" autocomplete="off">
+              <input id="obs-opponent" type="text" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base" autocomplete="off" value="${escapeHtml(v.opponent || "")}">
               <datalist id="obs-opponent-list">${opponentOptions}</datalist>
             </div>
           </div>
