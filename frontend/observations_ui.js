@@ -915,7 +915,8 @@ async function _saveObsFromForm(player, editing) {
 
 /**
  * HTML del pannello principale Scouting (per il main content quando si seleziona la voce sidebar).
- * Layout a righe espandibili (stile Lista). Click su nome → modal giocatore. Click su riga → espande osservazioni.
+ * Layout: tabella stile Lista. Foto + Nome+Anno | Età | Ruolo | Piede | Media | Distribuzione % con label | Oss | ▼
+ * Click sul nome → modal giocatore. Click sul resto della riga → espande/collassa osservazioni inline allineate alle colonne.
  */
 window.renderScoutingPanel = function() {
   return `
@@ -963,14 +964,23 @@ window.wireScoutingPanel = async function() {
     `;
 
     const dateLocale = (typeof currentLang !== "undefined" && currentLang === "it") ? "it-IT" : "en-GB";
-
-    // Helper: localizzazione ruolo (riusa funzione globale se esiste)
+    const isIt = (typeof currentLang !== "undefined" && currentLang === "it");
     const localize = (val) => (typeof localizeRole === "function") ? localizeRole(val) : val;
+
+    // Localizzazione piede
+    const localizeFoot = (foot) => {
+      if (!foot) return "—";
+      const f = String(foot).toLowerCase();
+      const dictIt = { right: "Destro", left: "Sinistro", both: "Entrambi" };
+      const dictEn = { right: "Right", left: "Left", both: "Both" };
+      const dict = isIt ? dictIt : dictEn;
+      return dict[f] || foot;
+    };
 
     // Sort giocatori: media performance desc, poi nome
     playerIds.sort((aPid, bPid) => {
-      const aRatings = byPlayer[aPid].map(o => o.performance_rating).filter(r => r != null);
-      const bRatings = byPlayer[bPid].map(o => o.performance_rating).filter(r => r != null);
+      const aRatings = byPlayer[aPid].filter(x => x.evaluation_tags?.[0] !== "NON VALUTABILE").map(o => o.performance_rating).filter(r => r != null);
+      const bRatings = byPlayer[bPid].filter(x => x.evaluation_tags?.[0] !== "NON VALUTABILE").map(o => o.performance_rating).filter(r => r != null);
       const aAvg = aRatings.length ? aRatings.reduce((a, b) => a + b, 0) / aRatings.length : -1;
       const bAvg = bRatings.length ? bRatings.reduce((a, b) => a + b, 0) / bRatings.length : -1;
       if (Math.abs(bAvg - aAvg) > 0.001) return bAvg - aAvg;
@@ -979,41 +989,40 @@ window.wireScoutingPanel = async function() {
       return (aP?.full_name || "").localeCompare(bP?.full_name || "");
     });
 
-    // Header tabella
-    // Grid: foto(48) | nome+anno(2fr) | età(60) | ruolo(140) | piede(80) | media(80) | distribuzione(2fr) | num oss(60) | espandi(28)
+    // Grid layout: foto(48) | nome+anno(2fr) | età(60) | ruolo(140) | piede(80) | media(80) | distribuzione(2fr) | oss(60) | espandi(28)
     const GRID = "48px 2fr 60px 140px 80px 80px 2fr 60px 28px";
 
     const headerRow = `
       <div style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 0.5px solid var(--border); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500;">
         <span></span>
-        <span>${currentLang === "it" ? "Giocatore" : "Player"}</span>
-        <span style="text-align: center;">${currentLang === "it" ? "Età" : "Age"}</span>
-        <span>${currentLang === "it" ? "Ruolo" : "Role"}</span>
-        <span style="text-align: center;">${currentLang === "it" ? "Piede" : "Foot"}</span>
-        <span style="text-align: center;">${currentLang === "it" ? "Media" : "Avg"}</span>
-        <span>${currentLang === "it" ? "Distribuzione giudizi" : "Verdict distribution"}</span>
-        <span style="text-align: center;">${currentLang === "it" ? "Oss." : "Obs."}</span>
+        <span>${isIt ? "Giocatore" : "Player"}</span>
+        <span style="text-align: center;">${isIt ? "Età" : "Age"}</span>
+        <span>${isIt ? "Ruolo" : "Role"}</span>
+        <span style="text-align: center;">${isIt ? "Piede" : "Foot"}</span>
+        <span style="text-align: center;">${isIt ? "Media" : "Avg"}</span>
+        <span>${isIt ? "Distribuzione giudizi" : "Verdict distribution"}</span>
+        <span style="text-align: center;">${isIt ? "Oss." : "Obs."}</span>
         <span></span>
       </div>
     `;
 
-    // Render una riga per giocatore + sotto un container collapsed con le osservazioni
     const playerRowsHtml = playerIds.map(pid => {
       const obsForPlayer = byPlayer[pid].sort((a, b) => new Date(b.match_date) - new Date(a.match_date));
       const player = state.players.find(p => p.tm_player_id === parseInt(pid));
       const playerName = player ? (player.full_name || `#${pid}`) : `#${pid}`;
-      const photoUrl = (player && typeof _photoUrl === "function") ? _photoUrl(`photos/players/${pid}.png`) : null;
+      // Foto: usa playerPhoto globale (stessa funzione della Lista)
+      const photoSrc = (player && typeof playerPhoto === "function") ? playerPhoto(player) : "";
       const birthY = player ? (typeof birthYear === "function" ? birthYear(player) : "") : "";
       const age = player?.age || "—";
       const roleSpec = player?.position_specific || player?.position_general || "—";
-      const foot = player?.foot || "—";
+      const foot = player?.foot;
 
       // Media performance (esclude NON VALUTABILE)
       const evaluableObs = obsForPlayer.filter(o => o.evaluation_tags?.[0] !== "NON VALUTABILE");
       const ratings = evaluableObs.map(o => o.performance_rating).filter(r => r != null);
       const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) : null;
 
-      // Distribuzione giudizi (5 categorie: NV / NON IDONEO / DA MONITORARE / SECONDA / PRIMA)
+      // Distribuzione giudizi (5 categorie)
       const tagCounts = {};
       obsForPlayer.forEach(o => {
         const t = o.evaluation_tags?.[0];
@@ -1021,8 +1030,25 @@ window.wireScoutingPanel = async function() {
       });
       const totalTagged = Object.values(tagCounts).reduce((a, b) => a + b, 0);
 
-      // Barra segmentata: ordine sinistra→destra peggiore→migliore (NV grigio, NON IDONEO rosso, DA MONITORARE arancio, SECONDA giallo, PRIMA verde)
+      // Barra segmentata (sinistra→destra: peggiore→migliore)
       const tagOrder = ["NON VALUTABILE", "NON IDONEO", "DA MONITORARE", "SECONDA SCELTA", "PRIMA SCELTA"];
+      // Label corte per la barra (per non occupare troppo spazio)
+      const shortLabelIt = {
+        "NON VALUTABILE": "N/V",
+        "NON IDONEO": "NON IDONEO",
+        "DA MONITORARE": "MONITOR",
+        "SECONDA SCELTA": "SECONDA",
+        "PRIMA SCELTA": "PRIMA",
+      };
+      const shortLabelEn = {
+        "NON VALUTABILE": "N/A",
+        "NON IDONEO": "REJECT",
+        "DA MONITORARE": "MONITOR",
+        "SECONDA SCELTA": "2ND",
+        "PRIMA SCELTA": "1ST",
+      };
+      const shortLabel = isIt ? shortLabelIt : shortLabelEn;
+
       let distribBarHtml = "";
       if (totalTagged > 0) {
         const segs = tagOrder
@@ -1031,37 +1057,55 @@ window.wireScoutingPanel = async function() {
             const def = window.OBSERVATION_TAGS.find(t => t.value === tag);
             const pct = (tagCounts[tag] / totalTagged) * 100;
             const pctRounded = Math.round(pct);
-            const label = window.obsLocalize(tag);
-            return `<div title="${escapeHtml(label)} ${pctRounded}%" style="flex: ${pct}; min-width: 0; height: 100%; background: ${def.color}; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #0E1116; overflow: hidden; white-space: nowrap;">${pct >= 14 ? pctRounded + "%" : ""}</div>`;
+            const lbl = shortLabel[tag];
+            // Decido cosa mostrare: se segmento >=22% mostro "LBL XX%"; >=12% solo "XX%"; <12% niente (resta tooltip)
+            let inner = "";
+            if (pct >= 22) inner = `${lbl} ${pctRounded}%`;
+            else if (pct >= 12) inner = `${pctRounded}%`;
+            return `<div title="${escapeHtml(window.obsLocalize(tag))} ${pctRounded}%" style="flex: ${pct}; min-width: 0; height: 100%; background: ${def.color}; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #0E1116; overflow: hidden; white-space: nowrap; padding: 0 4px;">${inner}</div>`;
           }).join("");
-        distribBarHtml = `<div style="display: flex; height: 18px; border-radius: 4px; overflow: hidden; background: rgba(255,255,255,0.05);">${segs}</div>`;
+        distribBarHtml = `<div style="display: flex; height: 20px; border-radius: 4px; overflow: hidden; background: rgba(255,255,255,0.05);">${segs}</div>`;
       } else {
         distribBarHtml = `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
       }
 
-      // Riga compatta osservazioni (espansa di default? no, collapsed)
+      // Righe osservazioni: layout allineato alle colonne header (stessa GRID)
       const obsExpandedRowsHtml = obsForPlayer.map(o => {
         const dateFmt = new Date(o.match_date).toLocaleDateString(dateLocale, { day: "2-digit", month: "2-digit", year: "2-digit" });
         const tagDef = window.OBSERVATION_TAGS.find(t => t.value === o.evaluation_tags?.[0]);
         const tagDot = tagDef ? `<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: ${tagDef.color}; flex-shrink: 0;"></span>` : `<span style="display: inline-block; width: 8px; height: 8px;"></span>`;
+        const tagLabel = tagDef
+          ? `<span style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: ${tagDef.color}22; color: ${tagDef.color}; border: 0.5px solid ${tagDef.color}; white-space: nowrap;">${escapeHtml(window.obsLocalize(tagDef.value))}</span>`
+          : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
         const ratingStr = o.performance_rating != null ? o.performance_rating.toFixed(1) : "—";
         const opponentStr = (typeof prettyClubName === "function") ? prettyClubName(o.opponent) : o.opponent;
-        const compStr = o.competition || "";
+        // Ruoli giocati in questa osservazione
+        const rolesArr = Array.isArray(o.roles_played) ? o.roles_played : [];
+        const rolesShown = rolesArr.slice(0, 3).map(r => r.replace("_", " ")).join(" · ");
+        const rolesExtra = rolesArr.length > 3 ? ` +${rolesArr.length - 3}` : "";
+        const rolesObsHtml = rolesArr.length
+          ? `<span style="color: var(--text-2); font-size: 11px;">${escapeHtml(rolesShown)}${rolesExtra}</span>`
+          : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
         // Mode badge
-        let modeBadge = "";
+        let modeBadge = `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
         if (o.viewing_mode === "LIVE") {
-          modeBadge = `<span style="font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(34,197,94,0.15); color: #22C55E;">LIVE</span>`;
+          modeBadge = `<span style="font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(34,197,94,0.15); color: #22C55E;">LIVE</span>`;
         } else if (o.viewing_mode === "TV") {
-          modeBadge = `<span style="font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(96,165,250,0.15); color: #60A5FA;">TV</span>`;
+          modeBadge = `<span style="font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: rgba(96,165,250,0.15); color: #60A5FA;">TV</span>`;
         }
         return `
-          <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 60px; border-bottom: 0.5px solid var(--border); cursor: pointer; font-size: 12px; transition: background 0.1s;">
-            ${tagDot}
-            <span style="color: var(--text-3); min-width: 70px;">${dateFmt}</span>
-            <span style="color: var(--text-2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">vs ${escapeHtml(opponentStr)}</span>
-            <span style="color: var(--text-3); min-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(compStr)}</span>
-            ${modeBadge}
-            <span style="color: var(--accent); font-weight: 600; min-width: 40px; text-align: right;">${ratingStr}</span>
+          <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 8px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.1s; background: rgba(255,255,255,0.015);">
+            <div style="display: flex; justify-content: center;">${tagDot}</div>
+            <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+              <span style="color: var(--text-3); margin-right: 6px;">${dateFmt}</span>vs ${escapeHtml(opponentStr)}
+            </div>
+            <div></div>
+            <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rolesObsHtml}</div>
+            <div style="text-align: center;">${modeBadge}</div>
+            <div style="text-align: center; font-size: 14px; font-weight: 700; color: var(--accent);">${ratingStr}</div>
+            <div>${tagLabel}</div>
+            <div></div>
+            <div></div>
           </div>
         `;
       }).join("");
@@ -1069,7 +1113,7 @@ window.wireScoutingPanel = async function() {
       return `
         <div class="scouting-player-block" data-pid="${pid}">
           <div class="scouting-player-row" data-pid="${pid}" style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.1s;">
-            <img src="${photoUrl || ''}" alt="" style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: var(--surface-2);"
+            <img src="${photoSrc}" alt="" style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: var(--surface-2);"
               onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&size=128&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45'"/>
             <div class="scouting-player-name" data-pid="${pid}" style="min-width: 0; cursor: pointer;">
               <div style="font-size: 13px; font-weight: 600; color: var(--text-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(playerName)}</div>
@@ -1077,7 +1121,7 @@ window.wireScoutingPanel = async function() {
             </div>
             <div style="text-align: center; font-size: 12px; color: var(--text-2);">${age}</div>
             <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(localize(roleSpec))}</div>
-            <div style="text-align: center; font-size: 12px; color: var(--text-2);">${escapeHtml(localize(foot))}</div>
+            <div style="text-align: center; font-size: 12px; color: var(--text-2);">${escapeHtml(localizeFoot(foot))}</div>
             <div style="text-align: center;">
               ${avg != null
                 ? `<span style="font-size: 18px; font-weight: 700; color: var(--accent);">${avg.toFixed(1)}</span>`
@@ -1101,7 +1145,7 @@ window.wireScoutingPanel = async function() {
       </div>
     `;
 
-    // Wire click su nome giocatore → apre scheda giocatore (NON deve espandere)
+    // Click sul nome → scheda giocatore (NON espande)
     contentEl.querySelectorAll(".scouting-player-name").forEach(el => {
       el.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -1112,7 +1156,7 @@ window.wireScoutingPanel = async function() {
       el.addEventListener("mouseleave", () => el.style.textDecoration = "none");
     });
 
-    // Wire click su riga (resto) → espande/collassa osservazioni
+    // Click sulla riga → espande/collassa osservazioni
     contentEl.querySelectorAll(".scouting-player-row").forEach(rowEl => {
       rowEl.addEventListener("click", () => {
         const pid = rowEl.dataset.pid;
@@ -1127,10 +1171,10 @@ window.wireScoutingPanel = async function() {
       rowEl.addEventListener("mouseleave", () => rowEl.style.background = "transparent");
     });
 
-    // Wire click su riga osservazione → apre modal modifica
+    // Click sulla riga osservazione → modifica
     contentEl.querySelectorAll(".scouting-obs-row").forEach(el => {
       el.addEventListener("mouseenter", () => el.style.background = "rgba(255,255,255,0.05)");
-      el.addEventListener("mouseleave", () => el.style.background = "transparent");
+      el.addEventListener("mouseleave", () => el.style.background = "rgba(255,255,255,0.015)");
       el.addEventListener("click", (e) => {
         e.stopPropagation();
         const pid = parseInt(el.dataset.pid);
