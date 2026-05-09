@@ -191,6 +191,11 @@ window.obsT = function(key) {
       f_notes: "Note",
       f_notes_ph: "Osservazioni libere sulla prestazione…",
       btn_save: "Salva", btn_cancel: "Annulla", btn_delete: "Elimina",
+      f_minutes: "Minuti giocati (opzionale)",
+      f_minutes_ph: "Es. 90", btn_edit: "Modifica",
+      th_minutes: "Minuti",
+      inserted_on: "Inserita il",
+      no_notes: "Nessuna nota",
       err_required: "Compila tutti i campi obbligatori",
       err_no_role: "Seleziona almeno un ruolo",
       err_no_tag: "Seleziona un giudizio (anche 'Non valutabile')",
@@ -231,6 +236,11 @@ window.obsT = function(key) {
       f_notes: "Notes",
       f_notes_ph: "Free observations on the performance…",
       btn_save: "Save", btn_cancel: "Cancel", btn_delete: "Delete",
+      f_minutes: "Minutes played (optional)",
+      f_minutes_ph: "e.g. 90", btn_edit: "Edit",
+      th_minutes: "Minutes",
+      inserted_on: "Created",
+      no_notes: "No notes",
       err_required: "Fill in all required fields",
       err_no_role: "Select at least one role",
       err_no_tag: "Select an evaluation tag (also 'N/A')",
@@ -319,6 +329,98 @@ window.renderObservationsList = async function(pid) {
       } else if (o.viewing_mode === "TV") {
         modeHtml = `<span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px 3px 5px; border-radius: 999px; background: rgba(96,165,250,0.15); color: #60A5FA; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="22" x2="16" y2="22"/></svg>TV/VIDEO</span>`;
       }
+      // Vista espansa: dettagli completi (inizialmente nascosta)
+      const fullCompetition = escapeHtml(o.competition || "—");
+      const fullOpponent = escapeHtml(opponentPretty || "—");
+      const fullDate = new Date(o.match_date).toLocaleDateString(dateLocale, { day: "2-digit", month: "long", year: "numeric" });
+      const rolesFullList = rolesArr.length
+        ? rolesArr.map(code => {
+            const def = window.OBSERVATION_ROLE_DEFS?.find(r => r.code === code);
+            const isIt = (typeof currentLang !== "undefined" && currentLang === "it");
+            return def ? (isIt ? def.it : def.en) : code.replace("_", " ");
+          }).join(" · ")
+        : "—";
+      const strengthsArr = Array.isArray(o.strengths) ? o.strengths : [];
+      const weaknessesArr = Array.isArray(o.weaknesses) ? o.weaknesses : [];
+      const strengthsHtml = strengthsArr.length
+        ? strengthsArr.map(s => `<span style="display: inline-block; margin: 2px 4px 2px 0; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(34,197,94,0.10); color: #22C55E; border: 0.5px solid rgba(34,197,94,0.4);">${escapeHtml(window.obsLocalize(s))}</span>`).join("")
+        : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
+      const weaknessesHtml = weaknessesArr.length
+        ? weaknessesArr.map(s => `<span style="display: inline-block; margin: 2px 4px 2px 0; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(239,68,68,0.10); color: #EF4444; border: 0.5px solid rgba(239,68,68,0.4);">${escapeHtml(window.obsLocalize(s))}</span>`).join("")
+        : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
+      const notesHtml = o.notes
+        ? `<div style="white-space: pre-wrap; font-size: 12px; color: var(--text-1); line-height: 1.55; padding: 10px 12px; background: rgba(255,255,255,0.03); border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0;">${escapeHtml(o.notes)}</div>`
+        : `<div style="font-size: 11px; color: var(--text-3); font-style: italic;">${window.obsT("no_notes") || "Nessuna nota"}</div>`;
+      const insertedDate = o.created_at ? new Date(o.created_at).toLocaleDateString(dateLocale, { day: "2-digit", month: "2-digit", year: "2-digit" }) : "—";
+      const minutesPlayedHtml = o.minutes_played != null
+        ? `<span style="color: var(--text-1); font-weight: 500;">${o.minutes_played}'</span>`
+        : `<span style="color: var(--text-3);">—</span>`;
+
+      const expandedHtml = `
+        <tr class="obs-detail-row" data-detail-for="${o.id}" style="display: none; background: rgba(255,255,255,0.02);">
+          <td colspan="8" style="padding: 16px 20px; border-bottom: 0.5px solid var(--border);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px 24px; margin-bottom: 14px;">
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_date") || "Data"}</div>
+                <div style="font-size: 12px; color: var(--text-1);">${fullDate}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_opponent") || "Avversario"}</div>
+                <div style="font-size: 12px; color: var(--text-1);">${fullOpponent}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_competition") || "Competizione"}</div>
+                <div style="font-size: 12px; color: var(--text-1);">${fullCompetition}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_mode") || "Modalità"}</div>
+                <div>${modeHtml}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_minutes") || "Minuti"}</div>
+                <div style="font-size: 12px;">${minutesPlayedHtml}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_role") || "Ruoli"}</div>
+                <div style="font-size: 12px; color: var(--text-1);">${escapeHtml(rolesFullList)}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_perf") || "Performance"}</div>
+                <div style="font-size: 16px; font-weight: 700; color: var(--accent);">${o.performance_rating != null ? o.performance_rating.toFixed(1) : "—"}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_verdict") || "Giudizio"}</div>
+                <div>${tagHtml}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("th_scout") || "Scout"}</div>
+                <div style="font-size: 12px; color: var(--text-2);">${escapeHtml(scout)}</div>
+              </div>
+              <div>
+                <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${window.obsT("inserted_on") || "Inserita il"}</div>
+                <div style="font-size: 12px; color: var(--text-2);">${insertedDate}</div>
+              </div>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">${window.obsT("f_strengths")}</div>
+              <div>${strengthsHtml}</div>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">${window.obsT("f_weaknesses")}</div>
+              <div>${weaknessesHtml}</div>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 9px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;">${window.obsT("f_notes")}</div>
+              ${notesHtml}
+            </div>
+            <div style="display: flex; gap: 8px; justify-content: flex-end; padding-top: 8px; border-top: 0.5px solid var(--border);">
+              <button class="obs-edit-btn" data-obs-id="${o.id}" style="font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--accent); background: transparent; color: var(--accent);">${window.obsT("btn_edit") || "Modifica"}</button>
+              <button class="obs-delete-btn" data-obs-id="${o.id}" style="font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; border: 0.5px solid #EF4444; background: transparent; color: #EF4444;">${window.obsT("btn_delete") || "Elimina"}</button>
+            </div>
+          </td>
+        </tr>
+      `;
+
       return `
         <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
           <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px; white-space: nowrap;">${dateFmt}</td>
@@ -330,6 +432,7 @@ window.renderObservationsList = async function(pid) {
           <td style="padding: 7px 8px; font-size: 13px;">${ratingHtml}</td>
           <td style="padding: 7px 8px;">${tagHtml}</td>
         </tr>
+        ${expandedHtml}
       `;
     }).join("");
 
@@ -400,14 +503,44 @@ window.renderObservationsList = async function(pid) {
       </div>
     `;
 
-    // Wire click su righe → apre modal di modifica
+    // Wire click su righe → toggle vista espansa con dettagli
     wrapper.querySelectorAll(".obs-row").forEach(row => {
       row.addEventListener("click", () => {
-        window.openObservationCompose(pid, row.dataset.obsId);
+        const obsId = row.dataset.obsId;
+        const detailRow = wrapper.querySelector(`.obs-detail-row[data-detail-for="${obsId}"]`);
+        if (!detailRow) return;
+        const wasOpen = detailRow.style.display !== "none";
+        // Chiudi tutte le altre righe espanse
+        wrapper.querySelectorAll(".obs-detail-row").forEach(r => r.style.display = "none");
+        // Toggle questa riga
+        detailRow.style.display = wasOpen ? "none" : "table-row";
       });
       // Hover effect
       row.addEventListener("mouseenter", () => row.style.background = "rgba(255,255,255,0.04)");
       row.addEventListener("mouseleave", () => row.style.background = "transparent");
+    });
+
+    // Wire bottoni Modifica e Elimina dentro le righe espanse
+    wrapper.querySelectorAll(".obs-edit-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        window.openObservationCompose(pid, btn.dataset.obsId);
+      });
+    });
+    wrapper.querySelectorAll(".obs-delete-btn").forEach(btn => {
+      btn.addEventListener("click", async (e) => {
+        e.stopPropagation();
+        const confirmMsg = window.obsT("delete_confirm");
+        if (!confirm(confirmMsg)) return;
+        const result = await window.deleteObservation(btn.dataset.obsId);
+        if (result.error) {
+          alert(result.error);
+          return;
+        }
+        // Ricarica dashboard + invalida cache scouting
+        window._obsAllCache = null;
+        window.renderObservationsList(pid);
+      });
     });
   } catch (e) {
     console.warn("[obs-ui] dashboard error:", e);
@@ -468,6 +601,7 @@ function _obsComposeHtml(player, editing) {
     competition: editing?.competition || "",
     competition_is_other: editing && !window.OBSERVATION_COMPETITIONS.includes(editing.competition),
     rating: editing?.performance_rating != null ? editing.performance_rating : 6.0,
+    minutes_played: editing?.minutes_played != null ? editing.minutes_played : null,
     notes: editing?.notes || "",
   };
 
@@ -586,6 +720,12 @@ function _obsComposeHtml(player, editing) {
                 ${window.obsT("f_viewing_tv")}
               </button>
             </div>
+          </div>
+
+          <!-- MINUTI GIOCATI (opzionale) -->
+          <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_minutes")}</label>
+            <input id="obs-minutes" type="number" min="0" max="150" step="1" placeholder="${window.obsT("f_minutes_ph")}" value="${v.minutes_played != null ? v.minutes_played : ""}" class="obs-input-base" style="max-width: 200px;">
           </div>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
@@ -871,6 +1011,16 @@ async function _saveObsFromForm(player, editing) {
     return;
   }
 
+  // Estrai minutes_played (opzionale, range 0-150)
+  const minutesEl = document.getElementById("obs-minutes");
+  let minutesPlayed = null;
+  if (minutesEl && minutesEl.value !== "") {
+    const m = parseInt(minutesEl.value, 10);
+    if (!isNaN(m) && m >= 0 && m <= 150) {
+      minutesPlayed = m;
+    }
+  }
+
   const payload = {
     tm_player_id: player.tm_player_id,
     match_date: matchDate,
@@ -878,6 +1028,7 @@ async function _saveObsFromForm(player, editing) {
     competition: competition,
     viewing_mode: window._obsCompose.selectedViewingMode,
     performance_rating: rating,
+    minutes_played: minutesPlayed,
     roles_played: window._obsCompose.selectedRoles,
     evaluation_tags: window._obsCompose.selectedTag ? [window._obsCompose.selectedTag] : [],
     strengths: window._obsCompose.selectedStrengths,

@@ -547,6 +547,11 @@ async function saveObservation(obs) {
     return { data: null, error: `viewing_mode non valido: ${obs.viewing_mode}` };
   }
 
+  // Validazione minutes_played (opzionale, ma se presente deve essere 0-150)
+  if (obs.minutes_played != null && (typeof obs.minutes_played !== "number" || obs.minutes_played < 0 || obs.minutes_played > 150)) {
+    return { data: null, error: "minutes_played non valido (range 0-150)" };
+  }
+
   const record = {
     user_id: window.cloudAuth.user.id,
     tm_player_id: obs.tm_player_id,
@@ -555,6 +560,7 @@ async function saveObservation(obs) {
     competition: obs.competition,
     viewing_mode: obs.viewing_mode ?? null,
     performance_rating: obs.performance_rating ?? null,
+    minutes_played: obs.minutes_played ?? null,
     roles_played: roles,
     evaluation_tags: Array.isArray(obs.evaluation_tags) ? obs.evaluation_tags : [],
     strengths: Array.isArray(obs.strengths) ? obs.strengths : [],
