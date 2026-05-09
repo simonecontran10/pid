@@ -169,7 +169,7 @@ window.obsT = function(key) {
       edit_obs: "Modifica osservazione",
       new_obs_title: "Nuova osservazione",
       delete_confirm: "Eliminare questa osservazione? L'azione è irreversibile.",
-      th_date: "Data", th_opponent: "Avversario", th_role: "Posizione", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
+      th_date: "Data", th_opponent: "Avversario", th_competition: "Competizione", th_role: "Posizione", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
       footer_avg: "Media performance",
       footer_distrib: "Distribuzione giudizi",
       f_match_date: "Data partita",
@@ -205,7 +205,7 @@ window.obsT = function(key) {
       edit_obs: "Edit observation",
       new_obs_title: "New observation",
       delete_confirm: "Delete this observation? This action is irreversible.",
-      th_date: "Date", th_opponent: "Opponent", th_role: "Role", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
+      th_date: "Date", th_opponent: "Opponent", th_competition: "Competition", th_role: "Role", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
       footer_avg: "Average performance",
       footer_distrib: "Verdict distribution",
       f_match_date: "Match date",
@@ -302,10 +302,12 @@ window.renderObservationsList = async function(pid) {
       const rolesHtml = rolesArr.length
         ? `<span style="color: var(--text-2); font-size: 11px; font-weight: 500;">${escapeHtml(rolesShown)}${rolesExtra}</span>`
         : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
+      const compTrunc = (o.competition || "").length > 16 ? (o.competition || "").slice(0, 15) + "…" : (o.competition || "");
       return `
         <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
           <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px; white-space: nowrap;">${dateFmt}</td>
           <td style="padding: 7px 8px; color: var(--text-1); font-size: 12px; font-weight: 500;">${escapeHtml(opponentTrunc)}</td>
+          <td class="obs-col-comp" style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(compTrunc)}</td>
           <td class="obs-col-role" style="padding: 7px 8px;">${rolesHtml}</td>
           <td class="obs-col-scout" style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(scout)}</td>
           <td style="padding: 7px 8px; font-size: 13px;">${ratingHtml}</td>
@@ -344,6 +346,7 @@ window.renderObservationsList = async function(pid) {
     wrapper.innerHTML = `
       <style>
         @media (max-width: 700px) {
+          #obs-dashboard-${pid} .obs-col-comp,
           #obs-dashboard-${pid} .obs-col-role,
           #obs-dashboard-${pid} .obs-col-scout { display: none; }
         }
@@ -353,6 +356,7 @@ window.renderObservationsList = async function(pid) {
           <tr style="border-bottom: 0.5px solid var(--border);">
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_date")}</th>
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_opponent")}</th>
+            <th class="obs-col-comp" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_competition")}</th>
             <th class="obs-col-role" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_role")}</th>
             <th class="obs-col-scout" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_scout")}</th>
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_perf")}</th>
