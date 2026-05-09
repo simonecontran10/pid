@@ -915,10 +915,11 @@ async function _saveObsFromForm(player, editing) {
 
 /**
  * HTML del pannello principale Scouting (per il main content quando si seleziona la voce sidebar).
+ * Layout a righe espandibili (stile Lista). Click su nome → modal giocatore. Click su riga → espande osservazioni.
  */
 window.renderScoutingPanel = function() {
   return `
-    <div id="scouting-panel" style="padding: 24px; max-width: 1100px; margin: 0 auto;">
+    <div id="scouting-panel" style="padding: 24px;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
         <div style="display: flex; align-items: center; gap: 12px;">
           <div style="width: 4px; height: 24px; background: var(--accent); border-radius: 2px;"></div>
@@ -937,7 +938,6 @@ window.wireScoutingPanel = async function() {
   if (!contentEl) return;
 
   try {
-    // Carica tutte le osservazioni dell'utente (con cache)
     if (!window._obsAllCache) {
       window._obsAllCache = await window.fetchObservations();
     }
@@ -962,86 +962,172 @@ window.wireScoutingPanel = async function() {
       <span style="color: var(--accent); font-weight: 600;">${all.length}</span> ${window.obsT("scouting_total_obs")}
     `;
 
-    // Card per ogni giocatore: foto/nome + stats + lista osservazioni compatta
     const dateLocale = (typeof currentLang !== "undefined" && currentLang === "it") ? "it-IT" : "en-GB";
-    const playerCardsHtml = playerIds.map(pid => {
+
+    // Helper: localizzazione ruolo (riusa funzione globale se esiste)
+    const localize = (val) => (typeof localizeRole === "function") ? localizeRole(val) : val;
+
+    // Sort giocatori: media performance desc, poi nome
+    playerIds.sort((aPid, bPid) => {
+      const aRatings = byPlayer[aPid].map(o => o.performance_rating).filter(r => r != null);
+      const bRatings = byPlayer[bPid].map(o => o.performance_rating).filter(r => r != null);
+      const aAvg = aRatings.length ? aRatings.reduce((a, b) => a + b, 0) / aRatings.length : -1;
+      const bAvg = bRatings.length ? bRatings.reduce((a, b) => a + b, 0) / bRatings.length : -1;
+      if (Math.abs(bAvg - aAvg) > 0.001) return bAvg - aAvg;
+      const aP = state.players.find(p => p.tm_player_id === parseInt(aPid));
+      const bP = state.players.find(p => p.tm_player_id === parseInt(bPid));
+      return (aP?.full_name || "").localeCompare(bP?.full_name || "");
+    });
+
+    // Header tabella
+    // Grid: foto(48) | nome+anno(2fr) | età(60) | ruolo(140) | piede(80) | media(80) | distribuzione(2fr) | num oss(60) | espandi(28)
+    const GRID = "48px 2fr 60px 140px 80px 80px 2fr 60px 28px";
+
+    const headerRow = `
+      <div style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 0.5px solid var(--border); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500;">
+        <span></span>
+        <span>${currentLang === "it" ? "Giocatore" : "Player"}</span>
+        <span style="text-align: center;">${currentLang === "it" ? "Età" : "Age"}</span>
+        <span>${currentLang === "it" ? "Ruolo" : "Role"}</span>
+        <span style="text-align: center;">${currentLang === "it" ? "Piede" : "Foot"}</span>
+        <span style="text-align: center;">${currentLang === "it" ? "Media" : "Avg"}</span>
+        <span>${currentLang === "it" ? "Distribuzione giudizi" : "Verdict distribution"}</span>
+        <span style="text-align: center;">${currentLang === "it" ? "Oss." : "Obs."}</span>
+        <span></span>
+      </div>
+    `;
+
+    // Render una riga per giocatore + sotto un container collapsed con le osservazioni
+    const playerRowsHtml = playerIds.map(pid => {
       const obsForPlayer = byPlayer[pid].sort((a, b) => new Date(b.match_date) - new Date(a.match_date));
       const player = state.players.find(p => p.tm_player_id === parseInt(pid));
       const playerName = player ? (player.full_name || `#${pid}`) : `#${pid}`;
-      const club = player ? (typeof prettyClubName === "function" ? prettyClubName(player.current_club_name || "") : player.current_club_name || "") : "";
       const photoUrl = (player && typeof _photoUrl === "function") ? _photoUrl(`photos/players/${pid}.png`) : null;
+      const birthY = player ? (typeof birthYear === "function" ? birthYear(player) : "") : "";
+      const age = player?.age || "—";
+      const roleSpec = player?.position_specific || player?.position_general || "—";
+      const foot = player?.foot || "—";
 
-      // Mini stats
-      const ratings = obsForPlayer.map(o => o.performance_rating).filter(r => r != null);
+      // Media performance (esclude NON VALUTABILE)
+      const evaluableObs = obsForPlayer.filter(o => o.evaluation_tags?.[0] !== "NON VALUTABILE");
+      const ratings = evaluableObs.map(o => o.performance_rating).filter(r => r != null);
       const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) : null;
 
+      // Distribuzione giudizi (5 categorie: NV / NON IDONEO / DA MONITORARE / SECONDA / PRIMA)
       const tagCounts = {};
       obsForPlayer.forEach(o => {
         const t = o.evaluation_tags?.[0];
         if (t) tagCounts[t] = (tagCounts[t] || 0) + 1;
       });
-      const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0];
-      const topTagDef = topTag ? window.OBSERVATION_TAGS.find(t => t.value === topTag[0]) : null;
-      const topTagHtml = topTagDef
-        ? `<span style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: ${topTagDef.color}22; color: ${topTagDef.color}; border: 0.5px solid ${topTagDef.color};">${escapeHtml(window.obsLocalize(topTagDef.value))}</span>`
-        : "";
+      const totalTagged = Object.values(tagCounts).reduce((a, b) => a + b, 0);
 
-      // Lista compatta osservazioni
-      const obsRowsHtml = obsForPlayer.slice(0, 5).map(o => {
+      // Barra segmentata: ordine sinistra→destra peggiore→migliore (NV grigio, NON IDONEO rosso, DA MONITORARE arancio, SECONDA giallo, PRIMA verde)
+      const tagOrder = ["NON VALUTABILE", "NON IDONEO", "DA MONITORARE", "SECONDA SCELTA", "PRIMA SCELTA"];
+      let distribBarHtml = "";
+      if (totalTagged > 0) {
+        const segs = tagOrder
+          .filter(tag => tagCounts[tag])
+          .map(tag => {
+            const def = window.OBSERVATION_TAGS.find(t => t.value === tag);
+            const pct = (tagCounts[tag] / totalTagged) * 100;
+            const pctRounded = Math.round(pct);
+            const label = window.obsLocalize(tag);
+            return `<div title="${escapeHtml(label)} ${pctRounded}%" style="flex: ${pct}; min-width: 0; height: 100%; background: ${def.color}; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #0E1116; overflow: hidden; white-space: nowrap;">${pct >= 14 ? pctRounded + "%" : ""}</div>`;
+          }).join("");
+        distribBarHtml = `<div style="display: flex; height: 18px; border-radius: 4px; overflow: hidden; background: rgba(255,255,255,0.05);">${segs}</div>`;
+      } else {
+        distribBarHtml = `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
+      }
+
+      // Riga compatta osservazioni (espansa di default? no, collapsed)
+      const obsExpandedRowsHtml = obsForPlayer.map(o => {
         const dateFmt = new Date(o.match_date).toLocaleDateString(dateLocale, { day: "2-digit", month: "2-digit", year: "2-digit" });
         const tagDef = window.OBSERVATION_TAGS.find(t => t.value === o.evaluation_tags?.[0]);
-        const tagDot = tagDef ? `<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: ${tagDef.color}; margin-right: 4px;"></span>` : "";
+        const tagDot = tagDef ? `<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: ${tagDef.color}; flex-shrink: 0;"></span>` : `<span style="display: inline-block; width: 8px; height: 8px;"></span>`;
         const ratingStr = o.performance_rating != null ? o.performance_rating.toFixed(1) : "—";
         const opponentStr = (typeof prettyClubName === "function") ? prettyClubName(o.opponent) : o.opponent;
+        const compStr = o.competition || "";
+        // Mode badge
+        let modeBadge = "";
+        if (o.viewing_mode === "LIVE") {
+          modeBadge = `<span style="font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(34,197,94,0.15); color: #22C55E;">LIVE</span>`;
+        } else if (o.viewing_mode === "TV") {
+          modeBadge = `<span style="font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(96,165,250,0.15); color: #60A5FA;">TV</span>`;
+        }
         return `
-          <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+          <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: flex; align-items: center; gap: 10px; padding: 8px 14px 8px 60px; border-bottom: 0.5px solid var(--border); cursor: pointer; font-size: 12px; transition: background 0.1s;">
             ${tagDot}
-            <span style="color: var(--text-3); font-size: 11px; min-width: 64px;">${dateFmt}</span>
+            <span style="color: var(--text-3); min-width: 70px;">${dateFmt}</span>
             <span style="color: var(--text-2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">vs ${escapeHtml(opponentStr)}</span>
-            <span style="color: var(--accent); font-weight: 600;">${ratingStr}</span>
+            <span style="color: var(--text-3); min-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(compStr)}</span>
+            ${modeBadge}
+            <span style="color: var(--accent); font-weight: 600; min-width: 40px; text-align: right;">${ratingStr}</span>
           </div>
         `;
       }).join("");
-      const moreHint = obsForPlayer.length > 5
-        ? `<div style="font-size: 10px; color: var(--text-3); padding: 4px 8px; text-align: center;">+ ${obsForPlayer.length - 5} ${window.obsT("scouting_n_obs")}</div>`
-        : "";
 
       return `
-        <div class="scouting-player-card" data-pid="${pid}" style="background: rgba(255,255,255,0.03); border: 0.5px solid var(--border); border-radius: 12px; padding: 14px; cursor: default;">
-          <div class="scouting-player-header" data-pid="${pid}" style="display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 10px;">
-            ${photoUrl ? `<img src="${photoUrl}" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0;" onerror="this.style.display='none'"/>` : ""}
-            <div style="flex: 1; min-width: 0;">
+        <div class="scouting-player-block" data-pid="${pid}">
+          <div class="scouting-player-row" data-pid="${pid}" style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.1s;">
+            <img src="${photoUrl || ''}" alt="" style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; background: var(--surface-2);"
+              onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&size=128&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45'"/>
+            <div class="scouting-player-name" data-pid="${pid}" style="min-width: 0; cursor: pointer;">
               <div style="font-size: 13px; font-weight: 600; color: var(--text-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(playerName)}</div>
-              <div style="font-size: 11px; color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(club)}</div>
+              <div style="font-size: 11px; color: var(--text-3);">${escapeHtml(String(birthY || ""))}</div>
             </div>
-            <div style="text-align: right; flex-shrink: 0;">
-              ${avg != null ? `<div style="font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1;">${avg.toFixed(1)}</div>` : ""}
-              <div style="font-size: 10px; color: var(--text-3); margin-top: 2px;">${obsForPlayer.length} ${window.obsT("scouting_n_obs")}</div>
+            <div style="text-align: center; font-size: 12px; color: var(--text-2);">${age}</div>
+            <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(localize(roleSpec))}</div>
+            <div style="text-align: center; font-size: 12px; color: var(--text-2);">${escapeHtml(localize(foot))}</div>
+            <div style="text-align: center;">
+              ${avg != null
+                ? `<span style="font-size: 18px; font-weight: 700; color: var(--accent);">${avg.toFixed(1)}</span>`
+                : `<span style="color: var(--text-3); font-size: 12px;">—</span>`}
             </div>
+            <div style="min-width: 0;">${distribBarHtml}</div>
+            <div style="text-align: center; font-size: 12px; color: var(--text-2); font-weight: 500;">${obsForPlayer.length}</div>
+            <div class="scouting-expand-icon" style="text-align: center; color: var(--text-3); font-size: 12px; transition: transform 0.2s;">▼</div>
           </div>
-          ${topTagHtml ? `<div style="margin-bottom: 8px;">${topTagHtml}</div>` : ""}
-          <div style="border-top: 0.5px solid var(--border); padding-top: 6px;">
-            ${obsRowsHtml}
-            ${moreHint}
+          <div class="scouting-obs-list" data-pid="${pid}" style="display: none; background: rgba(255,255,255,0.02);">
+            ${obsExpandedRowsHtml}
           </div>
         </div>
       `;
     }).join("");
 
     contentEl.innerHTML = `
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px;">
-        ${playerCardsHtml}
+      <div style="background: rgba(255,255,255,0.03); border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden;">
+        ${headerRow}
+        ${playerRowsHtml}
       </div>
     `;
 
-    // Wire click su header card → apre modal giocatore
-    contentEl.querySelectorAll(".scouting-player-header").forEach(el => {
-      el.addEventListener("click", () => {
+    // Wire click su nome giocatore → apre scheda giocatore (NON deve espandere)
+    contentEl.querySelectorAll(".scouting-player-name").forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
         const pid = parseInt(el.dataset.pid);
         if (typeof openPlayerModal === "function") openPlayerModal(pid);
       });
+      el.addEventListener("mouseenter", () => el.style.textDecoration = "underline");
+      el.addEventListener("mouseleave", () => el.style.textDecoration = "none");
     });
-    // Wire click su righe osservazioni → apre modal modifica osservazione
+
+    // Wire click su riga (resto) → espande/collassa osservazioni
+    contentEl.querySelectorAll(".scouting-player-row").forEach(rowEl => {
+      rowEl.addEventListener("click", () => {
+        const pid = rowEl.dataset.pid;
+        const obsList = contentEl.querySelector(`.scouting-obs-list[data-pid="${pid}"]`);
+        const icon = rowEl.querySelector(".scouting-expand-icon");
+        if (!obsList) return;
+        const isOpen = obsList.style.display !== "none";
+        obsList.style.display = isOpen ? "none" : "block";
+        if (icon) icon.style.transform = isOpen ? "rotate(0deg)" : "rotate(180deg)";
+      });
+      rowEl.addEventListener("mouseenter", () => rowEl.style.background = "rgba(255,255,255,0.03)");
+      rowEl.addEventListener("mouseleave", () => rowEl.style.background = "transparent");
+    });
+
+    // Wire click su riga osservazione → apre modal modifica
     contentEl.querySelectorAll(".scouting-obs-row").forEach(el => {
       el.addEventListener("mouseenter", () => el.style.background = "rgba(255,255,255,0.05)");
       el.addEventListener("mouseleave", () => el.style.background = "transparent");
