@@ -584,24 +584,36 @@ window.openObservationCompose = async function(pid, obsId = null) {
     selectedViewingMode: editing ? (editing.viewing_mode || null) : null,
   };
 
+  // Pre-fill da window._obsPrefill (impostato dal bottone "+ osservazione" sulle partite)
+  // Solo per NUOVA osservazione (non per modifica)
+  let prefill = null;
+  if (!editing && window._obsPrefill) {
+    prefill = window._obsPrefill;
+    window._obsPrefill = null; // consume one-shot
+  }
+
   document.getElementById("obs-compose-overlay")?.remove();
-  document.body.insertAdjacentHTML("beforeend", _obsComposeHtml(player, editing));
+  document.body.insertAdjacentHTML("beforeend", _obsComposeHtml(player, editing, prefill));
   setTimeout(() => _wireObsCompose(player, editing), 0);
 };
 
-function _obsComposeHtml(player, editing) {
+function _obsComposeHtml(player, editing, prefill) {
   const isEdit = !!editing;
   const title = isEdit ? window.obsT("edit_obs") : window.obsT("new_obs_title");
   const pName = escapeHtml((typeof prettyClubName === "function" ? player.full_name : player.full_name) || `#${player.tm_player_id}`);
   const today = new Date().toISOString().slice(0, 10);
 
   const v = {
-    match_date: editing?.match_date || today,
-    opponent: editing?.opponent || "",
-    competition: editing?.competition || "",
-    competition_is_other: editing && !window.OBSERVATION_COMPETITIONS.includes(editing.competition),
+    match_date: editing?.match_date || prefill?.match_date || today,
+    opponent: editing?.opponent || prefill?.opponent || "",
+    competition: editing?.competition || prefill?.competition || "",
+    competition_is_other: editing
+      ? !window.OBSERVATION_COMPETITIONS.includes(editing.competition)
+      : (prefill?.competition && !window.OBSERVATION_COMPETITIONS.includes(prefill.competition)),
     rating: editing?.performance_rating != null ? editing.performance_rating : 6.0,
-    minutes_played: editing?.minutes_played != null ? editing.minutes_played : null,
+    minutes_played: editing?.minutes_played != null
+      ? editing.minutes_played
+      : (prefill?.minutes_played != null ? prefill.minutes_played : null),
     notes: editing?.notes || "",
   };
 

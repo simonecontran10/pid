@@ -1924,8 +1924,9 @@ function _renderDrillDownMatch(m, stats) {
          <span class="truncate" style="font-size: 12px; color: var(--text-1);">${escapeHtml(oppName)}</span>
        </div>`;
 
+  const pid = stats?.tm_player_id;
   return `
-    <div style="display: grid; grid-template-columns: 56px minmax(140px, 180px) 1fr 60px 22px 64px; gap: 8px; align-items: center; padding: 6px 8px; background: rgba(255,255,255,0.02); border-radius: 6px;">
+    <div style="display: grid; grid-template-columns: 56px minmax(140px, 180px) 1fr 60px 22px 64px 24px; gap: 8px; align-items: center; padding: 6px 8px; background: rgba(255,255,255,0.02); border-radius: 6px;">
       <span class="stat-cell" style="font-size: 11px; color: var(--text-3);">${escapeHtml(date)}</span>
       <div style="display: flex; align-items: center; gap: 5px; min-width: 0;" title="${escapeHtml(compName)}">
         ${compLogo ? `<img src="${compLogo}" style="width: 16px; height: 16px; object-fit: contain; flex-shrink: 0;"/>` : `<span style="width: 16px; flex-shrink: 0;"></span>`}
@@ -1935,6 +1936,7 @@ function _renderDrillDownMatch(m, stats) {
       <span class="stat-cell" style="font-size: 12px; font-weight: 600; color: var(--text-1); text-align: center;">${score}</span>
       <span class="stat-cell" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; background: ${resBg}; color: ${resColor}; font-weight: 700; font-size: 10px; border: 0.5px solid ${resColor}40;">${resLetter}</span>
       <span class="stat-cell" style="font-size: 12px; font-weight: 700; color: ${m.minutes?'var(--accent)':'var(--text-3)'}; text-align: right; padding: 2px 6px; border-radius: 4px; background: ${m.minutes?'rgba(111,224,168,0.08)':'transparent'};">${m.minutes||0}'</span>
+      ${pid ? `<button class="add-obs-from-match" data-pid="${pid}" data-date="${escapeHtml(_matchDateString(m) || "")}" data-opponent="${escapeHtml(oppName)}" data-competition="${escapeHtml(compName || "")}" data-minutes="${m.minutes||0}" title="${t("add_obs_from_match")}" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; background: rgba(111,224,168,0.08); color: var(--accent); font-size: 14px; line-height: 1; cursor: pointer; border: 0.5px solid rgba(111,224,168,0.25); padding: 0;">+</button>` : ""}
     </div>`;
 }
 
@@ -2007,7 +2009,7 @@ function renderRecentMatches(stats) {
     const score = (m.result_for != null && m.result_against != null) ? `${m.result_for}-${m.result_against}` : "";
 
     return `
-      <div style="display: grid; grid-template-columns: 64px 22px 1fr 70px 28px 60px; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 0.5px solid var(--border);">
+      <div style="display: grid; grid-template-columns: 64px 22px 1fr 70px 28px 60px 26px; gap: 10px; align-items: center; padding: 10px 12px; border-bottom: 0.5px solid var(--border);">
         <span class="stat-cell" style="font-size: 12px; color: var(--text-3);">${fmtDate(m.date)}</span>
         ${compLogo ? `<img src="${compLogo}" style="width: 18px; height: 18px; object-fit: contain;"/>` : `<span></span>`}
         <div style="display: flex; align-items: center; gap: 6px; min-width: 0;">
@@ -2022,6 +2024,7 @@ function renderRecentMatches(stats) {
           ${assists ? `<span class="stat-cell" style="font-size: 11px; color: var(--accent); font-weight: 700;">${assists}A</span>` : ""}
           <span class="stat-cell" style="font-size: 13px; font-weight: 700; color: ${m.minutes ? "var(--accent)" : "var(--text-3)"}; font-variant-numeric: tabular-nums; padding: 2px 6px; border-radius: 4px; background: ${m.minutes ? "rgba(111,224,168,0.08)" : "transparent"};">${m.minutes||0}'</span>
         </div>
+        <button class="add-obs-from-match" data-pid="${pid}" data-date="${escapeHtml(_matchDateString(m) || "")}" data-opponent="${escapeHtml(oppName)}" data-competition="${escapeHtml(_compName(m.competition_id, m.competition_name) || "")}" data-minutes="${m.minutes||0}" title="${t("add_obs_from_match")}" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px; background: rgba(111,224,168,0.08); color: var(--accent); font-size: 16px; line-height: 1; cursor: pointer; border: 0.5px solid rgba(111,224,168,0.25); padding: 0;">+</button>
       </div>`;
   }).join("");
 
@@ -6699,6 +6702,28 @@ function renderSavesPanel() {
 }
 
 // ============ INIT ============
+// Handler delegato per bottoni "+ osservazione" nelle ultime partite e drill-down
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".add-obs-from-match");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const pid = parseInt(btn.dataset.pid);
+  if (!pid) return;
+  if (typeof window.openObservationCompose !== "function") {
+    console.warn("[obs] openObservationCompose non disponibile");
+    return;
+  }
+  // Pre-fill data che viene letto dal form modale
+  window._obsPrefill = {
+    match_date: btn.dataset.date || null,
+    opponent: btn.dataset.opponent || null,
+    competition: btn.dataset.competition || null,
+    minutes_played: btn.dataset.minutes ? parseInt(btn.dataset.minutes, 10) : null,
+  };
+  window.openObservationCompose(pid);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   loadFavorites();
   bootstrap().then(() => {
