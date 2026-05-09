@@ -983,6 +983,7 @@ function openPlayerModal(pid) {
     </div>
 
     <div style="padding: 22px 28px;">
+      ${typeof window.renderObservationsSection === "function" ? window.renderObservationsSection(pid) : ""}
       ${(clubBlocks || hasU21Current) ? `
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
           <div style="width: 3px; height: 14px; background: var(--accent); border-radius: 2px;"></div>
@@ -1017,7 +1018,6 @@ function openPlayerModal(pid) {
         ${p.sortitoutsi_profile_url ? `<a href="${p.sortitoutsi_profile_url}" target="_blank" rel="noopener" style="font-size: 11px; padding: 5px 11px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-2); text-decoration: none; border: 0.5px solid var(--border);">sortitoutsi ↗</a>` : ""}
         ${p.date_of_birth ? `<span style="font-size: 11px; padding: 5px 11px; border-radius: 8px; background: transparent; color: var(--text-3);">${escapeHtml(p.date_of_birth)}${p.place_of_birth ? " · " + escapeHtml(p.place_of_birth) : ""}</span>` : ""}
       </div>
-      ${typeof window.renderObservationsSection === "function" ? window.renderObservationsSection(pid) : ""}
     </div>`;
   document.getElementById("player-modal-content").innerHTML = html;
   const modal = document.getElementById("player-modal");
@@ -5965,9 +5965,17 @@ function setActiveTab(route) {
   setVisible("saves-panel", route === "saves");
   setVisible("minutes-panel", route === "minutes");
   setVisible("admin-panel", route === "admin");
+  setVisible("scouting-panel-main", route === "scouting");
   setVisible("filters", route === "home");
   setVisible("stats-bar", route === "home");
   if (route === "compare") renderCompare();
+  if (route === "scouting" && typeof window.renderScoutingPanel === "function") {
+    const sp = document.getElementById("scouting-panel-main");
+    if (sp) {
+      sp.innerHTML = window.renderScoutingPanel();
+      if (typeof window.wireScoutingPanel === "function") setTimeout(() => window.wireScoutingPanel(), 0);
+    }
+  }
   if (route === "callup") renderCallupPanel();
   if (route === "list") renderListPanel();
   if (route === "favorites") renderFavoritesPanel();

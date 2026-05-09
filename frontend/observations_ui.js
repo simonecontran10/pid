@@ -169,7 +169,7 @@ window.obsT = function(key) {
       edit_obs: "Modifica osservazione",
       new_obs_title: "Nuova osservazione",
       delete_confirm: "Eliminare questa osservazione? L'azione è irreversibile.",
-      th_date: "Data", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
+      th_date: "Data", th_opponent: "Avversario", th_role: "Posizione", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
       footer_avg: "Media performance",
       footer_distrib: "Distribuzione giudizi",
       f_match_date: "Data partita",
@@ -205,7 +205,7 @@ window.obsT = function(key) {
       edit_obs: "Edit observation",
       new_obs_title: "New observation",
       delete_confirm: "Delete this observation? This action is irreversible.",
-      th_date: "Date", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
+      th_date: "Date", th_opponent: "Opponent", th_role: "Role", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
       footer_avg: "Average performance",
       footer_distrib: "Verdict distribution",
       f_match_date: "Match date",
@@ -293,10 +293,21 @@ window.renderObservationsList = async function(pid) {
         ? `<span style="font-weight: 600; color: var(--accent);">${o.performance_rating.toFixed(1)}</span>`
         : `<span style="color: var(--text-3);">—</span>`;
       const scout = (o.author_username || "").split("@")[0];
+      const opponentRaw = o.opponent || "";
+      const opponentPretty = (typeof prettyClubName === "function") ? prettyClubName(opponentRaw) : opponentRaw;
+      const opponentTrunc = opponentPretty.length > 18 ? opponentPretty.slice(0, 17) + "…" : opponentPretty;
+      const rolesArr = Array.isArray(o.roles_played) ? o.roles_played : [];
+      const rolesShown = rolesArr.slice(0, 3).map(r => r.replace("_", " ")).join(" · ");
+      const rolesExtra = rolesArr.length > 3 ? ` +${rolesArr.length - 3}` : "";
+      const rolesHtml = rolesArr.length
+        ? `<span style="color: var(--text-2); font-size: 11px; font-weight: 500;">${escapeHtml(rolesShown)}${rolesExtra}</span>`
+        : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
       return `
         <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
-          <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${dateFmt}</td>
-          <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(scout)}</td>
+          <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px; white-space: nowrap;">${dateFmt}</td>
+          <td style="padding: 7px 8px; color: var(--text-1); font-size: 12px; font-weight: 500;">${escapeHtml(opponentTrunc)}</td>
+          <td class="obs-col-role" style="padding: 7px 8px;">${rolesHtml}</td>
+          <td class="obs-col-scout" style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(scout)}</td>
           <td style="padding: 7px 8px; font-size: 13px;">${ratingHtml}</td>
           <td style="padding: 7px 8px;">${tagHtml}</td>
         </tr>
@@ -331,11 +342,19 @@ window.renderObservationsList = async function(pid) {
     }
 
     wrapper.innerHTML = `
+      <style>
+        @media (max-width: 700px) {
+          #obs-dashboard-${pid} .obs-col-role,
+          #obs-dashboard-${pid} .obs-col-scout { display: none; }
+        }
+      </style>
       <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
         <thead>
           <tr style="border-bottom: 0.5px solid var(--border);">
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_date")}</th>
-            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_scout")}</th>
+            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_opponent")}</th>
+            <th class="obs-col-role" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_role")}</th>
+            <th class="obs-col-scout" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_scout")}</th>
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_perf")}</th>
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_verdict")}</th>
           </tr>
@@ -533,7 +552,7 @@ function _obsComposeHtml(player, editing) {
             </div>
             <div>
               <label class="obs-label">${window.obsT("f_opponent")} *</label>
-              <input id="obs-opponent" type="text" value="${escapeHtml(v.opponent)}" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base">
+              <input id="obs-opponent" type="text" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base" autocomplete="off">
               <datalist id="obs-opponent-list">${opponentOptions}</datalist>
             </div>
           </div>
@@ -551,6 +570,12 @@ function _obsComposeHtml(player, editing) {
           </div>
 
           <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_notes")}</label>
+            <textarea id="obs-notes" rows="10" placeholder="${window.obsT("f_notes_ph")}"
+              style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px; resize: vertical; font-family: inherit; min-height: 200px;">${escapeHtml(v.notes)}</textarea>
+          </div>
+
+          <div style="margin-bottom: 12px;">
             <label class="obs-label">${window.obsT("f_rating")}</label>
             <div style="display: flex; align-items: center; gap: 12px;">
               <input id="obs-rating" type="range" min="0" max="10" step="0.5" value="${v.rating}"
@@ -562,12 +587,6 @@ function _obsComposeHtml(player, editing) {
           <div style="margin-bottom: 12px;">
             <label class="obs-label">${window.obsT("f_tag")}</label>
             <div id="obs-tag-chips" style="display: flex; flex-wrap: wrap; gap: 6px;">${tagChips}</div>
-          </div>
-
-          <div style="margin-bottom: 12px;">
-            <label class="obs-label">${window.obsT("f_notes")}</label>
-            <textarea id="obs-notes" rows="4" placeholder="${window.obsT("f_notes_ph")}"
-              style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px; resize: vertical; font-family: inherit;">${escapeHtml(v.notes)}</textarea>
           </div>
         </div>
 
@@ -669,6 +688,14 @@ function _wireObsCompose(player, editing) {
   document.getElementById("obs-compose-overlay")?.addEventListener("click", (e) => {
     if (e.target.id === "obs-compose-overlay") _closeObsCompose();
   });
+
+  // Fix bug input avversario non modificabile in edit mode:
+  // settiamo il valore via JS DOPO il render invece che inline su `value=""` HTML
+  // (il combo `<input value list>` di HTML5 ha glitch noti in edit mode)
+  const opponentInput = document.getElementById("obs-opponent");
+  if (opponentInput && editing && editing.opponent) {
+    opponentInput.value = editing.opponent;
+  }
 
   _wireFieldClicks();
 
