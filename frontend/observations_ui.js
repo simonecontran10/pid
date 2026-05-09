@@ -82,6 +82,7 @@ window.OBSERVATION_TRAITS = Object.values(window.OBSERVATION_TRAITS_BY_CATEGORY)
 
 // Etichette di valutazione globale: ordine PEGGIORE → MIGLIORE (sx → dx)
 window.OBSERVATION_TAGS = [
+  { value: "NON VALUTABILE",  color: "#9CA3AF" }, // grigio (escluso da medie)
   { value: "NON IDONEO",      color: "#EF4444" }, // rosso
   { value: "DA MONITORARE",   color: "#F97316" }, // arancione
   { value: "SECONDA SCELTA",  color: "#EAB308" }, // giallo
@@ -152,6 +153,7 @@ window.OBSERVATION_I18N_EN = {
   "SECONDA SCELTA": "SECOND CHOICE",
   "DA MONITORARE":  "MONITOR",
   "NON IDONEO":     "REJECT",
+  "NON VALUTABILE": "N/A",
 };
 
 window.obsLocalize = function(itValue) {
@@ -330,12 +332,15 @@ window.renderObservationsList = async function(pid) {
     }).join("");
 
     // Footer: media performance + distribuzione giudizi
-    const ratings = obsList.map(o => o.performance_rating).filter(r => r != null);
+    // ⚠️  Escludiamo le osservazioni con tag NON VALUTABILE da media performance e distribuzione %
+    const isEvaluable = (obs) => obs.evaluation_tags?.[0] !== "NON VALUTABILE";
+    const evaluableObs = obsList.filter(isEvaluable);
+    const ratings = evaluableObs.map(o => o.performance_rating).filter(r => r != null);
     const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) : null;
 
-    // Distribuzione giudizi (in %)
+    // Distribuzione giudizi (in %) — solo osservazioni con tag valutativo (escludo NON VALUTABILE)
     const tagCounts = {};
-    obsList.forEach(o => {
+    evaluableObs.forEach(o => {
       const tag = o.evaluation_tags?.[0];
       if (tag) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
@@ -343,7 +348,7 @@ window.renderObservationsList = async function(pid) {
     let distribHtml = "";
     if (totalTagged > 0) {
       // Ordine: PRIMA → SECONDA → MONITOR → REJECT (migliore a sinistra nel footer per leggibilità)
-      const orderedTags = ["PRIMA SCELTA", "SECONDA SCELTA", "DA MONITORARE", "NON IDONEO"];
+      const orderedTags = ["PRIMA SCELTA", "SECONDA SCELTA", "DA MONITORARE", "NON IDONEO"]; // NON VALUTABILE escluso da distribuzione %
       distribHtml = orderedTags
         .filter(tag => tagCounts[tag])
         .map(tag => {
@@ -907,7 +912,7 @@ async function _saveObsFromForm(player, editing) {
  */
 window.renderScoutingPanel = function() {
   return `
-    <div id="scouting-panel" style="padding: 24px; ">
+    <div id="scouting-panel" style="padding: 24px; max-width: 1100px; margin: 0 auto;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
         <div style="display: flex; align-items: center; gap: 12px;">
           <div style="width: 4px; height: 24px; background: var(--accent); border-radius: 2px;"></div>
