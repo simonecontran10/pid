@@ -1033,21 +1033,22 @@ window.wireScoutingPanel = async function() {
       // Barra segmentata (sinistra→destra: peggiore→migliore)
       const tagOrder = ["NON VALUTABILE", "NON IDONEO", "DA MONITORARE", "SECONDA SCELTA", "PRIMA SCELTA"];
       // Label corte per la barra (per non occupare troppo spazio)
-      const shortLabelIt = {
-        "NON VALUTABILE": "N/V",
-        "NON IDONEO": "NON IDONEO",
-        "DA MONITORARE": "MONITOR",
-        "SECONDA SCELTA": "SECONDA",
-        "PRIMA SCELTA": "PRIMA",
+      // Etichette per esteso (con percentuale se segmento abbastanza largo)
+      const fullLabelIt = {
+        "NON VALUTABILE": "NON VALUTABILE",
+        "NON IDONEO":     "NON IDONEO",
+        "DA MONITORARE":  "DA MONITORARE",
+        "SECONDA SCELTA": "SECONDA SCELTA",
+        "PRIMA SCELTA":   "PRIMA SCELTA",
       };
-      const shortLabelEn = {
-        "NON VALUTABILE": "N/A",
-        "NON IDONEO": "REJECT",
-        "DA MONITORARE": "MONITOR",
-        "SECONDA SCELTA": "2ND",
-        "PRIMA SCELTA": "1ST",
+      const fullLabelEn = {
+        "NON VALUTABILE": "NOT EVALUABLE",
+        "NON IDONEO":     "REJECT",
+        "DA MONITORARE":  "MONITOR",
+        "SECONDA SCELTA": "SECOND CHOICE",
+        "PRIMA SCELTA":   "FIRST CHOICE",
       };
-      const shortLabel = isIt ? shortLabelIt : shortLabelEn;
+      const shortLabel = isIt ? fullLabelIt : fullLabelEn;
 
       let distribBarHtml = "";
       if (totalTagged > 0) {
@@ -1058,10 +1059,11 @@ window.wireScoutingPanel = async function() {
             const pct = (tagCounts[tag] / totalTagged) * 100;
             const pctRounded = Math.round(pct);
             const lbl = shortLabel[tag];
-            // Decido cosa mostrare: se segmento >=22% mostro "LBL XX%"; >=12% solo "XX%"; <12% niente (resta tooltip)
+            // Etichette per esteso ("PRIMA SCELTA"=12 chars). Soglie più ampie:
+            // >=33% → "LABEL XX%"; >=18% → solo "XX%"; <18% → solo tooltip
             let inner = "";
-            if (pct >= 22) inner = `${lbl} ${pctRounded}%`;
-            else if (pct >= 12) inner = `${pctRounded}%`;
+            if (pct >= 33) inner = `${lbl} ${pctRounded}%`;
+            else if (pct >= 18) inner = `${pctRounded}%`;
             return `<div title="${escapeHtml(window.obsLocalize(tag))} ${pctRounded}%" style="flex: ${pct}; min-width: 0; height: 100%; background: ${def.color}; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #0E1116; overflow: hidden; white-space: nowrap; padding: 0 4px;">${inner}</div>`;
           }).join("");
         distribBarHtml = `<div style="display: flex; height: 20px; border-radius: 4px; overflow: hidden; background: rgba(255,255,255,0.05);">${segs}</div>`;
@@ -1097,7 +1099,7 @@ window.wireScoutingPanel = async function() {
           <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 8px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.1s; background: rgba(255,255,255,0.015);">
             <div style="display: flex; justify-content: center;">${tagDot}</div>
             <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-              <span style="color: var(--text-3); margin-right: 6px;">${dateFmt}</span>vs ${escapeHtml(opponentStr)}
+              <span style="color: var(--text-3); margin-right: 6px;">${dateFmt}</span>vs ${escapeHtml(opponentStr)}<span style="color: var(--text-3); margin: 0 6px;">·</span><span style="color: var(--text-3); font-size: 11px;">${escapeHtml(o.competition || "")}</span>
             </div>
             <div></div>
             <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rolesObsHtml}</div>
