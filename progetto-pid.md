@@ -5095,3 +5095,251 @@ Nuovi task emersi nella sessione:
 
 Stima task residui post-sessione: **~1.5-2 ore** totali. Il sistema è in stato **production-ready solido** dopo questa giornata. La maggior parte del lavoro restante è automazione (workflow notturno) o popolamento dati (Serie C giocatori), niente bug critici.
 
+## 9 mag 2026 (sera/notte) — Sessione completa: Winter signing chiuso 100% + foto SOTS 62%→95.4% + Export PDF/JSON + UI
+
+Sessione molto lunga di consolidamento e nuove feature. Otto filoni principali:
+1. Chiusura definitiva Task 1 Winter signing (120/120 risolti)
+2. Aggiunta PL1/PL2 (Ekstraklasa/I Liga) alle competizioni sortitoutsi
+3. Recupero massivo foto polacche (+784 face PNG, foto SOTS 62%→89%)
+4. Feature completa Export PDF + JSON osservazioni
+5. Iterazioni rifinitura PDF (6 versioni progressive)
+6. Allargamento posizioni 3 formazioni Griglie
+7. Override manuali +44 foto + cleanup root
+8. **Fix `slugify` Ł→l + recupero automatico +141 foto polacche** (foto SOTS 89%→95.4%)
+
+### Chiusura Task 1 Winter signing (120 vittime)
+
+3 fasi cumulative:
+- **Fase 1**: 40 vittime risolte sostituendo `current_club_name` col vero club da `clubs.json` (commit `2bbc808`)
+- **Fase 2**: scritto `fix_winter_signing_clubs.py` (~168 righe), re-scrappa pagina TM dei 71 club mancanti, fixa 76 vittime
+- **Fase 3**: 4 vittime nel cluster TM `id=515` ("Free agents" via curl diagnostic), aggiornate a `current_club_name="Free agent"`, workaround "Svincolato" (IT) / "Free agent" (EN) in `prettyClubName`
+
+**Risultato**: 120/120 risolti (100%) in ~30 minuti vs 1h stimato.
+
+### Aggiunta PL1/PL2 sortitoutsi
+
+Diagnosi: 885 dei 1080 senza foto erano in club PL1/PL2 (82%). I 36 club polacchi avevano `sortitoutsi_team_id=None`. PL1/PL2 mai aggiunti a `scrape_sortitoutsi_competition.py`.
+
+Fix: aggiunti URL `129558` (PKO Bank Polski Ekstraklasa) e `129559` (Polish I Liga). Run: 24/36 mappati automaticamente, 12 mismatch slug per **caratteri polacchi diacritici** (Łódź vs Lodz, Białystok vs Bialystok, Płock vs Plock, Kraków vs Krakow, ecc), 11 risolti via mapping manuale, 2 senza match (Wieczysta + Pogon Grodzisk, non in PL1/PL2 SOTS). **Risultato: 34/36 club polacchi mappati**.
+
+### Recupero massivo foto polacche (+784)
+
+Pipeline 4 step:
+1. `scrape_sortitoutsi_competition.py` — 24/36 mappati auto
+2. Mapping manuale 11 mismatch diacritici
+3. `harvest_sots_rosters.py` — cache 95→**130 club**, persons 10069→**13016** (+2947 polacchi)
+4. `find_more_sots_matches.py` — **784 confermati DOB** (97.2% precisione su 803 candidati)
+
+`apply_more_matches.py`: 777 face PNG scaricate, lookup 1784→**2568**. Falso start del primo run perché lanciato pre-harvest (cache vecchia, 31 match come 6 mag); diagnosi via mtime di confirmed.xlsx vs sots_rosters.json.
+
+**Risultato sub-fase**: foto SOTS 1784/2864 (62%) → **2568/2864 (89%)**. Commit `f4e3c79` 21.82 MB push (793 oggetti).
+
+### Bug dropdown Griglie (falso allarme)
+
+Screenshot mostrava dropdown Griglie con `league_it3` testo grezzo. Investigazione: codice già aggiornato (KNOWN_CLUB_CODES, dropdown options, i18n keys). Era cache browser obsoleta. Hard reload risolveva.
+
+### Pianificazione feature Export PDF + JSON
+
+Decisioni utente:
+- **Q1** conflitti import duplicati: opzione B (chiedi conferma sovrascrittura)
+- **Q2** user_id al re-import: ibrido (`user_id` = chi importa per RLS, `author_username` = creatore originale preservato)
+- **Q3** struttura PDF: confermata (singola = logo + dati + relazione completa; dossier multi = logo + dati + tabella + media)
+- **Q4** ordine commit: 1 commit unico (preferenza)
+- **Foto giocatore nel PDF**: SÌ (overhead 200ms accettabile)
+
+3 punti insertion: pannello Salvataggi (sezione "Osservazioni"), modal modifica osservazione (bottone PDF), pannello Scouting (bottone PDF dossier per giocatore).
+
+Verificato: jsPDF già caricato in `index.html` 2.5.1.
+
+### Implementazione feature Export PDF + JSON
+
+`patch_export_observations.py` (~1100 righe). 3 versioni iterative dello script (ogni dry-run validava la successiva):
+
+**v1**: 6 patch via anchor exact-match → 2 falliti (pattern matcha 2 volte, anchor `window.openObservationCompose` non corretto)
+
+**v2**: PATCH 1 IT con `replace(.., 1)`, PATCH 4+5 unite e appese in coda al file (no anchor) → 1 fallito (PATCH 2 EN aveva logica dipendente da PATCH 1)
+
+**v3**: PATCH 2 EN riscritta con `split(old_pattern, 2)` per sostituire SOLO la 2a occorrenza (la 1a per IT) → tutti i 6 dry-run verdi
+
+Patch attive in produzione:
+1. `i18n.js` IT/EN — 40+ chiavi nuove
+2. `observations_ui.js` — bottone "📄 PDF" nel modal di edit
+3. `observations_ui.js` — append in coda di `exportObservationPDF`, `exportPlayerDossierPDF`, handler delegati, MutationObserver per bottone "📄" auto-iniettato in righe scouting
+4. `app.js` — sezione "Osservazioni" in pannello Salvataggi con `_renderObsSummary()`, `exportObservationsJSON()`, `importObservationsFromFile()` con gestione duplicati via prompt
+5. `index.html` — bump cache busting
+
+### Bug post-apply e iterazioni rifinitura PDF
+
+**Bug 1 — "Giocatore non trovato"**: codice usava `window.state?.players` ma `state` non è esposto come `window.state` (è globale tramite scope condiviso script non-modulari). Fix: `window.state?.players` → `state.players`. Commit `e47f14c`.
+
+**v2 (5 fix grafici)** — `patch_pdf_v2.py` (~750 righe):
+1. Logo PID immagine (era solo testuale)
+2. Foto giocatore via path **locali** no-CORS (era "no photo" per CORS)
+3. Logo club inline accanto al nome
+4. Posizione estesa "DCS · Difensore centrale sinistro" (mappa codice→nome 21 ruoli)
+5. Distribuzione giudizi nel dossier (barra colorata segmentata + legenda %)
+
+Commit `c2433dd`.
+
+**v3 (foto SOTS + mini-campo)**: PDF v2 mostrava ancora foto TM invece di SOTS (priorità invertita), e mancava rappresentazione tattica posizione. Fix:
+1. Priorità foto: SOTS locale → TM locale → URL CDN
+2. Mini-campo SVG nel PDF singolo (30×42mm, sfondo verde, linee bianche, pallino giallo con codice ruolo). Coordinate logiche 380×560 da `OBSERVATION_ROLE_DEFS` (15 ruoli). Funzione `_pdfDrawMiniField(pdf, x, y, w, h, roles)`.
+
+Commit `51ecd83`.
+
+**v4 (Performance + tag)**: PDF v3 mostrava "Prima scelta" tagliato (collisione col mini-campo) e Performance 9pt anonimo. Fix: Performance 9→18pt bold verde accent, tag chip riposizionato accanto al numero.
+
+**v5 (i18n IT/EN + traduzione foot/position)**: PDF mostrava titoli inglesi anche con lingua IT settata. Diagnosi: `_pdfT` usava `window.t` che NON esiste come globale (`t()` è globale tramite scope condiviso, come `state`). Fix: `_pdfT` ora usa `t` direttamente. Aggiunta anche traduzione campi DB scrappati in inglese (`foot`: `left`→`sinistro`, `position_general`: `Centre-Back`→`Difensore centrale`, mappa con 13 posizioni TM).
+
+**v6 (logo PID custom)**: utente aveva chiesto di usare `PID logo.png` (full size 996KB nella root) invece del default `data/photos/branding/logo.png`. Soluzione: copiato come `data/photos/branding/pid_logo_pdf.png` (mantengo branding intatto per favicon/splash, uso variante separata per PDF). Aggiornato `PDF_LOGO_URL` in `observations_ui.js`.
+
+### Allargamento 3 formazioni Griglie
+
+Patch a `FORMATIONS` con 3 sostituzioni esatte:
+
+**3-5-2 — 6 posizioni allargate**: RCB 70→75, LCB 30→25, RCM 70→78, LCM 30→22, RST 60→64, LST 40→36
+
+**3-4-2-1 — 4 posizioni**: RCB 70→75, LCB 30→25, RCM 60→68, LCM 40→32
+
+**3-4-3 — distribuzione equa centrocampisti**: vecchia 12-40-60-88 (gap 28-20-28 sbilanciato) → nuova 12-37-63-88 (gap 25-26-25 equidistanti)
+
+Commit `13dfffd`.
+
+### Override manuali +44 foto
+
+`manual_sots_overrides.py` esistente con 25 override del 8 mag. Aggiunti via 2 batch:
+- 1 override (Nadir El Jamali, Saint-Étienne in Ligue 2 non scrappata, sots=2000297870) — commit `024694a`
+- 18 override (giocatori polacchi/ucraini residui non in PL1/PL2 SOTS) — commit `1848a67`
+
+Run finale: **44/44 matched**, lookup 2568→2586.
+
+Workflow per override futuri: aggiungi `("Nome", "url-sots"),` nel file → `python3 manual_sots_overrides.py` → commit + push (30 secondi).
+
+### Cleanup root
+
+15 file rimossi:
+- 5 backup `.before_serie_c` (sistema stabile da ore)
+- 9 patch script applicati: `patch_cloud_sync.py`, `patch_commit1/3.py`, `patch_export_observations.py`, `patch_pdf_v2.py`, `migrate_serie_c.py`, `fix_winter_signing_clubs.py`, `fix_new_arrival_clubs.py`, `filter_dob_mismatch.py`
+- `.DS_Store` (anche ricorsivamente)
+
+Aggiornato `.gitignore` con `patch_*.py` per evitare future tracking. Commit `abcb917`.
+
+### Fix slugify Ł→l + recupero +141 foto automatiche (FILONE FINALE)
+
+Utente ha mandato URL SOTS di Jakub Łabojko per override manuale, chiedendo "ma come mai non sono state prese in automatico?". Diagnosi rivelatrice:
+
+**Ricerca step-by-step**:
+1. Łabojko ESISTE in `players_main` (tm_id=387529, club Motor Lublin id=3527, DOB intera 1997-10-03)
+2. Motor Lublin ESISTE in clubs.json con `sortitoutsi_team_id=714221` ✅
+3. Cache rosters HA `jakub-labojko` (sots_id=96115997) sotto Motor Lublin ✅
+4. DOB intera, no truncation ✅
+
+Tutto sembrava OK. Test slug:
+- `slugify("Jakub Łabojko")` → produceva `'jakub-łabojko'` (con `ł`!) ❌
+- SOTS slug: `'jakub-labojko'` (senza `ł`)
+- Slug mismatch → no match → giocatore rimaneva unmatched
+
+Causa profonda: `unicodedata.normalize("NFKD", ...)` **NON decompone** la `ł` polacca perché è una lettera distinta non una vocale accentata. La funzione `slugify` aveva già la translate `Ł→L, ł→l` ma in qualche modo sembrava non applicarsi.
+
+Verifica con import fresh: la funzione `slugify` **era già corretta nel file**. Il bug non era nel codice attuale ma nell'**ultimo run** di `find_more_sots_matches.py`: era stato lanciato prima del fix. Bisognava semplicemente rilanciarlo.
+
+**Run rilanciato post-fix**:
+- Risultato: **141 confermati DOB** (97.6% precisione, 22 mismatch su 163 fetch)
+- `apply_more_matches.py`: 138 face PNG scaricate, lookup 2586→**2727**
+- Catturati automaticamente 8/12 dei nomi che l'utente stava per aggiungere come override manuali (Łabojko, Marcjanik, Kozłowski, Sekulski, Głogowski, Jerke, Kaput, Rzuchowski)
+- 4 ancora fuori (Milan Djuric, Kacper Plichta, Maksym Dyachuk, Fabian Hiszpański), aggiunti come override manuali batch
+
+Commit consolidato: `feat(sots): +141 auto via fix slugify Ł→l + 4 override manuali (Djuric, Plichta, Dyachuk, Hiszpański) — foto SOTS 95.4%`.
+
+**Lezione**: quando si fa un fix in una funzione di matching, **sempre rilanciare lo script consumatore** anche se il fix sembra ovvio. Lo `slugify` era già corretto da un commit precedente, ma `find_more_sots_matches.py` non era mai stato rilanciato dopo quel fix.
+
+### Stato fine sessione
+
+In produzione:
+- ✅ Task 1 Winter signing chiuso al 100% (120/120)
+- ✅ Task 2 Foto SOTS al **95.4%** (2731/2864) — era 62% all'inizio sessione, **+33 punti, +978 foto recuperate in 24h**
+- ✅ PL1/PL2 (Ekstraklasa/I Liga) aggiunte a sortitoutsi competitions
+- ✅ 34/36 club polacchi mappati
+- ✅ Cache `sots_rosters.json` cresciuta a 130 club / 13016 persons
+- ✅ Lookup `sortitoutsi_id_lookup.json` cresciuto a **2727 entries** (era 1784 inizio giornata, +943)
+- ✅ ~919 face PNG nuove in produzione (777 polacche batch 1 + 138 batch 2 + 48 override manuali, alcuni overlap)
+- ✅ Workaround "Free agent" → "Svincolato" in `prettyClubName`
+- ✅ Feature Export PDF + JSON osservazioni completa con 6 iterazioni rifinitura
+- ✅ Formazioni 3-5-2 / 3-4-2-1 / 3-4-3 con posizioni allargate
+- ✅ Cleanup file Python (15 file rimossi)
+
+I 133 senza foto rimasti si dividono approssimativamente:
+- ~80 in club minori non scrappati (Saint-Étienne Ligue 2, Liga Portugal, Primavera straniere)
+- ~30 con DOB tronca TM Primavera (file `dob_mismatch.xlsx` da filtrare con logica anno+club)
+- ~20 senza candidato slug nessuno
+- Casi singoli risolvibili via override manuale on-demand
+
+### Lezioni apprese
+
+**Iterazione su patch script** in ordine di robustezza:
+1. **Append in coda** — funziona sempre, idempotente con check "già patchato"
+2. **Split + replace n-th occurrence** — robusto per pattern N-volte
+3. **Anchor exact-match** — OK per pattern univoci ma fragile
+4. **Regex** — buona via di mezzo
+
+**Dry-run obbligatorio**: ha salvato la giornata 3 volte (export observations v1+v2, patch_pdf_v3).
+
+**Diagnosi mtime per debug pipeline**: confrontare mtime di output vs cache rivela step saltati. Usato 2 volte oggi (find_more_sots_matches non lanciato post-harvest, find_more_sots_matches non rilanciato post-fix slugify).
+
+**Cluster fittizi TM**: id=515 era "Free agents", tracciabile via curl + redirect. Quando un fetch fallisce, vale curlare manualmente.
+
+**Scope `window.X` vs scope condiviso**: in codebase con `<script>` non-modulari, `state`, `t`, `currentLang` sono globali SENZA prefisso `window.`. Aggiungere `window.` rompe perché la variabile non è esposta lì. Bug fixato 2 volte oggi.
+
+**Diacritici tra fonti**: TM senza diacritici (Lodz), SOTS con (Łódź). Risolto via mapping manuale + fix slugify.
+
+**Rilanciare consumer script post-fix**: il bug "Łabojko non matchato" era dovuto al fatto che `find_more_sots_matches.py` non era mai stato rilanciato dopo un fix precedente di `slugify`. Quando si patcha una funzione di matching, sempre eseguire il consumer.
+
+### Commit pushati nella sessione
+
+(in ordine cronologico)
+- `2bbc808` fix(players): risolvo 40 'Winter signing'/'Returnee'/'New arrival' (sostituito current_club_name)
+- (consolidato) fix(players): chiusura totale Winter signing — 116 fix retroattivi + 4 Free agent
+- `f4e3c79` feat(sots): aggiunte PL1/PL2 (Ekstraklasa/I Liga) — recupero 784 foto polacchi via harvest cross-club
+- `e47f14c` fix(obs-pdf): correzione 'Giocatore non trovato' (state.players invece di window.state?.players)
+- `c2433dd` fix(obs-pdf): logo PID + foto giocatore (path locali no CORS) + logo club + posizione estesa + distribuzione giudizi
+- `51ecd83` fix(obs-pdf): foto SOTS prioritaria + mini-campo grafico nel PDF singolo (cerchio giallo su posizioni giocate)
+- (commit performance) fix(obs-pdf): performance rating ingrandito (18pt) + tag riposizionato
+- (commit i18n) fix(obs-pdf): i18n IT/EN ora rispettata (uso 't' globale invece di window.t) + traduzione foot e position TM
+- (commit logo) fix(obs-pdf): uso 'PID logo.png' (versione full size) come logo nel PDF
+- `abcb917` chore: cleanup root (backup .before_serie_c + patch script applicati + .DS_Store)
+- `13dfffd` feat(grids): allargo posizioni in formazioni 3-5-2/3-4-2-1/3-4-3 (CB laterali, CM, ST + distribuzione equa centrocampisti)
+- `024694a` feat(sots): override manuale Nadir El Jamali (Saint-Étienne, Ligue 2 non scrappata)
+- `1848a67` feat(sots): +18 override manuali (giocatori polacchi/ucraini/altri non scrappati)
+- (commit finale) feat(sots): +141 foto auto via fix slugify Ł→l + 4 override manuali (Djuric, Plichta, Dyachuk, Hiszpański) — foto SOTS 95.4%
+
+Totale commit sessione sera: **~14**. Totale giornata 9 mag: **~40+** commit.
+
+---
+
+## Aggiornamento TODO
+
+Task chiusi nella sessione completa di oggi (mattina + pomeriggio + sera/notte):
+
+| Task originale | Stato |
+|---|---|
+| 1. Bug Winter signing scraper retroattivo | ✅ CHIUSO (120/120) |
+| 2. Recupero foto SOTS rimanenti | ✅ MAGGIORANZA (978/1080 = 91% recuperate, da 62% a 95.4%; restano 133) |
+| 3. Workflow GitHub Actions auto-update foto | 🔄 NON ANCORA |
+| 4. Fase 5 Export PDF (dossier + report) | ✅ COMPLETATO con 6 iterazioni rifinitura |
+| 5. Popolare 56 club Serie C con giocatori | 🔄 NON ANCORA |
+| 6. Fase 6 Export/Import salvataggio JSON | ✅ INCLUSO nella feature Export osservazioni |
+| 7. Pulizia file `.before_serie_c` | ✅ FATTO |
+| 8. Refactor split observations_ui.js | 🔄 NON ANCORA |
+
+Stato sistema: **production-ready solido**. Foto SOTS al 95.4% è un livello eccellente, non vale la pena spendere tempo sui residui 133 (giocatori in club minori, residui marginali). Le feature Export PDF/JSON funzionano completamente.
+
+Task residui post-sessione (BASSA priorità):
+| Task | Priorità | Stima | Note |
+|---|---|---|---|
+| Workflow notturno auto-update foto SOTS settimanale | MEDIA | ~30 min | Cron lunedì 04:00 UTC con harvest + matching + apply |
+| Popolare 56 club Serie C con giocatori | BASSA | ~45 min | `build_urls.py` + `add_players.py` |
+| Override manuali on-demand foto residue | BASSA | ongoing | Quando emergono, 30 secondi/giocatore |
+| Refactor split observations_ui.js | BASSA | rimandato | Solo se emergono bug accoppiamento |
+
+Stima task residui: **~1.5 ore**. Niente bug critici. Sistema in stato pulito e ben documentato.
+
