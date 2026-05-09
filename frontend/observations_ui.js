@@ -169,7 +169,10 @@ window.obsT = function(key) {
       edit_obs: "Modifica osservazione",
       new_obs_title: "Nuova osservazione",
       delete_confirm: "Eliminare questa osservazione? L'azione è irreversibile.",
-      th_date: "Data", th_opponent: "Avversario", th_competition: "Competizione", th_role: "Posizione", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
+      th_date: "Data", th_opponent: "Avversario", th_competition: "Competizione", th_role: "Posizione", th_mode: "Mod.", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
+      f_viewing_mode: "Visione",
+      f_viewing_live: "Live",
+      f_viewing_tv: "TV/Video",
       footer_avg: "Media performance",
       footer_distrib: "Distribuzione giudizi",
       f_match_date: "Data partita",
@@ -205,7 +208,10 @@ window.obsT = function(key) {
       edit_obs: "Edit observation",
       new_obs_title: "New observation",
       delete_confirm: "Delete this observation? This action is irreversible.",
-      th_date: "Date", th_opponent: "Opponent", th_competition: "Competition", th_role: "Role", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
+      th_date: "Date", th_opponent: "Opponent", th_competition: "Competition", th_role: "Role", th_mode: "Mode", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
+      f_viewing_mode: "Viewing",
+      f_viewing_live: "Live",
+      f_viewing_tv: "TV/Video",
       footer_avg: "Average performance",
       footer_distrib: "Verdict distribution",
       f_match_date: "Match date",
@@ -303,12 +309,19 @@ window.renderObservationsList = async function(pid) {
         ? `<span style="color: var(--text-2); font-size: 11px; font-weight: 500;">${escapeHtml(rolesShown)}${rolesExtra}</span>`
         : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
       const compTrunc = (o.competition || "").length > 16 ? (o.competition || "").slice(0, 15) + "…" : (o.competition || "");
+      let modeHtml = `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
+      if (o.viewing_mode === "LIVE") {
+        modeHtml = `<span title="Live" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: rgba(34,197,94,0.15); color: #22C55E;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg></span>`;
+      } else if (o.viewing_mode === "TV") {
+        modeHtml = `<span title="TV/Video" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: rgba(96,165,250,0.15); color: #60A5FA;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="22" x2="16" y2="22"/></svg></span>`;
+      }
       return `
         <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
           <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px; white-space: nowrap;">${dateFmt}</td>
           <td style="padding: 7px 8px; color: var(--text-1); font-size: 12px; font-weight: 500;">${escapeHtml(opponentTrunc)}</td>
           <td class="obs-col-comp" style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(compTrunc)}</td>
           <td class="obs-col-role" style="padding: 7px 8px;">${rolesHtml}</td>
+          <td class="obs-col-mode" style="padding: 7px 8px;">${modeHtml}</td>
           <td class="obs-col-scout" style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(scout)}</td>
           <td style="padding: 7px 8px; font-size: 13px;">${ratingHtml}</td>
           <td style="padding: 7px 8px;">${tagHtml}</td>
@@ -358,6 +371,7 @@ window.renderObservationsList = async function(pid) {
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_opponent")}</th>
             <th class="obs-col-comp" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_competition")}</th>
             <th class="obs-col-role" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_role")}</th>
+            <th class="obs-col-mode" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_mode")}</th>
             <th class="obs-col-scout" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_scout")}</th>
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_perf")}</th>
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_verdict")}</th>
@@ -404,7 +418,7 @@ window.wireObservationsHandlers = function(pid) {
 //  MODAL "Nuova / Modifica Osservazione" — layout 2 colonne
 // ============================================================
 
-window._obsCompose = { pid: null, editId: null, selectedRoles: [], selectedTag: null, selectedStrengths: [], selectedWeaknesses: [] };
+window._obsCompose = { pid: null, editId: null, selectedRoles: [], selectedTag: null, selectedStrengths: [], selectedWeaknesses: [], selectedViewingMode: null };
 
 window.openObservationCompose = async function(pid, obsId = null) {
   const player = state.players.find(p => p.tm_player_id === pid);
@@ -427,6 +441,7 @@ window.openObservationCompose = async function(pid, obsId = null) {
     selectedTag: editing ? (editing.evaluation_tags?.[0] || null) : null,
     selectedStrengths: editing ? [...(editing.strengths || [])] : [],
     selectedWeaknesses: editing ? [...(editing.weaknesses || [])] : [],
+    selectedViewingMode: editing ? (editing.viewing_mode || null) : null,
   };
 
   document.getElementById("obs-compose-overlay")?.remove();
@@ -549,6 +564,23 @@ function _obsComposeHtml(player, editing) {
 
         <!-- COLONNA SINISTRA: form -->
         <div>
+          <!-- VISIONE: LIVE / TV-VIDEO (obbligatorio) -->
+          <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_viewing_mode")} *</label>
+            <div id="obs-viewing-chips" style="display: flex; gap: 8px;">
+              <button type="button" class="obs-viewing-chip" data-mode="LIVE"
+                style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; border: 0.5px solid ${window._obsCompose.selectedViewingMode === "LIVE" ? "#22C55E" : "var(--border)"}; background: ${window._obsCompose.selectedViewingMode === "LIVE" ? "rgba(34,197,94,0.15)" : "transparent"}; color: ${window._obsCompose.selectedViewingMode === "LIVE" ? "#22C55E" : "var(--text-2)"};">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><line x1="3" y1="5" x2="21" y2="5"/></svg>
+                ${window.obsT("f_viewing_live")}
+              </button>
+              <button type="button" class="obs-viewing-chip" data-mode="TV"
+                style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 8px 14px; border-radius: 8px; cursor: pointer; border: 0.5px solid ${window._obsCompose.selectedViewingMode === "TV" ? "#60A5FA" : "var(--border)"}; background: ${window._obsCompose.selectedViewingMode === "TV" ? "rgba(96,165,250,0.15)" : "transparent"}; color: ${window._obsCompose.selectedViewingMode === "TV" ? "#60A5FA" : "var(--text-2)"};">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="22" x2="16" y2="22"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+                ${window.obsT("f_viewing_tv")}
+              </button>
+            </div>
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
             <div>
               <label class="obs-label">${window.obsT("f_match_date")} *</label>
@@ -721,6 +753,24 @@ function _wireObsCompose(player, editing) {
     }
   });
 
+  // Wire chip LIVE/TV (single-select obbligatorio)
+  document.querySelectorAll(".obs-viewing-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const mode = btn.dataset.mode;
+      window._obsCompose.selectedViewingMode = (window._obsCompose.selectedViewingMode === mode) ? null : mode;
+      // Re-render entrambe le chip
+      document.querySelectorAll(".obs-viewing-chip").forEach(b => {
+        const m = b.dataset.mode;
+        const isOn = window._obsCompose.selectedViewingMode === m;
+        const color = m === "LIVE" ? "#22C55E" : "#60A5FA";
+        const bgRgba = m === "LIVE" ? "rgba(34,197,94,0.15)" : "rgba(96,165,250,0.15)";
+        b.style.borderColor = isOn ? color : "var(--border)";
+        b.style.background = isOn ? bgRgba : "transparent";
+        b.style.color = isOn ? color : "var(--text-2)";
+      });
+    });
+  });
+
   document.querySelectorAll(".obs-tag-chip").forEach(btn => {
     btn.addEventListener("click", () => {
       const v = btn.dataset.tag;
@@ -801,6 +851,10 @@ async function _saveObsFromForm(player, editing) {
     showErr(window.obsT("err_required"));
     return;
   }
+  if (!window._obsCompose.selectedViewingMode) {
+    showErr(window.obsT("err_required"));
+    return;
+  }
   if (!window._obsCompose.selectedRoles.length) {
     showErr(window.obsT("err_no_role"));
     return;
@@ -811,6 +865,7 @@ async function _saveObsFromForm(player, editing) {
     match_date: matchDate,
     opponent: opponent,
     competition: competition,
+    viewing_mode: window._obsCompose.selectedViewingMode,
     performance_rating: rating,
     roles_played: window._obsCompose.selectedRoles,
     evaluation_tags: window._obsCompose.selectedTag ? [window._obsCompose.selectedTag] : [],

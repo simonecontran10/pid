@@ -542,12 +542,18 @@ async function saveObservation(obs) {
     return { data: null, error: `ruoli non validi: ${invalid.join(", ")}` };
   }
 
+  // Validazione viewing_mode (deve essere LIVE o TV se presente)
+  if (obs.viewing_mode && !["LIVE", "TV"].includes(obs.viewing_mode)) {
+    return { data: null, error: `viewing_mode non valido: ${obs.viewing_mode}` };
+  }
+
   const record = {
     user_id: window.cloudAuth.user.id,
     tm_player_id: obs.tm_player_id,
     match_date: obs.match_date,
     opponent: obs.opponent,
     competition: obs.competition,
+    viewing_mode: obs.viewing_mode ?? null,
     performance_rating: obs.performance_rating ?? null,
     roles_played: roles,
     evaluation_tags: Array.isArray(obs.evaluation_tags) ? obs.evaluation_tags : [],
@@ -605,6 +611,12 @@ async function updateObservation(id, patch) {
     if (invalid.length) {
       return { data: null, error: `ruoli non validi: ${invalid.join(", ")}` };
     }
+  }
+
+  // Se aggiorni viewing_mode, valida
+  if (safePatch.viewing_mode !== undefined && safePatch.viewing_mode !== null
+      && !["LIVE", "TV"].includes(safePatch.viewing_mode)) {
+    return { data: null, error: `viewing_mode non valido: ${safePatch.viewing_mode}` };
   }
 
   try {
