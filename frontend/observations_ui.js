@@ -624,7 +624,7 @@ function _obsComposeHtml(player, editing, prefill) {
             </div>
             <div>
               <label class="obs-label">${window.obsT("f_opponent")} *</label>
-              <input id="obs-opponent" type="text" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base" autocomplete="off" value="${escapeHtml(v.opponent || "")}">
+              <input id="obs-opponent" type="text" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base" autocomplete="off">
               <datalist id="obs-opponent-list">${opponentOptions}</datalist>
             </div>
           </div>
@@ -1151,7 +1151,7 @@ window.wireScoutingPanel = async function() {
             <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
               <span style="color: var(--text-3); margin-right: 6px;">${dateFmt}</span>vs ${escapeHtml(opponentStr)}<span style="color: var(--text-3); margin: 0 6px;">·</span><span style="color: var(--text-3); font-size: 11px;">${escapeHtml(o.competition || "")}</span>
             </div>
-            <div></div>
+            <div style="text-align: center; font-size: 11px; color: ${o.minutes_played != null ? "var(--text-1)" : "var(--text-3)"}; font-variant-numeric: tabular-nums;">${o.minutes_played != null ? o.minutes_played + "'" : "—"}</div>
             <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rolesObsHtml}</div>
             <div style="text-align: center;">${modeBadge}</div>
             <div style="text-align: center; font-size: 14px; font-weight: 700; color: var(--accent);">${ratingStr}</div>
