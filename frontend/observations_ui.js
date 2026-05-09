@@ -193,6 +193,7 @@ window.obsT = function(key) {
       btn_save: "Salva", btn_cancel: "Annulla", btn_delete: "Elimina",
       err_required: "Compila tutti i campi obbligatori",
       err_no_role: "Seleziona almeno un ruolo",
+      err_no_tag: "Seleziona un giudizio (anche 'Non valutabile')",
       err_duplicate: "Esiste già un'osservazione per questo giocatore in questa partita",
       // Pannello scouting sidebar
       scouting_title: "Scouting",
@@ -232,6 +233,7 @@ window.obsT = function(key) {
       btn_save: "Save", btn_cancel: "Cancel", btn_delete: "Delete",
       err_required: "Fill in all required fields",
       err_no_role: "Select at least one role",
+      err_no_tag: "Select an evaluation tag (also 'N/A')",
       err_duplicate: "An observation already exists for this player in this match",
       scouting_title: "Scouting",
       scouting_summary: "players observed",
@@ -313,9 +315,9 @@ window.renderObservationsList = async function(pid) {
       const compTrunc = (o.competition || "").length > 16 ? (o.competition || "").slice(0, 15) + "…" : (o.competition || "");
       let modeHtml = `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
       if (o.viewing_mode === "LIVE") {
-        modeHtml = `<span title="Live" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: rgba(34,197,94,0.15); color: #22C55E;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg></span>`;
+        modeHtml = `<span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px 3px 5px; border-radius: 999px; background: rgba(34,197,94,0.15); color: #22C55E; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="3" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2" fill="currentColor"/></svg>LIVE</span>`;
       } else if (o.viewing_mode === "TV") {
-        modeHtml = `<span title="TV/Video" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 4px; background: rgba(96,165,250,0.15); color: #60A5FA;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="22" x2="16" y2="22"/></svg></span>`;
+        modeHtml = `<span style="display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px 3px 5px; border-radius: 999px; background: rgba(96,165,250,0.15); color: #60A5FA; font-size: 10px; font-weight: 600; letter-spacing: 0.04em;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="14" rx="2"/><line x1="8" y1="22" x2="16" y2="22"/></svg>TV/VIDEO</span>`;
       }
       return `
         <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
@@ -862,6 +864,10 @@ async function _saveObsFromForm(player, editing) {
   }
   if (!window._obsCompose.selectedRoles.length) {
     showErr(window.obsT("err_no_role"));
+    return;
+  }
+  if (!window._obsCompose.selectedTag) {
+    showErr(window.obsT("err_no_tag"));
     return;
   }
 
