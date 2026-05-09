@@ -4595,3 +4595,217 @@ Prossima sessione: partire dal task 1 (Winter signing) o task 3 (workflow nottur
 
 ---
 
+## 9 mag 2026 (sera/notte) — PL1/PL2 + chiusura Winter signing + Export PDF feature
+
+Sessione lunga di consolidamento e nuova feature. Quattro filoni principali:
+1. Chiusura definitiva del Task 1 Winter signing (120/120 risolti, 100% recupero)
+2. Aggiunta PL1/PL2 (Ekstraklasa/I Liga) alle competizioni sortitoutsi
+3. Recupero massivo foto polacche (+784 face PNG, foto SOTS da 62% a 89%)
+4. Pianificazione e scrittura della feature Export PDF + JSON osservazioni nel pannello Salvataggi
+
+### Chiusura Task 1 — Winter signing/Returnee/New arrival (120 vittime)
+
+Diagnosi corretta della sessione precedente aveva identificato che i `current_club_id` puntano a club veri ma TM mostra "Winter signing"/"Returnee"/"New arrival" come testo del link nel ribbon di transizione, sovrascrivendo il vero nome del club. Approccio in 3 fasi cumulative:
+
+**Fase 1 — Fix da clubs.json (40 vittime)**: script Python che per ogni vittima cerca il `current_club_id` in `data/clubs.json` e sostituisce `current_club_name` col vero nome del club. Backup `players_main.json.before_winter_fix` creato e poi rimosso. Aggiornati `players_main.json` + `players_static.json` + `players_all.json`. Risultato: 40 fix immediati. Commit `2bbc808` "fix(players): risolvo 40 'Winter signing'/'Returnee'/'New arrival' (sostituito current_club_name col vero club da clubs.json — gli 80 polacchi/altri restano)".
+
+**Fase 2 — Re-scrape pagina TM dei 71 club mancanti (76 vittime)**: gli 80 residui avevano `current_club_id` di club non in `clubs.json` (polacchi, danesi, croati, portoghesi). Scritto `fix_winter_signing_clubs.py` (~168 righe, salvato in repo) che:
+- Estrae i 71 unique `current_club_id` dei vittime non fixabili
+- Per ognuno fa fetch `https://www.transfermarkt.com/-/startseite/verein/{id}` con User-Agent browser-like
+- Estrae il nome dal `<h1 class="data-header__headline-wrapper">` con fallback su `<title>`
+- Aggiorna `current_club_name` (e `roster_club_name` se sporco) per tutti i giocatori che hanno quel club_id
+- Modalità sicura: default = dry-run, `--apply` per applicare
+
+Run: 70/71 club risolti correttamente (es. id=22431 → "Stal Mielec", id=8377 → "Chrobry Glogow", id=1109 → "Aalborg BK", id=6399 → "Lillestrøm SK"). Tempo totale ~35 secondi. Risultato: 76 vittime fixate (più dei 70 club perché alcuni club avevano 2-4 vittime ciascuno, es. id=515 con 4 giocatori).
+
+**Fase 3 — Free agent (4 vittime, cluster TM speciale)**: il club id=515 ha fallito il fetch nella Fase 2. Diagnosi via curl manuale: `https://www.transfermarkt.com/-/startseite/verein/515` redirige a `https://www.transfermarkt.com/statistik/vertragslosespieler` = "Free agents" su TM. Quindi 515 NON è un club ma il cluster fittizio TM dei giocatori senza contratto. I 4 giocatori coinvolti (Paweł Dawidowicz, Erdal Rakip, Kuba Szabłowski, Mateusz Holownia) sono effettivamente svincolati. Fix: aggiornati a `current_club_name="Free agent"`. Aggiornato `prettyClubName` in `frontend/app.js` per visualizzare "Svincolato" (IT) / "Free agent" (EN) accanto al workaround esistente "Winter signing"/"New arrival"/"Returnee" → "—".
+
+**Risultato finale Task 1**: 120/120 vittime risolte (100% recupero) in ~30 minuti totali (vs 1h stimato). Tempo speso significativamente meno perché la diagnosi era cambiata: NON un bug scraper retroattivo da fixare nel codice, ma un fix dati JSON one-shot. Il bug nello scraper resta latente (la `_extract_current_club_id` continua a sbagliare per giocatori in trasferimento) ma è coperto dal workaround `prettyClubName` come safety net per casi futuri.
+
+Commit consolidato: l'ultimo `git add` per Task 1 è andato in un commit unico (chiusura totale) insieme al fix `prettyClubName` per Free agent.
+
+### Aggiunta PL1/PL2 (Ekstraklasa/I Liga) alle COMPETITIONS sortitoutsi
+
+Diagnosi della causa-radice del problema foto polacche: dei 1080 giocatori senza foto SOTS dopo Task 1, **885 erano in club PL1 o PL2** (82% del totale!). Verifica: i 36 club polacchi in `clubs.json` (18 PL1 + 18 PL2) avevano TUTTI `sortitoutsi_team_id=None`. La cache `data/sots_rosters.json` (130 club, 13016 persons dopo harvest) aveva 0 club polacchi. Quindi PL1/PL2 erano stati aggiunti a TM scraping (tramite scraping_leagues.py o simili) ma **mai aggiunti** a `scrape_sortitoutsi_competition.py`.
+
+Fix: aggiunto a `COMPETITIONS` in `scrape_sortitoutsi_competition.py`:
+- `PL1` → `https://sortitoutsi.net/football-manager-2026/competition/129558/pko-bank-polski-ekstraklasa`
+- `PL2` → `https://sortitoutsi.net/football-manager-2026/competition/129559/polish-first-division`
+
+Inserito dopo `IT3C`. Run dello script: trovati 18 team PL1 e 18 PL2 (36 totali). Match automatico via slug:
+- 24/36 club mappati direttamente (es. Cracovia, Korona Kielce, Lech Poznan, Lechia Gdansk, Stal Mielec, GKS Tychy)
+- 12/36 club con mismatch slug per **caratteri polacchi diacritici** assenti in TM ma presenti in SOTS:
+  - Widzew Lodz ↔ Widzew Łódź (sots 1468)
+  - Jagiellonia Bialystok ↔ Jagiellonia Białystok (sots 710052)
+  - Zaglebie Lubin ↔ KGHM Zagłębie Lubin (sots 1469)
+  - Wisla Plock ↔ Wisła Płock (sots 1458)
+  - Wisla Kraków ↔ Wisła Kraków (sots 1300881)
+  - Polonia Warsaw ↔ Polonia Warszawa (sots 1300879)
+  - Slask Wroclaw ↔ Śląsk Wrocław (sots 1300885)
+  - LKS Lodz ↔ Łódzki Klub Sportowy (sots 1454)
+  - Chrobry Glogow ↔ Chrobry Głogów (sots 717313)
+  - Puszcza Niepolomice ↔ Puszcza Niepołomice (sots 96012813)
+  - Gornik Leczna ↔ Górnik Łęczna (sots 129565)
+- 2/36 senza match SOTS (Wieczysta Krakow, Pogon Grodzisk Mazowiecki — probabilmente promozioni/rinunce non in PL1/PL2 attuali del database FM26)
+
+Mapping manuale tramite script Python ad-hoc: per ogni `tm_club_id → sots_team_id` aggiornato `clubs.json`, settato `sortitoutsi_logo_url` e `sortitoutsi_logo_local`. Risultato: 34/36 club polacchi mappati (94%).
+
+### Recupero massivo foto polacche
+
+Pipeline standard a 4 step:
+1. `scrape_sortitoutsi_competition.py` → mappato 24/36 club polacchi automaticamente (vedi sopra)
+2. Mapping manuale 11/12 mismatch diacritici (vedi sopra)
+3. `harvest_sots_rosters.py` → cache cresciuta da 95 a **130 club** (+35 polacchi), persons da 10069 a **13016** (+2947 candidati polacchi)
+4. `find_more_sots_matches.py` → 803 candidati slug-match contro nuova cache, **784 confermati DOB** (97.2% precisione), 22 mismatch (per giocatori con DOB tronche o omonimi reali), 807 fetch totali sortitoutsi
+
+Falso start del primo run: il primo `find_more_sots_matches.py` era stato lanciato **prima** dell'harvest, contro la cache vecchia (10069 persons senza polacchi). Aveva trovato solo 31 match (gli stessi del run precedente del 6 mag). Il problema è stato diagnosticato confrontando mtime di `confirmed.xlsx` (16:14) vs `sots_rosters.json` (18:17 dopo harvest): l'xlsx era più vecchio della cache. Rilanciato il matching dopo harvest e questa volta ha trovato 784 match.
+
+`apply_more_matches.py` lanciato sui 784 confermati: 777 face PNG scaricate (le 7 senza face significa avatar mancante su SOTS), `data/sortitoutsi_id_lookup.json` cresciuto da 1784 a **2568 entries**. Aggiornati 784 giocatori in `players_main.json`, `players_static.json`, `players_all.json`. Tempo apply: ~10 minuti (download seriale di 777 PNG con rate limit).
+
+**Risultato finale recupero foto**:
+- Da 1753/2864 (61%) all'inizio sessione del 6 mag
+- A 1784/2864 (62%) dopo recupero cross-club Primavera (31 match) — sessione pomeriggio
+- A **2568/2864 (89%)** dopo PL1/PL2 + matching polacchi — sessione sera
+
+Numeri assoluti: +815 foto in 24 ore. Numeri relativi: +28 punti percentuali.
+
+I 296 senza foto rimasti si dividono approssimativamente in:
+- ~250 giocatori giovani Primavera con DOB tronche TM (file `sots_more_matches_dob_mismatch.xlsx` da filtrare con logica anno+club come fatto la sessione pomeriggio)
+- ~46 senza candidato slug nessuno (giocatori di leghe minori o nomi molto deformati — accettabile lasciarli senza foto)
+
+Commit del lavoro foto: `f4e3c79` "feat(sots): aggiunte PL1/PL2 (Ekstraklasa/I Liga) — recupero 784 foto polacchi via harvest cross-club + 24 mapping automatici + 11 mapping manuali diacritici". Push pesante: 21.82 MB (793 oggetti, principalmente le 777 face PNG polacche).
+
+### Bug dropdown filtro lega Griglie (falso allarme)
+
+Screenshot dell'utente mostrava il dropdown filtro lega del pannello Griglie con `league_it3` come testo grezzo (chiave i18n non risolta), assenza di Serie C girone A/B/C separati e mancanza di "Altre squadre". Diagnosi via grep: il dropdown a riga 3420 aveva `<option value="IT3"...>${t("league_short_it3")}</option>` con chiave i18n vecchia.
+
+Investigazione: `grep` su `value="IT3"` nel file ha restituito 0 occorrenze. Verifica delle costanti `KNOWN_CLUB_CODES` e `CLUB_PRIORITY_ORDER`: già aggiornate con `IT3A/IT3B/IT3C` (cioè il refactor era già stato applicato in una sessione precedente). Verifica i18n.js: già contiene `league_short_it3a/b/c`. Verifica del dropdown: contiene già le 3 opzioni IT3A/IT3B/IT3C + OTHER + IJ1 + PL1 + PL2.
+
+Conclusione: lo screenshot era cache del browser obsoleta (qualche commit precedente non ancora hard-reloadato). Hard reload `Cmd+Shift+R` ha mostrato il dropdown corretto. Nessun fix necessario.
+
+### Pianificazione feature Export PDF + JSON osservazioni
+
+Nuova richiesta utente: nel pannello Salvataggi aggiungere export delle osservazioni, con anche export PDF di singole relazioni e dossier giocatore completo nel pannello Scouting.
+
+Decisioni discusse con l'utente prima di scrivere codice:
+
+**Q1 — Conflitti import duplicati**: opzione B = chiedi conferma (Sovrascrivi tutte / Salta duplicati / Annulla). Vincolo UNIQUE su Supabase è `(user_id, tm_player_id, match_date, opponent)`.
+
+**Q2 — User_id al re-import**: soluzione ibrida adottata. `user_id` = chi importa (per RLS Supabase), `author_username` = creatore originale dal JSON (preservato come metadato "Inserita da [originale]"). Questo permette di:
+- Riportare le tue osservazioni su un nuovo dispositivo (ti mantieni come autore)
+- Importare osservazioni di un altro scout (entri in possesso ma vedi sempre "Inserita da Mario Rossi")
+- Rispettare la RLS senza dover fare relax dei permessi
+
+**Q3 — Struttura PDF**: confermata.
+- Singola relazione: logo PID + dati generali giocatore (foto, nome, anno, età, club, altezza, piede, ruolo specifico) + dati relazione completa (data, avversario, competizione, modalità, minuti, posizione, performance, giudizio, strengths chip verdi, weaknesses chip rossi, note testo intero, scout, data inserimento)
+- Multi-relazione (giocatore in scouting): stessi dati generali + tutte le visionature in righe + riga totale media
+
+**Q4 — Ordine commit**: 1 commit unico (utente ha preferito tutto insieme).
+
+**Foto giocatore nel PDF**: SÌ. Overhead 200ms accettabile (1 fetch PNG → base64 → embed via `pdf.addImage`).
+
+### Diagnostica codebase per implementazione
+
+3 punti di insertion identificati:
+1. **Pannello Salvataggi** (`frontend/app.js` riga 6574 `renderSavesPanel()`): aggiungere 3a sezione "OSSERVAZIONI" dopo Griglie e Convocazioni. Header `📝 Osservazioni` + count + bottone "📥 Importa". 1 sola riga "Tutte le mie osservazioni" con bottone "⬇️ Esporta JSON". Pattern coerente con `buildGridRow`/`buildCallupRow` esistenti.
+2. **Modal modifica osservazione** (`frontend/observations_ui.js` ~riga 698-700): bottoni `btn_cancel`/`btn_save` + esistente `obs-delete-btn` (riga 850). Aggiungere "📄 PDF" accanto.
+3. **Pannello Scouting** (`frontend/observations_ui.js` riga 1166-1167 `scouting-player-row` con `data-pid`): aggiungere bottone "📄" alla riga giocatore (azione: export PDF dossier con TUTTE le sue osservazioni).
+
+Verificato: jsPDF già caricato in `index.html` (`<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">`). Funzioni esistenti riutilizzabili come pattern: `exportGridPDF()` (riga 4106), `exportCallupPDF()` (riga 2493), `_downloadJSON()`, `exportGridSave()`/`exportCallupSave()` (righe 6398/6414).
+
+Schema export grid esistente: `{type: "pid_grid_save", version: 1, name, formation, assigned, _meta, exported_at, exported_by}`. Stesso pattern adottato per `pid_observations_export`.
+
+`importSavesFromFile` (riga 6439) già gestisce file `.json` import con file input nascosto. Esteso il `switch` per gestire anche `pid_observations_export`.
+
+### Implementazione (in corso al momento del diario)
+
+Scritto `patch_export_observations.py` (~1100 righe, salvato in repo). Strategy: script Python idempotente che applica 6 patch ai 4 file frontend in 1 colpo solo, con dry-run obbligatorio prima di apply per safety. Patch:
+1. `i18n.js` IT — 40+ chiavi nuove (`saves_obs_section`, `pdf_export_btn`, `pdf_field_*` ecc.)
+2. `i18n.js` EN — stesse chiavi tradotte (sostituzione 2a occorrenza `league_short_it3a` per non interferire con la sezione IT)
+3. `observations_ui.js` — bottone "📄 PDF" nel modal di edit (visibile solo se osservazione esistente)
+4. `observations_ui.js` — append in coda al file di:
+   - `exportObservationPDF(observationId, playerId)` — PDF singola relazione con foto giocatore embedded (fetch base64) e tag colorati
+   - `exportPlayerDossierPDF(playerId)` — PDF dossier multi-relazione con tabella visionature + riga totale media
+   - Handler delegati `document.click` per `.scouting-export-pdf-btn` e `#obs-export-pdf-btn`
+   - MutationObserver che inietta automaticamente bottone "📄" su ogni `.scouting-player-row` post-render
+5. `app.js` — sezione "Osservazioni" nel pannello Salvataggi:
+   - Renderizzata da `_renderObsSummary()` (async, fetcha `window.fetchObservations()` e mostra count + last update + bottone Esporta JSON)
+   - Bottone "Importa" usa lo stesso file input esistente (esteso `importSavesFromFile` per gestire `pid_observations_export`)
+   - `exportObservationsJSON()` produce file `osservazioni_<YYYY-MM-DD>.json` con schema `{type, version, exported_at, exported_by, count, observations: [...]}`
+   - `importObservationsFromFile(payload)` gestisce duplicati con `window.prompt` (1=overwrite, 2=skip, 3=cancel), riusa `saveObservation`/`updateObservation` esistenti
+6. `index.html` — bump cache busting versione `?v=20260509z` per i 4 file modificati
+
+Sequenza di iterazioni durante la scrittura della patch:
+- v1: 6 patch tutte tramite anchor exact-match → 2 falliti al dry-run (i18n IT pattern matcha 2 volte, anchor `window.openObservationCompose = ...` non corretto)
+- v2: PATCH 1 IT con `replace(.., 1)` per limitare alla 1a occorrenza, PATCH 4+5 unite e appese in coda al file (no anchor) → 1 fallito al dry-run (PATCH 2 EN aveva logica dipendente dallo stato post-PATCH 1)
+- v3: PATCH 2 EN riscritta con `split` su 3 parti per sostituire SOLO la 2a occorrenza del pattern `league_short_it3a` (la 1a è IT, viene patchata da PATCH 1) → tutti i 6 dry-run verdi attesi
+
+Al momento del diario, l'utente sta testando il dry-run della v3.
+
+### Stato fine sessione
+
+In produzione (commit `f4e3c79` e precedenti):
+- ✅ Task 1 Winter signing chiuso al 100% (120/120 fixati con strategia 3-fasi)
+- ✅ Task 2 Foto SOTS al 89% (era 62% all'inizio sessione, +27 punti)
+- ✅ PL1/PL2 (Ekstraklasa/I Liga) aggiunte a sortitoutsi competitions
+- ✅ 34/36 club polacchi mappati con `sortitoutsi_team_id`
+- ✅ Cache `sots_rosters.json` cresciuta a 130 club / 13016 persons
+- ✅ Lookup `sortitoutsi_id_lookup.json` cresciuto a 2568 entries
+- ✅ 777 face PNG polacche scaricate in `data/photos/players_sots_lookup/`
+- ✅ Workaround "Free agent" → "Svincolato" in `prettyClubName`
+
+In testing (non ancora committato al momento del diario):
+- 🔄 Feature Export PDF + JSON osservazioni — patch v3 in dry-run
+
+### Lezioni apprese
+
+**Iterazione su patch script**: scrivere script che modificano file con anchor exact-match è fragile. Strategie più robuste in ordine di preferenza:
+1. **Append in coda** (PATCH 4+5 nuova versione) — funziona sempre, idempotente con check "già patchato"
+2. **Split + replace n-th occurrence** (PATCH 2 EN nuova versione) — robusto per pattern che ricorrono N volte in posizioni note
+3. **Anchor exact-match** (PATCH 3, PATCH 6) — OK per pattern univoci ma fragile a virgole/spazi
+4. **Regex** (BUMP CACHE) — buona via di mezzo per sostituzioni mirate
+
+**Dry-run obbligatorio**: ha salvato la giornata 2 volte. Senza dry-run, lo script avrebbe parzialmente applicato patch alcune sì alcune no, lasciando i file in stato incoerente difficile da rollbackare.
+
+**Diagnosi mtime per debug pipeline**: confrontare mtime di file di output vs cache è una tecnica veloce per scoprire se uno step della pipeline è stato saltato. In questo caso ha permesso di scoprire che il primo `find_more_sots_matches.py` era stato lanciato pre-harvest.
+
+**Cluster fittizi TM**: il club id=515 era "Free agents", ID inatteso ma tracciabile via curl + diagnosi del redirect. Quando un fetch fallisce o restituisce contenuti strani, vale la pena curlare manualmente per capire se è un caso edge.
+
+### Commit pushati nella sessione
+
+(in ordine cronologico)
+- `2bbc808` fix(players): risolvo 40 'Winter signing'/'Returnee'/'New arrival' (sostituito current_club_name col vero club da clubs.json — gli 80 polacchi/altri restano)
+- (commit consolidato) fix(players): chiusura totale Winter signing — 116 fix retroattivi (40 da clubs.json + 76 re-scrape TM) + 4 Free agent (cluster TM 515) + i18n IT 'Svincolato'
+- `f4e3c79` feat(sots): aggiunte PL1/PL2 (Ekstraklasa/I Liga) — recupero 784 foto polacchi via harvest cross-club
+
+Commit feature Export PDF in attesa di test post-patch v3 dry-run.
+
+---
+
+## Aggiornamento TODO
+
+Task chiusi nella sessione di oggi (giornata + sera):
+
+| Task originale | Stato |
+|---|---|
+| 1. Bug Winter signing scraper retroattivo | ✅ CHIUSO (120/120 con strategia 3-fasi, fix dati JSON) |
+| 2. Recupero foto SOTS rimanenti (1080) | ⚠️ PARZIALE (recuperate 815/1080 = 75%, da 62% a 89% totale; restano 296) |
+| 3. Workflow GitHub Actions auto-update foto | 🔄 NON ANCORA |
+| 4. Fase 5 Export PDF (dossier + report) | 🔄 IN TESTING (patch v3 in dry-run alla chiusura del diario) |
+| 5. Popolare 56 club Serie C con giocatori | 🔄 NON ANCORA |
+| 6. Fase 6 Export/Import salvataggio JSON | ✅ INCLUSO nella feature Export PDF (export/import JSON osservazioni) |
+| 7. Pulizia file `.before_serie_c` | 🔄 NON ANCORA |
+| 8. Refactor split observations_ui.js | 🔄 NON ANCORA |
+
+Stima task pending residui (post-sessione):
+
+| # | Task | Priorità | Stima | Note |
+|---|------|----------|-------|------|
+| 1 | Recupero foto SOTS residue (296 senza foto) | BASSA | ~30-60 min | Filter dob_mismatch.xlsx con logica anno+club + accettare 46 senza candidato |
+| 2 | Workflow GitHub Actions auto-update foto SOTS settimanale | MEDIA | ~30 min | Crea `.github/workflows/auto_update_photos.yml` cron lunedì 04:00 UTC |
+| 3 | Popolare 56 club Serie C con giocatori (~800-1000 nuovi) | BASSA | ~45 min | `build_urls.py` + `add_players.py` su `it3a/b/c_clubs.json` |
+| 4 | Pulizia file `.before_serie_c` | BASSA | 2 min | `git rm` + commit, sicurezza non più necessaria |
+| 5 | Refactor split observations_ui.js (>1500 righe) | BASSA | rimandato | Solo se emergono bug accoppiamento |
+
+Totale stima task residui: ~2 ore. Tutti BASSA priorità o MEDIA. Il sistema è in stato production-ready solido.
+
