@@ -3417,10 +3417,13 @@ function renderGridsPanel() {
             <option value="">${t("filter_all_leagues")}</option>
             <option value="IT1" ${state.grids.filterLeague==="IT1"?"selected":""}>${t("league_short_it1")}</option>
             <option value="IT2" ${state.grids.filterLeague==="IT2"?"selected":""}>${t("league_short_it2")}</option>
-            <option value="IT3" ${state.grids.filterLeague==="IT3"?"selected":""}>${t("league_short_it3")}</option>
+            <option value="IT3A" ${state.grids.filterLeague==="IT3A"?"selected":""}>${t("league_short_it3a")}</option>
+            <option value="IT3B" ${state.grids.filterLeague==="IT3B"?"selected":""}>${t("league_short_it3b")}</option>
+            <option value="IT3C" ${state.grids.filterLeague==="IT3C"?"selected":""}>${t("league_short_it3c")}</option>
             <option value="IJ1" ${state.grids.filterLeague==="IJ1"?"selected":""}>${t("league_short_ij1")}</option>
             <option value="PL1" ${state.grids.filterLeague==="PL1"?"selected":""}>${t("league_short_pl1")}</option>
             <option value="PL2" ${state.grids.filterLeague==="PL2"?"selected":""}>${t("league_short_pl2")}</option>
+            <option value="OTHER" ${state.grids.filterLeague==="OTHER"?"selected":""}>${t("league_short_other")}</option>
           </select>
         </div>
         <div class="flex flex-wrap gap-1 mb-1.5">
@@ -4973,10 +4976,10 @@ function _compName(code, fallback) {
   return fallback || code;
 }
 // Codici club che hanno colonna dedicata; tutto il resto va sotto "ESTERO"
-const KNOWN_CLUB_CODES = new Set(["IT1", "IT2", "IT3", "IJ1", "PL1", "PL2", "ACLE", "ACL2", "CIT", "SCI"]);
+const KNOWN_CLUB_CODES = new Set(["IT1", "IT2", "IT3A", "IT3B", "IT3C", "IJ1", "PL1", "PL2", "ACLE", "ACL2", "CIT", "SCI"]);
 const FOREIGN_CODE = "ESTERO";
 // Ordine fisso colonne club: Serie A → Serie B → Seconde Squadre → Primavera → Ekstraklasa → 1 Liga → UCL → UEL → UECL → Coppa Italia → Supercoppa → Estero
-const CLUB_PRIORITY_ORDER = ["IT1", "IT2", "IT3", "IJ1", "PL1", "PL2", "ACLE", "ACL2", "CIT", "SCI", FOREIGN_CODE];
+const CLUB_PRIORITY_ORDER = ["IT1", "IT2", "IT3A", "IT3B", "IT3C", "IJ1", "PL1", "PL2", "ACLE", "ACL2", "CIT", "SCI", FOREIGN_CODE];
 // Ordine team_category nazionali
 const NAT_CATEGORY_ORDER = ["A", "U23", "U22", "U21", "U20", "U19", "U18", "U17", "U16", "U15", "Olympic"];
 

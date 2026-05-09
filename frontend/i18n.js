@@ -50,7 +50,9 @@ const I18N = {
     league_short_it1: "SA",
     league_short_it2: "SB",
 
-    league_short_it3: "U23",
+    league_short_it3a: "C-A",
+    league_short_it3b: "C-B",
+    league_short_it3c: "C-C",
     league_short_ij1: "P1",
     league_short_pl1: "EKS",
     league_short_pl2: "L1",
@@ -265,7 +267,9 @@ const I18N = {
     league_short_it1: "SA",
     league_short_it2: "SB",
 
-    league_short_it3: "U23",
+    league_short_it3a: "C-A",
+    league_short_it3b: "C-B",
+    league_short_it3c: "C-C",
     league_short_ij1: "P1",
     league_short_pl1: "EKS",
     league_short_pl2: "L1",
