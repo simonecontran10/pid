@@ -4179,3 +4179,140 @@ Tutto stabile in produzione. Fase 3 osservazioni scout completata e ben polished
 
 ---
 
+## 9 mag 2026 (notte) — Fix post-deploy Serie C + analisi bug Winter signing + cache SOTS espansa
+
+Sessione di consolidamento dopo il deploy della migrazione Serie C: piccoli fix di produzione, diagnosi bug profondi che richiedono lavoro futuro, e preparazione del terreno per il recupero foto SortItOutSi sui ~1111 giocatori che ne sono sprovvisti.
+
+### Sito down dopo deploy Serie C — bug `it3` orfano
+
+Subito dopo il push della migrazione (`e976fee`), l'utente ha riportato che le sezioni della sidebar non rispondevano al click. Diagnosi rapida via DevTools console: errore JavaScript fatale al boot dell'app.
+
+```
+Uncaught (in promise) ReferenceError: it3 is not defined
+    at renderClubs (app.js:682:6)
+    at bootstrap (app.js:171:3)
+```
+
+La PATCH 3.7 di `migrate_serie_c.py` (regex su `sectionHtml`) non aveva fatto match della riga di rendering del Club perché aveva l'argomento di colore `"rgba(56,189,248,0.08)"` che non era nel pattern atteso. Risultato: 2 righe in `app.js` (riga 682 nel render e riga 689 nel `leaguesCount`) sono rimaste con riferimento a `it3` (variabile rimossa). Il `bootstrap()` chiamava `renderClubs()` al boot e l'errore bloccava tutto il routing della sidebar.
+
+Fix manuale via script Python ad-hoc: sostituite le 2 righe orfane con 3 righe per `it3a/it3b/it3c` nel render, e aggiornato l'array `leaguesCount` per includere le 3 nuove leghe. Sintassi verificata 0/0 (graffe + parentesi bilanciate). Push immediato.
+
+Commit: `fd377e4` fix(clubs): variabile it3 orfana in renderClubs (sostituita con it3a/b/c).
+
+Lezione: quando si patcha codice via regex con argomenti dinamici (qui un colore RGBA), o si scrive il pattern includendo il colore esatto presente nel codice, o si usa una regex più generosa (`.*` per gli argomenti opzionali). Per il prossimo refactor multi-file uso `re.compile()` con re.DOTALL e gruppi nominati per non fare lo stesso errore.
+
+### Loghi mancanti Alcione + Guidonia
+
+Dopo il deploy del fix `it3`, l'utente ha notato due loghi non visibili nel pannello Club:
+
+**Alcione Milano (TM 52687, IT3A)** — assente nel log di scrape_sortitoutsi_competition.py. Il match per nome non era stato trovato perché lo scraper non riconosceva il nome "Alcione Milano" nella pagina sortitoutsi del Girone A. L'utente ha cercato manualmente sulla pagina sortitoutsi e fornito il team_id corretto: `43106513` (https://sortitoutsi.net/football-manager-2026/team/43106513/alcione-milano). Aggiornati `clubs.json` con `sortitoutsi_team_id`/`sortitoutsi_logo_url`/`sortitoutsi_logo_local` per il club. Logo PNG scaricato via curl (24 KB, valido).
+
+**Guidonia Montecelio 1937 FC (TM 45894, IT3B)** — il log mostrava `sots 2000384267` matchato correttamente, ma il file PNG locale non esisteva. Tentativo download via curl: il file scaricato pesava solo **43 byte** (placeholder/errore HTML invece che immagine). L'asset SOTS per questo team_id semplicemente non esiste, anche se il team_id è registrato nel sistema. Bug noto FM26: alcuni team_id hanno entry ma non hanno mai avuto immagine caricata.
+
+Fix per Guidonia: rimossi i campi `sortitoutsi_team_id`, `sortitoutsi_logo_url`, `sortitoutsi_logo_local` dal record del club in `clubs.json`. In questo modo il frontend non prova nemmeno a caricare l'asset SOTS rotto e cade automaticamente sul fallback Transfermarkt o sull'iniziale del nome. L'utente ha confermato di accettare il fallback automatico (no logo) per Guidonia, in attesa che FM26 carichi un'immagine ufficiale.
+
+Bug Python su macOS notato: `urllib.request` ha SSL_CERT_FAILED su HTTPS perché Python su macOS non usa il keychain di sistema per i certificati. Workaround: usare `curl` (che invece sa usare i certificati di sistema). Annotato come pattern da preferire in futuro per download HTTPS da scripting Python.
+
+### Pulizia prefissi club (Commit 1)
+
+Nei screenshot dell'utente erano visibili nomi club non stilizzati: "AS Giana Erminio", "US Cremonese", "FC Crotone", "ACF Fiorentina". La funzione `prettyClubName()` esistente usa una map `_CLUB_DISPLAY_MAP` con sostituzioni esatte, ma copriva solo Serie A + Serie B + Primavera (60 mappature). I 56 nuovi club Serie C non avevano mappature, quindi venivano visualizzati col prefisso TM completo.
+
+Approccio scelto: estendere `_CLUB_DISPLAY_MAP` con 56 mappature manuali per i club Serie C, mantenendo coerenza col pattern esistente. Esempi:
+- "AS Giana Erminio" → "Giana Erminio"
+- "FC Crotone" → "Crotone"
+- "US Salernitana 1919" → "Salernitana"
+- "Calcio Foggia 1920" → "Foggia"
+- "Audace Cerignola" → "Cerignola"
+
+Mantenuti senza pulizia: Inter U23, Atalanta U23, Juventus Next Gen, Milan Futuro (già chiari), Dolomiti Bellunesi, Vis Pesaro, Pro Vercelli, Pro Patria, Virtusvecomp Verona (ambigui o nomi propri). Per "ASD Team Altamura" rimosso solo il prefisso ASD (sigla generica per associazioni dilettantistiche).
+
+Approccio NON scelto (e perché): generare automaticamente con regex il nome senza prefisso (`/^(AC|AS|ACF|US|FC|SS|SSC|UC|SEF|AZ|LR|ASD)\s+/`) era più rapido ma rischioso: rimuoveva prefissi anche da club dove sono parte integrante del nome distintivo (es. "FC Empoli" è "Empoli", ma "Empoli" da solo è confondibile; "AC Pisa" → "Pisa" ok, ma "Pisa Sporting Club" è già chiaro così). Con map manuale la decisione è caso per caso.
+
+### Workaround Winter signing (Commit 1)
+
+L'utente ha aperto la scheda di Adrian Liber (giocatore polacco di Polonia Bytom) e ha notato che il club mostrato era "Winter signing", che è un placeholder fittizio di Transfermarkt per giocatori in mercato di gennaio.
+
+Diagnosi: lo scraper `scraper/profiles.py:_extract_current_club_id` ha già un filtro per ribbon (Strategia 3 esclude `data-header__ribbon` che contiene New arrival/Winter signing/Returnee), ma la Strategia 1 (`.data-header__club a`) trova prima un link a `/startseite/verein/2362` che è il cluster fittizio TM "Winter signing". Quel link viene preso come club valido perché tecnicamente è un link a `/startseite/verein/`. Il filtro non viene mai raggiunto perché il match avviene prima.
+
+Numeri vittime: 91 giocatori in `players_main.json` con `current_club_id=2362`, tutti polacchi/Ekstraklasa/I Liga. Esempio: Adrian Liber (`tm_player_id=N/A`), polacco di Polonia Bytom secondo le ultime partite, ma scrappato come "Winter signing".
+
+Workaround applicato (Commit 1, cosmetico): in `prettyClubName()` aggiunto early return `if (name === "Winter signing" || name === "New arrival" || name === "Returnee") return "—"`. Risolve la visualizzazione, non il dato.
+
+Fix vero del bug rimandato a sessione futura. Strategia: in `_extract_current_club_id` aggiungere blacklist di tm_club_id fittizi noti `[2362, 2363, ...]` da ignorare. Quando il match cade su uno di questi ID, ignorare e provare le strategie successive. Poi rilanciare lo scraping sui 91 giocatori vittime.
+
+### Linea divisoria Osservazioni → Statistiche club (Commit 1)
+
+Feedback UX dell'utente: nel modal giocatore la sezione "Osservazioni" e "Statistiche club" erano visualmente attaccate, sembravano un blocco unico. Aggiunta una linea divisoria sottile (`border-top: 0.5px solid var(--border)` con `padding-top: 18px`, `margin-top: 22px`) tra le due sezioni, applicata solo se ci sono effettivamente statistiche club da mostrare (`clubBlocks || hasU21Current`).
+
+Commit: `2934c2d` fix(clubs): mappature Serie C 56 club + workaround Winter signing + divisoria Osservazioni/StatClub.
+
+### Cache SortItOutSi rosters allargata (10069 persons)
+
+L'utente ha richiesto strategia di recupero per i ~1111 giocatori senza foto SOTS. Diagnostica iniziale:
+
+```
+Totale giocatori: 2864
+Con face SOTS: 1753 (61%)
+Senza face SOTS: 1111
+```
+
+Esempio caso scenario B (giocatore in DB senza match SOTS): Adrian Bukowski (tm_player_id=577597, Stal Mielec PL1) ha `sortitoutsi_face_url=NONE` e `sortitoutsi_person_id=NONE`. L'utente ha verificato manualmente che esiste su sortitoutsi (https://sortitoutsi.net/football-manager-2026/person/2000046931/adrian-bukowski). Il match al primo passaggio non era avvenuto.
+
+Strategia decisa: sfruttare l'infrastruttura esistente di matching offline (4 script già in repo dal 6 mag: `harvest_sots_rosters.py`, `find_more_sots_matches.py`, `apply_more_matches.py`, `verify_auto_matches_dob.py`) e rieseguire dopo aver popolato la cache con le 56 nuove rose Serie C.
+
+Lanciato `python3 harvest_sots_rosters.py` che ha aggiornato `data/sots_rosters.json` da **5875 a 10069 persons** (+4194 giocatori), distribuiti su 95 club totali. La cache include ora le rose dei 56 club Serie C nuovi (~80 persons medi per club = ~4500 nuovi candidati per matching).
+
+Questo significa che il prossimo `find_more_sots_matches.py` dovrebbe trovare match per molti dei 1111 giocatori senza foto, in particolare:
+- Giocatori dei club Serie C scrappati di recente (le loro rose sono ora in cache)
+- Giocatori in trasferimento dai club Serie A/B verso Serie C (mercato gennaio 2026)
+- Giocatori di club appena promossi/retrocessi tra Serie C/D
+
+Stima recupero: 200-400 nuovi match attesi. Da verificare al prossimo run.
+
+### Stato fine sessione
+
+In produzione (commit `2934c2d`):
+- ✅ Sito stabile, navigazione sidebar funzionante
+- ✅ Migrazione Serie C 3 gironi visibile e completa nel pannello Club
+- ✅ Loghi Alcione manuale, Guidonia fallback iniziali
+- ✅ Nomi club Serie C puliti ("Giana Erminio" non "AS Giana Erminio")
+- ✅ Workaround "Winter signing" → "—" per i 91 vittime (cosmetico)
+- ✅ Linea divisoria Osservazioni/Statistiche club nel modal giocatore
+
+Cache locale aggiornata (non in produzione, da rilanciare matching):
+- ✅ `data/sots_rosters.json`: 5875 → 10069 persons (+71%)
+- 🔄 Pronto per `find_more_sots_matches.py` + `apply_more_matches.py` (next run)
+
+### Prossima sessione — TODO
+
+**Bug Winter signing (alta priorità)**:
+- Fix in `scraper/profiles.py:_extract_current_club_id`: aggiungere blacklist `[2362, 2363]` per ignorare cluster fittizi TM e provare strategie successive
+- Rilanciare scraping per i 91 giocatori vittime (re-fetch profiles)
+- Eventualmente arricchire fallback con info dal roster club (chi ha tm_player_id nella rosa scrappata)
+
+**Recupero foto SOTS (media priorità)**:
+- Lanciare `find_more_sots_matches.py` con cache da 10069 persons
+- Review casi auto-match score 0.7-1.0 vs casi di review (0.5-0.7)
+- Lanciare `apply_more_matches.py` per i match confermati
+- Verifica con `verify_auto_matches_dob.py` per match dubbi
+- Stima: porta da 61% a 75-80% giocatori con foto SOTS
+
+**Feature pending (bassa priorità per stasera, da fare nelle prossime sessioni)**:
+- Vista relazione completa (espande inline come pannello Scouting, già concordato)
+- Minuti giocati nelle osservazioni (form, dashboard, scouting; richiede ALTER TABLE Supabase)
+- Bottone "+ Osservazione" nelle Ultime partite (con precompilazione data/avversario/competizione/minuti)
+- Workflow `.github/workflows/auto_update_photos.yml` settimanale (lunedì 04:00 UTC) per re-run automatico di `scrape_sortitoutsi_competition.py` + `scrape_sortitoutsi_ids.py`
+
+**Housekeeping**:
+- Pulire i file `*.before_serie_c` (5 file backup, ~100KB) quando il sistema è confermato stabile
+- Popolare i 56 club Serie C con i giocatori delle rose (`build_urls.py` su `it3a/b/c_clubs.json` + `add_players.py`). Stima: 30-60 minuti per ~800-1000 giocatori
+- Considerare aggiunta PL1/PL2 (Ekstraklasa/I Liga) alle COMPETITIONS in `scrape_sortitoutsi_competition.py` per coprire i giocatori polacchi (attualmente non scaricati con loghi/foto SOTS)
+
+### Commit pushati nella sessione
+
+- `e976fee` feat: Serie C 3 gironi (IT3A/B/C) + scouting refinement (logo club + ruoli per esteso) — main rebase
+- `fd377e4` fix(clubs): variabile it3 orfana in renderClubs (sostituita con it3a/b/c)
+- `2934c2d` fix(clubs): mappature Serie C 56 club + workaround Winter signing + divisoria Osservazioni/StatCub
+
+---
+
