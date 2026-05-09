@@ -679,14 +679,16 @@ function renderClubs() {
   container.innerHTML = sortBar +
     (it1.length ? sectionHtml(t("league_it1"), it1Logo, it1, "rgba(111,224,168,0.08)") : "") +
     (it2.length ? sectionHtml(t("league_it2"), it2Logo, it2, "rgba(251,146,60,0.08)") : "") +
-    (it3.length ? sectionHtml(t("league_it3"), it3Logo, it3, "rgba(56,189,248,0.08)") : "") +
+    (it3a.length ? sectionHtml(t("league_it3a"), it3aLogo, it3a, "rgba(56,189,248,0.08)") : "") +
+    (it3b.length ? sectionHtml(t("league_it3b"), it3bLogo, it3b, "rgba(56,189,248,0.08)") : "") +
+    (it3c.length ? sectionHtml(t("league_it3c"), it3cLogo, it3c, "rgba(56,189,248,0.08)") : "") +
     (ij1.length ? sectionHtml(t("league_ij1"), ij1Logo, ij1, "rgba(192,132,252,0.08)") : "") +
     (pl1.length ? sectionHtml(t("league_pl1"), pl1Logo, pl1, "rgba(239,68,68,0.08)") : "") +
     (pl2.length ? sectionHtml(t("league_pl2"), pl2Logo, pl2, "rgba(96,165,250,0.08)") : "") +
     (others.length ? sectionHtml(t("league_other"), null, others, "rgba(255,255,255,0.06)") : "");
 
   // Aggiorna contatore "leghe" nella stats bar
-  const leaguesCount = [it1, it2, it3, ij1, pl1, pl2].filter(arr => arr.length).length;
+  const leaguesCount = [it1, it2, it3a, it3b, it3c, ij1, pl1, pl2].filter(arr => arr.length).length;
   const statLeagues = document.getElementById("stat-leagues");
   if (statLeagues) statLeagues.textContent = leaguesCount;
 
