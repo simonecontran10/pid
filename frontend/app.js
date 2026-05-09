@@ -2235,6 +2235,7 @@ function renderCallupPanel() {
             <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
             <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
             <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
+            <option value="OTHER" ${f.league==="OTHER"?"selected":""}>${t("league_other_filter")}</option>
           </select>
           <select id="callup-club" class="filter-select" style="font-size: 12px;">
             <option value="">${t("filter_all_clubs")}</option>
@@ -4317,6 +4318,8 @@ function renderListPanel() {
   else if (f.sort === "age_asc") items.sort((a,b) => (a.age||999) - (b.age||999));
   else if (f.sort === "age_desc") items.sort((a,b) => (b.age||0) - (a.age||0));
   else if (f.sort === "club") items.sort((a,b) => (a.current_club_name||"").localeCompare(b.current_club_name||""));
+  else if (f.sort === "role") items.sort((a,b) => (a.position_general||"").localeCompare(b.position_general||""));
+  else if (f.sort === "foot") items.sort((a,b) => (a.foot||"").localeCompare(b.foot||""));
   else items.sort((a,b) => (a.full_name||"").localeCompare(b.full_name||""));
 
   // Colonne: rank · foto · #maglia · nome+anno · ruolo · club · apps · gol · ass · min · piede · età
@@ -4363,6 +4366,8 @@ function renderListPanel() {
     const map = {
       name: "name",
       club: "club",
+      role: "role",
+      foot: "foot",
       apps: "apps_desc",
       goals: "goals_desc",
       assists: "assists_desc",
@@ -4393,13 +4398,13 @@ function renderListPanel() {
       <span></span>
       <span style="font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; text-align: center;">${t("shirt")}</span>
       ${headerCell(t("col_player"), "name", "left")}
-      <span style="font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; text-align: left;">${t("position")}</span>
+      ${headerCell(t("position"), "role", "left")}
       ${headerCell(t("club"), "club", "left")}
       ${headerCell(t("apps"), "apps")}
       ${headerCell(t("goals"), "goals")}
       ${headerCell(t("assists"), "assists")}
       ${headerCell(t("col_min"), "minutes")}
-      <span style="font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; text-align: center;">${t("col_foot")}</span>
+      ${headerCell(t("col_foot"), "foot")}
       ${headerCell(t("col_age"), "age", "right")}
     </div>`;
 
@@ -4430,6 +4435,7 @@ function renderListPanel() {
           <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
           <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
           <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
+            <option value="OTHER" ${f.league==="OTHER"?"selected":""}>${t("league_other_filter")}</option>
         </select>
         <select id="list-club" class="filter-select" style="font-size: 12px;">
           <option value="">${t("filter_all_clubs")}</option>
@@ -5313,6 +5319,7 @@ function renderMinutesPanel() {
           <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
           <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
           <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
+            <option value="OTHER" ${f.league==="OTHER"?"selected":""}>${t("league_other_filter")}</option>
         </select>
 
         <select id="minutes-club" class="filter-select mb-1.5" style="font-size: 11px; padding: 4px 8px;">

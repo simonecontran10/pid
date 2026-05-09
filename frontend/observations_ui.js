@@ -907,7 +907,7 @@ async function _saveObsFromForm(player, editing) {
  */
 window.renderScoutingPanel = function() {
   return `
-    <div id="scouting-panel" style="padding: 24px; max-width: 1100px; margin: 0 auto;">
+    <div id="scouting-panel" style="padding: 24px; ">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
         <div style="display: flex; align-items: center; gap: 12px;">
           <div style="width: 4px; height: 24px; background: var(--accent); border-radius: 2px;"></div>
