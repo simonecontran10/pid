@@ -3960,3 +3960,100 @@ Passare a un **cron service esterno** (es. cron-job.org, gratuito) che pinga ogn
 ### Commit della sessione
 
 - `cddb7ab` fix(workflow): aggiungi backup cron a auto_update_daily per gestire skip GitHub Actions
+
+
+## 9 mag 2026 (mattina pt2) — Fase 3 osservazioni completata + viewing_mode + filtri/ordinamento
+
+### Sessione di lavoro
+
+Implementazione completa della UI delle osservazioni nel modal giocatore + pannello Scouting nella sidebar. Prima del codice, definite tutte le scelte di design rilevanti: dashboard compatta sotto "Stagione corrente" (poi spostata sopra "Statistiche club"), modal-on-modal per nuova/modifica, layout 2 colonne (form sinistra + campo SVG ruoli destra), chip categorizzati per strengths/weaknesses con colori verde/rosso, ordine evaluation tags rosso→verde (peggiore a sinistra).
+
+### Iterazioni successive (feedback live)
+
+Tre iterazioni sulla v3 del modulo `observations_ui.js`:
+
+1. **v3 → v3.1** — feedback dopo primo deploy: tabella dashboard inizialmente con 4 colonne (Data | Scout | Performance | Giudizio). Aggiunte 3 colonne mancanti: Avversario (con `prettyClubName` e troncamento), Posizione (sigle ruoli giocati), e successivamente Competizione (truncata). Ordine campi nel form modificato: Note spostate sopra Performance Rating (e ingrandite a 10 rows / min-height 200px). Bug fixato: avversario non modificabile in edit mode (causa: combo `<input value list>` HTML5 ha glitch noti — fix: rimosso `value=""` inline, settato via JS dopo il render).
+
+2. **v3.1 → v3.2** — sezione Osservazioni spostata da fondo modal a TRA "Stagione corrente" e "Statistiche club" (riga ~985 di app.js, subito dopo l'apertura del div padding 22px 28px). Voce sidebar "Scouting" anticipata dalla Fase 4: aggiunto `<div class="nav-item" data-route="scouting">` dopo "Minutaggi" e prima del separator (icona lente d'ingrandimento), `<div id="scouting-panel-main" class="hidden">` nel main content, hook in `setActiveTab()` per render del pannello via `renderScoutingPanel()` + `wireScoutingPanel()`, chiavi i18n `nav_scouting` IT/EN.
+
+3. **v3.2 → v4 (viewing_mode)** — aggiunto campo "Visione" obbligatorio (LIVE / TV-VIDEO). Schema DB: `ALTER TABLE player_observations ADD COLUMN viewing_mode TEXT CHECK (viewing_mode IS NULL OR viewing_mode IN ('LIVE', 'TV'))`. Form: 2 chip side-by-side in cima alla colonna sinistra, icona campo da calcio per LIVE (verde) e icona monitor per TV (blu). Single-select obbligatorio con messaggio errore "Compila tutti i campi obbligatori". Tabella dashboard: 8ª colonna "Mod." con icona piccola colorata. Patch in `cloud_sync.js`: validazione `viewing_mode IN ['LIVE','TV']` in `saveObservation` e `updateObservation`.
+
+### Liste finali
+
+37 caratteristiche organizzate in 5 categorie:
+- TATTICA (6): Fase difensiva, Fase offensiva, Intelligenza tattica, Letture tattiche, Transizioni difensive, Transizioni offensive
+- TECNICA (11): Assist, Conduzione palla, Cross, Dribbling 1c1, Finalizzazione, Inizio manovra, Passaggi Chiave, Rifinitura, Tecnica, Tiro/Calcio, Visione di gioco
+- COMPORTAMENTI (5): Aggressività, Agonismo, Gioco per la squadra, Intensità, Personalità
+- FISICO (15): 1vs1 difensivo, Ampiezza, Area di rigore offensiva, Dinamismo, Duelli difensivi, Forza fisica, Gioco aereo, Inserimenti senza palla, Jolly, Profondità, Progressione, Rapidità primi metri, Recupero palloni, Spazi stretti, Velocità
+- PORTIERE (1): Uscite
+
+4 evaluation tags con colori, ordine peggiore→migliore: 🔴 NON IDONEO (#EF4444), 🟠 DA MONITORARE (#F97316), 🟡 SECONDA SCELTA (#EAB308), 🟢 PRIMA SCELTA (#22C55E).
+
+24 competizioni preset + "Altro" con input libero.
+
+15 ruoli sigle italiane con coordinate sul campo SVG: PP, AS, AD, TRQ, AES (quinto sn), AED (quinto dx), CIS, CC, CID, LAT_SN, LAT_DX, DCS, DC, DCD, POR.
+
+### Test in produzione
+
+End-to-end testato su https://pid-nine.vercel.app: creazione osservazione con tutti i campi popolati, modifica con riapertura form, eliminazione, refresh dashboard, navigazione al pannello Scouting. RLS Supabase confermata (utente vede solo le sue osservazioni). Bug avversario edit mode risolto.
+
+### Bug Transfermarkt URL admin
+
+Pre-Fase 3 fixato bug nell'admin "Aggiungi giocatore": il regex accettava solo `transfermarkt.com` ma Mathys Detourbet (e tutti i giocatori esteri non scrappati live) hanno URL `.it`. Patch in `api/main.py:458` e `.github/workflows/add_player.yml:46`: regex da `transfermarkt\.com.*spieler/\d+` a `transfermarkt\.[a-z.]+.*spieler/\d+` per accettare qualsiasi TLD (.it, .de, .es, .fr, .com.tr, .com.br, ecc.). Test live: URL `.it` di Detourbet accettato e workflow add-player triggerato (commit `78a7be3`).
+
+### Filtri e ordinamento (modifiche piccole)
+
+- Filtro "Altre squadre" aggiunto nei 3 dropdown lega (Home `filter-league` riga ~4427, Lista `list-league`, Convocazione `callup-league` riga ~2231) con value `OTHER`. La logica `f.league === "OTHER"` era già supportata in `applyFilters` (riga 2105), mancava solo l'`<option>` HTML. Chiave i18n `league_other_filter` IT="Altre squadre" / EN="Other teams".
+- Ordinamento Lista esteso: la funzione `headerCell()` esistente (riga 4384) gestiva già click su Nome, Club, Pres, Gol, Ass, Min, Età con frecce ↓/↑. Aggiunto sort anche su **Posizione** (`role`) e **Piede** (`foot`): estesa `sortFor()` con i 2 nuovi case + sort effettivo nella sezione `Ordinamento` per `position_general` alfabetico e `foot` alfabetico. Le 2 colonne nel `headerRow` sostituite da `headerCell()` per renderle cliccabili.
+
+### Sezione Scouting full-width
+
+Pannello Scouting allargato da `max-width: 1100px` a tutta larghezza, coerente con Lista e altri pannelli. Patch in `observations_ui.js` `renderScoutingPanel()`: rimosso `max-width: 1100px; margin: 0 auto`, lasciato solo `padding: 24px`.
+
+### Commit della sessione
+
+- `78a7be3` fix(admin): accetta URL Transfermarkt da qualsiasi TLD (.it, .de, .es, ecc.)
+- `0da3f7a` feat(observations): aggiungi sezione Osservazioni nel modal giocatore (Fase 3 — UI)
+- `9a5b9ef` feat(observations): v2 — dashboard compatta sotto stagione corrente, 2 colonne, categorie, chip verdi/rossi, pretty club names, ordine giudizi invertito
+- `995099d` feat(observations): v3 — tabella 6 colonne, sezione sopra statistiche, voce sidebar Scouting, fix bug edit avversario
+- `acdea02` feat(observations): v3 — tabella 7 colonne con competizione, sidebar Scouting, fix bug edit avversario
+- `f1801bb` feat(observations): aggiungi campo viewing_mode (LIVE/TV) obbligatorio nel form e icona in tabella
+
+### Lessons learned
+
+- Quando il browser HTML5 gestisce `<input list="datalist">` con `value=""` inline, in modalità "edit" può bloccare l'editing dell'input. Workaround: rimuovere `value` inline e settare via JS dopo il render del modal. Soluzione documentata in MDN come issue noto.
+- Il pattern `setVisible(id, show)` con classList toggle "hidden" è il modo più pulito per gestire il routing tra pannelli main. Replicabile anche per Scouting senza dover scrivere logica custom.
+- Iterare l'UI con feedback live dell'utente è efficiente: 4 round di v3 hanno richiesto ~30 minuti totali di rifattoring, ma il risultato finale è coerente con le esigenze reali. Senza feedback diretto avrei costruito qualcosa di diverso (es. sezione in fondo al modal invece che sopra Statistiche club).
+
+### Schema DB attuale `player_observations`
+
+15 colonne totali (era 14): id (uuid PK), user_id (uuid FK auth.users), tm_player_id (bigint), match_date (date), opponent (text), competition (text), **viewing_mode (text, LIVE/TV/NULL)**, performance_rating (numeric 0-10), roles_played (text[]), evaluation_tags (text[]), strengths (text[]), weaknesses (text[]), notes (text), author_username (text), created_at (timestamptz), updated_at (timestamptz).
+
+Vincolo unicità: `UNIQUE (user_id, tm_player_id, match_date, opponent)`. RLS basato su `auth.uid() = user_id` su tutte e 4 le operazioni.
+
+### Stato Fase 3
+
+✅ Schema Supabase + RLS + indici + trigger updated_at
+✅ Modulo CRUD `cloud_sync.js` (4 funzioni + validazione)
+✅ Sezione Osservazioni nel modal giocatore (dashboard compatta)
+✅ Modal nuova/modifica osservazione (layout 2 colonne, campo SVG ruoli, chip per traits/tags)
+✅ Pannello Scouting nella sidebar (vista globale per giocatore)
+✅ Filtro "Altre squadre" + ordinamento Lista esteso + Scouting full-width
+
+### Fasi residue del piano
+
+- Fase 5 — Export PDF: singolo + dossier giocatore (jsPDF client-side) (~2h)
+- Fase 6 — Export/Import salvataggio JSON (~45m)
+
+### Aggiornamento sera 9 mag — tag NON VALUTABILE
+
+Aggiunto 5° evaluation tag "NON VALUTABILE" colore grigio neutro `#9CA3AF`, posizionato come primo a sinistra (prima di "Non idoneo"). Caso d'uso: scout che vede pochi minuti del giocatore, partita interrotta, infortunio precoce — qualsiasi situazione dove valutare seriamente non è possibile.
+
+Esclusione automatica dalle metriche aggregate: le osservazioni con tag "NON VALUTABILE" non contribuiscono né alla media performance del footer dashboard, né alla distribuzione percentuale dei giudizi. Implementata via filter `isEvaluable(obs) => obs.evaluation_tags?.[0] !== "NON VALUTABILE"` applicato prima del calcolo `ratings` e del conteggio `tagCounts`. Performance rating slider rimane attivo anche con tag NV (l'utente può comunque salvare un voto, semplicemente non parteciperà alle stat aggregate).
+
+Traduzione EN: "N/A" (più conciso di "Not evaluable" / "Cannot rate"). Mapping aggiunto in `OBSERVATION_I18N_EN`.
+
+Commit: `a46da77` feat(observations): aggiungi tag NON VALUTABILE (escluso da media e distribuzione %).
+
+---
+
