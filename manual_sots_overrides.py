@@ -63,6 +63,7 @@ OVERRIDES = [
     ("Ioan Vermeșan",        "https://sortitoutsi.net/football-manager-2026/person/2000157324/ioan-vermesan"),
     ("Marco Tiozzo",         "https://sortitoutsi.net/football-manager-2026/person/2000386592/marco-tiozzo-pagio"),
     ("Michael Zeppieri",     "https://sortitoutsi.net/football-manager-2026/person/2000269983/michael-zeppieri"),
+    ("Nadir El Jamali",      "https://sortitoutsi.net/football-manager-2026/person/2000297870/nadir-el-jamali"),
 ]
 
 

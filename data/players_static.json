@@ -11518,7 +11518,7 @@
     "roster_club_name": "Parma Primavera",
     "sortitoutsi_person_id": 2000150888,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000150888.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000150888/daniel-mikołajewski",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000150888/daniel-mikolajewski",
     "photo_local": "photos/players_tm/991459.png",
     "current_club_id_original": 168,
     "current_club_name_original": "Returnee",
@@ -25334,7 +25334,7 @@
     "roster_club_name": "Torino Primavera",
     "sortitoutsi_person_id": 2000204708,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000204708.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000204708/grigorios-politakis",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000204708/grigoris-politakis",
     "photo_local": "photos/players_tm/1008759.png",
     "sortitoutsi_id": 2000204708,
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000204708.png"
@@ -25909,7 +25909,7 @@
     "roster_club_name": "Lecce Primavera",
     "sortitoutsi_person_id": 2000384675,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000384675.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000384675/hjalte-lærke",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000384675/hjalte-laerke",
     "photo_local": "photos/players_tm/1200320.jpg",
     "current_club_id_original": 22110,
     "current_club_name_original": "New arrival",
@@ -26284,7 +26284,7 @@
     "roster_club_name": "Hellas Verona Primavera",
     "sortitoutsi_person_id": 2000157324,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000157324.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000157324/ioan-vermeșan",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000157324/ioan-vermesan",
     "photo_local": "photos/players_tm/928037.jpg",
     "sortitoutsi_id": 2000157324,
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000157324.png"
@@ -37348,7 +37348,7 @@
     "roster_club_name": "Juventus Primavera",
     "sortitoutsi_person_id": 2000386592,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000386592.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000386592/marco-tiozzo",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000386592/marco-tiozzo-pagio",
     "photo_local": "photos/players_tm/1234457.jpg",
     "current_club_id_original": 49567,
     "current_club_name_original": "Internal transfer: Juventus Under 17; date: 01/07/2025",
@@ -59474,7 +59474,7 @@
     "roster_club_name": "Spezia Calcio",
     "sortitoutsi_person_id": 96136102,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96136102.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96136102/przemysław-wiśniewski",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96136102/przemyslaw-wisniewski",
     "photo_local": "photos/players_tm/386967.jpg",
     "sortitoutsi_id": 96136102,
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96136102.png"
@@ -63511,7 +63511,7 @@
     "roster_club_name": "Legia Warszawa",
     "sortitoutsi_person_id": 96161950,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96161950.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96161950/kacper-urbański",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96161950/kacper-urbanski",
     "photo_local": "photos/players_tm/699442.jpg",
     "sortitoutsi_id": 96161950,
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96161950.png"
@@ -82815,7 +82815,7 @@
     "roster_club_name": "Ruch Chorzow",
     "sortitoutsi_person_id": 96043133,
     "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96043133.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96043133/przemysław-szymiński",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96043133/przemyslaw-szyminski",
     "photo_local": "photos/players_tm/255461.png",
     "sortitoutsi_id": 96043133,
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96043133.png"
@@ -95242,9 +95242,11 @@
     "fetched_at": "2026-05-08T20:50:36Z",
     "roster_club_id": 618,
     "roster_club_name": "Saint-Étienne",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000297870,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000297870.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000297870/nadir-el-jamali",
+    "sortitoutsi_id": 2000297870,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000297870.png"
   },
   {
     "tm_player_id": 1245948,

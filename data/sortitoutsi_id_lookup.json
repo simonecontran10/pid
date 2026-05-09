@@ -298,10 +298,8 @@
   "939745": {
     "sots_id": 2000103120,
     "name": "Lorenzo Torriani",
-    "club": "AC Milan",
     "match_score": 1.0,
-    "matched_via": "team_roster",
-    "face_local": "photos/players_sots_lookup/2000103120.png"
+    "matched_via": "manual_override_8mag"
   },
   "323167": {
     "sots_id": 43266774,
@@ -19030,5 +19028,11 @@
     "match_score": 1.0,
     "matched_via": "cross_club_dob_confirmed",
     "face_local": "photos/players_sots_lookup/2000445109.png"
+  },
+  "1202299": {
+    "sots_id": 2000297870,
+    "name": "Nadir El Jamali",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
   }
 }
