@@ -992,6 +992,9 @@ function openPlayerModal(pid) {
     <div style="padding: 22px 28px;">
       ${typeof window.renderObservationsSection === "function" ? window.renderObservationsSection(pid) : ""}
       ${(clubBlocks || hasU21Current) ? `
+        <div style="margin-top: 22px; padding-top: 18px; border-top: 0.5px solid var(--border);"></div>
+        `: ""}
+      ${(clubBlocks || hasU21Current) ? `
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;">
           <div style="width: 3px; height: 14px; background: var(--accent); border-radius: 2px;"></div>
           <span style="font-size: 13px; font-weight: 500; color: var(--text-1); text-transform: uppercase; letter-spacing: 0.06em;">${t("club_stats")}</span>
@@ -2869,10 +2872,78 @@ const _CLUB_DISPLAY_MAP = {
   "Roma Primavera": "Roma Primavera",
   "Sassuolo Primavera": "Sassuolo Primavera",
   "Torino Primavera": "Torino Primavera",
+  // Serie C — Girone A
+  "LR Vicenza": "Vicenza",
+  "Union Brescia": "Brescia",
+  "AS Cittadella": "Cittadella",
+  "Calcio Lecco 1912": "Lecco",
+  "AC Trento": "Trento",
+  "Dolomiti Bellunesi": "Dolomiti Bellunesi",
+  "Alcione Milano": "Alcione Milano",
+  "FC Pro Vercelli 1892": "Pro Vercelli",
+  "Novara FC": "Novara",
+  "FC Lumezzane": "Lumezzane",
+  "AC Renate": "Renate",
+  "Virtusvecomp Verona": "Virtusvecomp Verona",
+  "AS Giana Erminio": "Giana Erminio",
+  "UC AlbinoLeffe": "AlbinoLeffe",
+  "Arzignano Valchiampo": "Arzignano",
+  "Aurora Pro Patria": "Pro Patria",
+  "CPR Ospitaletto": "Ospitaletto",
+  "US Pergolettese 1932": "Pergolettese",
+  "US Triestina": "Triestina",
+  // Serie C — Girone B
+  "SS Arezzo": "Arezzo",
+  "Ascoli Calcio": "Ascoli",
+  "Ternana Calcio": "Ternana",
+  "Ravenna FC": "Ravenna",
+  "US Livorno 1915": "Livorno",
+  "Forlì FC": "Forlì",
+  "Vis Pesaro 1898": "Vis Pesaro",
+  "Guidonia Montecelio 1937 FC": "Guidonia Montecelio",
+  "AC Perugia Calcio": "Perugia",
+  "US Sambenedettese": "Sambenedettese",
+  "Pineto Calcio": "Pineto",
+  "US Città di Pontedera": "Pontedera",
+  "AS Gubbio 1910": "Gubbio",
+  "Campobasso FC": "Campobasso",
+  "SEF Torres 1903": "Torres",
+  "AC Carpi": "Carpi",
+  "US Pianese": "Pianese",
+  "AC Bra": "Bra",
+  // Serie C — Girone C
+  "Benevento Calcio": "Benevento",
+  "US Salernitana 1919": "Salernitana",
+  "Catania FC": "Catania",
+  "Cosenza Calcio": "Cosenza",
+  "Casertana FC": "Casertana",
+  "Potenza Calcio": "Potenza",
+  "Casarano Calcio": "Casarano",
+  "FC Crotone": "Crotone",
+  "Calcio Foggia 1920": "Foggia",
+  "Giugliano Calcio 1928": "Giugliano",
+  "FC Trapani 1905": "Trapani",
+  "Latina Calcio 1932": "Latina",
+  "SS Monopoli 1966": "Monopoli",
+  "Audace Cerignola": "Cerignola",
+  "ASD Team Altamura": "Team Altamura",
+  "Cavese 1919": "Cavese",
+  "AZ Picerno": "Picerno",
+  "Sorrento 1945": "Sorrento",
+  "Siracusa Calcio": "Siracusa",
+  // Seconde Squadre (in Serie C ma altre leghe)
+  "Inter U23": "Inter U23",
+  "Juventus Next Gen": "Juventus Next Gen",
+  "Atalanta U23": "Atalanta U23",
+  "Milan Futuro": "Milan Futuro",
 };
 
 function prettyClubName(name) {
   if (!name) return name;
+  // Workaround bug TM: i giocatori in trasferimento vengono scrappati con
+  // current_club_name="Winter signing" / "New arrival" / "Returnee" (tutti
+  // pseudo-club fittizi). Mostra "—" finché non viene rifatto lo scraping.
+  if (name === "Winter signing" || name === "New arrival" || name === "Returnee") return "—";
   return _CLUB_DISPLAY_MAP[name] || name;
 }
 
