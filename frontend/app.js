@@ -2947,6 +2947,7 @@ function prettyClubName(name) {
   // current_club_name="Winter signing" / "New arrival" / "Returnee" (tutti
   // pseudo-club fittizi). Mostra "—" finché non viene rifatto lo scraping.
   if (name === "Winter signing" || name === "New arrival" || name === "Returnee") return "—";
+  if (name === "Free agent") return (typeof currentLang !== "undefined" && currentLang === "it") ? "Svincolato" : "Free agent";
   return _CLUB_DISPLAY_MAP[name] || name;
 }
 
