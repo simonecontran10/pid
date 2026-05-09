@@ -19136,5 +19136,1016 @@
     "name": "Dominik Sokół",
     "match_score": 1.0,
     "matched_via": "manual_override_8mag"
+  },
+  "1111243": {
+    "sots_id": 2000222623,
+    "name": "Gustav Nøhr",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000222623.png"
+  },
+  "991779": {
+    "sots_id": 2000193447,
+    "name": "Michał Gurgul",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000193447.png"
+  },
+  "220969": {
+    "sots_id": 96045684,
+    "name": "Radosław Murawski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96045684.png"
+  },
+  "242813": {
+    "sots_id": 96062156,
+    "name": "Filip Jagiełło",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96062156.png"
+  },
+  "248732": {
+    "sots_id": 96044665,
+    "name": "Paweł Dawidowicz",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96044665.png"
+  },
+  "208166": {
+    "sots_id": 96052559,
+    "name": "Bartłomiej Drągowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96052559.png"
+  },
+  "805834": {
+    "sots_id": 2000027587,
+    "name": "Sławomir Abramowicz",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000027587.png"
+  },
+  "965043": {
+    "sots_id": 2000193456,
+    "name": "Miłosz Piekutowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000193456.png"
+  },
+  "1066230": {
+    "sots_id": 2000407563,
+    "name": "Eryk Kozłowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000407563.png"
+  },
+  "1459287": {
+    "sots_id": 2000508708,
+    "name": "Michał Kaczorowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000508708.png"
+  },
+  "398802": {
+    "sots_id": 96086804,
+    "name": "Miłosz Kałahur",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96086804.png"
+  },
+  "871201": {
+    "sots_id": 2000138584,
+    "name": "Michał Głogowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000138584.png"
+  },
+  "687671": {
+    "sots_id": 96158956,
+    "name": "Dominik Piła",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96158956.png"
+  },
+  "264796": {
+    "sots_id": 96045178,
+    "name": "Rafał Augustyniak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96045178.png"
+  },
+  "164759": {
+    "sots_id": 96008522,
+    "name": "Paweł Wszołek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96008522.png"
+  },
+  "1132797": {
+    "sots_id": 2000190092,
+    "name": "Jakub Żewłakow",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000190092.png"
+  },
+  "549982": {
+    "sots_id": 96148402,
+    "name": "Rafał Adamski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96148402.png"
+  },
+  "1149465": {
+    "sots_id": 2000357087,
+    "name": "Rafał Jakubowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000357087.png"
+  },
+  "1428280": {
+    "sots_id": 2000492499,
+    "name": "Natan Ława",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000492499.png"
+  },
+  "1125761": {
+    "sots_id": 2000278421,
+    "name": "Marcel Reguła",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278421.png"
+  },
+  "235862": {
+    "sots_id": 96048127,
+    "name": "Paweł Stolarski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96048127.png"
+  },
+  "387529": {
+    "sots_id": 96115997,
+    "name": "Jakub Łabojko",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96115997.png"
+  },
+  "461569": {
+    "sots_id": 96115264,
+    "name": "Michał Król",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96115264.png"
+  },
+  "727318": {
+    "sots_id": 2000193514,
+    "name": "Rafał Mamla",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000193514.png"
+  },
+  "1070002": {
+    "sots_id": 2000278444,
+    "name": "Michał Niedbała",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278444.png"
+  },
+  "1334268": {
+    "sots_id": 2000452120,
+    "name": "Michał Mikielewicz",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000452120.png"
+  },
+  "685445": {
+    "sots_id": 2000059360,
+    "name": "Bartłomiej Smolarczyk",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000059360.png"
+  },
+  "453156": {
+    "sots_id": 96117528,
+    "name": "Wiktor Długosz",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96117528.png"
+  },
+  "370555": {
+    "sots_id": 96101419,
+    "name": "Dawid Błanik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96101419.png"
+  },
+  "1046338": {
+    "sots_id": 2000312741,
+    "name": "Mateusz Głowiński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000312741.png"
+  },
+  "120970": {
+    "sots_id": 96029506,
+    "name": "Rafał Leszczyński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96029506.png"
+  },
+  "1121278": {
+    "sots_id": 2000309687,
+    "name": "Stanisław Pruszkowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000309687.png"
+  },
+  "80769": {
+    "sots_id": 96004894,
+    "name": "Łukasz Sekulski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96004894.png"
+  },
+  "1126322": {
+    "sots_id": 2000182592,
+    "name": "Michał Jerke",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000182592.png"
+  },
+  "385759": {
+    "sots_id": 96132888,
+    "name": "Michał Kaput",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96132888.png"
+  },
+  "1118869": {
+    "sots_id": 2000278138,
+    "name": "Mikołaj Molendowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278138.png"
+  },
+  "176514": {
+    "sots_id": 96011096,
+    "name": "Rafał Wolski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96011096.png"
+  },
+  "117683": {
+    "sots_id": 96007971,
+    "name": "Michał Chrapek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96007971.png"
+  },
+  "447343": {
+    "sots_id": 96110738,
+    "name": "Rafał Strączek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96110738.png"
+  },
+  "266239": {
+    "sots_id": 96020380,
+    "name": "Dawid Kudła",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96020380.png"
+  },
+  "1255660": {
+    "sots_id": 2000200107,
+    "name": "Łukasz Trepka",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000200107.png"
+  },
+  "694428": {
+    "sots_id": 2000059338,
+    "name": "Kacper Łukasiak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000059338.png"
+  },
+  "1431623": {
+    "sots_id": 2000502308,
+    "name": "Miłosz Swatowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000502308.png"
+  },
+  "128804": {
+    "sots_id": 96010286,
+    "name": "Adrian Błąd",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96010286.png"
+  },
+  "278690": {
+    "sots_id": 96064351,
+    "name": "Michał Marcjanik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96064351.png"
+  },
+  "237356": {
+    "sots_id": 96028993,
+    "name": "Michał Rzuchowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96028993.png"
+  },
+  "366213": {
+    "sots_id": 96086684,
+    "name": "Miłosz Mleczko",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96086684.png"
+  },
+  "751104": {
+    "sots_id": 2000045437,
+    "name": "Miłosz Matysik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000045437.png"
+  },
+  "847436": {
+    "sots_id": 96159219,
+    "name": "Igor Strzałek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96159219.png"
+  },
+  "191895": {
+    "sots_id": 96026542,
+    "name": "Rafał Kurzawa",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96026542.png"
+  },
+  "346309": {
+    "sots_id": 91202829,
+    "name": "Morgan Faßbender",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/91202829.png"
+  },
+  "446898": {
+    "sots_id": 96081055,
+    "name": "Rafał Mikulec",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96081055.png"
+  },
+  "901070": {
+    "sots_id": 2000274043,
+    "name": "Maciej Kuziemka",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000274043.png"
+  },
+  "1167889": {
+    "sots_id": 2000442032,
+    "name": "Szymon Kawała",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000442032.png"
+  },
+  "440247": {
+    "sots_id": 96133697,
+    "name": "Michał Brudnicki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96133697.png"
+  },
+  "319721": {
+    "sots_id": 96067674,
+    "name": "Przemysław Szur",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96067674.png"
+  },
+  "55572": {
+    "sots_id": 96028991,
+    "name": "Michał Grudniewski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96028991.png"
+  },
+  "573345": {
+    "sots_id": 96143996,
+    "name": "Ernest Terpiłowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96143996.png"
+  },
+  "342659": {
+    "sots_id": 96093248,
+    "name": "Paweł Olszewski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96093248.png"
+  },
+  "241827": {
+    "sots_id": 96052581,
+    "name": "Michał Bajdur",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96052581.png"
+  },
+  "512294": {
+    "sots_id": 96131477,
+    "name": "Mateusz Młyński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96131477.png"
+  },
+  "401608": {
+    "sots_id": 96115263,
+    "name": "Łukasz Zjawiński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96115263.png"
+  },
+  "181135": {
+    "sots_id": 96020356,
+    "name": "Michał Szromnik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96020356.png"
+  },
+  "925734": {
+    "sots_id": 2000278417,
+    "name": "Bartosz Głogowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278417.png"
+  },
+  "386230": {
+    "sots_id": 96103230,
+    "name": "Michał Mokrzycki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96103230.png"
+  },
+  "742943": {
+    "sots_id": 2000216559,
+    "name": "Michał Rosiak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000216559.png"
+  },
+  "284871": {
+    "sots_id": 96044634,
+    "name": "Patryk Sokołowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96044634.png"
+  },
+  "1065336": {
+    "sots_id": 2000190466,
+    "name": "Michał Milewski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000190466.png"
+  },
+  "208168": {
+    "sots_id": 96063087,
+    "name": "Miłosz Kozak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96063087.png"
+  },
+  "447367": {
+    "sots_id": 96111371,
+    "name": "Przemysław Banaszak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96111371.png"
+  },
+  "123220": {
+    "sots_id": 96008867,
+    "name": "Marek Kozioł",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96008867.png"
+  },
+  "1118867": {
+    "sots_id": 2000398826,
+    "name": "Michał Synoś",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000398826.png"
+  },
+  "848932": {
+    "sots_id": 2000045433,
+    "name": "Ksawery Kukułka",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000045433.png"
+  },
+  "1472900": {
+    "sots_id": 2000518011,
+    "name": "Łukasz Piwnicki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000518011.png"
+  },
+  "848784": {
+    "sots_id": 2000278427,
+    "name": "Karol Łysiak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278427.png"
+  },
+  "618436": {
+    "sots_id": 2000085647,
+    "name": "Oliwier Sławiński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000085647.png"
+  },
+  "964766": {
+    "sots_id": 2000220109,
+    "name": "Szymon Kądziołka",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000220109.png"
+  },
+  "1108661": {
+    "sots_id": 2000303458,
+    "name": "Szymon Łyczko",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000303458.png"
+  },
+  "993957": {
+    "sots_id": 2000289296,
+    "name": "Łukasz Bomba",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000289296.png"
+  },
+  "1155814": {
+    "sots_id": 2000279485,
+    "name": "Łukasz Jakubowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000279485.png"
+  },
+  "1136320": {
+    "sots_id": 2000374232,
+    "name": "Krzysztof Fałowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000374232.png"
+  },
+  "363254": {
+    "sots_id": 96106344,
+    "name": "Łukasz Wiech",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96106344.png"
+  },
+  "1388016": {
+    "sots_id": 2000476515,
+    "name": "Lenard Szczygieł",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000476515.png"
+  },
+  "703143": {
+    "sots_id": 2000035332,
+    "name": "Kamil Głogowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000035332.png"
+  },
+  "1146619": {
+    "sots_id": 2000278724,
+    "name": "Stanisław Gieroba",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000278724.png"
+  },
+  "1172288": {
+    "sots_id": 2000403326,
+    "name": "Jakub Domagała",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000403326.png"
+  },
+  "1411623": {
+    "sots_id": 2000477082,
+    "name": "Mateusz Rosół",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000477082.png"
+  },
+  "1398967": {
+    "sots_id": 2000457347,
+    "name": "Robert Łukowiak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000457347.png"
+  },
+  "279144": {
+    "sots_id": 96074799,
+    "name": "Paweł Lenarcik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96074799.png"
+  },
+  "1133309": {
+    "sots_id": 2000388497,
+    "name": "Marcel Gawłowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000388497.png"
+  },
+  "525226": {
+    "sots_id": 96134453,
+    "name": "Michał Kozajda",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96134453.png"
+  },
+  "259464": {
+    "sots_id": 96054800,
+    "name": "Przemysław Szarek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96054800.png"
+  },
+  "1511591": {
+    "sots_id": 2000530980,
+    "name": "Wiktor Łaszyński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "412483": {
+    "sots_id": 96105987,
+    "name": "Paweł Tupaj",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96105987.png"
+  },
+  "929271": {
+    "sots_id": 2000250203,
+    "name": "Radosław Bąk",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000250203.png"
+  },
+  "1428603": {
+    "sots_id": 2000452116,
+    "name": "Krystian Tworzydło",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000452116.png"
+  },
+  "1118674": {
+    "sots_id": 2000383035,
+    "name": "Kuba Szabłowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000383035.png"
+  },
+  "823256": {
+    "sots_id": 2000081948,
+    "name": "Jakub Pochcioł",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000081948.png"
+  },
+  "1241427": {
+    "sots_id": 2000289210,
+    "name": "Marcel Białowąs",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000289210.png"
+  },
+  "293057": {
+    "sots_id": 96075389,
+    "name": "Mateusz Spychała",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96075389.png"
+  },
+  "603304": {
+    "sots_id": 96146186,
+    "name": "Mikołaj Łabojko",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96146186.png"
+  },
+  "228627": {
+    "sots_id": 96032433,
+    "name": "Krzysztof Wołkowicz",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96032433.png"
+  },
+  "1025972": {
+    "sots_id": 2000220488,
+    "name": "Jan Łabędzki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000220488.png"
+  },
+  "255905": {
+    "sots_id": 96063383,
+    "name": "Jakub Łukowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96063383.png"
+  },
+  "924895": {
+    "sots_id": 2000148261,
+    "name": "Michał Matys",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000148261.png"
+  },
+  "236243": {
+    "sots_id": 54016017,
+    "name": "Konrad Jałocha",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/54016017.png"
+  },
+  "134491": {
+    "sots_id": 96018193,
+    "name": "Piotr Wlazło",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96018193.png"
+  },
+  "554977": {
+    "sots_id": 96131488,
+    "name": "Kacper Sadłocha",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96131488.png"
+  },
+  "820570": {
+    "sots_id": 2000085653,
+    "name": "Paweł Kruszelnicki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000085653.png"
+  },
+  "659159": {
+    "sots_id": 96149464,
+    "name": "Kacper Kołotyło",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96149464.png"
+  },
+  "502196": {
+    "sots_id": 96147685,
+    "name": "Jakub Tecław",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96147685.png"
+  },
+  "225874": {
+    "sots_id": 96041579,
+    "name": "Igor Łasicki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96041579.png"
+  },
+  "720914": {
+    "sots_id": 2000082074,
+    "name": "Marcel Błachewicz",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000082074.png"
+  },
+  "959917": {
+    "sots_id": 2000183691,
+    "name": "Bartłomiej Barański",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000183691.png"
+  },
+  "254937": {
+    "sots_id": 96070344,
+    "name": "Paweł Łysiak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96070344.png"
+  },
+  "393567": {
+    "sots_id": 96105339,
+    "name": "Kacper Wełniak",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96105339.png"
+  },
+  "1510700": {
+    "sots_id": 2000529960,
+    "name": "Tymoteusz Ryguła",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1161772": {
+    "sots_id": 2000301968,
+    "name": "Michał Perchel",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000301968.png"
+  },
+  "952379": {
+    "sots_id": 2000138637,
+    "name": "Kacper Przybyłko",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000138637.png"
+  },
+  "196419": {
+    "sots_id": 96029529,
+    "name": "Łukasz Sołowiej",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96029529.png"
+  },
+  "265893": {
+    "sots_id": 96065500,
+    "name": "Michał Walski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96065500.png"
+  },
+  "120882": {
+    "sots_id": 54016451,
+    "name": "Łukasz Budziłek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/54016451.png"
+  },
+  "287600": {
+    "sots_id": 96045502,
+    "name": "Paweł Jaroszyński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96045502.png"
+  },
+  "1539251": {
+    "sots_id": 2000525899,
+    "name": "Szymon Małyska",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "714021": {
+    "sots_id": 2000026525,
+    "name": "Michał Litwa",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000026525.png"
+  },
+  "356514": {
+    "sots_id": 96103365,
+    "name": "Rafał Wolsztyński",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96103365.png"
+  },
+  "85522": {
+    "sots_id": 96027392,
+    "name": "Michał Kołodziejski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96027392.png"
+  },
+  "672276": {
+    "sots_id": 2000019033,
+    "name": "Miłosz Drąg",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000019033.png"
+  },
+  "321228": {
+    "sots_id": 96080717,
+    "name": "Ernest Dzięcioł",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96080717.png"
+  },
+  "279323": {
+    "sots_id": 96063830,
+    "name": "Bartłomiej Poczobut",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96063830.png"
+  },
+  "1390042": {
+    "sots_id": 2000477151,
+    "name": "Bolesław Świerczewski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000477151.png"
+  },
+  "1064214": {
+    "sots_id": 2000211085,
+    "name": "Olaf Kozłowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000211085.png"
+  },
+  "401609": {
+    "sots_id": 96122116,
+    "name": "Maciej Rosołek",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96122116.png"
+  },
+  "269446": {
+    "sots_id": 96053166,
+    "name": "Jarosław Niezgoda",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96053166.png"
+  },
+  "327755": {
+    "sots_id": 96054428,
+    "name": "Jarosław Jach",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96054428.png"
+  },
+  "240811": {
+    "sots_id": 96063706,
+    "name": "Michał Pawlik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96063706.png"
+  },
+  "265878": {
+    "sots_id": 96063244,
+    "name": "Michał Borecki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96063244.png"
+  },
+  "258229": {
+    "sots_id": 96025710,
+    "name": "Paweł Moskwik",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/96025710.png"
+  },
+  "1033042": {
+    "sots_id": 2000395760,
+    "name": "Filip Składowski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000395760.png"
+  },
+  "45042": {
+    "sots_id": 54002897,
+    "name": "Radosław Majewski",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/54002897.png"
+  },
+  "1341959": {
+    "sots_id": 2000445110,
+    "name": "Mikołaj Kunicki",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000445110.png"
+  },
+  "67556": {
+    "sots_id": 43009443,
+    "name": "Milan Djuric",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1106059": {
+    "sots_id": 2000395581,
+    "name": "Kacper Plichta",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "726014": {
+    "sots_id": 2000012062,
+    "name": "Maksym Dyachuk",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "194139": {
+    "sots_id": 96027813,
+    "name": "Fabian Hiszpański",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
   }
 }

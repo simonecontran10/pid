@@ -82,6 +82,10 @@ OVERRIDES = [
     ("Dimitrios Keramitsis", "https://sortitoutsi.net/football-manager-2026/person/2000121677/dimitris-keramitsis"),
     ("Dominik Połap", "https://sortitoutsi.net/football-manager-2026/person/96142884/dominik-polap"),
     ("Dominik Sokół", "https://sortitoutsi.net/football-manager-2026/person/96128364/dominik-sokol"),
+    ("Milan Djuric", "https://sortitoutsi.net/football-manager-2026/person/43009443/milan-duric"),
+    ("Kacper Plichta", "https://sortitoutsi.net/football-manager-2026/person/2000395581/kacper-plichta"),
+    ("Maksym Dyachuk", "https://sortitoutsi.net/football-manager-2026/person/2000012062/maksym-diachuk"),
+    ("Fabian Hiszpański", "https://sortitoutsi.net/football-manager-2026/person/96027813/fabian-hiszpanski"),
 ]
 
 

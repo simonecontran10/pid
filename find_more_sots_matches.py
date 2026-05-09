@@ -45,6 +45,18 @@ NOCAND_XLSX = DATA_DIR / "sots_more_matches_no_candidate.xlsx"
 def slugify(s: str) -> str:
     if not s:
         return ""
+    # Pre-traduzione di caratteri speciali NON decomponibili da NFKD
+    # (Ł/ł polacche, Ø/ø nordiche, Đ/đ slave, Æ/æ, ß tedesca, Þ/þ islandesi)
+    SPECIAL = str.maketrans({
+        "Ł": "L", "ł": "l",
+        "Ø": "O", "ø": "o",
+        "Đ": "D", "đ": "d",
+        "Æ": "AE", "æ": "ae",
+        "ß": "ss",
+        "Þ": "Th", "þ": "th",
+        "Ð": "D", "ð": "d",
+    })
+    s = s.translate(SPECIAL)
     nfkd = unicodedata.normalize("NFKD", s)
     no_acc = "".join(ch for ch in nfkd if not unicodedata.combining(ch))
     out = []

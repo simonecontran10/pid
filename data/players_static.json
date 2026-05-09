@@ -25431,11 +25431,12 @@
     "fetched_at": "2026-05-05T22:01:44Z",
     "roster_club_id": 5618,
     "roster_club_name": "Lecce Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000222623,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000222623.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000222623/gustav-nøhr",
     "current_club_id_original": 8815,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000222623.png"
   },
   {
     "tm_player_id": 798929,
@@ -42333,12 +42334,14 @@
     "fetched_at": "2026-05-05T22:42:32Z",
     "roster_club_id": 2239,
     "roster_club_name": "US Cremonese",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 43009443,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43009443.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43009443/milan-duric",
     "photo_local": "photos/players_tm/67556.jpg",
     "current_club_id_original": 130,
-    "current_club_name_original": "Winter signing"
+    "current_club_name_original": "Winter signing",
+    "sortitoutsi_id": 43009443,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43009443.png"
   },
   {
     "tm_player_id": 338670,
@@ -57583,10 +57586,11 @@
     "fetched_at": "2026-05-06T13:42:08Z",
     "roster_club_id": 238,
     "roster_club_name": "Lech Poznan",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/991779.png"
+    "sortitoutsi_person_id": 2000193447,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000193447.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000193447/michał-gurgul",
+    "photo_local": "photos/players_tm/991779.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000193447.png"
   },
   {
     "tm_player_id": 461906,
@@ -57818,10 +57822,11 @@
     "fetched_at": "2026-05-06T13:44:30Z",
     "roster_club_id": 238,
     "roster_club_name": "Lech Poznan",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/220969.png"
+    "sortitoutsi_person_id": 96045684,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96045684.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96045684/radosław-murawski",
+    "photo_local": "photos/players_tm/220969.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96045684.png"
   },
   {
     "tm_player_id": 1137026,
@@ -57954,10 +57959,11 @@
     "fetched_at": "2026-05-06T13:44:48Z",
     "roster_club_id": 238,
     "roster_club_name": "Lech Poznan",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/242813.png"
+    "sortitoutsi_person_id": 96062156,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96062156.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96062156/filip-jagiełło",
+    "photo_local": "photos/players_tm/242813.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96062156.png"
   },
   {
     "tm_player_id": 539043,
@@ -58513,10 +58519,11 @@
     "fetched_at": "2026-05-06T13:46:10Z",
     "roster_club_id": 515,
     "roster_club_name": "Free agent",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/248732.png"
+    "sortitoutsi_person_id": 96044665,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96044665.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96044665/paweł-dawidowicz",
+    "photo_local": "photos/players_tm/248732.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96044665.png"
   },
   {
     "tm_player_id": 554288,
@@ -59280,10 +59287,11 @@
     "fetched_at": "2026-05-06T13:47:58Z",
     "roster_club_id": 265,
     "roster_club_name": "Panathinaikos",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/208166.png"
+    "sortitoutsi_person_id": 96052559,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96052559.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96052559/bartłomiej-drągowski",
+    "photo_local": "photos/players_tm/208166.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96052559.png"
   },
   {
     "tm_player_id": 797570,
@@ -60173,10 +60181,11 @@
     "fetched_at": "2026-05-06T13:49:54Z",
     "roster_club_id": 2300,
     "roster_club_name": "Jagiellonia Bialystok",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/805834.jpg"
+    "sortitoutsi_person_id": 2000027587,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000027587.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000027587/sławomir-abramowicz",
+    "photo_local": "photos/players_tm/805834.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000027587.png"
   },
   {
     "tm_player_id": 965043,
@@ -60203,10 +60212,11 @@
     "fetched_at": "2026-05-06T13:49:58Z",
     "roster_club_id": 8641,
     "roster_club_name": "Stal Stalowa Wola",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/965043.jpg"
+    "sortitoutsi_person_id": 2000193456,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000193456.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000193456/miłosz-piekutowski",
+    "photo_local": "photos/players_tm/965043.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000193456.png"
   },
   {
     "tm_player_id": 1205033,
@@ -60631,10 +60641,11 @@
     "fetched_at": "2026-05-06T13:50:57Z",
     "roster_club_id": 2300,
     "roster_club_name": "Jagiellonia Bialystok",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1066230.jpg"
+    "sortitoutsi_person_id": 2000407563,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000407563.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000407563/eryk-kozłowski",
+    "photo_local": "photos/players_tm/1066230.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000407563.png"
   },
   {
     "tm_player_id": 1118873,
@@ -61195,11 +61206,12 @@
     "fetched_at": "2026-05-06T13:52:09Z",
     "roster_club_id": 15521,
     "roster_club_name": "Internal transfer: Lechia Gdansk U19; date: 07/11/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000508708,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000508708.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000508708/michał-kaczorowski",
     "current_club_id_original": 15521,
-    "current_club_name_original": "Internal transfer: Lechia Gdansk U19; date: 07/11/2025"
+    "current_club_name_original": "Internal transfer: Lechia Gdansk U19; date: 07/11/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000508708.png"
   },
   {
     "tm_player_id": 726014,
@@ -61226,10 +61238,12 @@
     "fetched_at": "2026-05-06T13:52:13Z",
     "roster_club_id": 4000,
     "roster_club_name": "Lechia Gdansk",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/726014.png"
+    "sortitoutsi_person_id": 2000012062,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000012062.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000012062/maksym-diachuk",
+    "photo_local": "photos/players_tm/726014.png",
+    "sortitoutsi_id": 2000012062,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000012062.png"
   },
   {
     "tm_player_id": 724843,
@@ -61388,10 +61402,11 @@
     "fetched_at": "2026-05-06T13:52:35Z",
     "roster_club_id": 4000,
     "roster_club_name": "Lechia Gdansk",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/398802.png"
+    "sortitoutsi_person_id": 96086804,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96086804.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96086804/miłosz-kałahur",
+    "photo_local": "photos/players_tm/398802.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96086804.png"
   },
   {
     "tm_player_id": 875035,
@@ -61893,10 +61908,11 @@
     "fetched_at": "2026-05-06T13:53:47Z",
     "roster_club_id": 4000,
     "roster_club_name": "Lechia Gdansk",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/871201.png"
+    "sortitoutsi_person_id": 2000138584,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000138584.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000138584/michał-głogowski",
+    "photo_local": "photos/players_tm/871201.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000138584.png"
   },
   {
     "tm_player_id": 1447756,
@@ -62283,10 +62299,11 @@
     "fetched_at": "2026-05-06T13:54:37Z",
     "roster_club_id": 5689,
     "roster_club_name": "Cracovia",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/687671.png"
+    "sortitoutsi_person_id": 96158956,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96158956.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96158956/dominik-piła",
+    "photo_local": "photos/players_tm/687671.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96158956.png"
   },
   {
     "tm_player_id": 303766,
@@ -63014,10 +63031,11 @@
     "fetched_at": "2026-05-06T13:56:17Z",
     "roster_club_id": 255,
     "roster_club_name": "Legia Warszawa",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/264796.png"
+    "sortitoutsi_person_id": 96045178,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96045178.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96045178/rafał-augustyniak",
+    "photo_local": "photos/players_tm/264796.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96045178.png"
   },
   {
     "tm_player_id": 1118874,
@@ -63382,10 +63400,11 @@
     "fetched_at": "2026-05-06T13:57:06Z",
     "roster_club_id": 255,
     "roster_club_name": "Legia Warszawa",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/164759.png"
+    "sortitoutsi_person_id": 96008522,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96008522.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96008522/paweł-wszołek",
+    "photo_local": "photos/players_tm/164759.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96008522.png"
   },
   {
     "tm_player_id": 357158,
@@ -63650,10 +63669,11 @@
     "fetched_at": "2026-05-06T13:57:40Z",
     "roster_club_id": 255,
     "roster_club_name": "Legia Warszawa",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1132797.png"
+    "sortitoutsi_person_id": 2000190092,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000190092.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000190092/jakub-żewłakow",
+    "photo_local": "photos/players_tm/1132797.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000190092.png"
   },
   {
     "tm_player_id": 1138091,
@@ -63811,10 +63831,11 @@
     "fetched_at": "2026-05-06T13:58:03Z",
     "roster_club_id": 30998,
     "roster_club_name": "Pogon Grodzisk Mazowiecki",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/549982.png"
+    "sortitoutsi_person_id": 96148402,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96148402.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96148402/rafał-adamski",
+    "photo_local": "photos/players_tm/549982.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96148402.png"
   },
   {
     "tm_player_id": 656250,
@@ -64958,10 +64979,11 @@
     "fetched_at": "2026-05-06T14:00:49Z",
     "roster_club_id": 8132,
     "roster_club_name": "Internal transfer: Pogon Szczecin II; date: 17/08/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1149465.jpg"
+    "sortitoutsi_person_id": 2000357087,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000357087.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000357087/rafał-jakubowski",
+    "photo_local": "photos/players_tm/1149465.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000357087.png"
   },
   {
     "tm_player_id": 681692,
@@ -65425,10 +65447,11 @@
     "fetched_at": "2026-05-06T14:01:52Z",
     "roster_club_id": 50949,
     "roster_club_name": "Internal transfer: Pogon Szczecin Youth; date: 01/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1428280.png"
+    "sortitoutsi_person_id": 2000492499,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000492499.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000492499/natan-ława",
+    "photo_local": "photos/players_tm/1428280.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000492499.png"
   },
   {
     "tm_player_id": 37920,
@@ -66412,10 +66435,11 @@
     "fetched_at": "2026-05-06T14:04:37Z",
     "roster_club_id": 168,
     "roster_club_name": "Zaglebie Lubin",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1125761.png"
+    "sortitoutsi_person_id": 2000278421,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000278421.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000278421/marcel-reguła",
+    "photo_local": "photos/players_tm/1125761.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000278421.png"
   },
   {
     "tm_player_id": 289168,
@@ -67123,10 +67147,11 @@
     "fetched_at": "2026-05-06T14:06:17Z",
     "roster_club_id": 3527,
     "roster_club_name": "Motor Lublin",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/235862.jpg"
+    "sortitoutsi_person_id": 96048127,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96048127.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96048127/paweł-stolarski",
+    "photo_local": "photos/players_tm/235862.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96048127.png"
   },
   {
     "tm_player_id": 359030,
@@ -67223,10 +67248,11 @@
     "fetched_at": "2026-05-06T14:06:30Z",
     "roster_club_id": 3527,
     "roster_club_name": "Motor Lublin",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/387529.jpg"
+    "sortitoutsi_person_id": 96115997,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96115997.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96115997/jakub-łabojko",
+    "photo_local": "photos/players_tm/387529.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96115997.png"
   },
   {
     "tm_player_id": 272537,
@@ -67560,10 +67586,11 @@
     "fetched_at": "2026-05-06T14:07:17Z",
     "roster_club_id": 3527,
     "roster_club_name": "Motor Lublin",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/461569.jpg"
+    "sortitoutsi_person_id": 96115264,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96115264.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96115264/michał-król",
+    "photo_local": "photos/players_tm/461569.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96115264.png"
   },
   {
     "tm_player_id": 587660,
@@ -67687,10 +67714,12 @@
     "fetched_at": "2026-05-06T14:07:35Z",
     "roster_club_id": 3527,
     "roster_club_name": "Motor Lublin",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1106059.jpg"
+    "sortitoutsi_person_id": 2000395581,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000395581.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000395581/kacper-plichta",
+    "photo_local": "photos/players_tm/1106059.jpg",
+    "sortitoutsi_id": 2000395581,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000395581.png"
   },
   {
     "tm_player_id": 699400,
@@ -67748,10 +67777,11 @@
     "fetched_at": "2026-05-06T14:07:43Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/727318.png"
+    "sortitoutsi_person_id": 2000193514,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000193514.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000193514/rafał-mamla",
+    "photo_local": "photos/players_tm/727318.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000193514.png"
   },
   {
     "tm_player_id": 1070002,
@@ -67778,10 +67808,11 @@
     "fetched_at": "2026-05-06T14:07:47Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1070002.png"
+    "sortitoutsi_person_id": 2000278444,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000278444.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000278444/michał-niedbała",
+    "photo_local": "photos/players_tm/1070002.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000278444.png"
   },
   {
     "tm_player_id": 1334268,
@@ -67808,10 +67839,11 @@
     "fetched_at": "2026-05-06T14:07:51Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1334268.png"
+    "sortitoutsi_person_id": 2000452120,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000452120.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000452120/michał-mikielewicz",
+    "photo_local": "photos/players_tm/1334268.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000452120.png"
   },
   {
     "tm_player_id": 627717,
@@ -67874,10 +67906,11 @@
     "fetched_at": "2026-05-06T14:08:02Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/685445.png"
+    "sortitoutsi_person_id": 2000059360,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000059360.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000059360/bartłomiej-smolarczyk",
+    "photo_local": "photos/players_tm/685445.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000059360.png"
   },
   {
     "tm_player_id": 246607,
@@ -68209,10 +68242,11 @@
     "fetched_at": "2026-05-06T14:08:47Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/453156.png"
+    "sortitoutsi_person_id": 96117528,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96117528.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96117528/wiktor-długosz",
+    "photo_local": "photos/players_tm/453156.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96117528.png"
   },
   {
     "tm_player_id": 825588,
@@ -68411,10 +68445,11 @@
     "fetched_at": "2026-05-06T14:09:17Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/370555.png"
+    "sortitoutsi_person_id": 96101419,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96101419.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96101419/dawid-błanik",
+    "photo_local": "photos/players_tm/370555.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96101419.png"
   },
   {
     "tm_player_id": 239215,
@@ -68642,12 +68677,13 @@
     "fetched_at": "2026-05-06T14:09:49Z",
     "roster_club_id": 15520,
     "roster_club_name": "Internal transfer: Korona Kielce U19; date: 10/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000312741,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000312741.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000312741/mateusz-głowiński",
     "current_club_id_original": 15520,
     "current_club_name_original": "Internal transfer: Korona Kielce U19; date: 10/07/2025",
-    "photo_local": "photos/players_tm/1046338.png"
+    "photo_local": "photos/players_tm/1046338.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000312741.png"
   },
   {
     "tm_player_id": 120970,
@@ -68674,10 +68710,11 @@
     "fetched_at": "2026-05-06T14:09:54Z",
     "roster_club_id": 2118,
     "roster_club_name": "Wisla Plock",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/120970.jpg"
+    "sortitoutsi_person_id": 96029506,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96029506.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96029506/rafał-leszczyński",
+    "photo_local": "photos/players_tm/120970.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96029506.png"
   },
   {
     "tm_player_id": 697880,
@@ -68735,10 +68772,11 @@
     "fetched_at": "2026-05-06T14:10:04Z",
     "roster_club_id": 2118,
     "roster_club_name": "Wisla Plock",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1121278.jpg"
+    "sortitoutsi_person_id": 2000309687,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000309687.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000309687/stanisław-pruszkowski",
+    "photo_local": "photos/players_tm/1121278.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000309687.png"
   },
   {
     "tm_player_id": 1308198,
@@ -69303,10 +69341,12 @@
     "fetched_at": "2026-05-06T14:11:39Z",
     "roster_club_id": 2118,
     "roster_club_name": "Wisla Plock",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/194139.jpg"
+    "sortitoutsi_person_id": 96027813,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96027813.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96027813/fabian-hiszpanski",
+    "photo_local": "photos/players_tm/194139.jpg",
+    "sortitoutsi_id": 96027813,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96027813.png"
   },
   {
     "tm_player_id": 1136224,
@@ -69665,10 +69705,11 @@
     "fetched_at": "2026-05-06T14:12:30Z",
     "roster_club_id": 2118,
     "roster_club_name": "Wisla Plock",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/80769.jpg"
+    "sortitoutsi_person_id": 96004894,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96004894.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96004894/łukasz-sekulski",
+    "photo_local": "photos/players_tm/80769.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96004894.png"
   },
   {
     "tm_player_id": 528402,
@@ -69757,12 +69798,13 @@
     "fetched_at": "2026-05-06T14:12:43Z",
     "roster_club_id": 41769,
     "roster_club_name": "Internal transfer: Radomiak Radom U19; date: 17/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000182592,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000182592.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000182592/michał-jerke",
     "current_club_id_original": 41769,
     "current_club_name_original": "Internal transfer: Radomiak Radom U19; date: 17/07/2025",
-    "photo_local": "photos/players_tm/1126322.jpg"
+    "photo_local": "photos/players_tm/1126322.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000182592.png"
   },
   {
     "tm_player_id": 604293,
@@ -70191,10 +70233,11 @@
     "fetched_at": "2026-05-06T14:13:39Z",
     "roster_club_id": 7154,
     "roster_club_name": "Radomiak Radom",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/385759.jpg"
+    "sortitoutsi_person_id": 96132888,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96132888.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96132888/michał-kaput",
+    "photo_local": "photos/players_tm/385759.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96132888.png"
   },
   {
     "tm_player_id": 1118869,
@@ -70223,10 +70266,11 @@
     "fetched_at": "2026-05-06T14:13:44Z",
     "roster_club_id": 7154,
     "roster_club_name": "Radomiak Radom",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1118869.jpg"
+    "sortitoutsi_person_id": 2000278138,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000278138.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000278138/mikołaj-molendowski",
+    "photo_local": "photos/players_tm/1118869.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000278138.png"
   },
   {
     "tm_player_id": 1508263,
@@ -70324,10 +70368,11 @@
     "fetched_at": "2026-05-06T14:13:58Z",
     "roster_club_id": 7154,
     "roster_club_name": "Radomiak Radom",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/176514.jpg"
+    "sortitoutsi_person_id": 96011096,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96011096.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96011096/rafał-wolski",
+    "photo_local": "photos/players_tm/176514.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96011096.png"
   },
   {
     "tm_player_id": 402825,
@@ -71149,10 +71194,11 @@
     "fetched_at": "2026-05-06T14:15:54Z",
     "roster_club_id": 6112,
     "roster_club_name": "Piast Gliwice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/117683.jpg"
+    "sortitoutsi_person_id": 96007971,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96007971.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96007971/michał-chrapek",
+    "photo_local": "photos/players_tm/117683.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96007971.png"
   },
   {
     "tm_player_id": 726397,
@@ -71545,10 +71591,11 @@
     "fetched_at": "2026-05-06T14:16:51Z",
     "roster_club_id": 6456,
     "roster_club_name": "GKS Katowice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/447343.png"
+    "sortitoutsi_person_id": 96110738,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96110738.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96110738/rafał-strączek",
+    "photo_local": "photos/players_tm/447343.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96110738.png"
   },
   {
     "tm_player_id": 266239,
@@ -71575,10 +71622,11 @@
     "fetched_at": "2026-05-06T14:16:55Z",
     "roster_club_id": 6456,
     "roster_club_name": "GKS Katowice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/266239.png"
+    "sortitoutsi_person_id": 96020380,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96020380.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96020380/dawid-kudła",
+    "photo_local": "photos/players_tm/266239.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96020380.png"
   },
   {
     "tm_player_id": 1535382,
@@ -71830,10 +71878,11 @@
     "fetched_at": "2026-05-06T14:17:29Z",
     "roster_club_id": 6456,
     "roster_club_name": "GKS Katowice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1255660.png"
+    "sortitoutsi_person_id": 2000200107,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000200107.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000200107/łukasz-trepka",
+    "photo_local": "photos/players_tm/1255660.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000200107.png"
   },
   {
     "tm_player_id": 919469,
@@ -71997,10 +72046,11 @@
     "fetched_at": "2026-05-06T14:17:52Z",
     "roster_club_id": 6456,
     "roster_club_name": "GKS Katowice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/694428.png"
+    "sortitoutsi_person_id": 2000059338,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000059338.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000059338/kacper-łukasiak",
+    "photo_local": "photos/players_tm/694428.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000059338.png"
   },
   {
     "tm_player_id": 991455,
@@ -72060,10 +72110,11 @@
     "fetched_at": "2026-05-06T14:18:01Z",
     "roster_club_id": 21760,
     "roster_club_name": "Internal transfer: GKS Katowice II; date: 28/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1431623.png"
+    "sortitoutsi_person_id": 2000502308,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000502308.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000502308/miłosz-swatowski",
+    "photo_local": "photos/players_tm/1431623.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000502308.png"
   },
   {
     "tm_player_id": 339693,
@@ -72397,10 +72448,11 @@
     "fetched_at": "2026-05-06T14:18:46Z",
     "roster_club_id": 6456,
     "roster_club_name": "GKS Katowice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/128804.png"
+    "sortitoutsi_person_id": 96010286,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96010286.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96010286/adrian-błąd",
+    "photo_local": "photos/players_tm/128804.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96010286.png"
   },
   {
     "tm_player_id": 331278,
@@ -72808,10 +72860,11 @@
     "fetched_at": "2026-05-06T14:19:44Z",
     "roster_club_id": 6107,
     "roster_club_name": "Arka Gdynia",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/278690.jpg"
+    "sortitoutsi_person_id": 96064351,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96064351.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96064351/michał-marcjanik",
+    "photo_local": "photos/players_tm/278690.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96064351.png"
   },
   {
     "tm_player_id": 330210,
@@ -73011,10 +73064,11 @@
     "fetched_at": "2026-05-06T14:20:09Z",
     "roster_club_id": 6107,
     "roster_club_name": "Arka Gdynia",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/237356.jpg"
+    "sortitoutsi_person_id": 96028993,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96028993.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96028993/michał-rzuchowski",
+    "photo_local": "photos/players_tm/237356.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96028993.png"
   },
   {
     "tm_player_id": 335245,
@@ -73443,10 +73497,11 @@
     "fetched_at": "2026-05-06T14:21:06Z",
     "roster_club_id": 15906,
     "roster_club_name": "Bruk-Bet Termalica Nieciecza",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/366213.png"
+    "sortitoutsi_person_id": 96086684,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96086684.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96086684/miłosz-mleczko",
+    "photo_local": "photos/players_tm/366213.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96086684.png"
   },
   {
     "tm_player_id": 299561,
@@ -73537,10 +73592,11 @@
     "fetched_at": "2026-05-06T14:21:18Z",
     "roster_club_id": 15906,
     "roster_club_name": "Bruk-Bet Termalica Nieciecza",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/751104.png"
+    "sortitoutsi_person_id": 2000045437,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000045437.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000045437/miłosz-matysik",
+    "photo_local": "photos/players_tm/751104.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000045437.png"
   },
   {
     "tm_player_id": 494670,
@@ -74006,10 +74062,11 @@
     "fetched_at": "2026-05-06T14:22:17Z",
     "roster_club_id": 15906,
     "roster_club_name": "Bruk-Bet Termalica Nieciecza",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/847436.png"
+    "sortitoutsi_person_id": 96159219,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96159219.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96159219/igor-strzałek",
+    "photo_local": "photos/players_tm/847436.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96159219.png"
   },
   {
     "tm_player_id": 191895,
@@ -74038,10 +74095,11 @@
     "fetched_at": "2026-05-06T14:22:22Z",
     "roster_club_id": 15906,
     "roster_club_name": "Nieciecza",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/191895.png"
+    "sortitoutsi_person_id": 96026542,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96026542.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96026542/rafał-kurzawa",
+    "photo_local": "photos/players_tm/191895.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96026542.png"
   },
   {
     "tm_player_id": 385614,
@@ -74172,10 +74230,11 @@
     "fetched_at": "2026-05-06T14:22:38Z",
     "roster_club_id": 15906,
     "roster_club_name": "Bruk-Bet Termalica Nieciecza",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/346309.png"
+    "sortitoutsi_person_id": 91202829,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_91202829.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/91202829/morgan-faßbender",
+    "photo_local": "photos/players_tm/346309.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/91202829.png"
   },
   {
     "tm_player_id": 510545,
@@ -74593,10 +74652,11 @@
     "fetched_at": "2026-05-06T14:23:35Z",
     "roster_club_id": 422,
     "roster_club_name": "Wisla Kraków",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/446898.jpg"
+    "sortitoutsi_person_id": 96081055,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96081055.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96081055/rafał-mikulec",
+    "photo_local": "photos/players_tm/446898.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96081055.png"
   },
   {
     "tm_player_id": 337673,
@@ -75058,10 +75118,11 @@
     "fetched_at": "2026-05-06T14:24:34Z",
     "roster_club_id": 422,
     "roster_club_name": "Wisla Kraków",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/901070.jpg"
+    "sortitoutsi_person_id": 2000274043,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000274043.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000274043/maciej-kuziemka",
+    "photo_local": "photos/players_tm/901070.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000274043.png"
   },
   {
     "tm_player_id": 1066834,
@@ -75254,9 +75315,10 @@
     "fetched_at": "2026-05-06T14:24:59Z",
     "roster_club_id": 6354,
     "roster_club_name": "Internal transfer: Wisla Krakow II; date: 17/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000442032,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000442032.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000442032/szymon-kawała",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000442032.png"
   },
   {
     "tm_player_id": 826506,
@@ -76349,10 +76411,11 @@
     "fetched_at": "2026-05-06T14:27:27Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/440247.png"
+    "sortitoutsi_person_id": 96133697,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96133697.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96133697/michał-brudnicki",
+    "photo_local": "photos/players_tm/440247.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96133697.png"
   },
   {
     "tm_player_id": 256942,
@@ -76479,10 +76542,11 @@
     "fetched_at": "2026-05-06T14:27:43Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/319721.png"
+    "sortitoutsi_person_id": 96067674,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96067674.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96067674/przemysław-szur",
+    "photo_local": "photos/players_tm/319721.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96067674.png"
   },
   {
     "tm_player_id": 55572,
@@ -76512,10 +76576,11 @@
     "fetched_at": "2026-05-06T14:27:48Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/55572.png"
+    "sortitoutsi_person_id": 96028991,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96028991.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96028991/michał-grudniewski",
+    "photo_local": "photos/players_tm/55572.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96028991.png"
   },
   {
     "tm_player_id": 397854,
@@ -76646,10 +76711,11 @@
     "fetched_at": "2026-05-06T14:28:05Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/573345.png"
+    "sortitoutsi_person_id": 96143996,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96143996.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96143996/ernest-terpiłowski",
+    "photo_local": "photos/players_tm/573345.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96143996.png"
   },
   {
     "tm_player_id": 342659,
@@ -76679,10 +76745,11 @@
     "fetched_at": "2026-05-06T14:28:09Z",
     "roster_club_id": 2745,
     "roster_club_name": "Pol. Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/342659.png"
+    "sortitoutsi_person_id": 96093248,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96093248.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96093248/paweł-olszewski",
+    "photo_local": "photos/players_tm/342659.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96093248.png"
   },
   {
     "tm_player_id": 1440963,
@@ -76977,10 +77044,11 @@
     "fetched_at": "2026-05-06T14:28:49Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/241827.png"
+    "sortitoutsi_person_id": 96052581,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96052581.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96052581/michał-bajdur",
+    "photo_local": "photos/players_tm/241827.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96052581.png"
   },
   {
     "tm_player_id": 343619,
@@ -77079,10 +77147,11 @@
     "fetched_at": "2026-05-06T14:29:02Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/512294.png"
+    "sortitoutsi_person_id": 96131477,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96131477.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96131477/mateusz-młyński",
+    "photo_local": "photos/players_tm/512294.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96131477.png"
   },
   {
     "tm_player_id": 351796,
@@ -77211,10 +77280,11 @@
     "fetched_at": "2026-05-06T14:29:20Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/401608.png"
+    "sortitoutsi_person_id": 96115263,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96115263.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96115263/łukasz-zjawiński",
+    "photo_local": "photos/players_tm/401608.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96115263.png"
   },
   {
     "tm_player_id": 510459,
@@ -78483,10 +78553,11 @@
     "fetched_at": "2026-05-06T14:32:16Z",
     "roster_club_id": 759,
     "roster_club_name": "Slask Wroclaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/181135.png"
+    "sortitoutsi_person_id": 96020356,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96020356.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96020356/michał-szromnik",
+    "photo_local": "photos/players_tm/181135.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96020356.png"
   },
   {
     "tm_player_id": 925734,
@@ -78513,10 +78584,11 @@
     "fetched_at": "2026-05-06T14:32:20Z",
     "roster_club_id": 759,
     "roster_club_name": "Slask Wroclaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/925734.png"
+    "sortitoutsi_person_id": 2000278417,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000278417.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000278417/bartosz-głogowski",
+    "photo_local": "photos/players_tm/925734.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000278417.png"
   },
   {
     "tm_player_id": 1019689,
@@ -78766,10 +78838,11 @@
     "fetched_at": "2026-05-06T14:32:53Z",
     "roster_club_id": 256,
     "roster_club_name": "LKS Lodz",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/386230.png"
+    "sortitoutsi_person_id": 96103230,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96103230.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96103230/michał-mokrzycki",
+    "photo_local": "photos/players_tm/386230.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96103230.png"
   },
   {
     "tm_player_id": 486834,
@@ -78834,10 +78907,11 @@
     "fetched_at": "2026-05-06T14:33:01Z",
     "roster_club_id": 759,
     "roster_club_name": "Slask Wroclaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/742943.jpg"
+    "sortitoutsi_person_id": 2000216559,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000216559.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000216559/michał-rosiak",
+    "photo_local": "photos/players_tm/742943.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000216559.png"
   },
   {
     "tm_player_id": 284871,
@@ -78866,10 +78940,11 @@
     "fetched_at": "2026-05-06T14:33:05Z",
     "roster_club_id": 759,
     "roster_club_name": "Slask Wroclaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/284871.png"
+    "sortitoutsi_person_id": 96044634,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96044634.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96044634/patryk-sokołowski",
+    "photo_local": "photos/players_tm/284871.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96044634.png"
   },
   {
     "tm_player_id": 208591,
@@ -79028,9 +79103,10 @@
     "fetched_at": "2026-05-06T14:33:28Z",
     "roster_club_id": 22568,
     "roster_club_name": "Internal transfer: Slask Wroclaw II; date: 17/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000190466,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000190466.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000190466/michał-milewski",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000190466.png"
   },
   {
     "tm_player_id": 740952,
@@ -79331,10 +79407,11 @@
     "fetched_at": "2026-05-06T14:34:05Z",
     "roster_club_id": 759,
     "roster_club_name": "Slask Wroclaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/208168.jpg"
+    "sortitoutsi_person_id": 96063087,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96063087.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96063087/miłosz-kozak",
+    "photo_local": "photos/players_tm/208168.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96063087.png"
   },
   {
     "tm_player_id": 818899,
@@ -79492,10 +79569,11 @@
     "fetched_at": "2026-05-06T14:34:47Z",
     "roster_club_id": 759,
     "roster_club_name": "Slask Wroclaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/447367.jpg"
+    "sortitoutsi_person_id": 96111371,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96111371.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96111371/przemysław-banaszak",
+    "photo_local": "photos/players_tm/447367.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96111371.png"
   },
   {
     "tm_player_id": 1061627,
@@ -79552,10 +79630,11 @@
     "fetched_at": "2026-05-06T14:34:55Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/123220.jpg"
+    "sortitoutsi_person_id": 96008867,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96008867.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96008867/marek-kozioł",
+    "photo_local": "photos/players_tm/123220.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96008867.png"
   },
   {
     "tm_player_id": 1314134,
@@ -79672,10 +79751,11 @@
     "fetched_at": "2026-05-06T14:35:15Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1118867.jpg"
+    "sortitoutsi_person_id": 2000398826,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000398826.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000398826/michał-synoś",
+    "photo_local": "photos/players_tm/1118867.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000398826.png"
   },
   {
     "tm_player_id": 1023263,
@@ -79891,10 +79971,11 @@
     "fetched_at": "2026-05-06T14:35:45Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/848932.jpg"
+    "sortitoutsi_person_id": 2000045433,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000045433.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000045433/ksawery-kukułka",
+    "photo_local": "photos/players_tm/848932.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000045433.png"
   },
   {
     "tm_player_id": 1397074,
@@ -79952,10 +80033,11 @@
     "fetched_at": "2026-05-06T14:35:52Z",
     "roster_club_id": 44801,
     "roster_club_name": "Internal transfer: Stal Rzeszow II; date: 19/08/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1472900.jpg"
+    "sortitoutsi_person_id": 2000518011,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000518011.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000518011/łukasz-piwnicki",
+    "photo_local": "photos/players_tm/1472900.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000518011.png"
   },
   {
     "tm_player_id": 577596,
@@ -80052,10 +80134,11 @@
     "fetched_at": "2026-05-06T14:36:07Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/848784.jpg"
+    "sortitoutsi_person_id": 2000278427,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000278427.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000278427/karol-łysiak",
+    "photo_local": "photos/players_tm/848784.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000278427.png"
   },
   {
     "tm_player_id": 1297138,
@@ -80274,10 +80357,11 @@
     "fetched_at": "2026-05-06T14:36:37Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/618436.jpg"
+    "sortitoutsi_person_id": 2000085647,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000085647.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000085647/oliwier-sławiński",
+    "photo_local": "photos/players_tm/618436.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000085647.png"
   },
   {
     "tm_player_id": 964766,
@@ -80307,10 +80391,11 @@
     "fetched_at": "2026-05-06T14:36:42Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/964766.jpg"
+    "sortitoutsi_person_id": 2000220109,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000220109.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000220109/szymon-kądziołka",
+    "photo_local": "photos/players_tm/964766.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000220109.png"
   },
   {
     "tm_player_id": 1212049,
@@ -80473,10 +80558,11 @@
     "fetched_at": "2026-05-06T14:37:03Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1108661.jpg"
+    "sortitoutsi_person_id": 2000303458,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000303458.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000303458/szymon-łyczko",
+    "photo_local": "photos/players_tm/1108661.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000303458.png"
   },
   {
     "tm_player_id": 717915,
@@ -80730,10 +80816,11 @@
     "fetched_at": "2026-05-06T14:37:38Z",
     "roster_club_id": 256,
     "roster_club_name": "LKS Lodz",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/993957.jpg"
+    "sortitoutsi_person_id": 2000289296,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000289296.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000289296/łukasz-bomba",
+    "photo_local": "photos/players_tm/993957.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000289296.png"
   },
   {
     "tm_player_id": 1155814,
@@ -80760,10 +80847,11 @@
     "fetched_at": "2026-05-06T14:37:43Z",
     "roster_club_id": 9055,
     "roster_club_name": "Stomil Olsztyn",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1155814.jpg"
+    "sortitoutsi_person_id": 2000279485,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000279485.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000279485/łukasz-jakubowski",
+    "photo_local": "photos/players_tm/1155814.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000279485.png"
   },
   {
     "tm_player_id": 464878,
@@ -80822,10 +80910,11 @@
     "fetched_at": "2026-05-06T14:37:52Z",
     "roster_club_id": 256,
     "roster_club_name": "LKS Lodz",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1136320.jpg"
+    "sortitoutsi_person_id": 2000374232,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000374232.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000374232/krzysztof-fałowski",
+    "photo_local": "photos/players_tm/1136320.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000374232.png"
   },
   {
     "tm_player_id": 728420,
@@ -80919,10 +81008,11 @@
     "fetched_at": "2026-05-06T14:38:05Z",
     "roster_club_id": 256,
     "roster_club_name": "LKS Lodz",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/363254.jpg"
+    "sortitoutsi_person_id": 96106344,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96106344.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96106344/łukasz-wiech",
+    "photo_local": "photos/players_tm/363254.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96106344.png"
   },
   {
     "tm_player_id": 1131288,
@@ -81576,9 +81666,10 @@
     "fetched_at": "2026-05-06T14:39:41Z",
     "roster_club_id": 16402,
     "roster_club_name": "Internal transfer: LKS Lodz II; date: 02/02/2026",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000476515,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000476515.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000476515/lenard-szczygieł",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000476515.png"
   },
   {
     "tm_player_id": 388514,
@@ -81899,10 +81990,11 @@
     "fetched_at": "2026-05-06T14:40:29Z",
     "roster_club_id": 30998,
     "roster_club_name": "Pogon Grodzisk Mazowiecki",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/703143.png"
+    "sortitoutsi_person_id": 2000035332,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000035332.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000035332/kamil-głogowski",
+    "photo_local": "photos/players_tm/703143.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000035332.png"
   },
   {
     "tm_player_id": 296832,
@@ -82520,10 +82612,11 @@
     "fetched_at": "2026-05-06T14:41:52Z",
     "roster_club_id": 30998,
     "roster_club_name": "Pogon Grodzisk Mazowiecki",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1146619.png"
+    "sortitoutsi_person_id": 2000278724,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000278724.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000278724/stanisław-gieroba",
+    "photo_local": "photos/players_tm/1146619.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000278724.png"
   },
   {
     "tm_player_id": 520503,
@@ -82939,9 +83032,10 @@
     "fetched_at": "2026-05-06T14:42:58Z",
     "roster_club_id": 14070,
     "roster_club_name": "Internal transfer: Ruch Chorzow II; date: 04/02/2026",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000403326,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000403326.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000403326/jakub-domagała",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000403326.png"
   },
   {
     "tm_player_id": 1427686,
@@ -83203,12 +83297,13 @@
     "fetched_at": "2026-05-06T14:43:33Z",
     "roster_club_id": 15529,
     "roster_club_name": "Internal transfer: Ruch Chorzow U19; date: 23/05/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000477082,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000477082.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000477082/mateusz-rosół",
     "current_club_id_original": 15529,
     "current_club_name_original": "Internal transfer: Ruch Chorzow U19; date: 23/05/2025",
-    "photo_local": "photos/players_tm/1411623.png"
+    "photo_local": "photos/players_tm/1411623.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000477082.png"
   },
   {
     "tm_player_id": 664783,
@@ -83531,9 +83626,10 @@
     "fetched_at": "2026-05-06T14:44:16Z",
     "roster_club_id": 318,
     "roster_club_name": "Ruch Chorzow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000457347,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000457347.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000457347/robert-łukowiak",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000457347.png"
   },
   {
     "tm_player_id": 1525913,
@@ -83657,10 +83753,11 @@
     "fetched_at": "2026-05-06T14:44:33Z",
     "roster_club_id": 8377,
     "roster_club_name": "Chrobry Glogow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/279144.png"
+    "sortitoutsi_person_id": 96074799,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96074799.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96074799/paweł-lenarcik",
+    "photo_local": "photos/players_tm/279144.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96074799.png"
   },
   {
     "tm_player_id": 1133309,
@@ -83687,10 +83784,11 @@
     "fetched_at": "2026-05-06T14:44:38Z",
     "roster_club_id": 67560,
     "roster_club_name": "Stal Jasien",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1133309.jpeg"
+    "sortitoutsi_person_id": 2000388497,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000388497.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000388497/marcel-gawłowski",
+    "photo_local": "photos/players_tm/1133309.jpeg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000388497.png"
   },
   {
     "tm_player_id": 396525,
@@ -83784,10 +83882,11 @@
     "fetched_at": "2026-05-06T14:44:53Z",
     "roster_club_id": 8377,
     "roster_club_name": "Chrobry Glogow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/525226.png"
+    "sortitoutsi_person_id": 96134453,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96134453.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96134453/michał-kozajda",
+    "photo_local": "photos/players_tm/525226.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96134453.png"
   },
   {
     "tm_player_id": 1000682,
@@ -83848,10 +83947,11 @@
     "fetched_at": "2026-05-06T14:45:01Z",
     "roster_club_id": 8377,
     "roster_club_name": "Chrobry Glogow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/259464.png"
+    "sortitoutsi_person_id": 96054800,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96054800.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96054800/przemysław-szarek",
+    "photo_local": "photos/players_tm/259464.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96054800.png"
   },
   {
     "tm_player_id": 1511591,
@@ -83878,9 +83978,10 @@
     "fetched_at": "2026-05-06T14:45:06Z",
     "roster_club_id": 43680,
     "roster_club_name": "Internal transfer: Chrobry Glogow II; date: 06/02/2026",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000530980,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000530980.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000530980/wiktor-łaszyński",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000530980.png"
   },
   {
     "tm_player_id": 358874,
@@ -83978,10 +84079,11 @@
     "fetched_at": "2026-05-06T14:45:18Z",
     "roster_club_id": 8377,
     "roster_club_name": "Chrobry Glogow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/412483.png"
+    "sortitoutsi_person_id": 96105987,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96105987.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96105987/paweł-tupaj",
+    "photo_local": "photos/players_tm/412483.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96105987.png"
   },
   {
     "tm_player_id": 658113,
@@ -84144,10 +84246,11 @@
     "fetched_at": "2026-05-06T14:45:42Z",
     "roster_club_id": 10704,
     "roster_club_name": "Resovia Rzeszow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/929271.jpg"
+    "sortitoutsi_person_id": 2000250203,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000250203.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000250203/radosław-bąk",
+    "photo_local": "photos/players_tm/929271.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000250203.png"
   },
   {
     "tm_player_id": 1428603,
@@ -84174,10 +84277,11 @@
     "fetched_at": "2026-05-06T14:45:46Z",
     "roster_club_id": 8377,
     "roster_club_name": "Chrobry Glogow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1428603.jpg"
+    "sortitoutsi_person_id": 2000452116,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000452116.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000452116/krystian-tworzydło",
+    "photo_local": "photos/players_tm/1428603.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000452116.png"
   },
   {
     "tm_player_id": 1511590,
@@ -84540,10 +84644,11 @@
     "fetched_at": "2026-05-06T14:46:38Z",
     "roster_club_id": 515,
     "roster_club_name": "Free agent",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1118674.png"
+    "sortitoutsi_person_id": 2000383035,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000383035.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000383035/kuba-szabłowski",
+    "photo_local": "photos/players_tm/1118674.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000383035.png"
   },
   {
     "tm_player_id": 1143474,
@@ -84828,10 +84933,11 @@
     "fetched_at": "2026-05-06T14:47:19Z",
     "roster_club_id": 5699,
     "roster_club_name": "Odra Opole",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/823256.png"
+    "sortitoutsi_person_id": 2000081948,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000081948.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000081948/jakub-pochcioł",
+    "photo_local": "photos/players_tm/823256.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000081948.png"
   },
   {
     "tm_player_id": 1241427,
@@ -84858,10 +84964,11 @@
     "fetched_at": "2026-05-06T14:47:24Z",
     "roster_club_id": 57052,
     "roster_club_name": "Internal transfer: Odra Opole II; date: 17/07/2025",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1241427.png"
+    "sortitoutsi_person_id": 2000289210,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000289210.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000289210/marcel-białowąs",
+    "photo_local": "photos/players_tm/1241427.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000289210.png"
   },
   {
     "tm_player_id": 345435,
@@ -84991,10 +85098,11 @@
     "fetched_at": "2026-05-06T14:47:40Z",
     "roster_club_id": 5699,
     "roster_club_name": "Odra Opole",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/293057.png"
+    "sortitoutsi_person_id": 96075389,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96075389.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96075389/mateusz-spychała",
+    "photo_local": "photos/players_tm/293057.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96075389.png"
   },
   {
     "tm_player_id": 178078,
@@ -85791,10 +85899,11 @@
     "fetched_at": "2026-05-06T14:49:20Z",
     "roster_club_id": 7976,
     "roster_club_name": "Polonia Bytom",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/603304.jpg"
+    "sortitoutsi_person_id": 96146186,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96146186.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96146186/mikołaj-łabojko",
+    "photo_local": "photos/players_tm/603304.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96146186.png"
   },
   {
     "tm_player_id": 453662,
@@ -86093,10 +86202,11 @@
     "fetched_at": "2026-05-06T14:49:57Z",
     "roster_club_id": 7976,
     "roster_club_name": "Polonia Bytom",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/228627.jpg"
+    "sortitoutsi_person_id": 96032433,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96032433.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96032433/krzysztof-wołkowicz",
+    "photo_local": "photos/players_tm/228627.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96032433.png"
   },
   {
     "tm_player_id": 1279298,
@@ -86156,10 +86266,11 @@
     "fetched_at": "2026-05-06T14:50:05Z",
     "roster_club_id": 14848,
     "roster_club_name": "Bologna Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1025972.png"
+    "sortitoutsi_person_id": 2000220488,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000220488.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000220488/jan-łabędzki",
+    "photo_local": "photos/players_tm/1025972.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000220488.png"
   },
   {
     "tm_player_id": 255898,
@@ -86223,10 +86334,11 @@
     "fetched_at": "2026-05-06T14:50:13Z",
     "roster_club_id": 6456,
     "roster_club_name": "GKS Katowice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/255905.png"
+    "sortitoutsi_person_id": 96063383,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96063383.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96063383/jakub-łukowski",
+    "photo_local": "photos/players_tm/255905.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96063383.png"
   },
   {
     "tm_player_id": 1380617,
@@ -86443,10 +86555,11 @@
     "fetched_at": "2026-05-06T14:50:42Z",
     "roster_club_id": 22431,
     "roster_club_name": "Stal Mielec",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/924895.jpg"
+    "sortitoutsi_person_id": 2000148261,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000148261.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000148261/michał-matys",
+    "photo_local": "photos/players_tm/924895.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000148261.png"
   },
   {
     "tm_player_id": 236243,
@@ -86473,10 +86586,11 @@
     "fetched_at": "2026-05-06T14:50:47Z",
     "roster_club_id": 22431,
     "roster_club_name": "Stal Mielec",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/236243.jpg"
+    "sortitoutsi_person_id": 54016017,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_54016017.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/54016017/konrad-jałocha",
+    "photo_local": "photos/players_tm/236243.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/54016017.png"
   },
   {
     "tm_player_id": 36789,
@@ -86895,10 +87009,11 @@
     "fetched_at": "2026-05-06T14:51:42Z",
     "roster_club_id": 22431,
     "roster_club_name": "Stal Mielec",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/134491.jpg"
+    "sortitoutsi_person_id": 96018193,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96018193.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96018193/piotr-wlazło",
+    "photo_local": "photos/players_tm/134491.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96018193.png"
   },
   {
     "tm_player_id": 1428051,
@@ -87089,10 +87204,11 @@
     "fetched_at": "2026-05-06T14:52:10Z",
     "roster_club_id": 22431,
     "roster_club_name": "Stal Mielec",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/554977.jpg"
+    "sortitoutsi_person_id": 96131488,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96131488.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96131488/kacper-sadłocha",
+    "photo_local": "photos/players_tm/554977.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96131488.png"
   },
   {
     "tm_player_id": 1233348,
@@ -87156,10 +87272,11 @@
     "fetched_at": "2026-05-06T14:52:18Z",
     "roster_club_id": 22431,
     "roster_club_name": "Stal Mielec",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/820570.jpg"
+    "sortitoutsi_person_id": 2000085653,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000085653.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000085653/paweł-kruszelnicki",
+    "photo_local": "photos/players_tm/820570.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000085653.png"
   },
   {
     "tm_player_id": 1067673,
@@ -87349,10 +87466,11 @@
     "fetched_at": "2026-05-06T14:52:45Z",
     "roster_club_id": 1750,
     "roster_club_name": "GKS Tychy",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/659159.jpg"
+    "sortitoutsi_person_id": 96149464,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96149464.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96149464/kacper-kołotyło",
+    "photo_local": "photos/players_tm/659159.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96149464.png"
   },
   {
     "tm_player_id": 1510692,
@@ -87446,10 +87564,11 @@
     "fetched_at": "2026-05-06T14:53:01Z",
     "roster_club_id": 1750,
     "roster_club_name": "GKS Tychy",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/502196.png"
+    "sortitoutsi_person_id": 96147685,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96147685.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96147685/jakub-tecław",
+    "photo_local": "photos/players_tm/502196.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96147685.png"
   },
   {
     "tm_player_id": 819908,
@@ -87512,10 +87631,11 @@
     "fetched_at": "2026-05-06T14:53:09Z",
     "roster_club_id": 422,
     "roster_club_name": "Wisla Kraków",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/225874.png"
+    "sortitoutsi_person_id": 96041579,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96041579.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96041579/igor-łasicki",
+    "photo_local": "photos/players_tm/225874.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96041579.png"
   },
   {
     "tm_player_id": 579583,
@@ -87811,10 +87931,11 @@
     "fetched_at": "2026-05-06T14:53:46Z",
     "roster_club_id": 1750,
     "roster_club_name": "GKS Tychy",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/720914.jpg"
+    "sortitoutsi_person_id": 2000082074,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000082074.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000082074/marcel-błachewicz",
+    "photo_local": "photos/players_tm/720914.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000082074.png"
   },
   {
     "tm_player_id": 607748,
@@ -87876,10 +87997,11 @@
     "fetched_at": "2026-05-06T14:53:54Z",
     "roster_club_id": 1750,
     "roster_club_name": "GKS Tychy",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/959917.png"
+    "sortitoutsi_person_id": 2000183691,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000183691.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000183691/bartłomiej-barański",
+    "photo_local": "photos/players_tm/959917.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000183691.png"
   },
   {
     "tm_player_id": 519414,
@@ -87978,10 +88100,11 @@
     "fetched_at": "2026-05-06T14:54:06Z",
     "roster_club_id": 30974,
     "roster_club_name": "Wieczysta Krakow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/254937.png"
+    "sortitoutsi_person_id": 96070344,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96070344.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96070344/paweł-łysiak",
+    "photo_local": "photos/players_tm/254937.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96070344.png"
   },
   {
     "tm_player_id": 199299,
@@ -88182,10 +88305,11 @@
     "fetched_at": "2026-05-06T14:54:32Z",
     "roster_club_id": 1750,
     "roster_club_name": "GKS Tychy",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/393567.jpg"
+    "sortitoutsi_person_id": 96105339,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96105339.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96105339/kacper-wełniak",
+    "photo_local": "photos/players_tm/393567.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96105339.png"
   },
   {
     "tm_player_id": 294191,
@@ -88245,11 +88369,12 @@
     "fetched_at": "2026-05-06T14:54:40Z",
     "roster_club_id": 14703,
     "roster_club_name": "Internal transfer: GKS Tychy U19; date: 04/02/2026",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000529960,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000529960.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000529960/tymoteusz-ryguła",
     "current_club_id_original": 14703,
-    "current_club_name_original": "Internal transfer: GKS Tychy U19; date: 04/02/2026"
+    "current_club_name_original": "Internal transfer: GKS Tychy U19; date: 04/02/2026",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000529960.png"
   },
   {
     "tm_player_id": 1161772,
@@ -88276,10 +88401,11 @@
     "fetched_at": "2026-05-06T14:54:44Z",
     "roster_club_id": 28893,
     "roster_club_name": "Puszcza Niepolomice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1161772.jpg"
+    "sortitoutsi_person_id": 2000301968,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000301968.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000301968/michał-perchel",
+    "photo_local": "photos/players_tm/1161772.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000301968.png"
   },
   {
     "tm_player_id": 1291414,
@@ -88372,10 +88498,11 @@
     "fetched_at": "2026-05-06T14:54:56Z",
     "roster_club_id": 28893,
     "roster_club_name": "P. Niepolomice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/952379.jpg"
+    "sortitoutsi_person_id": 2000138637,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000138637.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000138637/kacper-przybyłko",
+    "photo_local": "photos/players_tm/952379.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000138637.png"
   },
   {
     "tm_player_id": 452785,
@@ -88467,10 +88594,11 @@
     "fetched_at": "2026-05-06T14:55:07Z",
     "roster_club_id": 28893,
     "roster_club_name": "Puszcza Niepolomice",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/196419.jpg"
+    "sortitoutsi_person_id": 96029529,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96029529.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96029529/łukasz-sołowiej",
+    "photo_local": "photos/players_tm/196419.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96029529.png"
   },
   {
     "tm_player_id": 991322,
@@ -88601,10 +88729,11 @@
     "fetched_at": "2026-05-06T14:55:24Z",
     "roster_club_id": 8641,
     "roster_club_name": "Stal Stalowa Wola",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/265893.jpg"
+    "sortitoutsi_person_id": 96065500,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96065500.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96065500/michał-walski",
+    "photo_local": "photos/players_tm/265893.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96065500.png"
   },
   {
     "tm_player_id": 1109627,
@@ -89028,10 +89157,11 @@
     "fetched_at": "2026-05-06T14:56:19Z",
     "roster_club_id": 3291,
     "roster_club_name": "Gornik Leczna",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/120882.jpg"
+    "sortitoutsi_person_id": 54016451,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_54016451.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/54016451/łukasz-budziłek",
+    "photo_local": "photos/players_tm/120882.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/54016451.png"
   },
   {
     "tm_player_id": 1390043,
@@ -89316,10 +89446,11 @@
     "fetched_at": "2026-05-06T14:56:56Z",
     "roster_club_id": 3291,
     "roster_club_name": "Gornik Leczna",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/287600.png"
+    "sortitoutsi_person_id": 96045502,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96045502.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96045502/paweł-jaroszyński",
+    "photo_local": "photos/players_tm/287600.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96045502.png"
   },
   {
     "tm_player_id": 666612,
@@ -89482,9 +89613,10 @@
     "fetched_at": "2026-05-06T14:57:20Z",
     "roster_club_id": 10671,
     "roster_club_name": "Internal transfer: Gornik Leczna II; date: 20/04/2026",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000525899,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000525899.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000525899/szymon-małyska",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000525899.png"
   },
   {
     "tm_player_id": 1516583,
@@ -89877,10 +90009,11 @@
     "fetched_at": "2026-05-06T14:58:14Z",
     "roster_club_id": 3291,
     "roster_club_name": "Gornik Leczna",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/714021.jpg"
+    "sortitoutsi_person_id": 2000026525,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000026525.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000026525/michał-litwa",
+    "photo_local": "photos/players_tm/714021.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000026525.png"
   },
   {
     "tm_player_id": 1149461,
@@ -89977,10 +90110,11 @@
     "fetched_at": "2026-05-06T14:58:27Z",
     "roster_club_id": 8984,
     "roster_club_name": "Sandecja Nowy Sacz",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/356514.png"
+    "sortitoutsi_person_id": 96103365,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96103365.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96103365/rafał-wolsztyński",
+    "photo_local": "photos/players_tm/356514.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96103365.png"
   },
   {
     "tm_player_id": 528348,
@@ -90134,10 +90268,11 @@
     "fetched_at": "2026-05-06T14:58:49Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/85522.png"
+    "sortitoutsi_person_id": 96027392,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96027392.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96027392/michał-kołodziejski",
+    "photo_local": "photos/players_tm/85522.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96027392.png"
   },
   {
     "tm_player_id": 422647,
@@ -90334,10 +90469,11 @@
     "fetched_at": "2026-05-06T14:59:13Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/672276.png"
+    "sortitoutsi_person_id": 2000019033,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000019033.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000019033/miłosz-drąg",
+    "photo_local": "photos/players_tm/672276.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000019033.png"
   },
   {
     "tm_player_id": 321228,
@@ -90367,10 +90503,11 @@
     "fetched_at": "2026-05-06T14:59:18Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/321228.png"
+    "sortitoutsi_person_id": 96080717,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96080717.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96080717/ernest-dzięcioł",
+    "photo_local": "photos/players_tm/321228.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96080717.png"
   },
   {
     "tm_player_id": 279323,
@@ -90400,10 +90537,11 @@
     "fetched_at": "2026-05-06T14:59:22Z",
     "roster_club_id": 2745,
     "roster_club_name": "Polonia Warsaw",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/279323.png"
+    "sortitoutsi_person_id": 96063830,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96063830.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96063830/bartłomiej-poczobut",
+    "photo_local": "photos/players_tm/279323.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96063830.png"
   },
   {
     "tm_player_id": 345456,
@@ -90558,10 +90696,11 @@
     "fetched_at": "2026-05-06T14:59:43Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1390042.png"
+    "sortitoutsi_person_id": 2000477151,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000477151.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000477151/bolesław-świerczewski",
+    "photo_local": "photos/players_tm/1390042.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000477151.png"
   },
   {
     "tm_player_id": 129362,
@@ -90795,10 +90934,11 @@
     "fetched_at": "2026-05-06T15:00:13Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1064214.jpeg"
+    "sortitoutsi_person_id": 2000211085,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000211085.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000211085/olaf-kozłowski",
+    "photo_local": "photos/players_tm/1064214.jpeg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000211085.png"
   },
   {
     "tm_player_id": 401609,
@@ -90827,10 +90967,11 @@
     "fetched_at": "2026-05-06T15:00:19Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/401609.png"
+    "sortitoutsi_person_id": 96122116,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96122116.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96122116/maciej-rosołek",
+    "photo_local": "photos/players_tm/401609.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96122116.png"
   },
   {
     "tm_player_id": 492351,
@@ -90890,10 +91031,11 @@
     "fetched_at": "2026-05-06T15:00:27Z",
     "roster_club_id": 4896,
     "roster_club_name": "Pogon Siedlce",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/269446.jpg"
+    "sortitoutsi_person_id": 96053166,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96053166.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96053166/jarosław-niezgoda",
+    "photo_local": "photos/players_tm/269446.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96053166.png"
   },
   {
     "tm_player_id": 1073030,
@@ -91112,10 +91254,11 @@
     "fetched_at": "2026-05-06T15:00:57Z",
     "roster_club_id": 9109,
     "roster_club_name": "Znicz Pruszkow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/327755.jpg"
+    "sortitoutsi_person_id": 96054428,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96054428.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96054428/jarosław-jach",
+    "photo_local": "photos/players_tm/327755.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96054428.png"
   },
   {
     "tm_player_id": 386946,
@@ -91179,10 +91322,11 @@
     "fetched_at": "2026-05-06T15:01:05Z",
     "roster_club_id": 9109,
     "roster_club_name": "Znicz Pruszkow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/240811.png"
+    "sortitoutsi_person_id": 96063706,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96063706.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96063706/michał-pawlik",
+    "photo_local": "photos/players_tm/240811.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96063706.png"
   },
   {
     "tm_player_id": 495237,
@@ -91246,10 +91390,11 @@
     "fetched_at": "2026-05-06T15:01:15Z",
     "roster_club_id": 9109,
     "roster_club_name": "Znicz Pruszkow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/265878.jpg"
+    "sortitoutsi_person_id": 96063244,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96063244.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96063244/michał-borecki",
+    "photo_local": "photos/players_tm/265878.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96063244.png"
   },
   {
     "tm_player_id": 489546,
@@ -91472,10 +91617,11 @@
     "fetched_at": "2026-05-06T15:01:47Z",
     "roster_club_id": 9109,
     "roster_club_name": "Znicz Pruszkow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/258229.png"
+    "sortitoutsi_person_id": 96025710,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_96025710.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/96025710/paweł-moskwik",
+    "photo_local": "photos/players_tm/258229.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/96025710.png"
   },
   {
     "tm_player_id": 1033042,
@@ -91505,10 +91651,11 @@
     "fetched_at": "2026-05-06T15:01:53Z",
     "roster_club_id": 6190,
     "roster_club_name": "Swit Nowy Dwor Mazowiecki",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1033042.jpg"
+    "sortitoutsi_person_id": 2000395760,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000395760.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000395760/filip-składowski",
+    "photo_local": "photos/players_tm/1033042.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000395760.png"
   },
   {
     "tm_player_id": 687611,
@@ -91674,10 +91821,11 @@
     "fetched_at": "2026-05-06T15:02:13Z",
     "roster_club_id": 9109,
     "roster_club_name": "Znicz Pruszkow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/45042.png"
+    "sortitoutsi_person_id": 54002897,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_54002897.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/54002897/radosław-majewski",
+    "photo_local": "photos/players_tm/45042.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/54002897.png"
   },
   {
     "tm_player_id": 143975,
@@ -91804,10 +91952,11 @@
     "fetched_at": "2026-05-06T15:02:36Z",
     "roster_club_id": 9109,
     "roster_club_name": "Znicz Pruszkow",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1341959.jpg"
+    "sortitoutsi_person_id": 2000445110,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000445110.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000445110/mikołaj-kunicki",
+    "photo_local": "photos/players_tm/1341959.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000445110.png"
   },
   {
     "tm_player_id": 1046816,
