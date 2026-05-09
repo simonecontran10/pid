@@ -95529,5 +95529,36 @@
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/1108466.jpg"
+  },
+  {
+    "tm_player_id": 1261825,
+    "full_name": "Julius Emefile",
+    "name_arabic": null,
+    "date_of_birth": "2007-04-02",
+    "age": 19,
+    "height_cm": 188,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Right Winger",
+    "position_others": [
+      "Left Winger"
+    ],
+    "place_of_birth": null,
+    "citizenships": [
+      "Denmark"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 9054,
+    "current_club_name": "Midtjylland U19",
+    "shirt_number": 18,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/default.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1261825",
+    "fetched_at": "2026-05-09T20:43:24Z",
+    "roster_club_id": 9054,
+    "roster_club_name": "Midtjylland U19",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null
   }
 ]

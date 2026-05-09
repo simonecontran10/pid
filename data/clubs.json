@@ -1809,5 +1809,17 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 9054,
+    "name": "FC Midtjylland U19",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/9054",
+    "slug": "fc-midtjylland-u19",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]
