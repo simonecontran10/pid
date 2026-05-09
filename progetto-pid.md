@@ -4316,3 +4316,282 @@ Cache locale aggiornata (non in produzione, da rilanciare matching):
 
 ---
 
+## 9 mag 2026 (pomeriggio) — Recupero foto SOTS + 3 sub-commit feature observations
+
+Sessione di consolidamento e feature delivery dopo la migrazione Serie C. Prima si è recuperata una parte delle foto SortItOutSi tramite matching offline cross-club (filtro anno+club per superare il bug delle DOB tronche TM nei giocatori Primavera), poi si è completata la trilogia di feature richieste sul modulo osservazioni (vista relazione completa, minuti giocati, bottoni "+ Osservazione" sulle Ultime partite con precompilazione).
+
+### Recupero foto SortItOutSi cross-club
+
+Punto di partenza: 1753/2864 giocatori con foto SOTS (61%). Cache `data/sots_rosters.json` aggiornata a 95 club con 10069 persons totali (lavoro fatto la sessione precedente). 1111 giocatori ancora senza foto.
+
+Lanciato `find_more_sots_matches.py` (script già esistente dalla sessione del 6 mag): legge `players_main.json`, cerca i giocatori senza `sortitoutsi_person_id`, e per ognuno cerca candidati in `sots_rosters.json` usando regole multiple (slug esatto = score 1.0, all-tokens-match = score 0.85). Per ogni candidato fetch della pagina person su sortitoutsi.net, estrae DOB, accetta solo se DOB esatta corrisponde a quella in TM.
+
+Risultato run: 0 confermati, 35 DOB mismatch, 35 fetch totali. Tutti i candidati trovati avevano DOB diversa = lo script ha rifiutato tutti.
+
+Diagnosi del file `data/sots_more_matches_dob_mismatch.xlsx`: il TM scraper estrae DOB tronche per giocatori Primavera (es. "2007 (~ 19" invece di "2007-10-19"), perché TM nasconde giorno/mese per minorenni nelle pagine pubbliche. Lo script di matching confronta stringa per stringa e marca tutti come mismatch, anche quando l'anno coincide.
+
+Soluzione adottata: scritto `filter_dob_mismatch.py` (~160 righe) che applica regole di buon senso per accettare match veri:
+- Anno TM == Anno SOTS (estratti come int dai primi 4 caratteri di entrambe le DOB)
+- Club TM e SOTS compatibili — funzione `club_root()` rimuove suffissi "Primavera"/"U23"/"U19"/"Futuro" e prefissi "AC"/"AS"/"FC"/"US"/"SS"/"SSC"/"UC"/"ACF"/"SEF"/"UCF" per matchare es. "Frosinone Primavera" ↔ "Frosinone Calcio" come stesso club madre
+- Slug perfetto (già condizione di partenza per essere nel file di mismatch)
+- Se 2+ candidati passano i filtri (omonimi) → scarta tutti
+
+Risultato del filtro: 31 confermati, 3 scartati per anno diverso (omonimi reali), 0 ambigui, 0 club incompatibili. Esempi confermati: Abubacar Ceesay (Frosinone Primavera ↔ Frosinone Calcio), Adam Hasani (Napoli Primavera ↔ SSC Napoli), Andrea Campani (Sassuolo Primavera ↔ US Sassuolo). Esempi scartati correttamente: Ibrahima Camará (TM 1999, SOTS 2008 — chiaramente persone diverse).
+
+Lanciato `apply_more_matches.py` sui 31 confermati: 17 face PNG scaricate (le altre 14 hanno avatar mancante su SOTS), `data/sortitoutsi_id_lookup.json` aggiornato a 1784 entries, `players_main.json` + `players_static.json` + `players_all.json` aggiornati con `sortitoutsi_person_id` e `sortitoutsi_face_url` per i 31. Nuovo target: 1784/2864 = 62% (era 61%, +1%).
+
+Recupero limitato perché il mismatch file aveva solo 35 candidati. La maggior parte dei 1111 senza foto sta in `no_candidate` (giocatori che `find_more_sots_matches.py` non ha nemmeno candidato perché lo slug non matcha nemmeno parzialmente con nessun nome SOTS in cache). Per quelli serve scraping by-name search (rimandato a sessione futura) o aggiunta di PL1/PL2 (Ekstraklasa/I Liga) alle competitions sortitoutsi.
+
+Commit: `74220a4` feat(sots): recupero 31 match cross-club (filtro anno+club per DOB tronche Primavera).
+
+### Trilogia feature observations: piano e ordine di esecuzione
+
+L'utente aveva richiesto 3 feature in sospeso da varie sessioni:
+
+1. Vista relazione completa: cliccando su una riga osservazione, vedere il contenuto completo (ruoli, performance, tag, note testo intero, strengths, weaknesses, scout, data inserimento)
+2. Minuti giocati: campo opzionale nel form osservazione, range 0-150, da mostrare in dashboard e pannello scouting
+3. Bottone "+" precompilante: sulle "Ultime 12 partite" e nel drill-down del grafico minuti, un piccolo bottone "+" alla fine di ogni riga che apre il form nuova osservazione precompilato con data/avversario/competizione/minuti dalla riga partita
+
+Decisione: 3 sub-commit separati per facile rollback. L'utente ha preferito iniziare dalla vista relazione.
+
+### Sub-commit "vista relazione" — falso start con revert + repair
+
+Implementazione iniziale (commit `bc3b845`): aggiunta alle righe osservazione del modal giocatore una nuova `<tr>` "expansion" inizialmente nascosta che mostrava i dettagli completi al click sulla riga (toggle), con bottoni "Modifica" + "Elimina" dentro la vista espansa. Patch grossa: ~130 righe in `observations_ui.js`.
+
+Test in produzione: l'utente ha chiarito che la vista relazione completa non doveva essere creata da zero come espansione inline, perché il modal di modifica esistente (`openObservationCompose`) già mostrava tutti i dettagli ed era esattamente quello che voleva. Il problema vero era diverso: l'utente immaginava che il click facesse "altro" rispetto ad aprire la modal di edit, ma in realtà la modal di edit era già la vista che voleva.
+
+Quindi: vista relazione = modal di modifica esistente. Niente da implementare. La mia patch era sbagliata e da rimuovere.
+
+Sequenza confusa di revert + reapply + revert (commit `76526b4`, `5433b91`, `7a925d9`) durante il test perché l'utente non era sicuro al 100% se rimuovere o lasciare.
+
+Bug residuo dopo i revert: il file `observations_ui.js` consegnato al successivo sub-commit ("minuti giocati") partiva da `observations_ui_v2.js` nella working dir Claude, che aveva ancora la patch sbagliata. Quindi la vista espansa è rientrata in produzione attraverso il sub-commit minuti.
+
+Repair finale (commit `b3967e9` "fix: rimuovo vista espansa relitto"): script Python con 3 patch:
+- Rimuove blocco `expandedHtml` (~7800 chars di codice morto)
+- Rimuove `${expandedHtml}` dalla riga return
+- Ripristina click handler originale `wrapper.querySelectorAll(".obs-row")` → `openObservationCompose(pid, row.dataset.obsId)`
+
+Sanity check post-repair: 0 occorrenze di `obs-detail-row`, 0 di `obs-edit-btn`, 2 di `obs-delete-btn` (mantenute perché sono codice originale del bottone elimina nella modale di modifica esistente).
+
+Lezione organizzativa: quando si fa rollback di una feature, controllare che i file di working dir Claude siano allineati allo stato production, altrimenti i sub-commit successivi reintroducono il codice rimosso. La working dir va sempre sincronizzata col main commit dopo un revert.
+
+### Sub-commit 1 — Minuti giocati
+
+Schema DB: `ALTER TABLE player_observations ADD COLUMN IF NOT EXISTS minutes_played INTEGER NULL CHECK (minutes_played IS NULL OR (minutes_played >= 0 AND minutes_played <= 150))`. SQL eseguito dall'utente sul SQL Editor di Supabase. Verifica: colonna `minutes_played | integer | YES`.
+
+Frontend changes:
+- `cloud_sync.js`: aggiunto `minutes_played: obs.minutes_played ?? null` al record di `saveObservation` con validazione range. `updateObservation` invece spreaada `...patch` quindi passa `minutes_played` automaticamente senza patch.
+- `observations_ui.js`:
+  - Defaults form (variabile `v`): `minutes_played: editing?.minutes_played != null ? editing.minutes_played : null`
+  - Nuovo blocco UI dopo "Visione" (LIVE/TV): input number range 0-150 con label "Minuti giocati (opzionale)" e placeholder "Es. 90"
+  - Estrazione al salvataggio: legge `obs-minutes`, parseInt, valida range, aggiunge a payload
+  - 2 nuove chiavi i18n IT (`f_minutes`/`f_minutes_ph`) + 2 EN
+
+Aggiunto display dei minuti nel pannello Scouting (commit successivo): nelle righe osservazione espanse, sotto la colonna ETÀ, viene mostrato il valore come `90'` (font 11px, color text-1 se valorizzato, text-3 con `—` se null). Coerenza visiva: età=numero, minuti=numero.
+
+Commit: `8de4eba` feat(obs): minuti giocati nel form osservazione (campo opzionale 0-150).
+
+### Sub-commit 3 — Bottoni "+ Osservazione" su Ultime partite e drill-down grafico
+
+Patch su `app.js`:
+- `renderRecentMatches()` (riga ~2010): grid-template-columns esteso da 6 a 7 colonne (aggiunto 26px alla fine), nuovo bottone con classe `add-obs-from-match` e attributi `data-pid`, `data-date`, `data-opponent`, `data-competition`, `data-minutes`. Stile: icona "+" 22x22px verde accent.
+- `_renderDrillDownMatch()` (riga ~1884): stesso bottone, dimensione leggermente più piccola (20x20px), grid esteso da 6 a 7 colonne (aggiunto 24px). Inserito subito dopo i minuti, condizionalmente se `pid` è disponibile (estratto da `stats?.tm_player_id`).
+- Handler delegato globale su `document.click`: intercetta click su `.add-obs-from-match`, legge tutti i `data-*` dal bottone, salva in `window._obsPrefill = {match_date, opponent, competition, minutes_played}`, chiama `window.openObservationCompose(pid)`.
+
+Patch su `observations_ui.js`:
+- `openObservationCompose(pid, obsId)`: dopo aver settato `window._obsCompose`, legge `window._obsPrefill` solo se non sta modificando (`!editing`). One-shot consume: dopo lettura imposta `window._obsPrefill = null` per evitare side effect su nuove osservazioni successive.
+- `_obsComposeHtml(player, editing, prefill)`: 3° argomento opzionale. Nei defaults `v`, aggiunto fallback chain `editing?.X || prefill?.X || ""` per `match_date`, `opponent`, `competition`, `minutes_played`. Per `competition_is_other` aggiunto check anche per il prefill.
+
+Bug fix successivo "avversario non precompilato": l'input `<input id="obs-opponent">` nel template HTML mancava completamente l'attributo `value=""`, mentre date/competition/minutes lo avevano. Quindi il prefill caricava `v.opponent` correttamente nei defaults ma poi l'HTML non lo applicava all'input. Fix: aggiunto `value="${escapeHtml(v.opponent || "")}"` all'input.
+
+Commit: `c8b9bdb` feat(obs): bottone '+ osservazione' nelle Ultime partite e nel drill-down grafico minuti (precompila data/avversario/competizione/minuti).
+
+### Cosa è ora in produzione (stato fine sessione)
+
+Modulo osservazioni:
+- Click su riga osservazione (sia in modal giocatore sia in pannello scouting) → apre modale di modifica esistente
+- Form modale ha campo "Minuti giocati (opzionale)" range 0-150 dopo Modalità
+- Pannello Scouting mostra minuti nelle righe osservazione espanse sotto colonna ETÀ
+- Bottone "+" su tutte le 12 ultime partite e nel drill-down grafico minuti per mese, click apre form nuova osservazione precompilato con data/avversario/competizione/minuti
+
+Database:
+- Tabella `player_observations` ha colonna `minutes_played` con CHECK 0-150 nullable
+
+Foto SOTS:
+- 1784/2864 giocatori con foto (62%, +31 vs precedente)
+- Cache `data/sots_rosters.json` 10069 persons (95 club) — pronta per future query
+
+Frontend altro:
+- Nomi club Serie C visualizzati puliti (es. "Giana Erminio" non "AS Giana Erminio")
+- Workaround "Winter signing"/"New arrival"/"Returnee" → "—" cosmetico in `prettyClubName`
+
+### Commit pushati nella sessione
+
+- `74220a4` feat(sots): recupero 31 match cross-club (filtro anno+club per DOB tronche Primavera)
+- `bc3b845` feat(obs): vista relazione completa espansa al click sulla riga (PATCH SBAGLIATA)
+- `76526b4` Revert "feat(obs): vista relazione completa espansa..."
+- `5433b91` Reapply "feat(obs): vista relazione completa espansa..."
+- `7a925d9` Revert "Reapply ..." (definitivo)
+- `8de4eba` feat(obs): minuti giocati nel form osservazione (campo opzionale 0-150)
+- `c8b9bdb` feat(obs): bottone '+ osservazione' nelle Ultime partite e nel drill-down grafico minuti
+- `b3967e9` fix(obs): rimuovo vista espansa relitto (click riga torna ad aprire modal modifica)
+- (commit successivo) feat(scouting): minuti giocati nelle righe osservazione del pannello Scouting
+- (commit successivo) fix(obs): pre-fill avversario nel form (mancava value sull'input obs-opponent)
+
+---
+
+## Prossimi passi (TODO consolidato)
+
+Lista esaustiva di tutto quello che è ancora da fare, ordinata per priorità. Ogni task ha una stima di tempo e una descrizione di cosa va fatto in concreto, così alla prossima sessione si parte senza dover ricostruire il contesto.
+
+### ALTA — Bug Winter signing (scraper retroattivo)
+
+Problema: 91 giocatori polacchi/Ekstraklasa hanno `current_club_id=2362` e `current_club_name="Winter signing"` in `players_main.json`. Adesso il frontend mostra "—" via workaround in `prettyClubName`, ma il dato in DB resta sporco e l'esperienza utente è degradata (es. Adrian Liber visualizzato senza club).
+
+Causa: in `scraper/profiles.py:_extract_current_club_id` la Strategia 1 (`.data-header__club a[href*="/startseite/verein/"]`) trova prima un link a `/startseite/verein/2362/winter-signing` (cluster fittizio TM per giocatori in trasferimento di gennaio) e lo accetta come club valido. Strategia 3 ha già un filtro per `data-header__ribbon` ma non viene mai raggiunta perché Strategia 1 ha già trovato un risultato.
+
+Fix:
+1. In `scraper/profiles.py:_extract_current_club_id`, aggiungere blacklist `FAKE_TM_CLUB_IDS = {2362, 2363}` (Winter signing + Returnee). Quando Strategia 1 trova un match, controllare se l'ID estratto è nella blacklist; se sì, ignorare e provare Strategia 2/3.
+2. Eventualmente cercare anche per altri ID fittizi noti (verificare con grep cross-tutti-i-giocatori-rotti se ce ne sono altri oltre 2362)
+3. Rilanciare scraping di profile per i 91 giocatori vittime: estrarre lista tm_player_id da `players_main.json` con `current_club_id=2362` e ri-scrappare ogni profilo
+4. Verifica: dopo il rilancio, query Python `[p for p in players if p.get("current_club_id") == 2362]` deve essere 0
+
+Stima: ~30 min (fix scraper) + ~20 min (rilancio) + ~10 min (verifica). Totale 1 ora.
+
+### ALTA — Recupero foto SOTS rimanenti (~1080 giocatori)
+
+Problema: il run di `find_more_sots_matches.py` ha generato `sots_more_matches_dob_mismatch.xlsx` con 35 righe, ma NON ha generato `sots_more_matches_no_candidate.xlsx`. Significa che lo script si è fermato dopo la fase di mismatch, o il file no_candidate non è stato generato perché tutti i giocatori unmatched avevano almeno un candidato slug.
+
+Diagnosi:
+1. Verificare se `find_more_sots_matches.py` ha una flag o opzione per generare anche il no_candidate
+2. Se no, scrivere uno script di analisi che identifica i giocatori unmatched senza candidati slug e suggerisce strategia (search by-name, override manuale, accettare assenza foto)
+3. Considerare aggiunta di PL1/PL2 (Ekstraklasa, I Liga) alle COMPETITIONS in `scrape_sortitoutsi_competition.py`. Probabilmente non sono coperte attualmente, e visto che la maggior parte dei 91 Winter signing sono polacchi, questa potrebbe essere la fonte del problema combinato.
+
+Fix:
+1. Aggiungere PL1/PL2 a COMPETITIONS di `scrape_sortitoutsi_competition.py` con i link sortitoutsi corretti (cercare manualmente su sortitoutsi.net "Polish Ekstraklasa" e "Polish I Liga")
+2. Lanciare `scrape_sortitoutsi_competition.py` per scaricare i sortitoutsi_team_id dei club polacchi
+3. Lanciare `harvest_sots_rosters.py` per popolare la cache rosters con le rose Ekstraklasa/I Liga
+4. Ri-lanciare `find_more_sots_matches.py` per matchare i giocatori polacchi con la cache aggiornata
+5. Lanciare `apply_more_matches.py` per scaricare le nuove foto
+
+Stima: ~60-90 min (compresi possibili scraping by-name iterativi)
+
+### MEDIA — Workflow GitHub Actions auto-update foto SOTS
+
+Problema: il workflow notturno `auto_update_daily.yml` fa solo `run_stats.py`. Le foto SortItOutSi si fossilizzano allo stato del primo scraping. Ogni nuovo giocatore aggiunto, ogni cambio rosa, ogni nuova competizione SOTS rilasciata non ottiene aggiornamenti automatici.
+
+Soluzione: workflow separato settimanale (per non rallentare il daily che gira ogni notte).
+
+File da creare: `.github/workflows/auto_update_photos.yml`
+
+Trigger: cron settimanale (es. lunedì alle 04:00 UTC, dopo il daily).
+
+Steps:
+1. Checkout repo
+2. Setup Python + venv + requirements
+3. Lancia `python3 scrape_sortitoutsi_competition.py` (aggiorna sortitoutsi_team_id in clubs.json)
+4. Lancia `python3 harvest_sots_rosters.py` (aggiorna cache rosters)
+5. Lancia `python3 find_more_sots_matches.py`
+6. Lancia `python3 filter_dob_mismatch.py` (filtra match veri Primavera)
+7. Lancia `python3 apply_more_matches.py`
+8. Commit + push se ci sono diff in `data/players_*.json` o `data/photos/players_sots_lookup/*.png`
+
+Permessi GitHub Actions: già configurati per `auto_update_daily.yml` (commit fix permissions del 9 mag mattina).
+
+Stima: ~30 min (scrittura workflow + test in dry-run)
+
+### MEDIA — Fase 5 Export PDF (dossier giocatore + report osservazione)
+
+Feature richiesta originariamente nel piano del modulo osservazioni. Dossier completo del giocatore in PDF + report singolo per ogni osservazione.
+
+Stack: jsPDF client-side (lavora nel browser, no server). Già usato in altri progetti dello sviluppatore.
+
+Contenuto dossier giocatore:
+- Header con foto, nome, anno, ruolo, club
+- Nazionalità, piede, altezza
+- Stats stagione corrente (presenze, gol, assist, minuti)
+- Tabella ultime 12 partite
+- Sezione osservazioni: per ogni osservazione, blocco con data, avversario, competizione, modalità, performance, tag, ruoli, strengths, weaknesses, note testo intero, minuti, scout
+- Logo PID in alto a sinistra, footer con data export
+
+Contenuto report singola osservazione:
+- Versione "espansa" della singola osservazione, una pagina A4
+
+Bottone export PDF in 2 punti:
+- Modal giocatore: sotto i bottoni "Aggiungi al confronto" / "Aggiungi ai preferiti", aggiungere "Esporta PDF"
+- Modal di modifica/visualizzazione osservazione: in fondo, accanto a "Modifica"/"Elimina", aggiungere "Esporta PDF"
+
+Stima: ~2 ore (template PDF + integrazione + styling)
+
+### BASSA — Popolare i 56 club Serie C con giocatori
+
+Adesso i club Serie C sono in `clubs.json` con loghi, ma vuoti di giocatori (nessuno è stato scrappato per loro). Lanciare `build_urls.py` su `it3a/b/c_clubs.json` + `add_players.py urls.txt`. Aggiunge ~800-1000 giocatori al DB.
+
+Sequenza:
+1. `python3 build_urls.py data/it3a_clubs.json data/it3b_clubs.json data/it3c_clubs.json > urls_serie_c.txt`
+2. `python3 add_players.py urls_serie_c.txt`
+3. Verifica: `players_main.json` cresce da 2864 a ~3700-3900
+4. Commit + push
+
+Effetto collaterale positivo: dopo questo, i `find_more_sots_matches.py` futuri potranno matchare anche questi giocatori contro la cache rosters Serie C (10069 persons già pronte).
+
+Stima: 30-60 minuti di scraping + ~10 min di review/commit.
+
+### BASSA — Fase 6 Export/Import salvataggio JSON
+
+Backup completo (preferiti, callup, osservazioni, override) in JSON scaricabile. Re-import per merge tra dispositivi.
+
+Stima: ~45 min
+
+### BASSA — Pulizia file `.before_serie_c`
+
+5 file backup creati il 9 mag durante la migrazione Serie C (~100 KB totali):
+- `data/clubs.json.before_serie_c`
+- `data/it3_clubs.json.before_serie_c`
+- `frontend/app.js.before_serie_c`
+- `frontend/i18n.js.before_serie_c`
+- `scrape_sortitoutsi_competition.py.before_serie_c`
+
+Sistema confermato stabile da varie sessioni. Sicurezza non più necessaria.
+
+```bash
+git rm frontend/*.before_serie_c data/*.before_serie_c *.py.before_serie_c
+git commit -m "chore: rimuovo backup Serie C migration"
+git push
+```
+
+Stima: 2 min.
+
+### BASSA — Refactor minore observations_ui.js
+
+Il file ha raggiunto 1251 righe, monolitico. Considerare in futuro split in moduli separati:
+- `observations_compose.js` (form modale + save/update + validation)
+- `observations_dashboard.js` (renderObservationsList + tabella nel modal giocatore)
+- `observations_scouting.js` (renderObservationsScoutingPanel + tabella nel pannello laterale)
+- `observations_constants.js` (TAGS, ROLE_DEFS, COMPETITIONS, TRAITS, I18N)
+
+Effetto positivo: più facile da modificare senza side effect cross-file. Effetto negativo: aumenta il numero di `<script>` tag in index.html e la dependency tree.
+
+Decisione: rimandare finché il file non supera 1500 righe o non emergono bug di accoppiamento.
+
+---
+
+## Indice TODO veloce
+
+| # | Task | Priorità | Stima |
+|---|------|----------|-------|
+| 1 | Bug Winter signing scraper retroattivo | ALTA | ~1h |
+| 2 | Recupero foto SOTS rimanenti (1080 giocatori) | ALTA | ~60-90 min |
+| 3 | Workflow GitHub Actions auto-update foto SOTS | MEDIA | ~30 min |
+| 4 | Fase 5 Export PDF (dossier + report) | MEDIA | ~2h |
+| 5 | Popolare 56 club Serie C con giocatori | BASSA | ~45 min |
+| 6 | Fase 6 Export/Import salvataggio JSON | BASSA | ~45 min |
+| 7 | Pulizia file `.before_serie_c` | BASSA | 2 min |
+| 8 | Refactor split observations_ui.js | BASSA | rimandato |
+
+Totale stima task ALTA + MEDIA: ~5 ore.
+
+Prossima sessione: partire dal task 1 (Winter signing) o task 3 (workflow notturno foto), che sono i 2 più rapidi e con resa visibile (1 fix bug visibile a tutti gli utenti, 1 manutenzione automatizzata che evita di dover ricordare di rilanciare matching ogni volta).
+
+---
+
