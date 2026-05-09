@@ -1017,6 +1017,7 @@ function openPlayerModal(pid) {
         ${p.sortitoutsi_profile_url ? `<a href="${p.sortitoutsi_profile_url}" target="_blank" rel="noopener" style="font-size: 11px; padding: 5px 11px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-2); text-decoration: none; border: 0.5px solid var(--border);">sortitoutsi ↗</a>` : ""}
         ${p.date_of_birth ? `<span style="font-size: 11px; padding: 5px 11px; border-radius: 8px; background: transparent; color: var(--text-3);">${escapeHtml(p.date_of_birth)}${p.place_of_birth ? " · " + escapeHtml(p.place_of_birth) : ""}</span>` : ""}
       </div>
+      ${typeof window.renderObservationsSection === "function" ? window.renderObservationsSection(pid) : ""}
     </div>`;
   document.getElementById("player-modal-content").innerHTML = html;
   const modal = document.getElementById("player-modal");
@@ -1043,6 +1044,9 @@ function openPlayerModal(pid) {
     });
   };
   setTimeout(_wireMonthlyChart, 0);
+  if (typeof window.wireObservationsHandlers === "function") {
+    setTimeout(() => window.wireObservationsHandlers(pid), 0);
+  }
 
   // ---- + Convoca / − Rimuovi convocazione ----
   state.playerNotes = state.playerNotes || JSON.parse(localStorage.getItem("pid_player_notes") || "{}");
