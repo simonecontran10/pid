@@ -436,37 +436,99 @@ import json as _json_admin
 
 @app.post("/admin-add-player")
 def admin_add_player(payload: dict = Body(...)):
-    """Triggera il workflow GitHub Actions add_player.yml.
+    """Triggera il workflow GitHub Actions add_player.yml in modalita batch.
     
-    Payload atteso:
-    {
-        "url": "https://www.transfermarkt.com/.../profil/spieler/123456",
-        "admin_email": "simonecontran10@gmail.com"  // opzionale, verifica future
-    }
-    
-    Richiede secret env GITHUB_PAT (GitHub Personal Access Token con repo+workflow access).
+    Payload accettati (compatibile vecchio e nuovo formato):
+        { "url": "https://..." }                          # legacy, 1 URL
+        { "urls": ["https://...", "https://..."] }        # nuovo, lista
+        { "urls": "https://...\nhttps://..." }            # nuovo, stringa multi-line
     """
     if not isinstance(payload, dict):
         raise HTTPException(status_code=400, detail="Payload deve essere un oggetto JSON")
     
-    url = payload.get("url", "").strip()
-    if not url:
-        raise HTTPException(status_code=400, detail="Campo 'url' mancante")
+    # Normalizza input in lista di URL
+    raw_urls: list[str] = []
+    if "urls" in payload:
+        urls_input = payload["urls"]
+        if isinstance(urls_input, list):
+            raw_urls = [str(u) for u in urls_input]
+        elif isinstance(urls_input, str):
+            raw_urls = urls_input.split("\n")
+        else:
+            raise HTTPException(status_code=400, detail="Campo 'urls' deve essere lista o stringa")
+    elif "url" in payload:
+        raw_urls = [str(payload["url"])]
+    else:
+        raise HTTPException(status_code=400, detail="Campo 'url' o 'urls' mancante")
     
-    # Validazione URL
+    # Trim, dedupe preservando ordine, scarta vuoti
+    seen = set()
+    urls: list[str] = []
+    for u in raw_urls:
+        u = u.strip()
+        if not u or u in seen:
+            continue
+        seen.add(u)
+        urls.append(u)
+    
+    if not urls:
+        raise HTTPException(status_code=400, detail="Nessun URL valido fornito")
+    
+    if len(urls) > 50:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Massimo 50 URL per batch (ricevuti {len(urls)}). Spezza in piu richieste."
+        )
+    
+    # Validazione regex
     import re
-    if not re.search(r'transfermarkt\.[a-z.]+.*spieler/\d+', url):
-        raise HTTPException(status_code=400, detail="URL non valido (deve contenere transfermarkt.com/.../spieler/<id>)")
+    url_re = re.compile(r'transfermarkt\.[a-z.]+.*spieler/\d+')
+    invalid = [u for u in urls if not url_re.search(u)]
+    if invalid:
+        raise HTTPException(
+            status_code=400,
+            detail=f"URL non validi: {invalid[:3]}{'...' if len(invalid) > 3 else ''}"
+        )
     
     pat = _os.environ.get("GITHUB_PAT")
     if not pat:
         raise HTTPException(status_code=500, detail="GITHUB_PAT non configurato sul server")
     
-    # Trigger del workflow GitHub Actions
+    # Pre-check: c'e gia un workflow add-player in corso?
+    runs_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_player.yml/runs?status=in_progress&per_page=5"
+    try:
+        runs_req = _urlreq.Request(
+            runs_url,
+            headers={
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {pat}",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+        )
+        with _urlreq.urlopen(runs_req, timeout=10) as resp:
+            data = _json_admin.loads(resp.read().decode("utf-8"))
+            in_progress = data.get("workflow_runs", [])
+            if in_progress:
+                run = in_progress[0]
+                raise HTTPException(
+                    status_code=409,
+                    detail={
+                        "error": "workflow_already_running",
+                        "message": f"Un workflow add-player e gia in corso (run #{run.get('run_number')}). Riprova tra qualche minuto.",
+                        "run_url": run.get("html_url"),
+                    }
+                )
+    except HTTPException:
+        raise
+    except Exception:
+        # Pre-check non bloccante: se GitHub non risponde proseguiamo lo stesso.
+        pass
+    
+    # Trigger workflow con tutti gli URL come stringa multi-line
     api_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_player.yml/dispatches"
     body = _json_admin.dumps({
         "ref": "main",
-        "inputs": {"url": url}
+        "inputs": {"urls": "\n".join(urls)}
     }).encode("utf-8")
     
     req = _urlreq.Request(
@@ -483,14 +545,19 @@ def admin_add_player(payload: dict = Body(...)):
     
     try:
         with _urlreq.urlopen(req, timeout=15) as resp:
-            status = resp.status
-            if status == 204:
-                return {"success": True, "message": "Workflow triggered successfully"}
-            else:
-                raise HTTPException(status_code=502, detail=f"GitHub API returned {status}")
+            if resp.status == 204:
+                return {
+                    "success": True,
+                    "message": f"Workflow avviato per {len(urls)} giocatore(i)",
+                    "count": len(urls),
+                    "actions_url": "https://github.com/simonecontran10/pid/actions/workflows/add_player.yml",
+                }
+            raise HTTPException(status_code=502, detail=f"GitHub API returned {resp.status}")
     except _urlerr.HTTPError as e:
         body_err = e.read().decode("utf-8", errors="replace")
         raise HTTPException(status_code=502, detail=f"GitHub API error {e.code}: {body_err[:200]}")
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Errore: {type(e).__name__}: {e}")
 
