@@ -37,11 +37,7 @@ const I18N = {
     league_it1: "Serie A",
     league_it2: "Serie B",
 
-    league_it3a: "Serie C - Girone A",
-
-    league_it3b: "Serie C - Girone B",
-
-    league_it3c: "Serie C - Girone C",
+    league_it3: "Italian Reserve Teams",
     league_ij1: "Italian Primavera 1",
     league_pl1: "Ekstraklasa",
     league_pl2: "1 Liga",
@@ -252,11 +248,7 @@ const I18N = {
     league_it1: "Serie A",
     league_it2: "Serie B",
 
-    league_it3a: "Serie C - Group A",
-
-    league_it3b: "Serie C - Group B",
-
-    league_it3c: "Serie C - Group C",
+    league_it3: "Seconde Squadre",
     league_ij1: "Primavera 1",
     league_pl1: "Ekstraklasa",
     league_pl2: "1 Liga",

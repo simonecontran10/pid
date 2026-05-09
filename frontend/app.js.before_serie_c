@@ -509,7 +509,7 @@ function applyFilters() {
   }
   if (league === "OTHER") {
     // Club senza league_id riconosciuta (fallback per dati legacy)
-    const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IT3A", "IT3B", "IT3C", "IJ1", "PL1", "PL2"]);
+    const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IT3", "IJ1", "PL1", "PL2"]);
     const knownClubIds = new Set(state.clubs.filter(c => KNOWN_LEAGUES.has(c.league_id)).map(c => c.tm_club_id));
     items = items.filter(p => !knownClubIds.has(p.current_club_id));
   } else if (league) {
@@ -618,13 +618,11 @@ function renderClubs() {
 
   const it1 = sortClubs(state.clubs.filter(c => c.league_id === "IT1"));
   const it2 = sortClubs(state.clubs.filter(c => c.league_id === "IT2"));
-  const it3a = sortClubs(state.clubs.filter(c => c.league_id === "IT3A"));
-  const it3b = sortClubs(state.clubs.filter(c => c.league_id === "IT3B"));
-  const it3c = sortClubs(state.clubs.filter(c => c.league_id === "IT3C"));
+  const it3 = sortClubs(state.clubs.filter(c => c.league_id === "IT3"));
   const ij1 = sortClubs(state.clubs.filter(c => c.league_id === "IJ1"));
   const pl1 = sortClubs(state.clubs.filter(c => c.league_id === "PL1"));
   const pl2 = sortClubs(state.clubs.filter(c => c.league_id === "PL2"));
-  const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IT3A", "IT3B", "IT3C", "IJ1", "PL1", "PL2"]);
+  const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IT3", "IJ1", "PL1", "PL2"]);
   const others = sortClubs(state.clubs.filter(c => !KNOWN_LEAGUES.has(c.league_id)));
 
   const renderClubCard = (c) => {
@@ -658,9 +656,6 @@ function renderClubs() {
   const it1Logo = _photoUrl("photos/competitions/IT1.png");
   const it2Logo = _photoUrl("photos/competitions/IT2.png");
   const it3Logo = _photoUrl("photos/competitions/IT3.png");
-  const it3aLogo = it3Logo;
-  const it3bLogo = it3Logo;
-  const it3cLogo = it3Logo;
   const ij1Logo = _photoUrl("photos/competitions/IJ1.png");
   const pl1Logo = _photoUrl("photos/competitions/PL1.png");
   const pl2Logo = _photoUrl("photos/competitions/PL2.png");
@@ -768,7 +763,7 @@ function openPlayerModal(pid) {
     if (isNational) return "var(--comp-nat)";
     if (code === "IT1") return "var(--comp-seriea)";
     if (code === "IT2") return "var(--comp-serieb)";
-    if (code === "IT3A" || code === "IT3B" || code === "IT3C") return "var(--comp-it3)";
+    if (code === "IT3") return "var(--comp-it3)";
     if (code === "IJ1") return "var(--comp-ij1)";
     if (code === "PL1") return "var(--comp-pl1)";
     if (code === "PL2") return "var(--comp-pl2)";
@@ -2106,7 +2101,7 @@ function applyCallupFilters(players) {
     if (f.league) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3A" || lg === "IT3B" || lg === "IT3C" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
       const match = (f.league === "OTHER") ? !isKnownLeague : (lg === f.league);
       if (!match) return false;
     }
@@ -2236,9 +2231,7 @@ function renderCallupPanel() {
             <option value="">${t("filter_all_leagues")}</option>
             <option value="IT1" ${f.league==="IT1"?"selected":""}>${t("league_it1")}</option>
             <option value="IT2" ${f.league==="IT2"?"selected":""}>${t("league_it2")}</option>
-            <option value="IT3A" ${f.league==="IT3A"?"selected":""}>${t("league_it3a")}</option>
-            <option value="IT3B" ${f.league==="IT3B"?"selected":""}>${t("league_it3b")}</option>
-            <option value="IT3C" ${f.league==="IT3C"?"selected":""}>${t("league_it3c")}</option>
+            <option value="IT3" ${f.league==="IT3"?"selected":""}>${t("league_it3")}</option>
             <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
             <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
             <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
@@ -3115,7 +3108,7 @@ function renderGridsPanel() {
     if (fLeague) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3A" || lg === "IT3B" || lg === "IT3C" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
       const match = (fLeague === "OTHER") ? !isKnownLeague : (lg === fLeague);
       if (!match) return false;
     }
@@ -4305,7 +4298,7 @@ function renderListPanel() {
     if (f.league) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3A" || lg === "IT3B" || lg === "IT3C" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
       const match = (f.league === "OTHER") ? !isKnownLeague : (lg === f.league);
       if (!match) return false;
     }
@@ -4438,9 +4431,7 @@ function renderListPanel() {
           <option value="">${t("filter_all_leagues")}</option>
           <option value="IT1" ${f.league==="IT1"?"selected":""}>${t("league_it1")}</option>
           <option value="IT2" ${f.league==="IT2"?"selected":""}>${t("league_it2")}</option>
-          <option value="IT3A" ${f.league==="IT3A"?"selected":""}>${t("league_it3a")}</option>
-            <option value="IT3B" ${f.league==="IT3B"?"selected":""}>${t("league_it3b")}</option>
-            <option value="IT3C" ${f.league==="IT3C"?"selected":""}>${t("league_it3c")}</option>
+          <option value="IT3" ${f.league==="IT3"?"selected":""}>${t("league_it3")}</option>
           <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
           <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
           <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>
@@ -5013,7 +5004,7 @@ function _applyMinutesFilters(players) {
     if (f.league) {
       const club = state.clubsById.get(p.current_club_id) || state.clubsById.get(String(p.current_club_id));
       const lg = String(club?.league_id || "OTHER");
-      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3A" || lg === "IT3B" || lg === "IT3C" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
+      const isKnownLeague = (lg === "IT1" || lg === "IT2" || lg === "IT3" || lg === "IJ1" || lg === "PL1" || lg === "PL2");
       const match = (f.league === "OTHER") ? !isKnownLeague : (lg === f.league);
       if (!match) return false;
     }
@@ -5324,9 +5315,7 @@ function renderMinutesPanel() {
           <option value="">${t("filter_all_leagues")}</option>
           <option value="IT1" ${f.league==="IT1"?"selected":""}>${t("league_it1")}</option>
           <option value="IT2" ${f.league==="IT2"?"selected":""}>${t("league_it2")}</option>
-          <option value="IT3A" ${f.league==="IT3A"?"selected":""}>${t("league_it3a")}</option>
-            <option value="IT3B" ${f.league==="IT3B"?"selected":""}>${t("league_it3b")}</option>
-            <option value="IT3C" ${f.league==="IT3C"?"selected":""}>${t("league_it3c")}</option>
+          <option value="IT3" ${f.league==="IT3"?"selected":""}>${t("league_it3")}</option>
           <option value="IJ1" ${f.league==="IJ1"?"selected":""}>${t("league_ij1")}</option>
           <option value="PL1" ${f.league==="PL1"?"selected":""}>${t("league_pl1")}</option>
           <option value="PL2" ${f.league==="PL2"?"selected":""}>${t("league_pl2")}</option>

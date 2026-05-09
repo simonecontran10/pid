@@ -32,19 +32,6 @@ COMPETITIONS = {
         "url": "https://sortitoutsi.net/football-manager-2026/competition/33/serie-bkt",
         "league_id": "IT2",
     },
-    "IT3A": {
-        "name": "Serie C - Girone A",
-        "url": "https://sortitoutsi.net/football-manager-2026/competition/43127172/italian-serie-ca",
-    },
-    "IT3B": {
-        "name": "Serie C - Girone B",
-        "url": "https://sortitoutsi.net/football-manager-2026/competition/43127173/italian-serie-cb",
-    },
-    "IT3C": {
-        "name": "Serie C - Girone C",
-        "url": "https://sortitoutsi.net/football-manager-2026/competition/43127174/italian-serie-cc",
-    },
-
 }
 
 HEADERS = {

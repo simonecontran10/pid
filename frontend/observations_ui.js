@@ -108,8 +108,8 @@ window.OBSERVATION_ROLE_DEFS = [
   { code: "AS",     it: "Ala sinistra",              en: "Left winger",            cx: 115, cy: 145 },
   { code: "TRQ",    it: "Trequartista",              en: "Attacking midfielder",   cx: 190, cy: 165 },
   { code: "AD",     it: "Ala destra",                en: "Right winger",           cx: 265, cy: 145 },
-  { code: "AES",    it: "Quinto sinistro",           en: "Left wing-back",         cx: 45,  cy: 215 },
-  { code: "AED",    it: "Quinto destro",             en: "Right wing-back",        cx: 335, cy: 215 },
+  { code: "AES",    it: "Esterno-quinto sinistro",   en: "Left wing-back",         cx: 45,  cy: 215 },
+  { code: "AED",    it: "Esterno-quinto destro",     en: "Right wing-back",        cx: 335, cy: 215 },
   { code: "CIS",    it: "Centrocampista interno sx", en: "Left central midfielder",cx: 130, cy: 280 },
   { code: "CC",     it: "Centrocampista centrale",   en: "Central midfielder",     cx: 190, cy: 305 },
   { code: "CID",    it: "Centrocampista interno dx", en: "Right central midfielder",cx: 250, cy: 280 },
@@ -990,7 +990,7 @@ window.wireScoutingPanel = async function() {
     });
 
     // Grid layout: foto(48) | nome+anno(2fr) | età(60) | ruolo(140) | piede(80) | media(80) | distribuzione(2fr) | oss(60) | espandi(28)
-    const GRID = "48px 2fr 60px 140px 80px 80px 2fr 60px 28px";
+    const GRID = "48px 2fr 60px 180px 80px 80px 2fr 60px 28px";
 
     const headerRow = `
       <div style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 10px 14px; border-bottom: 0.5px solid var(--border); font-size: 10px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500;">
@@ -1016,6 +1016,10 @@ window.wireScoutingPanel = async function() {
       const age = player?.age || "—";
       const roleSpec = player?.position_specific || player?.position_general || "—";
       const foot = player?.foot;
+      // Club: logo + nome (riga giocatore, sotto al nome)
+      const clubObj = player ? state.clubsById?.get(player.current_club_id) : null;
+      const clubLogoSrc = (clubObj && typeof clubLogo === "function") ? clubLogo(clubObj) : "";
+      const clubName = player ? ((typeof prettyClubName === "function") ? prettyClubName(player.current_club_name || "") : (player.current_club_name || "")) : "";
 
       // Media performance (esclude NON VALUTABILE)
       const evaluableObs = obsForPlayer.filter(o => o.evaluation_tags?.[0] !== "NON VALUTABILE");
@@ -1083,10 +1087,16 @@ window.wireScoutingPanel = async function() {
         const opponentStr = (typeof prettyClubName === "function") ? prettyClubName(o.opponent) : o.opponent;
         // Ruoli giocati in questa osservazione
         const rolesArr = Array.isArray(o.roles_played) ? o.roles_played : [];
-        const rolesShown = rolesArr.slice(0, 3).map(r => r.replace("_", " ")).join(" · ");
-        const rolesExtra = rolesArr.length > 3 ? ` +${rolesArr.length - 3}` : "";
+        // Risolvo sigla → nome esteso (it o en) usando OBSERVATION_ROLE_DEFS
+        const roleName = (code) => {
+          const def = window.OBSERVATION_ROLE_DEFS?.find(r => r.code === code);
+          if (!def) return code.replace("_", " ");
+          return isIt ? def.it : def.en;
+        };
+        const rolesShown = rolesArr.slice(0, 2).map(roleName).join(" · ");
+        const rolesExtra = rolesArr.length > 2 ? ` +${rolesArr.length - 2}` : "";
         const rolesObsHtml = rolesArr.length
-          ? `<span style="color: var(--text-2); font-size: 11px;">${escapeHtml(rolesShown)}${rolesExtra}</span>`
+          ? `<span style="color: var(--text-2); font-size: 11px;" title="${escapeHtml(rolesArr.map(roleName).join(", "))}">${escapeHtml(rolesShown)}${rolesExtra}</span>`
           : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
         // Mode badge
         let modeBadge = `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
@@ -1119,7 +1129,11 @@ window.wireScoutingPanel = async function() {
               onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&size=128&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45'"/>
             <div class="scouting-player-name" data-pid="${pid}" style="min-width: 0; cursor: pointer;">
               <div style="font-size: 13px; font-weight: 600; color: var(--text-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(playerName)}</div>
-              <div style="font-size: 11px; color: var(--text-3);">${escapeHtml(String(birthY || ""))}</div>
+              <div style="font-size: 11px; color: var(--text-3); display: flex; align-items: center; gap: 6px; min-width: 0; margin-top: 1px;">
+                <span style="flex-shrink: 0;">${escapeHtml(String(birthY || ""))}</span>
+                ${clubLogoSrc ? `<span style="color: var(--text-3); opacity: 0.5;">·</span><img src="${clubLogoSrc}" alt="" style="width: 14px; height: 14px; object-fit: contain; flex-shrink: 0;" onerror="this.style.display='none'"/>` : ""}
+                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(clubName)}</span>
+              </div>
             </div>
             <div style="text-align: center; font-size: 12px; color: var(--text-2);">${age}</div>
             <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(localize(roleSpec))}</div>
