@@ -5343,3 +5343,80 @@ Task residui post-sessione (BASSA priorità):
 
 Stima task residui: **~1.5 ore**. Niente bug critici. Sistema in stato pulito e ben documentato.
 
+
+---
+
+## 9 mag 2026 (notte tarda) — Refactor Admin Add Player + diagnosi cache SOTS
+
+Sessione di chiusura serale concentrata su due risultati: fix bug critico del flow admin-add-player e identificazione del prossimo blocker per l'espansione internazionale.
+
+### Bug Admin Add Player diagnosticato e fixato
+
+Sintomo: triggerati 5 workflow add_player.yml consecutivi (run #8-#12) per aggiungere giocatori, esiti misti (2 verdi, 1 rosso, 2 cancelled). Nessun giocatore arrivato in DB anche per i run apparentemente verdi (no-op silenziosi).
+
+Causa root: race condition + merge conflict sul git pull --rebase durante il commit. Il vecchio workflow aveva un loop di retry 5x ma senza git rebase --abort tra un tentativo e l'altro, lasciando lo stato di rebase fallito persistente. Log dello step Commit and push: "error: Pulling is not possible because you have unmerged files. fatal: Exiting because of an unresolved conflict." ripetuto 5 volte, exit 1.
+
+Soluzione: refactor batch + hardening. Branch feat/batch-add-player, PR #1 mergiata su main commit 2e5dcc5. Tre file modificati (199 insertions, 63 deletions):
+
+- .github/workflows/add_player.yml: input urls multi-line invece di url singolo. Step principale lancia echo URLS | python3 add_players.py (batch nativo via stdin che lo script supportava gia). Niente loop di retry rotto, sostituito con 1 push + 1 fallback con rebase pulito. Concurrency group invariato.
+- api/main.py endpoint /admin-add-player: accetta sia url (legacy) che urls (lista o stringa multi-line). Trim + dedupe + cap a 50 URL. Pre-check anti-doppio-click via GitHub API list runs filtrata su status=in_progress: se workflow gia in corso ritorna 409 Conflict con link al run esistente. Fallback non bloccante se GitHub API non risponde.
+- frontend/app.js funzione _adminAddPlayer: textarea multi-line, parsing client-side (split newline + trim + dedupe), validazione regex pre-send, ETA stimata in base a count (3 min minimo, +1 min per giocatore extra), bottone disabilitato 60 sec post-submit, link "Vedi progresso" verso GitHub Actions, gestione 409 con messaggio + link al run, status colorato verde/arancio/rosso.
+- Fix bug latente: id "admin-add-submit" rinominato "admin-add-btn" per allineamento con listener gia esistente nel codice (il bottone non era mai stato disabilitato, ma il listener cercava un id sbagliato).
+
+Test 1 retrocompatibilita (1 URL singolo, Julius Emefile da Midtjylland U19): workflow #13 verde in 32 secondi. Giocatore aggiunto correttamente al DB (totale 2864 -> 2867 giocatori dopo i tentativi della sessione). Frontend mostra giocatore con anagrafica completa.
+
+### Bug residuo identificato: foto SOTS non recuperata su giocatori nuovi
+
+Emefile e in DB ma sortitoutsi_person_id = None, sortitoutsi_face_url = None. Frontend mostra placeholder iniziali "JE" invece della foto. Causa scoperta:
+
+- enrich_sortitoutsi.py (chiamato da add_players.py) lavora SOLO su giocatori che hanno gia sortitoutsi_person_id, lo arricchisce con face_url. Per giocatori nuovi senza match preesistente, non fa nulla.
+- find_more_sots_matches.py e lo script che cerca match per giocatori senza sortitoutsi_person_id, ma e batch (lavora su TUTTI gli unmatched) e NON viene chiamato da add_players.py.
+- find_more_sots_matches.py non ha argomento --single o --tm-id (controllato grep, riga 94: `unmatched = [p for p in players if not p.get("sortitoutsi_person_id")]`).
+
+### Cache SOTS rosters: il vero blocker per espansione internazionale
+
+Verifica della cache sots_rosters.json: 130 club totali. Ricerca "Midtjylland" in cache: 0 risultati. Ricerca "Emefile" in cache: 0 risultati.
+
+Implicazione: anche aggiungendo find_more_sots_matches.py al workflow add-player, NON recupererebbe la foto di Emefile perche la Superliga danese non e mappata su SortItOutSi nel sistema attuale. Lo stesso vale per ogni espansione futura: aggiungere giocatori delle 5 leghe top (PT/DE/FR/ES/EN) o di Champions League senza prima espandere la cache SOTS produrra giocatori sistematicamente senza foto.
+
+Workflow auto-update foto SOTS settimanale (Task #3 del TODO ancora pendente) avrebbe lo stesso limite: lavora sulla cache esistente, non la espande.
+
+### Strategia rivista per espansione
+
+Ordine di priorita per la prossima sessione:
+
+1. Espandere scrape_sortitoutsi_competition.py con leghe top + UCL/UEL (come gia fatto per PL1/PL2 il 9 mag mattino). Stima 15-20 min.
+2. Lanciare harvest_sots_rosters.py per popolare la cache con i club delle nuove competizioni. Stima 20-40 min runtime.
+3. Lanciare find_more_sots_matches.py sul DB attuale per recuperare retroattivamente le foto dei giocatori stranieri attualmente unmatched (incluso Emefile). Stima 5-10 min.
+4. Solo dopo: integrare find_more_sots_matches.py nel workflow add_player.yml (opzione A: chiamata diretta, +3-5 min al workflow / opzione B: refactor con --only-tm-ids, 30 min sviluppo ma workflow resta veloce).
+5. Workflow auto-update foto SOTS settimanale (Task #3 TODO).
+
+### Lezioni apprese
+
+Diagnosi prima di soluzione: stasera ho speso 6-7 messaggi proponendo split di players_stats.json 84MB->5MB pensando al caso "uso da telefono", quando l'utente reale lo apre solo da Mac fibra. Chiedere il contesto d'uso reale (device, frequenza, collaboratori) PRIMA di proporre ottimizzazioni e quanto vale il refactor. Ho rimandato lo split (giusto), ma 30 min persi a spiegare una soluzione non necessaria.
+
+Workflow GitHub Actions e race condition: anche con concurrency group, run paralleli che modificano lo stesso file JSON minified su una riga sola sono vulnerabili a merge conflict che git non sa risolvere. La soluzione corretta non e "retry piu robusto" ma "1 solo workflow con N input" (batch).
+
+Falsi positivi nei verdi: workflow GitHub puo finire con exit 0 anche senza fare nulla utile. Lo step "Commit and push" che esce 0 su "no changes to commit" maschera no-op silenziosi. Verificare sempre il risultato lato DB, non solo lo status del run.
+
+Mistero del DB locale vs frontend: aver fatto refactor su feat/batch-add-player e non aver fatto git pull dopo il merge ha fatto sembrare che Emefile non fosse in DB. Era invece in origin/main (commit 4719856) ma il locale era indietro. Ricordare di pullare dopo ogni merge da PR.
+
+### Commit pushati nella sessione
+
+- 0a66876 feat(admin): batch add-player + anti-doppio-click + textarea multi-URL
+- 2e5dcc5 Merge pull request #1 from simonecontran10/feat/batch-add-player  
+- 4719856 auto: add 1 player(s) from TM URL (workflow #13 - test retrocompatibilita)
+
+Branch feat/batch-add-player non eliminato (lasciato per riferimento, opzionalmente deletable da Github UI).
+
+### TODO aggiornato post-sessione
+
+| Task | Priorita | Stima | Note |
+|---|---|---|---|
+| Espansione SOTS competizioni internazionali (DK, top 5, UCL) | ALTA | 30-60 min | Pre-requisito per espansione leghe |
+| Recupero retroattivo foto Emefile + altri unmatched stranieri | ALTA | 10 min | Dopo task sopra |
+| Integrazione find_more_sots_matches in add_player.yml | MEDIA | 10-30 min | Opzione A (quick) o B (pulita) |
+| Workflow auto-update foto SOTS settimanale | MEDIA | 20-30 min | Task #3 TODO precedente |
+| Espansione 5 leghe top + CL (Portogallo come pilota) | ALTA | 17-23h | Obiettivo macro |
+| Cleanup naming legacy Saudi (PLAYERS_STATIC_FILE etc) | BASSA | 2h | Debito tecnico |
+
