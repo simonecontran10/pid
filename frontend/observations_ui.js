@@ -1415,7 +1415,7 @@ async function exportObservationPDF(observationId, playerId) {
   const leftMargin = 12;
 
   // Carica giocatore + osservazione
-  const player = (window.state?.players || []).find(p => p.tm_player_id === playerId);
+  const player = (state.players || []).find(p => p.tm_player_id === playerId);
   if (!player) {
     alert("Giocatore non trovato.");
     return;
@@ -1573,7 +1573,7 @@ async function exportPlayerDossierPDF(playerId) {
   const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
   const leftMargin = 12;
 
-  const player = (window.state?.players || []).find(p => p.tm_player_id === playerId);
+  const player = (state.players || []).find(p => p.tm_player_id === playerId);
   if (!player) { alert("Giocatore non trovato."); return; }
   const all = window._obsAllCache || (await window.fetchObservations());
   const obsList = (all || []).filter(o => o.tm_player_id === playerId)
