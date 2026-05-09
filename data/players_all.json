@@ -427,11 +427,12 @@
     "fetched_at": "2026-05-05T21:09:52Z",
     "roster_club_id": 17664,
     "roster_club_name": "Frosinone Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000506803,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000506803.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000506803/abubacar-ceesay",
     "current_club_id_original": 8654,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000506803.png"
   },
   {
     "tm_player_id": 1010150,
@@ -532,11 +533,12 @@
     "fetched_at": "2026-05-05T21:10:02Z",
     "roster_club_id": 12819,
     "roster_club_name": "Napoli Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000390952,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000390952.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000390952/adam-hasani",
     "current_club_id_original": 515,
-    "current_club_name_original": "Winter signing"
+    "current_club_name_original": "Winter signing",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000390952.png"
   },
   {
     "tm_player_id": 239802,
@@ -1435,9 +1437,10 @@
     "fetched_at": "2026-05-05T21:11:51Z",
     "roster_club_id": 84400,
     "roster_club_name": "Monza Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000241770,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000241770.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000241770/alessandro-bagnaschi",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000241770.png"
   },
   {
     "tm_player_id": 1195038,
@@ -3403,11 +3406,12 @@
     "fetched_at": "2026-05-05T21:16:10Z",
     "roster_club_id": 19114,
     "roster_club_name": "Sassuolo Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000268216,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000268216.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000268216/alessio-sibilano",
     "current_club_id_original": 75867,
-    "current_club_name_original": "Internal transfer: Sassuolo Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Sassuolo Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000268216.png"
   },
   {
     "tm_player_id": 1432784,
@@ -3768,9 +3772,10 @@
     "fetched_at": "2026-05-05T21:16:55Z",
     "roster_club_id": 12819,
     "roster_club_name": "Napoli Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000242306,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000242306.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000242306/alfonso-de-luca",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000242306.png"
   },
   {
     "tm_player_id": 1062320,
@@ -4787,11 +4792,12 @@
     "fetched_at": "2026-05-05T21:18:59Z",
     "roster_club_id": 19114,
     "roster_club_name": "Sassuolo Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000268200,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000268200.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000268200/andrea-campani",
     "current_club_id_original": 75867,
-    "current_club_name_original": "Internal transfer: Sassuolo Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Sassuolo Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000268200.png"
   },
   {
     "tm_player_id": 967889,
@@ -5463,11 +5469,12 @@
     "fetched_at": "2026-05-05T21:20:25Z",
     "roster_club_id": 20106,
     "roster_club_name": "Cesena Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000284355,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000284355.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000284355/andrea-lantignotti",
     "current_club_id_original": 101158,
-    "current_club_name_original": "Internal transfer: Cesena Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Cesena Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000284355.png"
   },
   {
     "tm_player_id": 1204163,
@@ -9060,11 +9067,12 @@
     "fetched_at": "2026-05-05T21:27:58Z",
     "roster_club_id": 17664,
     "roster_club_name": "Frosinone Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000495913,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000495913.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000495913/bruno-zorzetto",
     "current_club_id_original": 111246,
-    "current_club_name_original": "Internal transfer: Frosinone Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Frosinone Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000495913.png"
   },
   {
     "tm_player_id": 199248,
@@ -9430,11 +9438,12 @@
     "fetched_at": "2026-05-05T21:28:43Z",
     "roster_club_id": 19114,
     "roster_club_name": "Sassuolo Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000268221,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000268221.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000268221/catello-amendola",
     "current_club_id_original": 75867,
-    "current_club_name_original": "Internal transfer: Sassuolo Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Sassuolo Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000268221.png"
   },
   {
     "tm_player_id": 213854,
@@ -13950,11 +13959,12 @@
     "fetched_at": "2026-05-05T21:38:15Z",
     "roster_club_id": 19114,
     "roster_club_name": "Sassuolo Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000187279,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000187279.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000187279/diego-tampieri",
     "current_club_id_original": 20106,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000187279.png"
   },
   {
     "tm_player_id": 1160833,
@@ -16342,11 +16352,12 @@
     "fetched_at": "2026-05-05T21:43:12Z",
     "roster_club_id": 20106,
     "roster_club_name": "Cesena Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000284319,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000284319.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000284319/emilio-amadori",
     "current_club_id_original": 101158,
-    "current_club_name_original": "Internal transfer: Cesena Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Cesena Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000284319.png"
   },
   {
     "tm_player_id": 743091,
@@ -20506,11 +20517,12 @@
     "fetched_at": "2026-05-05T21:51:44Z",
     "roster_club_id": 11008,
     "roster_club_name": "Juventus Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000332032,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000332032.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000332032/francesco-leone",
     "current_club_id_original": 84451,
-    "current_club_name_original": "Returnee"
+    "current_club_name_original": "Returnee",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000332032.png"
   },
   {
     "tm_player_id": 1214098,
@@ -23688,11 +23700,12 @@
     "fetched_at": "2026-05-05T21:58:06Z",
     "roster_club_id": 8505,
     "roster_club_name": "Fiorentina Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000403058,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000403058.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000403058/gianmaria-fei",
     "current_club_id_original": 75901,
-    "current_club_name_original": "Internal transfer: Fiorentina Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Fiorentina Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000403058.png"
   },
   {
     "tm_player_id": 1018259,
@@ -24184,11 +24197,12 @@
     "fetched_at": "2026-05-05T21:59:06Z",
     "roster_club_id": 11676,
     "roster_club_name": "Cagliari Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000461316,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000461316.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000461316/giovanni-andrea-cardu",
     "current_club_id_original": 49577,
-    "current_club_name_original": "Internal transfer: Cagliari Under 17; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Cagliari Under 17; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000461316.png"
   },
   {
     "tm_player_id": 663900,
@@ -26301,11 +26315,12 @@
     "fetched_at": "2026-05-05T22:03:36Z",
     "roster_club_id": 8517,
     "roster_club_name": "Genoa Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000266435,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000266435.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000266435/isaac-enoghama",
     "current_club_id_original": 76092,
-    "current_club_name_original": "Internal transfer: Genoa Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Genoa Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000266435.png"
   },
   {
     "tm_player_id": 1295111,
@@ -26824,9 +26839,10 @@
     "fetched_at": "2026-05-05T22:04:42Z",
     "roster_club_id": 11676,
     "roster_club_name": "Cagliari Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000389422,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000389422.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000389422/jack-nunn",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000389422.png"
   },
   {
     "tm_player_id": 663237,
@@ -33134,9 +33150,10 @@
     "fetched_at": "2026-05-05T22:18:03Z",
     "roster_club_id": 19114,
     "roster_club_name": "Sassuolo Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000268210,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000268210.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000268210/lorenzo-nyarko",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000268210.png"
   },
   {
     "tm_player_id": 1168373,
@@ -33298,9 +33315,10 @@
     "fetched_at": "2026-05-05T22:18:24Z",
     "roster_club_id": 17198,
     "roster_club_name": "Cremonese Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000261855,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000261855.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000261855/lorenzo-pio-marino",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000261855.png"
   },
   {
     "tm_player_id": 982056,
@@ -33959,9 +33977,10 @@
     "fetched_at": "2026-05-05T22:19:52Z",
     "roster_club_id": 11998,
     "roster_club_name": "Atalanta Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000333546,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000333546.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000333546/luca-gobbo",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000333546.png"
   },
   {
     "tm_player_id": 1057053,
@@ -34995,9 +35014,10 @@
     "fetched_at": "2026-05-05T22:23:09Z",
     "roster_club_id": 5243,
     "roster_club_name": "Parma Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000491914,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000491914.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000491914/ludovico-varali",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000491914.png"
   },
   {
     "tm_player_id": 721227,
@@ -37827,11 +37847,12 @@
     "fetched_at": "2026-05-05T22:32:49Z",
     "roster_club_id": 16996,
     "roster_club_name": "Hellas Verona Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000269202,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000269202.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000269202/mark-topollaj",
     "current_club_id_original": 91428,
-    "current_club_name_original": "Internal transfer: Hellas Verona Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Hellas Verona Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000269202.png"
   },
   {
     "tm_player_id": 663153,
@@ -38244,9 +38265,10 @@
     "fetched_at": "2026-05-05T22:33:44Z",
     "roster_club_id": 11676,
     "roster_club_name": "Cagliari Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000394155,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000394155.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000394155/márton-prettenhoffer",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000394155.png"
   },
   {
     "tm_player_id": 453864,
@@ -40219,11 +40241,12 @@
     "fetched_at": "2026-05-05T22:38:09Z",
     "roster_club_id": 11998,
     "roster_club_name": "Atalanta Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000330730,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000330730.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000330730/mattia-aliprandi",
     "current_club_id_original": 76091,
-    "current_club_name_original": "Internal transfer: Atalanta Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Atalanta Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000330730.png"
   },
   {
     "tm_player_id": 1053218,
@@ -45211,11 +45234,12 @@
     "fetched_at": "2026-05-05T22:48:24Z",
     "roster_club_id": 16996,
     "roster_club_name": "Hellas Verona Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000400138,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000400138.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000400138/noe-mael-tagne",
     "current_club_id_original": 49755,
-    "current_club_name_original": "Internal transfer: Hellas Under 17; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Hellas Under 17; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000400138.png"
   },
   {
     "tm_player_id": 730531,
@@ -45276,11 +45300,12 @@
     "fetched_at": "2026-05-05T22:48:33Z",
     "roster_club_id": 11676,
     "roster_club_name": "Cagliari Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000382032,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000382032.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000382032/noham-hamdaoua",
     "current_club_id_original": 12750,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000382032.png"
   },
   {
     "tm_player_id": 704456,
@@ -47183,12 +47208,13 @@
     "fetched_at": "2026-05-05T22:52:21Z",
     "roster_club_id": 8505,
     "roster_club_name": "Fiorentina Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000333018,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000333018.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000333018/piergiorgio-bonanno",
     "photo_local": "photos/players_tm/1190028.jpg",
     "current_club_id_original": 75901,
-    "current_club_name_original": "Internal transfer: Fiorentina Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Fiorentina Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000333018.png"
   },
   {
     "tm_player_id": 244192,
@@ -48142,9 +48168,10 @@
     "fetched_at": "2026-05-05T22:54:19Z",
     "roster_club_id": 12819,
     "roster_club_name": "Napoli Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000266816,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000266816.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000266816/raffaele-colella",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000266816.png"
   },
   {
     "tm_player_id": 70580,
@@ -48839,11 +48866,12 @@
     "fetched_at": "2026-05-05T22:55:42Z",
     "roster_club_id": 20106,
     "roster_club_name": "Cesena Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000284347,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000284347.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000284347/riccardo-biguzzi",
     "current_club_id_original": 101158,
-    "current_club_name_original": "Internal transfer: Cesena Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Cesena Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000284347.png"
   },
   {
     "tm_player_id": 934514,
@@ -50374,11 +50402,12 @@
     "fetched_at": "2026-05-05T22:58:44Z",
     "roster_club_id": 12819,
     "roster_club_name": "Napoli Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000266709,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000266709.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000266709/salvatore-de-martino",
     "current_club_id_original": 75406,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000266709.png"
   },
   {
     "tm_player_id": 392963,
@@ -55269,11 +55298,12 @@
     "fetched_at": "2026-05-05T23:08:38Z",
     "roster_club_id": 17664,
     "roster_club_name": "Frosinone Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000495914,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000495914.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000495914/tommaso-reali",
     "current_club_id_original": 49758,
-    "current_club_name_original": "Internal transfer: Frosinone Under 17; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Frosinone Under 17; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000495914.png"
   },
   {
     "tm_player_id": 866247,
@@ -56105,11 +56135,12 @@
     "fetched_at": "2026-05-05T23:10:23Z",
     "roster_club_id": 12819,
     "roster_club_name": "Napoli Primavera",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000495803,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000495803.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000495803/vincenzo-testa",
     "current_club_id_original": 100431,
-    "current_club_name_original": "Internal transfer: Napoli Under 18; date: 01/07/2025"
+    "current_club_name_original": "Internal transfer: Napoli Under 18; date: 01/07/2025",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000495803.png"
   },
   {
     "tm_player_id": 586853,

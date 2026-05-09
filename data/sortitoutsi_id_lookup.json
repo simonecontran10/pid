@@ -13325,5 +13325,222 @@
     "match_score": 1.0,
     "matched_via": "team_roster",
     "face_local": "photos/players_sots_lookup/2000017548.png"
+  },
+  "1462448": {
+    "sots_id": 2000506803,
+    "name": "Abubacar Ceesay",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1246891": {
+    "sots_id": 2000390952,
+    "name": "Adam Hasani",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1060357": {
+    "sots_id": 2000241770,
+    "name": "Alessandro Bagnaschi",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000241770.png"
+  },
+  "1168030": {
+    "sots_id": 2000268216,
+    "name": "Alessio Sibilano",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000268216.png"
+  },
+  "1077899": {
+    "sots_id": 2000242306,
+    "name": "Alfonso De Luca",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000242306.png"
+  },
+  "1044819": {
+    "sots_id": 2000268200,
+    "name": "Andrea Campani",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000268200.png"
+  },
+  "1296425": {
+    "sots_id": 2000284355,
+    "name": "Andrea Lantignotti",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000284355.png"
+  },
+  "1182950": {
+    "sots_id": 2000495913,
+    "name": "Bruno Zorzetto",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1133143": {
+    "sots_id": 2000268221,
+    "name": "Catello Amendola",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000268221.png"
+  },
+  "1129564": {
+    "sots_id": 2000187279,
+    "name": "Diego Tampieri",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000187279.png"
+  },
+  "1296435": {
+    "sots_id": 2000284319,
+    "name": "Emilio Amadori",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000284319.png"
+  },
+  "1182369": {
+    "sots_id": 2000332032,
+    "name": "Francesco Leone",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000332032.png"
+  },
+  "1317913": {
+    "sots_id": 2000403058,
+    "name": "Gianmaria Fei",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1253653": {
+    "sots_id": 2000461316,
+    "name": "Giovanni Andrea Cardu",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000461316.png"
+  },
+  "1075420": {
+    "sots_id": 2000266435,
+    "name": "Isaac Enoghama",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000266435.png"
+  },
+  "1292591": {
+    "sots_id": 2000389422,
+    "name": "Jack Nunn",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1168024": {
+    "sots_id": 2000268210,
+    "name": "Lorenzo Nyarko",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000268210.png"
+  },
+  "1100015": {
+    "sots_id": 2000261855,
+    "name": "Lorenzo Pio Marino",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000261855.png"
+  },
+  "1183953": {
+    "sots_id": 2000333546,
+    "name": "Luca Gobbo",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000333546.png"
+  },
+  "1388316": {
+    "sots_id": 2000491914,
+    "name": "Ludovico Varali",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "949340": {
+    "sots_id": 2000269202,
+    "name": "Mark Topollaj",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1060896": {
+    "sots_id": 2000394155,
+    "name": "Márton Prettenhoffer",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000394155.png"
+  },
+  "1170819": {
+    "sots_id": 2000330730,
+    "name": "Mattia Aliprandi",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1310290": {
+    "sots_id": 2000400138,
+    "name": "Noe Mael Tagne",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000400138.png"
+  },
+  "1295337": {
+    "sots_id": 2000382032,
+    "name": "Noham Hamdaoua",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1190028": {
+    "sots_id": 2000333018,
+    "name": "Piergiorgio Bonanno",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1318329": {
+    "sots_id": 2000266816,
+    "name": "Raffaele Colella",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1296430": {
+    "sots_id": 2000284347,
+    "name": "Riccardo Biguzzi",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000284347.png"
+  },
+  "1440090": {
+    "sots_id": 2000266709,
+    "name": "Salvatore De Martino",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1311736": {
+    "sots_id": 2000495914,
+    "name": "Tommaso Reali",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1243102": {
+    "sots_id": 2000495803,
+    "name": "Vincenzo Testa",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
   }
 }
