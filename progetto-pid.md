@@ -3909,3 +3909,54 @@ File `frontend/observations_ui.js` predisposto ma non ancora integrato. Contiene
 - Fase 4 — Pannello "Scouting" laterale con liste giocatori visionati e tutte le osservazioni (~1.5h)
 - Fase 5 — Export PDF singolo + dossier giocatore (jsPDF client-side) (~2h)
 - Fase 6 — Export/Import salvataggio JSON (~45m)
+
+
+## 9 mag 2026 (mattina) — Backup cron per auto_update_daily
+
+### Sintomo
+
+Sidebar pid-nine.vercel.app mostrava ancora "Aggiornamento 08/05/2026, 21:20" (in realtà 20:20 italiana, le 18:20 UTC del run manuale di ieri sera). Nessun aggiornamento del timestamp dopo la notte 8→9 maggio.
+
+### Diagnosi
+
+Tab GitHub Actions: solo 3 run totali del workflow `Auto Update Daily`, di cui nessuno schedulato per la notte 8→9 maggio. Il run automatico delle 03:00 UTC di stamattina non è partito. Cause probabili:
+
+1. GitHub registra un cron come "appena modificato" quando si edita il file YAML del workflow. Il fix permessi di ieri (commit `97f9797`) ha modificato `auto_update_daily.yml` alle 19:00 italiana, e secondo la documentazione GitHub i cron schedulati appena modificati possono saltare il primo trigger. Probabilità alta come spiegazione.
+
+2. Skip opportunistico documentato di GitHub Actions su account free durante carichi alti dell'infrastruttura. Probabilità media.
+
+3. Sospensione automatica per repo "inattivo" (60 giorni senza commit). Esclusa dato il livello di attività del repo.
+
+`run_stats.py` aggiorna correttamente `stats_completed_at` ad ogni esecuzione (verificato: il commit `45d538e` di ieri sera aveva i campi `stats_completed_at`, `elapsed_seconds_stats`, `n_stats` aggiornati). Il commit del bot avviene effettivamente ogni volta che il workflow gira con successo. Quindi il bug NON è nello script Python né nel workflow stesso, ma nella mancata esecuzione schedulata.
+
+### Fix applicata
+
+Aggiunto un secondo cron come **backup** in `auto_update_daily.yml` (commit `cddb7ab`):
+
+```yaml
+on:
+  schedule:
+    - cron: "0 3 * * *"   # primario: 03:00 UTC = 05:00 italiana (estate)
+    - cron: "30 6 * * *"  # backup: parte se il primario salta (skip occasionali GitHub)
+  workflow_dispatch:
+```
+
+Il blocco `concurrency.group: auto-update` esistente impedisce esecuzioni parallele: se il primario è ancora in corso quando arriva l'ora del backup, il secondo viene messo in coda o skippato. Sicurezza built-in, niente di nuovo da configurare.
+
+### Effetto pratico atteso
+
+Dalla notte 9→10 maggio in poi:
+- Alle 05:00 italiana parte il primario
+- Se il primario non parte, alle 08:30 italiana parte il backup
+- Probabilità di skip su entrambi: stimata ~1-2%
+- Sito mostra il timestamp aggiornato ogni mattina entro le ~10:00 italiana al massimo
+
+Verifica programmata: domattina 10 maggio controllare con `curl https://pid-nine.vercel.app/data/last_update.json` che `stats_completed_at` sia del 9 maggio.
+
+### Piano B se anche il doppio cron fallisce
+
+Passare a un **cron service esterno** (es. cron-job.org, gratuito) che pinga ogni notte un endpoint Vercel custom. L'endpoint Vercel a sua volta triggera il workflow GitHub via API GitHub. Più affidabile (zero ritardi/skip GitHub), zero costi, ma richiede un endpoint Vercel protetto da token e configurazione del cron esterno. Da fare solo se il doppio cron non basta.
+
+### Commit della sessione
+
+- `cddb7ab` fix(workflow): aggiungi backup cron a auto_update_daily per gestire skip GitHub Actions
