@@ -1254,15 +1254,16 @@ console.log("[obs-ui] Fase 3 v2 modulo caricato");
 
 
 // ============================================================
-// EXPORT PDF — singola osservazione + dossier giocatore
+// EXPORT PDF — singola osservazione + dossier giocatore (v2)
 // ============================================================
+
+const PDF_LOGO_URL = "../data/photos/branding/logo.png";
 
 function _pdfT(key, fallback) {
   return (typeof window.t === "function" && window.t(key)) || fallback || key;
 }
 
 function _pdfPlayerData(player) {
-  // Ritorna un oggetto strutturato dei dati giocatore per il PDF
   if (!player) return {};
   const heightCm = player.height_cm || (player.height ? player.height : null);
   const role = player.position_specific || player.position || player.position_general || "—";
@@ -1271,18 +1272,41 @@ function _pdfPlayerData(player) {
   const age = player.age != null ? String(player.age) : "—";
   const club = player.current_club_name || "—";
   const foot = player.foot || "—";
+  // Path locali (no CORS) come priorità, poi URL CDN come fallback
+  const photoPaths = [];
+  if (player.photo_local) photoPaths.push("../data/" + player.photo_local);
+  if (player.sortitoutsi_face_url) photoPaths.push("../data/photos/players_sots_lookup/" + (player.sortitoutsi_person_id || "") + ".png");
+  if (player.photo_url) photoPaths.push(player.photo_url);
+  if (player.sortitoutsi_face_url) photoPaths.push(player.sortitoutsi_face_url);
   return {
     name: player.full_name || player.name || "—",
     year, age, club, foot,
     height: heightCm ? `${heightCm} cm` : "—",
     role,
-    photoUrl: player.photo_url || null,
-    sotsFaceUrl: player.sortitoutsi_face_url || null,
+    photoPaths,
+    clubId: player.current_club_id || null,
   };
 }
 
+function _pdfClubLogoPaths(clubId) {
+  // Ritorna i path possibili per il logo del club (priorità: locale)
+  if (!clubId) return [];
+  const clubs = (typeof state !== "undefined" && state.clubs) ? state.clubs : [];
+  const club = clubs.find(c => c.tm_club_id === clubId);
+  const paths = [];
+  if (club) {
+    if (club.sortitoutsi_logo_local) paths.push("../data/" + club.sortitoutsi_logo_local);
+    if (club.logo_local) paths.push("../data/" + club.logo_local);
+    if (club.sortitoutsi_logo_url) paths.push(club.sortitoutsi_logo_url);
+    if (club.logo_url) paths.push(club.logo_url);
+  }
+  // Fallback path standard
+  paths.push("../data/photos/clubs_sots/" + clubId + ".png");
+  paths.push("../data/photos/clubs_tm/" + clubId + ".png");
+  return paths;
+}
+
 async function _pdfFetchImage(url) {
-  // Fetcha un'immagine come base64 dataURL. Ritorna null se fallisce.
   if (!url) return null;
   try {
     const res = await fetch(url, { mode: "cors" });
@@ -1295,13 +1319,21 @@ async function _pdfFetchImage(url) {
       r.readAsDataURL(blob);
     });
   } catch (e) {
-    console.warn("[pdf] fetch image failed:", url, e);
     return null;
   }
 }
 
+async function _pdfFetchFirstAvailable(urls) {
+  // Prova gli URL in ordine, ritorna il primo che funziona
+  for (const url of urls) {
+    if (!url) continue;
+    const data = await _pdfFetchImage(url);
+    if (data) return data;
+  }
+  return null;
+}
+
 function _pdfFmtDate(s) {
-  // "2026-05-09" → "09/05/2026"
   if (!s) return "—";
   const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (!m) return s;
@@ -1309,95 +1341,129 @@ function _pdfFmtDate(s) {
 }
 
 function _pdfTagLabel(tag) {
-  // evaluation_tag → ("Prima scelta", colore)
   const map = {
     "PRIMA SCELTA": { label: "Prima scelta", color: [34, 197, 94] },
     "SECONDA SCELTA": { label: "Seconda scelta", color: [251, 191, 36] },
+    "DA MONITORARE": { label: "Da monitorare", color: [96, 165, 250] },
     "DA SEGUIRE": { label: "Da seguire", color: [96, 165, 250] },
+    "NON IDONEO": { label: "Non idoneo", color: [239, 68, 68] },
+    "NON VALUTABILE": { label: "Non valutabile", color: [180, 180, 180] },
     "DA SCARTARE": { label: "Da scartare", color: [239, 68, 68] },
   };
   if (Array.isArray(tag) && tag.length > 0) tag = tag[0];
   if (!tag) return null;
   const t = String(tag).toUpperCase().trim();
-  return map[t] || { label: t, color: [180, 180, 180] };
+  return map[t] || { label: tag, color: [180, 180, 180] };
 }
 
-function _pdfHeader(pdf, title, leftMargin, topY) {
-  // Logo PID (testo stilizzato) + titolo
-  pdf.setFillColor(111, 224, 168);
-  pdf.rect(leftMargin, topY, 6, 6, "F");
+function _pdfRoleExtended(roleCode) {
+  // Mappa codice posizione → nome esteso italiano (rispecchia OBSERVATION_ROLES)
+  const map = {
+    "POR": "Portiere",
+    "DCD": "Difensore centrale destro",
+    "DC": "Difensore centrale",
+    "DCS": "Difensore centrale sinistro",
+    "TD": "Terzino destro",
+    "TS": "Terzino sinistro",
+    "ED": "Esterno destro a tutta fascia",
+    "ES": "Esterno sinistro a tutta fascia",
+    "MED": "Mediano",
+    "REG": "Regista",
+    "MEZD": "Mezzala destra",
+    "MEZS": "Mezzala sinistra",
+    "TQT": "Trequartista",
+    "TQTD": "Trequartista destro",
+    "TQTS": "Trequartista sinistro",
+    "AD": "Ala destra",
+    "AS": "Ala sinistra",
+    "AT": "Attaccante",
+    "ATD": "Seconda punta",
+    "PUNTA": "Punta",
+  };
+  return map[String(roleCode).toUpperCase()] || roleCode;
+}
+
+async function _pdfHeader(pdf, title, leftMargin, topY, logoData) {
+  // Logo PID immagine (se disponibile) + titolo
+  if (logoData) {
+    try {
+      pdf.addImage(logoData, "PNG", leftMargin, topY - 1, 9, 9);
+    } catch (e) {
+      try { pdf.addImage(logoData, "JPEG", leftMargin, topY - 1, 9, 9); } catch (e2) {}
+    }
+  }
   pdf.setTextColor(40, 40, 40);
-  pdf.setFontSize(14);
+  pdf.setFontSize(13);
   pdf.setFont("helvetica", "bold");
-  pdf.text("PID", leftMargin + 9, topY + 5);
-  pdf.setFontSize(8);
+  pdf.text("PID", leftMargin + 12, topY + 4);
+  pdf.setFontSize(7);
   pdf.setFont("helvetica", "normal");
-  pdf.setTextColor(120, 120, 120);
-  pdf.text("Players Intelligence Database", leftMargin + 22, topY + 5);
+  pdf.setTextColor(140, 140, 140);
+  pdf.text("Players Intelligence Database", leftMargin + 12, topY + 7.5);
   // Titolo a destra
   pdf.setFontSize(9);
   pdf.setTextColor(100, 100, 100);
   const titleW = pdf.getTextWidth(title);
   pdf.text(title, 210 - leftMargin - titleW, topY + 5);
-  // Linea separatrice
   pdf.setDrawColor(200, 200, 200);
   pdf.setLineWidth(0.3);
-  pdf.line(leftMargin, topY + 9, 210 - leftMargin, topY + 9);
+  pdf.line(leftMargin, topY + 10, 210 - leftMargin, topY + 10);
 }
 
 async function _pdfDrawPlayerCard(pdf, player, leftMargin, topY) {
-  // Box con foto + dati giocatore. Ritorna la Y di fine box.
   const data = _pdfPlayerData(player);
   const cardW = 210 - 2 * leftMargin;
-  const cardH = 36;
-  // Background
+  const cardH = 38;
   pdf.setFillColor(248, 248, 248);
   pdf.roundedRect(leftMargin, topY, cardW, cardH, 2, 2, "F");
-  // Foto
+
+  // Foto giocatore
   const photoX = leftMargin + 3;
   const photoY = topY + 3;
-  const photoSize = 30;
-  let drawn = false;
-  // Priorità: sortitoutsi_face_url poi photo_url
-  for (const url of [data.sotsFaceUrl, data.photoUrl]) {
-    if (!url) continue;
-    const dataUrl = await _pdfFetchImage(url);
-    if (dataUrl) {
-      try {
-        pdf.addImage(dataUrl, "PNG", photoX, photoY, photoSize, photoSize);
-        drawn = true;
-        break;
-      } catch (e) {
-        try {
-          pdf.addImage(dataUrl, "JPEG", photoX, photoY, photoSize, photoSize);
-          drawn = true;
-          break;
-        } catch (e2) {
-          console.warn("[pdf] addImage failed:", e2);
-        }
+  const photoSize = 32;
+  const photoData = await _pdfFetchFirstAvailable(data.photoPaths);
+  if (photoData) {
+    try {
+      pdf.addImage(photoData, "PNG", photoX, photoY, photoSize, photoSize);
+    } catch (e) {
+      try { pdf.addImage(photoData, "JPEG", photoX, photoY, photoSize, photoSize); } catch (e2) {
+        pdf.setFillColor(220, 220, 220);
+        pdf.rect(photoX, photoY, photoSize, photoSize, "F");
       }
     }
-  }
-  if (!drawn) {
-    pdf.setFillColor(220, 220, 220);
+  } else {
+    pdf.setFillColor(230, 230, 230);
     pdf.rect(photoX, photoY, photoSize, photoSize, "F");
     pdf.setTextColor(140, 140, 140);
     pdf.setFontSize(7);
-    pdf.text("no photo", photoX + 7, photoY + 17);
+    pdf.text("no photo", photoX + 8, photoY + 18);
   }
-  // Dati giocatore (a destra della foto)
+
+  // Logo club (sopra il nome)
   const txtX = photoX + photoSize + 6;
   let y = topY + 7;
+  const clubLogoData = await _pdfFetchFirstAvailable(_pdfClubLogoPaths(data.clubId));
+
+  // Nome giocatore
   pdf.setTextColor(20, 20, 20);
   pdf.setFontSize(13);
   pdf.setFont("helvetica", "bold");
   pdf.text(data.name, txtX, y);
   y += 6;
+  // Riga 1: anno · età · [logo club] club
   pdf.setFontSize(9);
   pdf.setFont("helvetica", "normal");
   pdf.setTextColor(80, 80, 80);
-  // Riga 1: anno · età · club
-  pdf.text(`${_pdfT("pdf_field_year", "Anno")}: ${data.year}  ·  ${_pdfT("pdf_field_age", "Età")}: ${data.age}  ·  ${_pdfT("pdf_field_club", "Club")}: ${data.club}`, txtX, y);
+  let row1 = `${_pdfT("pdf_field_year", "Anno")}: ${data.year}  ·  ${_pdfT("pdf_field_age", "Età")}: ${data.age}  ·  `;
+  pdf.text(row1, txtX, y);
+  let row1W = pdf.getTextWidth(row1);
+  // Logo club inline
+  let clubLabelX = txtX + row1W;
+  if (clubLogoData) {
+    try { pdf.addImage(clubLogoData, "PNG", clubLabelX, y - 3.5, 4.5, 4.5); clubLabelX += 5.5; }
+    catch (e) { try { pdf.addImage(clubLogoData, "JPEG", clubLabelX, y - 3.5, 4.5, 4.5); clubLabelX += 5.5; } catch(e2) {} }
+  }
+  pdf.text(data.club, clubLabelX, y);
   y += 5;
   // Riga 2: altezza · piede · ruolo
   pdf.text(`${_pdfT("pdf_field_height", "Altezza")}: ${data.height}  ·  ${_pdfT("pdf_field_foot", "Piede")}: ${data.foot}  ·  ${_pdfT("pdf_field_role", "Ruolo")}: ${data.role}`, txtX, y);
@@ -1405,32 +1471,21 @@ async function _pdfDrawPlayerCard(pdf, player, leftMargin, topY) {
 }
 
 async function exportObservationPDF(observationId, playerId) {
-  // Esporta PDF di una singola osservazione.
-  if (!window.jspdf) {
-    alert(_pdfT("pdf_loading_lib", "Caricamento libreria PDF..."));
-    return;
-  }
+  if (!window.jspdf) { alert(_pdfT("pdf_loading_lib", "Caricamento libreria PDF...")); return; }
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
   const leftMargin = 12;
 
-  // Carica giocatore + osservazione
-  const player = (state.players || []).find(p => p.tm_player_id === playerId);
-  if (!player) {
-    alert("Giocatore non trovato.");
-    return;
-  }
+  const player = state.players.find(p => p.tm_player_id === playerId);
+  if (!player) { alert("Giocatore non trovato."); return; }
   const allObs = window._obsAllCache || (await window.fetchObservations());
   const obs = (allObs || []).find(o => o.id === observationId);
-  if (!obs) {
-    alert("Osservazione non trovata.");
-    return;
-  }
+  if (!obs) { alert("Osservazione non trovata."); return; }
 
-  // Header
-  _pdfHeader(pdf, _pdfT("pdf_observation_section", "Osservazione"), leftMargin, 12);
+  // Pre-fetch logo PID
+  const logoData = await _pdfFetchImage(PDF_LOGO_URL);
 
-  // Card giocatore
+  await _pdfHeader(pdf, _pdfT("pdf_observation_section", "Osservazione"), leftMargin, 12, logoData);
   let y = await _pdfDrawPlayerCard(pdf, player, leftMargin, 25);
   y += 4;
 
@@ -1447,19 +1502,9 @@ async function exportObservationPDF(observationId, playerId) {
   pdf.setFontSize(9);
   pdf.setFont("helvetica", "normal");
 
-  // Dati relazione su 2 colonne
   const col1X = leftMargin;
   const col2X = leftMargin + 95;
   const lineH = 5.5;
-  const drawRow = (label, value) => {
-    pdf.setFont("helvetica", "bold");
-    pdf.setTextColor(100, 100, 100);
-    pdf.text(`${label}:`, col1X, y);
-    pdf.setFont("helvetica", "normal");
-    pdf.setTextColor(30, 30, 30);
-    pdf.text(String(value || "—"), col1X + 30, y);
-    y += lineH;
-  };
   const drawTwoCol = (l1, v1, l2, v2) => {
     pdf.setFont("helvetica", "bold");
     pdf.setTextColor(100, 100, 100);
@@ -1480,8 +1525,30 @@ async function exportObservationPDF(observationId, playerId) {
     _pdfT("pdf_field_mode", "Modalità"), obs.viewing_mode || "—",
     _pdfT("pdf_field_minutes", "Minuti"), obs.minutes_played != null ? `${obs.minutes_played}'` : "—"
   );
-  const rolesStr = Array.isArray(obs.roles_played) && obs.roles_played.length ? obs.roles_played.join(", ") : "—";
-  drawRow(_pdfT("pdf_field_position", "Posizione"), rolesStr);
+
+  // Posizione: codice + nome esteso (es. "DCS · Difensore centrale sinistro")
+  const roles = Array.isArray(obs.roles_played) && obs.roles_played.length ? obs.roles_played : [];
+  let posLine;
+  if (roles.length === 0) {
+    posLine = "—";
+  } else if (roles.length === 1) {
+    const ext = _pdfRoleExtended(roles[0]);
+    posLine = ext === roles[0] ? roles[0] : `${roles[0]} · ${ext}`;
+  } else {
+    posLine = roles.map(r => {
+      const ext = _pdfRoleExtended(r);
+      return ext === r ? r : `${r} (${ext})`;
+    }).join(", ");
+  }
+  // Posizione su riga intera (può essere lunga)
+  pdf.setFont("helvetica", "bold");
+  pdf.setTextColor(100, 100, 100);
+  pdf.text(`${_pdfT("pdf_field_position", "Posizione")}:`, col1X, y);
+  pdf.setFont("helvetica", "normal");
+  pdf.setTextColor(30, 30, 30);
+  const posLines = pdf.splitTextToSize(posLine, 210 - 2 * leftMargin - 30);
+  posLines.forEach((line, idx) => { pdf.text(line, col1X + 30, y); y += lineH; });
+
   // Performance + Tag
   const perfStr = obs.performance_rating != null ? String(obs.performance_rating) : "—";
   const tag = _pdfTagLabel(obs.evaluation_tags);
@@ -1560,20 +1627,17 @@ async function exportObservationPDF(observationId, playerId) {
   const exportTxt = `Export: ${exportTs}`;
   pdf.text(exportTxt, 210 - leftMargin - pdf.getTextWidth(exportTxt), footerY + 4);
 
-  // Salva
   const safeName = String(player.full_name || "obs").replace(/[^a-z0-9_-]/gi, "_");
-  const fname = `${_pdfT("pdf_filename_obs", "osservazione")}_${safeName}_${obs.match_date}.pdf`;
-  pdf.save(fname);
+  pdf.save(`${_pdfT("pdf_filename_obs", "osservazione")}_${safeName}_${obs.match_date}.pdf`);
 }
 
 async function exportPlayerDossierPDF(playerId) {
-  // Esporta PDF dossier giocatore con TUTTE le sue osservazioni.
   if (!window.jspdf) { alert(_pdfT("pdf_loading_lib", "")); return; }
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
   const leftMargin = 12;
 
-  const player = (state.players || []).find(p => p.tm_player_id === playerId);
+  const player = state.players.find(p => p.tm_player_id === playerId);
   if (!player) { alert("Giocatore non trovato."); return; }
   const all = window._obsAllCache || (await window.fetchObservations());
   const obsList = (all || []).filter(o => o.tm_player_id === playerId)
@@ -1584,12 +1648,77 @@ async function exportPlayerDossierPDF(playerId) {
     return;
   }
 
-  // Header
-  _pdfHeader(pdf, _pdfT("pdf_export_dossier", "Dossier"), leftMargin, 12);
+  const logoData = await _pdfFetchImage(PDF_LOGO_URL);
 
-  // Card giocatore
+  await _pdfHeader(pdf, _pdfT("pdf_export_dossier", "Dossier"), leftMargin, 12, logoData);
   let y = await _pdfDrawPlayerCard(pdf, player, leftMargin, 25);
   y += 4;
+
+  // Distribuzione giudizi
+  const tagCount = {};
+  let totalRated = 0;
+  obsList.forEach(o => {
+    const t = _pdfTagLabel(o.evaluation_tags);
+    if (t) { tagCount[t.label] = (tagCount[t.label] || 0) + 1; totalRated++; }
+  });
+  if (totalRated > 0) {
+    pdf.setFontSize(9);
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(80, 80, 80);
+    pdf.text(`${_pdfT("pdf_field_judgement", "Distribuzione giudizi")}:`, leftMargin, y);
+    y += 5;
+    // Barra distribuzione (210 - 2*12 = 186 mm di larghezza)
+    const barW = 210 - 2 * leftMargin;
+    const barH = 6;
+    let cursorX = leftMargin;
+    const tagOrder = ["Prima scelta", "Seconda scelta", "Da monitorare", "Da seguire", "Non valutabile", "Non idoneo", "Da scartare"];
+    const orderedTags = tagOrder.filter(t => tagCount[t]).concat(Object.keys(tagCount).filter(t => !tagOrder.includes(t)));
+    for (const tagName of orderedTags) {
+      const n = tagCount[tagName];
+      const pct = n / totalRated;
+      const segW = barW * pct;
+      const colorMap = {
+        "Prima scelta": [34, 197, 94],
+        "Seconda scelta": [251, 191, 36],
+        "Da monitorare": [96, 165, 250],
+        "Da seguire": [96, 165, 250],
+        "Non valutabile": [180, 180, 180],
+        "Non idoneo": [239, 68, 68],
+        "Da scartare": [239, 68, 68],
+      };
+      const col = colorMap[tagName] || [150, 150, 150];
+      pdf.setFillColor(col[0], col[1], col[2]);
+      pdf.rect(cursorX, y, segW, barH, "F");
+      cursorX += segW;
+    }
+    y += barH + 2;
+    // Legenda sotto la barra
+    pdf.setFontSize(7.5);
+    pdf.setFont("helvetica", "normal");
+    let legX = leftMargin;
+    for (const tagName of orderedTags) {
+      const n = tagCount[tagName];
+      const pct = Math.round((n / totalRated) * 100);
+      const colorMap = {
+        "Prima scelta": [34, 197, 94],
+        "Seconda scelta": [251, 191, 36],
+        "Da monitorare": [96, 165, 250],
+        "Da seguire": [96, 165, 250],
+        "Non valutabile": [180, 180, 180],
+        "Non idoneo": [239, 68, 68],
+        "Da scartare": [239, 68, 68],
+      };
+      const col = colorMap[tagName] || [150, 150, 150];
+      pdf.setFillColor(col[0], col[1], col[2]);
+      pdf.circle(legX + 1.5, y + 1.5, 1.2, "F");
+      pdf.setTextColor(80, 80, 80);
+      const txt = `${tagName} ${pct}%`;
+      pdf.text(txt, legX + 4, y + 2.5);
+      legX += pdf.getTextWidth(txt) + 9;
+      if (legX > 210 - leftMargin - 30) { legX = leftMargin; y += 4.5; }
+    }
+    y += 6;
+  }
 
   // Sezione visionature
   pdf.setFillColor(245, 250, 247);
@@ -1600,8 +1729,6 @@ async function exportPlayerDossierPDF(playerId) {
   pdf.text(`${_pdfT("pdf_observations_section", "Visionature").toUpperCase()} (${obsList.length})`, leftMargin + 3, y + 6);
   y += 13;
 
-  // Tabella header
-  // Colonne: DATA | AVVERSARIO | COMP | POS | MIN | PERF | TAG
   const tableX = leftMargin;
   const tableW = 210 - 2 * leftMargin;
   const cols = [
@@ -1626,16 +1753,12 @@ async function exportPlayerDossierPDF(playerId) {
   };
   y = drawTableHeader(y);
 
-  // Righe
   pdf.setFont("helvetica", "normal");
   pdf.setFontSize(8);
-  let totalMin = 0, totalRated = 0, sumPerf = 0;
+  let totalMin = 0, sumPerf = 0;
+  let totRated = 0;
   for (const o of obsList) {
-    if (y > 270) {
-      pdf.addPage();
-      y = 20;
-      y = drawTableHeader(y);
-    }
+    if (y > 270) { pdf.addPage(); y = 20; y = drawTableHeader(y); }
     pdf.setDrawColor(230, 230, 230);
     pdf.setLineWidth(0.1);
     pdf.line(tableX, y - 1, tableX + tableW, y - 1);
@@ -1647,7 +1770,7 @@ async function exportPlayerDossierPDF(playerId) {
     const pos = Array.isArray(o.roles_played) && o.roles_played.length ? o.roles_played.join(",").substring(0, 22) : "—";
     pdf.text(pos, cx, y + 3); cx += cols[3].w;
     pdf.text(String(o.viewing_mode || "—"), cx, y + 3); cx += cols[4].w;
-    if (o.minutes_played != null) { totalMin += o.minutes_played; }
+    if (o.minutes_played != null) totalMin += o.minutes_played;
     pdf.text(o.minutes_played != null ? `${o.minutes_played}'` : "—", cx, y + 3); cx += cols[5].w;
     if (o.performance_rating != null) {
       pdf.setFont("helvetica", "bold");
@@ -1656,7 +1779,7 @@ async function exportPlayerDossierPDF(playerId) {
       pdf.setFont("helvetica", "normal");
       pdf.setTextColor(40, 40, 40);
       sumPerf += o.performance_rating;
-      totalRated++;
+      totRated++;
     } else {
       pdf.text("—", cx, y + 3);
     }
@@ -1689,13 +1812,12 @@ async function exportPlayerDossierPDF(playerId) {
   pdf.text(_pdfT("pdf_field_total", "TOTALE"), tableX + 2, y + 3);
   pdf.text(`${obsList.length} ${obsList.length === 1 ? "partita" : "partite"}`, tableX + 22 + 2, y + 3);
   pdf.text(`${totalMin}'`, tableX + 22 + 36 + 30 + 38 + 12 + 2, y + 3);
-  if (totalRated > 0) {
-    const avg = (sumPerf / totalRated).toFixed(2);
+  if (totRated > 0) {
+    const avg = (sumPerf / totRated).toFixed(2);
     pdf.text(avg, tableX + 22 + 36 + 30 + 38 + 12 + 12 + 2, y + 3);
   }
   y += 9;
 
-  // Footer
   const footerY = 287;
   pdf.setDrawColor(220, 220, 220);
   pdf.setLineWidth(0.2);
@@ -1706,12 +1828,10 @@ async function exportPlayerDossierPDF(playerId) {
   pdf.text(`PID Dossier · ${exportTs}`, leftMargin, footerY + 4);
   pdf.text(`${obsList.length} osservazion${obsList.length === 1 ? "e" : "i"}`, 210 - leftMargin - 30, footerY + 4);
 
-  // Salva
   const safeName = String(player.full_name || "dossier").replace(/[^a-z0-9_-]/gi, "_");
   pdf.save(`${_pdfT("pdf_filename_dossier", "dossier")}_${safeName}.pdf`);
 }
 
-// Handler delegato per bottone PDF nel modal di edit
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("#obs-export-pdf-btn");
   if (!btn) return;
@@ -1726,7 +1846,6 @@ document.addEventListener("click", (e) => {
   });
 });
 
-// Handler delegato per bottone Dossier PDF nel pannello scouting
 document.addEventListener("click", (e) => {
   const btn = e.target.closest(".scouting-export-pdf-btn");
   if (!btn) return;
@@ -1743,7 +1862,6 @@ document.addEventListener("click", (e) => {
 window.exportObservationPDF = exportObservationPDF;
 window.exportPlayerDossierPDF = exportPlayerDossierPDF;
 
-// Auto-injection: dopo ogni render del pannello scouting, aggiunge bottoni "📄 PDF dossier" alle righe giocatore
 (function _setupScoutingPdfBtns() {
   if (typeof MutationObserver === "undefined") return;
   const observe = () => {
