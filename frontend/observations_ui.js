@@ -1257,7 +1257,7 @@ console.log("[obs-ui] Fase 3 v2 modulo caricato");
 // EXPORT PDF — singola osservazione + dossier giocatore (v2)
 // ============================================================
 
-const PDF_LOGO_URL = "../data/photos/branding/logo.png";
+const PDF_LOGO_URL = "../data/photos/branding/pid_logo_pdf.png";
 
 function _pdfT(key, fallback) {
   return (typeof window.t === "function" && window.t(key)) || fallback || key;
