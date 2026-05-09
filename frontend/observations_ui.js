@@ -1274,10 +1274,11 @@ function _pdfPlayerData(player) {
   const foot = player.foot || "—";
   // Path locali (no CORS) come priorità, poi URL CDN come fallback
   const photoPaths = [];
+  // PRIORITÀ: SOTS locale > TM locale > URL CDN (no CORS)
+  if (player.sortitoutsi_person_id) photoPaths.push("../data/photos/players_sots_lookup/" + player.sortitoutsi_person_id + ".png");
   if (player.photo_local) photoPaths.push("../data/" + player.photo_local);
-  if (player.sortitoutsi_face_url) photoPaths.push("../data/photos/players_sots_lookup/" + (player.sortitoutsi_person_id || "") + ".png");
-  if (player.photo_url) photoPaths.push(player.photo_url);
   if (player.sortitoutsi_face_url) photoPaths.push(player.sortitoutsi_face_url);
+  if (player.photo_url) photoPaths.push(player.photo_url);
   return {
     name: player.full_name || player.name || "—",
     year, age, club, foot,
@@ -1382,6 +1383,76 @@ function _pdfRoleExtended(roleCode) {
   };
   return map[String(roleCode).toUpperCase()] || roleCode;
 }
+
+function _pdfDrawMiniField(pdf, x, y, w, h, roles) {
+  // Mini-campo da calcio con pallino sulle posizioni giocate.
+  // Coordinate logiche del campo (da OBSERVATION_ROLE_DEFS): 0..380 width, 0..560 height
+  // Mappiamo a (x, y, w, h) PDF
+  const FW = 380, FH = 560;
+  const tx = (cx) => x + (cx / FW) * w;
+  const ty = (cy) => y + (cy / FH) * h;
+
+  // Sfondo verde campo
+  pdf.setFillColor(40, 100, 60);
+  pdf.roundedRect(x, y, w, h, 1, 1, "F");
+
+  // Linee bianche del campo
+  pdf.setDrawColor(220, 240, 230);
+  pdf.setLineWidth(0.2);
+  // Bordo
+  pdf.roundedRect(x, y, w, h, 1, 1, "S");
+  // Linea metà campo
+  pdf.line(x, y + h / 2, x + w, y + h / 2);
+  // Cerchio centrale
+  pdf.circle(x + w / 2, y + h / 2, w * 0.10, "S");
+  // Area di rigore alta (in alto = attacco)
+  const penW = w * 0.55;
+  const penH = h * 0.16;
+  pdf.rect(x + (w - penW) / 2, y, penW, penH, "S");
+  // Area piccola alta
+  const smallW = w * 0.30;
+  const smallH = h * 0.08;
+  pdf.rect(x + (w - smallW) / 2, y, smallW, smallH, "S");
+  // Area di rigore bassa (difesa)
+  pdf.rect(x + (w - penW) / 2, y + h - penH, penW, penH, "S");
+  // Area piccola bassa
+  pdf.rect(x + (w - smallW) / 2, y + h - smallH, smallW, smallH, "S");
+
+  // Mappa codice → coordinate (presa da OBSERVATION_ROLE_DEFS)
+  const ROLE_COORDS = {
+    "PP": [190, 65], "AS": [115, 145], "TRQ": [190, 165], "AD": [265, 145],
+    "AES": [45, 215], "AED": [335, 215],
+    "CIS": [130, 280], "CC": [190, 305], "CID": [250, 280],
+    "LAT_SN": [60, 365], "LAT_DX": [320, 365],
+    "DCS": [140, 420], "DC": [190, 440], "DCD": [240, 420],
+    "POR": [190, 500],
+  };
+
+  // Disegna pallino su ogni ruolo giocato
+  if (Array.isArray(roles)) {
+    roles.forEach(r => {
+      const code = String(r).toUpperCase();
+      const c = ROLE_COORDS[code];
+      if (!c) return;
+      const px = tx(c[0]);
+      const py = ty(c[1]);
+      // Cerchio giallo accent
+      pdf.setFillColor(250, 204, 21);
+      pdf.circle(px, py, 1.6, "F");
+      pdf.setDrawColor(40, 80, 40);
+      pdf.setLineWidth(0.3);
+      pdf.circle(px, py, 1.6, "S");
+      // Etichetta codice sotto il cerchio
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(5.5);
+      pdf.setFont("helvetica", "bold");
+      const tw = pdf.getTextWidth(code);
+      pdf.text(code, px - tw / 2, py + 3.3);
+    });
+  }
+}
+
+
 
 async function _pdfHeader(pdf, title, leftMargin, topY, logoData) {
   // Logo PID immagine (se disponibile) + titolo
@@ -1540,14 +1611,25 @@ async function exportObservationPDF(observationId, playerId) {
       return ext === r ? r : `${r} (${ext})`;
     }).join(", ");
   }
-  // Posizione su riga intera (può essere lunga)
+  // Posizione (testo) + mini-campo a destra
   pdf.setFont("helvetica", "bold");
   pdf.setTextColor(100, 100, 100);
   pdf.text(`${_pdfT("pdf_field_position", "Posizione")}:`, col1X, y);
   pdf.setFont("helvetica", "normal");
   pdf.setTextColor(30, 30, 30);
-  const posLines = pdf.splitTextToSize(posLine, 210 - 2 * leftMargin - 30);
+  const posLines = pdf.splitTextToSize(posLine, 110);
+  const posStartY = y;
   posLines.forEach((line, idx) => { pdf.text(line, col1X + 30, y); y += lineH; });
+
+  // Mini-campo a destra del testo posizione (60mm wide × 42mm high)
+  const fieldX = col2X + 30;
+  const fieldY = posStartY - 4;
+  const fieldW = 30;
+  const fieldH = 42;
+  _pdfDrawMiniField(pdf, fieldX, fieldY, fieldW, fieldH, roles);
+
+  // Assicura che y avanzi almeno fino a fine campo
+  if (y < fieldY + fieldH + 2) y = fieldY + fieldH + 2;
 
   // Performance + Tag
   const perfStr = obs.performance_rating != null ? String(obs.performance_rating) : "—";
