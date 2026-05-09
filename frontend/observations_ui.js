@@ -1,47 +1,94 @@
 /**
- * observations_ui.js — Fase 3: UI sezione Osservazioni
+ * observations_ui.js — Fase 3 v2 (revisione 9 mag 2026)
  *
- * Da appendere in fondo a frontend/app.js (oppure caricato come <script> separato
- * dopo app.js — purché cloud_sync.js sia già caricato).
+ * Modifiche rispetto a v1:
+ *  1. Voce "Scouting" nella sidebar (anticipata Fase 4 — vista globale base)
+ *  2. Modal opaco (overlay più scuro, card non trasparente)
+ *  3. Layout modal 2 colonne: form sinistra + campo SVG ruoli destra (rimpicciolito)
+ *  4. prettyClubName applicato all'autocomplete avversario
+ *  5. Ordine evaluation tags invertito: NON IDONEO → DA MONITORARE → SECONDA → PRIMA
+ *  6. Chip forze verdi / debolezze rosse, layout 2 colonne side-by-side
+ *  7. 37 voci categorizzate (TATTICA, TECNICA, COMPORTAMENTI, FISICO, PORTIERE)
+ *  8. Dashboard compatta sotto "Stagione corrente": tabella + footer media/%
+ *
+ * Da appendere o caricato come <script> separato dopo app.js.
  *
  * Espone:
- *   - renderObservationsSection(pid)  → ritorna HTML stringa, da inserire nel modal giocatore
- *   - openObservationCompose(pid, obsId?) → apre modal di creazione/modifica
- *   - wireObservationsHandlers(pid)   → aggancia event listener (chiama dopo l'inserimento HTML)
- *
- * Dipende da:
- *   - window.fetchObservations / saveObservation / updateObservation / deleteObservation
- *   - window.OBSERVATION_ROLES
- *   - window.cloudAuth.user
- *   - currentLang (variabile globale di app.js per IT/EN)
- *   - state.players, state.clubsById (per autocomplete avversario)
+ *  - window.renderObservationsSection(pid)        → HTML dashboard sotto stagione corrente
+ *  - window.wireObservationsHandlers(pid)         → aggancia event listener
+ *  - window.openObservationCompose(pid, obsId?)   → modal nuova/modifica
+ *  - window.renderScoutingPanel()                 → HTML pannello sidebar Scouting
+ *  - window.wireScoutingPanel()                   → aggancia eventi pannello sidebar
  */
 
 // ============================================================
 //  COSTANTI: liste valori (canoniche in italiano)
 // ============================================================
 
-// 37 caratteristiche tecnico/tattiche, ordine alfabetico, condivise tra forze e debolezze
-window.OBSERVATION_TRAITS = [
-  "1vs1 difensivo", "Aggressività", "Agonismo", "Ampiezza", "Area di rigore offensiva",
-  "Assist", "Conduzione palla", "Cross", "Dinamismo", "Dribbling 1c1",
-  "Duelli difensivi", "Fase difensiva", "Fase offensiva", "Finalizzazione", "Forza fisica",
-  "Gioco aereo", "Gioco per la squadra", "Inizio manovra", "Inserimenti senza palla",
-  "Intelligenza tattica", "Intensità", "Jolly", "Letture tattiche", "Passaggi Chiave",
-  "Personalità", "Profondità", "Progressione", "Rapidità primi metri", "Recupero palloni",
-  "Rifinitura", "Spazi stretti", "Tecnica", "Tiro/Calcio", "Transizioni difensive",
-  "Transizioni offensive", "Uscite", "Velocità", "Visione di gioco",
-];
+// 37 caratteristiche categorizzate (ordine alfabetico dentro ogni categoria)
+window.OBSERVATION_TRAITS_BY_CATEGORY = {
+  "TATTICA": [
+    "Fase difensiva",
+    "Fase offensiva",
+    "Intelligenza tattica",
+    "Letture tattiche",
+    "Transizioni difensive",
+    "Transizioni offensive",
+  ],
+  "TECNICA": [
+    "Assist",
+    "Conduzione palla",
+    "Cross",
+    "Dribbling 1c1",
+    "Finalizzazione",
+    "Inizio manovra",
+    "Passaggi Chiave",
+    "Rifinitura",
+    "Tecnica",
+    "Tiro/Calcio",
+    "Visione di gioco",
+  ],
+  "COMPORTAMENTI": [
+    "Aggressività",
+    "Agonismo",
+    "Gioco per la squadra",
+    "Intensità",
+    "Personalità",
+  ],
+  "FISICO": [
+    "1vs1 difensivo",
+    "Ampiezza",
+    "Area di rigore offensiva",
+    "Dinamismo",
+    "Duelli difensivi",
+    "Forza fisica",
+    "Gioco aereo",
+    "Inserimenti senza palla",
+    "Jolly",
+    "Profondità",
+    "Progressione",
+    "Rapidità primi metri",
+    "Recupero palloni",
+    "Spazi stretti",
+    "Velocità",
+  ],
+  "PORTIERE": [
+    "Uscite",
+  ],
+};
 
-// Etichette di valutazione globale (con colore associato)
+// Lista flat (per validazione e iterazioni rapide)
+window.OBSERVATION_TRAITS = Object.values(window.OBSERVATION_TRAITS_BY_CATEGORY).flat();
+
+// Etichette di valutazione globale: ordine PEGGIORE → MIGLIORE (sx → dx)
 window.OBSERVATION_TAGS = [
-  { value: "PRIMA SCELTA",    color: "#22C55E" }, // verde
-  { value: "SECONDA SCELTA",  color: "#EAB308" }, // giallo
-  { value: "DA MONITORARE",   color: "#F97316" }, // arancione
   { value: "NON IDONEO",      color: "#EF4444" }, // rosso
+  { value: "DA MONITORARE",   color: "#F97316" }, // arancione
+  { value: "SECONDA SCELTA",  color: "#EAB308" }, // giallo
+  { value: "PRIMA SCELTA",    color: "#22C55E" }, // verde
 ];
 
-// Competizioni preset (più "Altro" libero)
+// Competizioni preset
 window.OBSERVATION_COMPETITIONS = [
   "Serie A", "Serie B", "Serie C", "Primavera 1", "Primavera 2",
   "Coppa Italia", "Supercoppa Italiana",
@@ -54,76 +101,52 @@ window.OBSERVATION_COMPETITIONS = [
   "Altro",
 ];
 
-// Sigle ruolo con label IT/EN e coordinate sul campo (svg viewBox 0 0 380 540)
+// 15 ruoli con coordinate sul campo SVG
 window.OBSERVATION_ROLE_DEFS = [
-  // Attacco
-  { code: "PP",     it: "Punta",                      en: "Striker",                cx: 190, cy: 65  },
-  // Trequarti
-  { code: "AS",     it: "Ala sinistra",               en: "Left winger",            cx: 115, cy: 145 },
-  { code: "TRQ",    it: "Trequartista",               en: "Attacking midfielder",   cx: 190, cy: 165 },
-  { code: "AD",     it: "Ala destra",                 en: "Right winger",           cx: 265, cy: 145 },
-  // Centrocampo larghi
-  { code: "AES",    it: "Quinto sinistro",            en: "Left wing-back",         cx: 45,  cy: 215 },
-  { code: "AED",    it: "Quinto destro",              en: "Right wing-back",        cx: 335, cy: 215 },
-  // Centrocampo
-  { code: "CIS",    it: "Centrocampista interno sx",  en: "Left central midfielder",cx: 130, cy: 280 },
-  { code: "CC",     it: "Centrocampista centrale",    en: "Central midfielder",     cx: 190, cy: 305 },
-  { code: "CID",    it: "Centrocampista interno dx",  en: "Right central midfielder",cx: 250, cy: 280 },
-  // Difesa esterni
-  { code: "LAT_SN", it: "Terzino sinistro",           en: "Left-back",              cx: 60,  cy: 365 },
-  { code: "LAT_DX", it: "Terzino destro",             en: "Right-back",             cx: 320, cy: 365 },
-  // Difesa centrale
-  { code: "DCS",    it: "Difensore centrale sx",      en: "Left centre-back",       cx: 140, cy: 420 },
-  { code: "DC",     it: "Difensore centrale",         en: "Centre-back",            cx: 190, cy: 440 },
-  { code: "DCD",    it: "Difensore centrale dx",      en: "Right centre-back",      cx: 240, cy: 420 },
-  // Porta
-  { code: "POR",    it: "Portiere",                   en: "Goalkeeper",             cx: 190, cy: 500 },
+  { code: "PP",     it: "Punta",                     en: "Striker",                cx: 190, cy: 65  },
+  { code: "AS",     it: "Ala sinistra",              en: "Left winger",            cx: 115, cy: 145 },
+  { code: "TRQ",    it: "Trequartista",              en: "Attacking midfielder",   cx: 190, cy: 165 },
+  { code: "AD",     it: "Ala destra",                en: "Right winger",           cx: 265, cy: 145 },
+  { code: "AES",    it: "Quinto sinistro",           en: "Left wing-back",         cx: 45,  cy: 215 },
+  { code: "AED",    it: "Quinto destro",             en: "Right wing-back",        cx: 335, cy: 215 },
+  { code: "CIS",    it: "Centrocampista interno sx", en: "Left central midfielder",cx: 130, cy: 280 },
+  { code: "CC",     it: "Centrocampista centrale",   en: "Central midfielder",     cx: 190, cy: 305 },
+  { code: "CID",    it: "Centrocampista interno dx", en: "Right central midfielder",cx: 250, cy: 280 },
+  { code: "LAT_SN", it: "Terzino sinistro",          en: "Left-back",              cx: 60,  cy: 365 },
+  { code: "LAT_DX", it: "Terzino destro",            en: "Right-back",             cx: 320, cy: 365 },
+  { code: "DCS",    it: "Difensore centrale sx",     en: "Left centre-back",       cx: 140, cy: 420 },
+  { code: "DC",     it: "Difensore centrale",        en: "Centre-back",            cx: 190, cy: 440 },
+  { code: "DCD",    it: "Difensore centrale dx",     en: "Right centre-back",      cx: 240, cy: 420 },
+  { code: "POR",    it: "Portiere",                  en: "Goalkeeper",             cx: 190, cy: 500 },
 ];
 
 // ============================================================
-//  Mapping traduzione IT → EN per traits, tags, competitions
-//  (le voci sono salvate in italiano nel DB, qui solo per visualizzazione EN)
+//  Mapping IT → EN per visualizzazione
 // ============================================================
 window.OBSERVATION_I18N_EN = {
-  // Traits (37)
-  "1vs1 difensivo": "Defensive 1vs1",
-  "Aggressività": "Aggressiveness",
-  "Agonismo": "Combativeness",
-  "Ampiezza": "Width",
-  "Area di rigore offensiva": "Box presence",
-  "Assist": "Assists",
-  "Conduzione palla": "Ball carrying",
-  "Cross": "Crossing",
-  "Dinamismo": "Dynamism",
-  "Dribbling 1c1": "Dribbling 1v1",
-  "Duelli difensivi": "Defensive duels",
-  "Fase difensiva": "Defensive phase",
-  "Fase offensiva": "Offensive phase",
-  "Finalizzazione": "Finishing",
-  "Forza fisica": "Physical strength",
-  "Gioco aereo": "Aerial play",
-  "Gioco per la squadra": "Team play",
-  "Inizio manovra": "Build-up play",
-  "Inserimenti senza palla": "Off-ball runs",
-  "Intelligenza tattica": "Tactical intelligence",
-  "Intensità": "Intensity",
-  "Jolly": "Versatility",
-  "Letture tattiche": "Tactical reading",
-  "Passaggi Chiave": "Key passes",
-  "Personalità": "Personality",
-  "Profondità": "Depth runs",
-  "Progressione": "Progression",
-  "Rapidità primi metri": "Acceleration",
-  "Recupero palloni": "Ball recovery",
-  "Rifinitura": "Final pass",
-  "Spazi stretti": "Tight spaces",
-  "Tecnica": "Technique",
-  "Tiro/Calcio": "Shooting",
-  "Transizioni difensive": "Defensive transitions",
-  "Transizioni offensive": "Offensive transitions",
-  "Uscite": "Goalkeeper exits",
-  "Velocità": "Speed",
-  "Visione di gioco": "Game vision",
+  // Categorie
+  "TATTICA": "TACTICAL", "TECNICA": "TECHNICAL", "COMPORTAMENTI": "BEHAVIORS",
+  "FISICO": "PHYSICAL", "PORTIERE": "GOALKEEPER",
+  // Traits
+  "1vs1 difensivo": "Defensive 1vs1", "Aggressività": "Aggressiveness",
+  "Agonismo": "Combativeness", "Ampiezza": "Width",
+  "Area di rigore offensiva": "Box presence", "Assist": "Assists",
+  "Conduzione palla": "Ball carrying", "Cross": "Crossing",
+  "Dinamismo": "Dynamism", "Dribbling 1c1": "Dribbling 1v1",
+  "Duelli difensivi": "Defensive duels", "Fase difensiva": "Defensive phase",
+  "Fase offensiva": "Offensive phase", "Finalizzazione": "Finishing",
+  "Forza fisica": "Physical strength", "Gioco aereo": "Aerial play",
+  "Gioco per la squadra": "Team play", "Inizio manovra": "Build-up play",
+  "Inserimenti senza palla": "Off-ball runs", "Intelligenza tattica": "Tactical intelligence",
+  "Intensità": "Intensity", "Jolly": "Versatility",
+  "Letture tattiche": "Tactical reading", "Passaggi Chiave": "Key passes",
+  "Personalità": "Personality", "Profondità": "Depth runs",
+  "Progressione": "Progression", "Rapidità primi metri": "Acceleration",
+  "Recupero palloni": "Ball recovery", "Rifinitura": "Final pass",
+  "Spazi stretti": "Tight spaces", "Tecnica": "Technique",
+  "Tiro/Calcio": "Shooting", "Transizioni difensive": "Defensive transitions",
+  "Transizioni offensive": "Offensive transitions", "Uscite": "Goalkeeper exits",
+  "Velocità": "Speed", "Visione di gioco": "Game vision",
   // Tags
   "PRIMA SCELTA":   "FIRST CHOICE",
   "SECONDA SCELTA": "SECOND CHOICE",
@@ -131,80 +154,84 @@ window.OBSERVATION_I18N_EN = {
   "NON IDONEO":     "REJECT",
 };
 
-// Helper: traduzione IT → lingua corrente
 window.obsLocalize = function(itValue) {
   if (!itValue) return "";
   if (typeof currentLang === "undefined" || currentLang === "it") return itValue;
   return window.OBSERVATION_I18N_EN[itValue] || itValue;
 };
 
-// Helper: lingua corrente per stringhe del modulo Osservazioni
 window.obsT = function(key) {
   const dict = {
     it: {
       section_title: "Osservazioni",
-      no_obs: "Nessuna osservazione per questo giocatore.",
-      new_obs: "+ Nuova osservazione",
+      no_obs: "Nessuna osservazione",
+      new_obs: "+ Nuova",
       edit_obs: "Modifica osservazione",
       new_obs_title: "Nuova osservazione",
       delete_confirm: "Eliminare questa osservazione? L'azione è irreversibile.",
-      // Form labels
+      th_date: "Data", th_scout: "Scout", th_perf: "Performance", th_verdict: "Giudizio",
+      footer_avg: "Media performance",
+      footer_distrib: "Distribuzione giudizi",
       f_match_date: "Data partita",
       f_opponent: "Avversario",
-      f_opponent_ph: "Es. Inter Milan",
+      f_opponent_ph: "Es. Sassuolo",
       f_competition: "Competizione",
       f_competition_other: "Specifica competizione",
       f_roles: "Ruoli giocati",
-      f_roles_hint: "Clicca sui cerchi del campo per selezionare uno o più ruoli",
+      f_roles_hint: "Clicca i cerchi sul campo",
       f_rating: "Performance rating",
       f_tag: "Valutazione",
       f_strengths: "Punti di forza",
       f_weaknesses: "Punti di debolezza",
       f_notes: "Note",
       f_notes_ph: "Osservazioni libere sulla prestazione…",
-      btn_save: "Salva",
-      btn_cancel: "Annulla",
-      btn_delete: "Elimina",
+      btn_save: "Salva", btn_cancel: "Annulla", btn_delete: "Elimina",
       err_required: "Compila tutti i campi obbligatori",
       err_no_role: "Seleziona almeno un ruolo",
       err_duplicate: "Esiste già un'osservazione per questo giocatore in questa partita",
-      ok_saved: "Osservazione salvata",
-      ok_updated: "Osservazione aggiornata",
-      ok_deleted: "Osservazione eliminata",
-      author: "Autore",
-      created: "Inserita il",
+      // Pannello scouting sidebar
+      scouting_title: "Scouting",
+      scouting_summary: "giocatori visionati",
+      scouting_total_obs: "osservazioni totali",
+      scouting_no_obs: "Nessuna osservazione registrata. Apri la scheda di un giocatore per aggiungerne una.",
+      scouting_filter_all: "Tutti",
+      scouting_filter_player: "Per giocatore",
+      scouting_n_obs: "oss.",
     },
     en: {
       section_title: "Observations",
-      no_obs: "No observations for this player yet.",
-      new_obs: "+ New observation",
+      no_obs: "No observations",
+      new_obs: "+ New",
       edit_obs: "Edit observation",
       new_obs_title: "New observation",
       delete_confirm: "Delete this observation? This action is irreversible.",
+      th_date: "Date", th_scout: "Scout", th_perf: "Performance", th_verdict: "Verdict",
+      footer_avg: "Average performance",
+      footer_distrib: "Verdict distribution",
       f_match_date: "Match date",
       f_opponent: "Opponent",
-      f_opponent_ph: "e.g. Inter Milan",
+      f_opponent_ph: "e.g. Sassuolo",
       f_competition: "Competition",
       f_competition_other: "Specify competition",
       f_roles: "Roles played",
-      f_roles_hint: "Click circles on the pitch to select one or more roles",
+      f_roles_hint: "Click circles on the pitch",
       f_rating: "Performance rating",
       f_tag: "Verdict",
       f_strengths: "Strengths",
       f_weaknesses: "Weaknesses",
       f_notes: "Notes",
       f_notes_ph: "Free observations on the performance…",
-      btn_save: "Save",
-      btn_cancel: "Cancel",
-      btn_delete: "Delete",
+      btn_save: "Save", btn_cancel: "Cancel", btn_delete: "Delete",
       err_required: "Fill in all required fields",
       err_no_role: "Select at least one role",
       err_duplicate: "An observation already exists for this player in this match",
-      ok_saved: "Observation saved",
-      ok_updated: "Observation updated",
-      ok_deleted: "Observation deleted",
-      author: "Author",
-      created: "Created on",
+      scouting_title: "Scouting",
+      scouting_summary: "players observed",
+      scouting_total_obs: "total observations",
+      scouting_no_obs: "No observations yet. Open a player's card to add one.",
+      scouting_filter_all: "All",
+      scouting_filter_player: "By player",
+      scouting_n_obs: "obs.",
     },
   };
   const lang = (typeof currentLang !== "undefined") ? currentLang : "it";
@@ -212,160 +239,154 @@ window.obsT = function(key) {
 };
 
 // ============================================================
-//  RENDER: sezione "Osservazioni" in fondo al modal giocatore
+//  DASHBOARD COMPATTA (sotto "Stagione corrente" del modal)
 // ============================================================
 
-// Cache locale delle osservazioni (per giocatore corrente, evita refetch su re-render rapidi)
 window._obsCache = window._obsCache || {};
+// Cache globale per pannello Scouting (lista completa di tutte le osservazioni)
+window._obsAllCache = null;
 
-/**
- * HTML della sezione Osservazioni (placeholder con loader; popolato async).
- * Inserita in fondo al modal in app.js (vedi patch).
- */
 window.renderObservationsSection = function(pid) {
   return `
-    <div id="obs-section-${pid}" style="margin-top: 24px; padding-top: 16px; border-top: 0.5px solid var(--border);">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+    <div id="obs-section-${pid}" style="margin-top: 22px; padding-top: 16px; border-top: 0.5px solid var(--border);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
         <div style="display: flex; align-items: center; gap: 10px;">
           <div style="width: 3px; height: 14px; background: var(--accent); border-radius: 2px;"></div>
           <span style="font-size: 13px; font-weight: 500; color: var(--text-1); text-transform: uppercase; letter-spacing: 0.06em;">${window.obsT("section_title")}</span>
         </div>
         <button id="obs-new-btn-${pid}" type="button"
-          style="font-size: 12px; padding: 6px 12px; border-radius: 8px; background: var(--accent-bg); color: var(--accent); border: 0.5px solid var(--accent); cursor: pointer; font-weight: 500;">
+          style="font-size: 12px; padding: 5px 12px; border-radius: 8px; background: var(--accent-bg); color: var(--accent); border: 0.5px solid var(--accent); cursor: pointer; font-weight: 500;">
           ${window.obsT("new_obs")}
         </button>
       </div>
-      <div id="obs-list-${pid}" style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="font-size: 12px; color: var(--text-3); padding: 8px;">…</div>
-      </div>
+      <div id="obs-dashboard-${pid}" style="font-size: 12px; color: var(--text-3);">…</div>
     </div>
   `;
 };
 
 /**
- * Renderizza una singola card osservazione.
- */
-function _obsCardHtml(obs) {
-  const tagDef = window.OBSERVATION_TAGS.find(t => t.value === obs.evaluation_tags?.[0]);
-  const tagLabel = tagDef ? window.obsLocalize(tagDef.value) : null;
-  const tagColor = tagDef ? tagDef.color : null;
-
-  const rolesLabels = (obs.roles_played || []).map(code => {
-    const def = window.OBSERVATION_ROLE_DEFS.find(r => r.code === code);
-    return def ? def.code : code;
-  }).join(" · ");
-
-  const rating = obs.performance_rating != null
-    ? `<span style="font-size: 18px; font-weight: 600; color: var(--accent);">${obs.performance_rating.toFixed(1)}</span>`
-    : "";
-
-  const dateLocale = (typeof currentLang !== "undefined" && currentLang === "it") ? "it-IT" : "en-GB";
-  const dateFmt = new Date(obs.match_date).toLocaleDateString(dateLocale, { day: "2-digit", month: "short", year: "numeric" });
-
-  const strengthsHtml = (obs.strengths || []).map(s =>
-    `<span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(34,197,94,0.15); color: #22C55E;">${escapeHtml(window.obsLocalize(s))}</span>`
-  ).join(" ");
-  const weaknessesHtml = (obs.weaknesses || []).map(s =>
-    `<span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(239,68,68,0.15); color: #EF4444;">${escapeHtml(window.obsLocalize(s))}</span>`
-  ).join(" ");
-
-  return `
-    <div class="obs-card" data-obs-id="${obs.id}"
-      style="padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.03); border: 0.5px solid var(--border); cursor: pointer;">
-      <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 6px;">
-        <div style="flex: 1; min-width: 0;">
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
-            <span style="font-size: 13px; font-weight: 500; color: var(--text-1);">${escapeHtml(obs.opponent)}</span>
-            <span style="font-size: 11px; color: var(--text-3);">·</span>
-            <span style="font-size: 12px; color: var(--text-2);">${escapeHtml(obs.competition)}</span>
-            <span style="font-size: 11px; color: var(--text-3);">·</span>
-            <span style="font-size: 12px; color: var(--text-3);">${dateFmt}</span>
-            ${tagLabel ? `<span style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: ${tagColor}22; color: ${tagColor}; border: 0.5px solid ${tagColor};">${tagLabel}</span>` : ""}
-          </div>
-          ${rolesLabels ? `<div style="font-size: 11px; color: var(--text-3); margin-bottom: 6px;">${escapeHtml(rolesLabels)}</div>` : ""}
-        </div>
-        ${rating}
-      </div>
-      ${(strengthsHtml || weaknessesHtml) ? `<div style="display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px;">${strengthsHtml}${strengthsHtml && weaknessesHtml ? " " : ""}${weaknessesHtml}</div>` : ""}
-      ${obs.notes ? `<div style="font-size: 12px; color: var(--text-2); margin-top: 8px; line-height: 1.5; white-space: pre-wrap;">${escapeHtml(obs.notes)}</div>` : ""}
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 8px; font-size: 10px; color: var(--text-3);">
-        <span>${escapeHtml(obs.author_username || "")}</span>
-        <div style="display: flex; gap: 6px;">
-          <button type="button" class="obs-edit-btn" data-obs-id="${obs.id}"
-            style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: transparent; color: var(--text-2); border: 0.5px solid var(--border); cursor: pointer;">✎</button>
-          <button type="button" class="obs-delete-btn" data-obs-id="${obs.id}"
-            style="font-size: 11px; padding: 3px 8px; border-radius: 6px; background: transparent; color: #EF4444; border: 0.5px solid rgba(239,68,68,0.4); cursor: pointer;">🗑</button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-/**
- * Carica + renderizza la lista per il giocatore. Chiamata async dopo il render del modal.
+ * Renderizza la dashboard compatta (tabella + footer riassuntivo).
+ * Chiamata async dopo l'inserimento del modal.
  */
 window.renderObservationsList = async function(pid) {
-  const listEl = document.getElementById(`obs-list-${pid}`);
-  if (!listEl) return;
+  const wrapper = document.getElementById(`obs-dashboard-${pid}`);
+  if (!wrapper) return;
+
   try {
     const obsList = await window.fetchObservations({ tm_player_id: pid });
     window._obsCache[pid] = obsList;
+
     if (!obsList.length) {
-      listEl.innerHTML = `<div style="font-size: 12px; color: var(--text-3); padding: 8px;">${window.obsT("no_obs")}</div>`;
+      wrapper.innerHTML = `<div style="font-size: 12px; color: var(--text-3); padding: 6px 0;">${window.obsT("no_obs")}</div>`;
       return;
     }
-    listEl.innerHTML = obsList.map(_obsCardHtml).join("");
 
-    // Wire bottoni edit/delete
-    listEl.querySelectorAll(".obs-edit-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        window.openObservationCompose(pid, btn.dataset.obsId);
-      });
+    // Tabella compatta
+    const dateLocale = (typeof currentLang !== "undefined" && currentLang === "it") ? "it-IT" : "en-GB";
+    const rowsHtml = obsList.map(o => {
+      const dateFmt = new Date(o.match_date).toLocaleDateString(dateLocale, { day: "2-digit", month: "2-digit", year: "2-digit" });
+      const tagDef = window.OBSERVATION_TAGS.find(t => t.value === o.evaluation_tags?.[0]);
+      const tagHtml = tagDef
+        ? `<span style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: ${tagDef.color}22; color: ${tagDef.color}; border: 0.5px solid ${tagDef.color};">${escapeHtml(window.obsLocalize(tagDef.value))}</span>`
+        : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
+      const ratingHtml = o.performance_rating != null
+        ? `<span style="font-weight: 600; color: var(--accent);">${o.performance_rating.toFixed(1)}</span>`
+        : `<span style="color: var(--text-3);">—</span>`;
+      const scout = (o.author_username || "").split("@")[0];
+      return `
+        <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
+          <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${dateFmt}</td>
+          <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(scout)}</td>
+          <td style="padding: 7px 8px; font-size: 13px;">${ratingHtml}</td>
+          <td style="padding: 7px 8px;">${tagHtml}</td>
+        </tr>
+      `;
+    }).join("");
+
+    // Footer: media performance + distribuzione giudizi
+    const ratings = obsList.map(o => o.performance_rating).filter(r => r != null);
+    const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) : null;
+
+    // Distribuzione giudizi (in %)
+    const tagCounts = {};
+    obsList.forEach(o => {
+      const tag = o.evaluation_tags?.[0];
+      if (tag) tagCounts[tag] = (tagCounts[tag] || 0) + 1;
     });
-    listEl.querySelectorAll(".obs-delete-btn").forEach(btn => {
-      btn.addEventListener("click", async (e) => {
-        e.stopPropagation();
-        if (!confirm(window.obsT("delete_confirm"))) return;
-        const r = await window.deleteObservation(btn.dataset.obsId);
-        if (r.ok) {
-          window.renderObservationsList(pid); // re-render lista
-        } else {
-          alert(r.error || "Errore eliminazione");
-        }
+    const totalTagged = Object.values(tagCounts).reduce((a, b) => a + b, 0);
+    let distribHtml = "";
+    if (totalTagged > 0) {
+      // Ordine: PRIMA → SECONDA → MONITOR → REJECT (migliore a sinistra nel footer per leggibilità)
+      const orderedTags = ["PRIMA SCELTA", "SECONDA SCELTA", "DA MONITORARE", "NON IDONEO"];
+      distribHtml = orderedTags
+        .filter(tag => tagCounts[tag])
+        .map(tag => {
+          const def = window.OBSERVATION_TAGS.find(t => t.value === tag);
+          const pct = Math.round((tagCounts[tag] / totalTagged) * 100);
+          return `<span style="color: ${def.color}; font-weight: 600;">${escapeHtml(window.obsLocalize(tag))} ${pct}%</span>`;
+        })
+        .join(`<span style="color: var(--text-3); margin: 0 6px;">·</span>`);
+    } else {
+      distribHtml = `<span style="color: var(--text-3);">—</span>`;
+    }
+
+    wrapper.innerHTML = `
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+        <thead>
+          <tr style="border-bottom: 0.5px solid var(--border);">
+            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_date")}</th>
+            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_scout")}</th>
+            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_perf")}</th>
+            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_verdict")}</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rowsHtml}
+        </tbody>
+      </table>
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; padding: 10px 8px; background: rgba(255,255,255,0.03); border-radius: 8px; font-size: 11px;">
+        <div>
+          <span style="color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px;">${window.obsT("footer_avg")}:</span>
+          <span style="color: var(--accent); font-weight: 700; font-size: 14px; margin-left: 6px;">${avg != null ? avg.toFixed(2) : "—"}</span>
+        </div>
+        <div style="flex: 1; min-width: 200px;">
+          <span style="color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em; font-size: 10px;">${window.obsT("footer_distrib")}:</span>
+          <span style="margin-left: 6px;">${distribHtml}</span>
+        </div>
+      </div>
+    `;
+
+    // Wire click su righe → apre modal di modifica
+    wrapper.querySelectorAll(".obs-row").forEach(row => {
+      row.addEventListener("click", () => {
+        window.openObservationCompose(pid, row.dataset.obsId);
       });
+      // Hover effect
+      row.addEventListener("mouseenter", () => row.style.background = "rgba(255,255,255,0.04)");
+      row.addEventListener("mouseleave", () => row.style.background = "transparent");
     });
   } catch (e) {
-    console.warn("[obs-ui] renderObservationsList error:", e);
-    listEl.innerHTML = `<div style="font-size: 12px; color: #EF4444; padding: 8px;">Errore caricamento osservazioni</div>`;
+    console.warn("[obs-ui] dashboard error:", e);
+    wrapper.innerHTML = `<div style="font-size: 12px; color: #EF4444;">Errore caricamento osservazioni</div>`;
   }
 };
 
-/**
- * Aggancia il bottone "+ Nuova osservazione" del modal giocatore.
- */
 window.wireObservationsHandlers = function(pid) {
   const newBtn = document.getElementById(`obs-new-btn-${pid}`);
   if (newBtn) newBtn.addEventListener("click", () => window.openObservationCompose(pid));
-  // Carica + render lista in background
   window.renderObservationsList(pid);
 };
 
 // ============================================================
-//  MODAL "Nuova / Modifica Osservazione"
+//  MODAL "Nuova / Modifica Osservazione" — layout 2 colonne
 // ============================================================
 
-// Stato interno del compose
 window._obsCompose = { pid: null, editId: null, selectedRoles: [], selectedTag: null, selectedStrengths: [], selectedWeaknesses: [] };
 
-/**
- * Apre il modal di creazione (obsId omesso) o modifica (obsId presente).
- */
 window.openObservationCompose = async function(pid, obsId = null) {
   const player = state.players.find(p => p.tm_player_id === pid);
   if (!player) return;
 
-  // Se editing, recupera l'osservazione dalla cache (già caricata da renderObservationsList)
   let editing = null;
   if (obsId) {
     const list = window._obsCache[pid] || await window.fetchObservations({ tm_player_id: pid });
@@ -376,7 +397,6 @@ window.openObservationCompose = async function(pid, obsId = null) {
     }
   }
 
-  // Inizializza stato
   window._obsCompose = {
     pid: pid,
     editId: obsId,
@@ -386,24 +406,17 @@ window.openObservationCompose = async function(pid, obsId = null) {
     selectedWeaknesses: editing ? [...(editing.weaknesses || [])] : [],
   };
 
-  // Render modal
-  const overlay = document.getElementById("obs-compose-overlay");
-  if (overlay) overlay.remove(); // safety: rimuovi precedenti
-
-  const html = _obsComposeHtml(player, editing);
-  document.body.insertAdjacentHTML("beforeend", html);
-
-  // Wire eventi
+  document.getElementById("obs-compose-overlay")?.remove();
+  document.body.insertAdjacentHTML("beforeend", _obsComposeHtml(player, editing));
   setTimeout(() => _wireObsCompose(player, editing), 0);
 };
 
 function _obsComposeHtml(player, editing) {
   const isEdit = !!editing;
   const title = isEdit ? window.obsT("edit_obs") : window.obsT("new_obs_title");
-  const pName = escapeHtml(player.full_name || `#${player.tm_player_id}`);
+  const pName = escapeHtml((typeof prettyClubName === "function" ? player.full_name : player.full_name) || `#${player.tm_player_id}`);
   const today = new Date().toISOString().slice(0, 10);
 
-  // Pre-popolazione (solo edit)
   const v = {
     match_date: editing?.match_date || today,
     opponent: editing?.opponent || "",
@@ -418,108 +431,178 @@ function _obsComposeHtml(player, editing) {
     return `<option value="${escapeHtml(c)}"${sel}>${escapeHtml(c)}</option>`;
   }).join("");
 
-  // Campo grafico SVG (15 cerchi)
   const fieldSvg = _renderRoleFieldSvg(window._obsCompose.selectedRoles);
 
-  // Multi-select chips per traits, evaluation_tags
-  const traitChips = (selected) => window.OBSERVATION_TRAITS.map(t => {
-    const isOn = selected.includes(t);
-    return `<button type="button" class="obs-chip" data-trait="${escapeHtml(t)}"
-      style="font-size: 11px; padding: 4px 9px; border-radius: 999px; cursor: pointer; border: 0.5px solid ${isOn ? "var(--accent)" : "var(--border)"}; background: ${isOn ? "var(--accent-bg)" : "transparent"}; color: ${isOn ? "var(--accent)" : "var(--text-2)"};">${escapeHtml(window.obsLocalize(t))}</button>`;
-  }).join(" ");
-
+  // Tag chips: ordine da peggiore a migliore
   const tagChips = window.OBSERVATION_TAGS.map(tg => {
     const isOn = window._obsCompose.selectedTag === tg.value;
     return `<button type="button" class="obs-tag-chip" data-tag="${escapeHtml(tg.value)}"
-      style="font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 999px; cursor: pointer; border: 0.5px solid ${tg.color}; background: ${isOn ? tg.color : "transparent"}; color: ${isOn ? "#fff" : tg.color};">${escapeHtml(window.obsLocalize(tg.value))}</button>`;
+      style="font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 999px; cursor: pointer; border: 0.5px solid ${tg.color}; background: ${isOn ? tg.color : "transparent"}; color: ${isOn ? "#fff" : tg.color}; white-space: nowrap;">${escapeHtml(window.obsLocalize(tg.value))}</button>`;
   }).join(" ");
+
+  // Trait chips per categorie (per strengths in verde, per weaknesses in rosso)
+  const renderCategorizedChips = (selected, accentColor) => {
+    return Object.entries(window.OBSERVATION_TRAITS_BY_CATEGORY).map(([cat, traits]) => {
+      const chipsHtml = traits.map(t => {
+        const isOn = selected.includes(t);
+        return `<button type="button" class="obs-chip" data-trait="${escapeHtml(t)}"
+          style="font-size: 10px; padding: 3px 8px; border-radius: 999px; cursor: pointer; border: 0.5px solid ${isOn ? accentColor : "var(--border)"}; background: ${isOn ? accentColor + "22" : "transparent"}; color: ${isOn ? accentColor : "var(--text-2)"}; white-space: nowrap;">${escapeHtml(window.obsLocalize(t))}</button>`;
+      }).join(" ");
+      return `
+        <div style="margin-bottom: 8px;">
+          <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; font-weight: 600;">${escapeHtml(window.obsLocalize(cat))}</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 3px;">${chipsHtml}</div>
+        </div>
+      `;
+    }).join("");
+  };
+
+  // Datalist avversari con prettyClubName
+  const opponentOptions = (state.clubs || [])
+    .map(c => {
+      const raw = c.name || c.club_name || "";
+      const pretty = (typeof prettyClubName === "function") ? prettyClubName(raw) : raw;
+      return pretty;
+    })
+    .filter(n => n)
+    .filter((n, i, arr) => arr.indexOf(n) === i)
+    .sort()
+    .map(n => `<option value="${escapeHtml(n)}">`)
+    .join("");
 
   return `
   <div id="obs-compose-overlay"
-    style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 20px;">
-    <div style="background: var(--bg-1); color: var(--text-1); width: 100%; max-width: 720px; border-radius: 16px; padding: 22px; border: 0.5px solid var(--border); margin: 20px 0;">
+    style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 20px;">
+    <style>
+      .obs-compose-card {
+        background: #1a1d24;
+        color: var(--text-1);
+        width: 100%;
+        max-width: 1080px;
+        border-radius: 16px;
+        padding: 22px;
+        border: 1px solid var(--border);
+        margin: 20px 0;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      }
+      .obs-compose-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 24px;
+      }
+      @media (max-width: 900px) {
+        .obs-compose-grid { grid-template-columns: 1fr; }
+      }
+      .obs-traits-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 700px) {
+        .obs-traits-grid { grid-template-columns: 1fr; }
+      }
+      .obs-input-base {
+        width: 100%; padding: 8px 10px; border-radius: 8px;
+        background: rgba(255,255,255,0.06); color: var(--text-1);
+        border: 0.5px solid var(--border); font-size: 13px;
+      }
+      .obs-label {
+        font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;
+        text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500;
+      }
+    </style>
 
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+    <div class="obs-compose-card">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px;">
         <div>
           <div style="font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.1em;">${pName}</div>
           <div style="font-size: 18px; font-weight: 600; margin-top: 2px;">${title}</div>
         </div>
-        <button type="button" id="obs-cancel-btn" style="font-size: 22px; background: transparent; border: none; color: var(--text-3); cursor: pointer;">✕</button>
+        <button type="button" id="obs-cancel-btn" style="font-size: 22px; background: transparent; border: none; color: var(--text-3); cursor: pointer; padding: 4px 8px;">✕</button>
       </div>
 
-      <!-- DATA + AVVERSARIO + COMPETIZIONE -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+      <!-- LAYOUT 2 COLONNE -->
+      <div class="obs-compose-grid">
+
+        <!-- COLONNA SINISTRA: form -->
         <div>
-          <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;">${window.obsT("f_match_date")} *</label>
-          <input id="obs-match-date" type="date" value="${v.match_date}" style="width: 100%; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <label class="obs-label">${window.obsT("f_match_date")} *</label>
+              <input id="obs-match-date" type="date" value="${v.match_date}" class="obs-input-base">
+            </div>
+            <div>
+              <label class="obs-label">${window.obsT("f_opponent")} *</label>
+              <input id="obs-opponent" type="text" value="${escapeHtml(v.opponent)}" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" class="obs-input-base">
+              <datalist id="obs-opponent-list">${opponentOptions}</datalist>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_competition")} *</label>
+            <select id="obs-competition" class="obs-input-base">
+              <option value="">—</option>
+              ${competitionOptions}
+            </select>
+            <input id="obs-competition-other" type="text" placeholder="${window.obsT("f_competition_other")}"
+              value="${v.competition_is_other ? escapeHtml(v.competition) : ""}"
+              class="obs-input-base"
+              style="display: ${v.competition_is_other ? "block" : "none"}; margin-top: 8px;">
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_rating")}</label>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <input id="obs-rating" type="range" min="0" max="10" step="0.5" value="${v.rating}"
+                style="flex: 1; accent-color: var(--accent);">
+              <div id="obs-rating-display" style="font-size: 22px; font-weight: 700; color: var(--accent); width: 50px; text-align: center;">${v.rating.toFixed(1)}</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_tag")}</label>
+            <div id="obs-tag-chips" style="display: flex; flex-wrap: wrap; gap: 6px;">${tagChips}</div>
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label class="obs-label">${window.obsT("f_notes")}</label>
+            <textarea id="obs-notes" rows="4" placeholder="${window.obsT("f_notes_ph")}"
+              style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.06); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px; resize: vertical; font-family: inherit;">${escapeHtml(v.notes)}</textarea>
+          </div>
+        </div>
+
+        <!-- COLONNA DESTRA: campo grafico ruoli (rimpicciolito) -->
+        <div>
+          <label class="obs-label">${window.obsT("f_roles")} *</label>
+          <div style="font-size: 10px; color: var(--text-3); margin-bottom: 6px;">${window.obsT("f_roles_hint")}</div>
+          <div id="obs-field-wrap" style="display: flex; justify-content: center; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 0.5px solid var(--border);">
+            ${fieldSvg}
+          </div>
+        </div>
+      </div>
+
+      <!-- STRENGTHS / WEAKNESSES SIDE BY SIDE -->
+      <div class="obs-traits-grid" style="margin-top: 18px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+            <div style="width: 3px; height: 14px; background: #22C55E; border-radius: 2px;"></div>
+            <span style="font-size: 12px; font-weight: 700; color: #22C55E; text-transform: uppercase; letter-spacing: 0.06em;">${window.obsT("f_strengths")}</span>
+          </div>
+          <div id="obs-strengths-chips">${renderCategorizedChips(window._obsCompose.selectedStrengths, "#22C55E")}</div>
         </div>
         <div>
-          <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;">${window.obsT("f_opponent")} *</label>
-          <input id="obs-opponent" type="text" value="${escapeHtml(v.opponent)}" placeholder="${window.obsT("f_opponent_ph")}" list="obs-opponent-list" style="width: 100%; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px;">
-          <datalist id="obs-opponent-list">${(state.clubs || []).map(c => `<option value="${escapeHtml(c.club_name || c.name || "")}">`).join("")}</datalist>
+          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+            <div style="width: 3px; height: 14px; background: #EF4444; border-radius: 2px;"></div>
+            <span style="font-size: 12px; font-weight: 700; color: #EF4444; text-transform: uppercase; letter-spacing: 0.06em;">${window.obsT("f_weaknesses")}</span>
+          </div>
+          <div id="obs-weaknesses-chips">${renderCategorizedChips(window._obsCompose.selectedWeaknesses, "#EF4444")}</div>
         </div>
       </div>
 
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;">${window.obsT("f_competition")} *</label>
-        <select id="obs-competition" style="width: 100%; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px;">
-          <option value="">—</option>
-          ${competitionOptions}
-        </select>
-        <input id="obs-competition-other" type="text" placeholder="${window.obsT("f_competition_other")}"
-          value="${v.competition_is_other ? escapeHtml(v.competition) : ""}"
-          style="display: ${v.competition_is_other ? "block" : "none"}; width: 100%; margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px;">
-      </div>
+      <!-- ERROR + BUTTONS -->
+      <div id="obs-error" style="display: none; padding: 8px 12px; margin-top: 16px; border-radius: 8px; background: rgba(239,68,68,0.15); color: #EF4444; font-size: 12px; border: 0.5px solid rgba(239,68,68,0.4);"></div>
 
-      <!-- CAMPO GRAFICO RUOLI -->
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;">${window.obsT("f_roles")} *</label>
-        <div style="font-size: 10px; color: var(--text-3); margin-bottom: 8px;">${window.obsT("f_roles_hint")}</div>
-        <div id="obs-field-wrap" style="display: flex; justify-content: center; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 0.5px solid var(--border);">
-          ${fieldSvg}
-        </div>
-      </div>
-
-      <!-- RATING SLIDER -->
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;">${window.obsT("f_rating")}</label>
-        <div style="display: flex; align-items: center; gap: 14px;">
-          <input id="obs-rating" type="range" min="0" max="10" step="0.5" value="${v.rating}"
-            style="flex: 1; accent-color: var(--accent);">
-          <div id="obs-rating-display" style="font-size: 22px; font-weight: 700; color: var(--accent); width: 56px; text-align: center;">${v.rating.toFixed(1)}</div>
-        </div>
-      </div>
-
-      <!-- TAG VALUTAZIONE -->
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 6px;">${window.obsT("f_tag")}</label>
-        <div id="obs-tag-chips" style="display: flex; flex-wrap: wrap; gap: 6px;">${tagChips}</div>
-      </div>
-
-      <!-- STRENGTHS -->
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 6px;">${window.obsT("f_strengths")}</label>
-        <div id="obs-strengths-chips" style="display: flex; flex-wrap: wrap; gap: 4px;">${traitChips(window._obsCompose.selectedStrengths)}</div>
-      </div>
-
-      <!-- WEAKNESSES -->
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 6px;">${window.obsT("f_weaknesses")}</label>
-        <div id="obs-weaknesses-chips" style="display: flex; flex-wrap: wrap; gap: 4px;">${traitChips(window._obsCompose.selectedWeaknesses)}</div>
-      </div>
-
-      <!-- NOTES -->
-      <div style="margin-bottom: 16px;">
-        <label style="font-size: 11px; color: var(--text-3); display: block; margin-bottom: 4px;">${window.obsT("f_notes")}</label>
-        <textarea id="obs-notes" rows="4" placeholder="${window.obsT("f_notes_ph")}"
-          style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--text-1); border: 0.5px solid var(--border); font-size: 13px; resize: vertical; font-family: inherit;">${escapeHtml(v.notes)}</textarea>
-      </div>
-
-      <!-- ERROR -->
-      <div id="obs-error" style="display: none; padding: 8px 12px; margin-bottom: 12px; border-radius: 8px; background: rgba(239,68,68,0.15); color: #EF4444; font-size: 12px; border: 0.5px solid rgba(239,68,68,0.4);"></div>
-
-      <!-- BUTTONS -->
-      <div style="display: flex; gap: 8px; justify-content: flex-end;">
+      <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 18px;">
         <button type="button" id="obs-cancel-btn-2"
           style="font-size: 13px; padding: 8px 16px; border-radius: 8px; background: transparent; color: var(--text-2); border: 0.5px solid var(--border); cursor: pointer;">${window.obsT("btn_cancel")}</button>
         <button type="button" id="obs-save-btn"
@@ -531,53 +614,43 @@ function _obsComposeHtml(player, editing) {
 }
 
 /**
- * Renderizza l'SVG del campo con i 15 cerchi cliccabili.
+ * SVG campo rimpicciolito (220px circa).
  */
 function _renderRoleFieldSvg(selectedRoles) {
   const W = 380, H = 540;
   const lines = `
-    <!-- Sfondo campo -->
     <rect width="${W}" height="${H}" fill="#1B7A3E" rx="4"/>
-    <!-- Linee bianche -->
     <rect x="20" y="20" width="${W-40}" height="${H-40}" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
     <line x1="20" y1="${H/2}" x2="${W-20}" y2="${H/2}" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
     <circle cx="${W/2}" cy="${H/2}" r="50" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
     <circle cx="${W/2}" cy="${H/2}" r="2" fill="#fff" opacity="0.55"/>
-    <!-- Aree -->
     <rect x="${W/2-80}" y="20" width="160" height="65" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
     <rect x="${W/2-40}" y="20" width="80" height="25" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
     <rect x="${W/2-80}" y="${H-85}" width="160" height="65" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
     <rect x="${W/2-40}" y="${H-45}" width="80" height="25" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
   `;
-
   const circles = window.OBSERVATION_ROLE_DEFS.map(r => {
     const isOn = selectedRoles.includes(r.code);
-    const fillColor = isOn ? "#FBBF24" : "rgba(255,255,255,0.85)";
-    const textColor = isOn ? "#000" : "#1B7A3E";
-    const strokeColor = isOn ? "#000" : "rgba(0,0,0,0.3)";
+    const fill = isOn ? "#FBBF24" : "rgba(255,255,255,0.85)";
+    const txt = isOn ? "#000" : "#1B7A3E";
+    const stroke = isOn ? "#000" : "rgba(0,0,0,0.3)";
     return `
-      <g class="obs-role-circle" data-role="${r.code}" style="cursor: pointer;" tabindex="0">
-        <circle cx="${r.cx}" cy="${r.cy}" r="22" fill="${fillColor}" stroke="${strokeColor}" stroke-width="1.5"/>
-        <text x="${r.cx}" y="${r.cy + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="${textColor}" pointer-events="none">${r.code.replace("_", " ")}</text>
+      <g class="obs-role-circle" data-role="${r.code}" style="cursor: pointer;">
+        <circle cx="${r.cx}" cy="${r.cy}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+        <text x="${r.cx}" y="${r.cy + 4}" text-anchor="middle" font-size="10" font-weight="700" fill="${txt}" pointer-events="none">${r.code.replace("_", " ")}</text>
       </g>
     `;
   }).join("");
-
-  return `<svg viewBox="0 0 ${W} ${H}" width="320" height="455" xmlns="http://www.w3.org/2000/svg">${lines}${circles}</svg>`;
+  // viewBox originale ma rendering size più piccolo (responsive)
+  return `<svg viewBox="0 0 ${W} ${H}" style="width: 100%; max-width: 240px; height: auto; display: block;" xmlns="http://www.w3.org/2000/svg">${lines}${circles}</svg>`;
 }
 
-/**
- * Aggiorna l'SVG del campo dopo un click su un cerchio (re-render parziale).
- */
 function _redrawField() {
   const wrap = document.getElementById("obs-field-wrap");
   if (wrap) wrap.innerHTML = _renderRoleFieldSvg(window._obsCompose.selectedRoles);
   _wireFieldClicks();
 }
 
-/**
- * Aggancia event listener ai cerchi del campo (chiamato dopo ogni redraw).
- */
 function _wireFieldClicks() {
   document.querySelectorAll(".obs-role-circle").forEach(g => {
     g.addEventListener("click", () => {
@@ -590,29 +663,21 @@ function _wireFieldClicks() {
   });
 }
 
-/**
- * Aggancia tutti gli eventi del modal compose.
- */
 function _wireObsCompose(player, editing) {
-  // Cancel
   document.getElementById("obs-cancel-btn")?.addEventListener("click", _closeObsCompose);
   document.getElementById("obs-cancel-btn-2")?.addEventListener("click", _closeObsCompose);
-  // Click su overlay (fuori dalla card) chiude
   document.getElementById("obs-compose-overlay")?.addEventListener("click", (e) => {
     if (e.target.id === "obs-compose-overlay") _closeObsCompose();
   });
 
-  // Campo grafico ruoli
   _wireFieldClicks();
 
-  // Rating slider live update
   const slider = document.getElementById("obs-rating");
   const display = document.getElementById("obs-rating-display");
   slider?.addEventListener("input", () => {
     display.textContent = parseFloat(slider.value).toFixed(1);
   });
 
-  // Competizione "Altro" → mostra input libero
   const compSel = document.getElementById("obs-competition");
   const compOther = document.getElementById("obs-competition-other");
   compSel?.addEventListener("change", () => {
@@ -625,12 +690,10 @@ function _wireObsCompose(player, editing) {
     }
   });
 
-  // Tag chips (single-select)
   document.querySelectorAll(".obs-tag-chip").forEach(btn => {
     btn.addEventListener("click", () => {
       const v = btn.dataset.tag;
       window._obsCompose.selectedTag = (window._obsCompose.selectedTag === v) ? null : v;
-      // Re-render solo le chip tag (no re-render globale)
       document.querySelectorAll(".obs-tag-chip").forEach(b => {
         const tg = window.OBSERVATION_TAGS.find(t => t.value === b.dataset.tag);
         const on = window._obsCompose.selectedTag === b.dataset.tag;
@@ -640,8 +703,7 @@ function _wireObsCompose(player, editing) {
     });
   });
 
-  // Trait chips (multi-select) — strengths e weaknesses
-  function _wireTraitChips(containerId, listKey) {
+  function _wireTraitChips(containerId, listKey, accentColor) {
     document.getElementById(containerId)?.querySelectorAll(".obs-chip").forEach(btn => {
       btn.addEventListener("click", () => {
         const trait = btn.dataset.trait;
@@ -649,18 +711,41 @@ function _wireObsCompose(player, editing) {
         const idx = list.indexOf(trait);
         if (idx >= 0) list.splice(idx, 1);
         else list.push(trait);
-        const isOn = idx < 0; // post-toggle
-        btn.style.borderColor = isOn ? "var(--accent)" : "var(--border)";
-        btn.style.background = isOn ? "var(--accent-bg)" : "transparent";
-        btn.style.color = isOn ? "var(--accent)" : "var(--text-2)";
+        const isOn = idx < 0;
+        btn.style.borderColor = isOn ? accentColor : "var(--border)";
+        btn.style.background = isOn ? accentColor + "22" : "transparent";
+        btn.style.color = isOn ? accentColor : "var(--text-2)";
       });
     });
   }
-  _wireTraitChips("obs-strengths-chips", "selectedStrengths");
-  _wireTraitChips("obs-weaknesses-chips", "selectedWeaknesses");
+  _wireTraitChips("obs-strengths-chips", "selectedStrengths", "#22C55E");
+  _wireTraitChips("obs-weaknesses-chips", "selectedWeaknesses", "#EF4444");
 
-  // Save
   document.getElementById("obs-save-btn")?.addEventListener("click", () => _saveObsFromForm(player, editing));
+
+  // Bottone elimina (solo edit mode)
+  if (editing) {
+    const cancelBtn2 = document.getElementById("obs-cancel-btn-2");
+    if (cancelBtn2 && !document.getElementById("obs-delete-btn")) {
+      const delBtn = document.createElement("button");
+      delBtn.type = "button";
+      delBtn.id = "obs-delete-btn";
+      delBtn.textContent = window.obsT("btn_delete");
+      delBtn.style.cssText = "font-size: 13px; padding: 8px 16px; border-radius: 8px; background: transparent; color: #EF4444; border: 0.5px solid rgba(239,68,68,0.4); cursor: pointer; margin-right: auto;";
+      delBtn.addEventListener("click", async () => {
+        if (!confirm(window.obsT("delete_confirm"))) return;
+        const r = await window.deleteObservation(editing.id);
+        if (r.ok) {
+          _closeObsCompose();
+          window.renderObservationsList(player.tm_player_id);
+          window._obsAllCache = null; // invalida cache pannello scouting
+        } else {
+          alert(r.error || "Errore eliminazione");
+        }
+      });
+      cancelBtn2.parentElement.insertBefore(delBtn, cancelBtn2);
+    }
+  }
 }
 
 function _closeObsCompose() {
@@ -681,7 +766,6 @@ async function _saveObsFromForm(player, editing) {
   const rating = parseFloat(document.getElementById("obs-rating").value);
   const notes = document.getElementById("obs-notes").value.trim();
 
-  // Validazioni
   if (!matchDate || !opponent || !competition) {
     showErr(window.obsT("err_required"));
     return;
@@ -721,10 +805,163 @@ async function _saveObsFromForm(player, editing) {
   }
 
   _closeObsCompose();
-  // Re-render lista nel modal giocatore
+  window._obsAllCache = null; // invalida cache pannello scouting
   if (typeof window.renderObservationsList === "function") {
     window.renderObservationsList(player.tm_player_id);
   }
 }
 
-console.log("[obs-ui] Fase 3 modulo caricato");
+// ============================================================
+//  PANNELLO "SCOUTING" SIDEBAR (Fase 4 base anticipata)
+//  Vista globale di tutte le osservazioni dell'utente.
+// ============================================================
+
+/**
+ * HTML del pannello principale Scouting (per il main content quando si seleziona la voce sidebar).
+ */
+window.renderScoutingPanel = function() {
+  return `
+    <div id="scouting-panel" style="padding: 24px; max-width: 1100px; margin: 0 auto;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 4px; height: 24px; background: var(--accent); border-radius: 2px;"></div>
+          <h2 style="font-size: 22px; font-weight: 600; margin: 0; color: var(--text-1);">${window.obsT("scouting_title")}</h2>
+        </div>
+        <div id="scouting-summary-chip" style="font-size: 12px; color: var(--text-3);">…</div>
+      </div>
+      <div id="scouting-content">…</div>
+    </div>
+  `;
+};
+
+window.wireScoutingPanel = async function() {
+  const contentEl = document.getElementById("scouting-content");
+  const summaryEl = document.getElementById("scouting-summary-chip");
+  if (!contentEl) return;
+
+  try {
+    // Carica tutte le osservazioni dell'utente (con cache)
+    if (!window._obsAllCache) {
+      window._obsAllCache = await window.fetchObservations();
+    }
+    const all = window._obsAllCache;
+
+    if (!all.length) {
+      summaryEl.textContent = "";
+      contentEl.innerHTML = `<div style="padding: 40px; text-align: center; color: var(--text-3); font-size: 13px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 0.5px solid var(--border);">${window.obsT("scouting_no_obs")}</div>`;
+      return;
+    }
+
+    // Raggruppa per giocatore
+    const byPlayer = {};
+    all.forEach(o => {
+      if (!byPlayer[o.tm_player_id]) byPlayer[o.tm_player_id] = [];
+      byPlayer[o.tm_player_id].push(o);
+    });
+    const playerIds = Object.keys(byPlayer);
+
+    summaryEl.innerHTML = `
+      <span style="color: var(--accent); font-weight: 600;">${playerIds.length}</span> ${window.obsT("scouting_summary")} · 
+      <span style="color: var(--accent); font-weight: 600;">${all.length}</span> ${window.obsT("scouting_total_obs")}
+    `;
+
+    // Card per ogni giocatore: foto/nome + stats + lista osservazioni compatta
+    const dateLocale = (typeof currentLang !== "undefined" && currentLang === "it") ? "it-IT" : "en-GB";
+    const playerCardsHtml = playerIds.map(pid => {
+      const obsForPlayer = byPlayer[pid].sort((a, b) => new Date(b.match_date) - new Date(a.match_date));
+      const player = state.players.find(p => p.tm_player_id === parseInt(pid));
+      const playerName = player ? (player.full_name || `#${pid}`) : `#${pid}`;
+      const club = player ? (typeof prettyClubName === "function" ? prettyClubName(player.current_club_name || "") : player.current_club_name || "") : "";
+      const photoUrl = (player && typeof _photoUrl === "function") ? _photoUrl(`photos/players/${pid}.png`) : null;
+
+      // Mini stats
+      const ratings = obsForPlayer.map(o => o.performance_rating).filter(r => r != null);
+      const avg = ratings.length ? (ratings.reduce((a, b) => a + b, 0) / ratings.length) : null;
+
+      const tagCounts = {};
+      obsForPlayer.forEach(o => {
+        const t = o.evaluation_tags?.[0];
+        if (t) tagCounts[t] = (tagCounts[t] || 0) + 1;
+      });
+      const topTag = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])[0];
+      const topTagDef = topTag ? window.OBSERVATION_TAGS.find(t => t.value === topTag[0]) : null;
+      const topTagHtml = topTagDef
+        ? `<span style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: ${topTagDef.color}22; color: ${topTagDef.color}; border: 0.5px solid ${topTagDef.color};">${escapeHtml(window.obsLocalize(topTagDef.value))}</span>`
+        : "";
+
+      // Lista compatta osservazioni
+      const obsRowsHtml = obsForPlayer.slice(0, 5).map(o => {
+        const dateFmt = new Date(o.match_date).toLocaleDateString(dateLocale, { day: "2-digit", month: "2-digit", year: "2-digit" });
+        const tagDef = window.OBSERVATION_TAGS.find(t => t.value === o.evaluation_tags?.[0]);
+        const tagDot = tagDef ? `<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: ${tagDef.color}; margin-right: 4px;"></span>` : "";
+        const ratingStr = o.performance_rating != null ? o.performance_rating.toFixed(1) : "—";
+        const opponentStr = (typeof prettyClubName === "function") ? prettyClubName(o.opponent) : o.opponent;
+        return `
+          <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: pointer; font-size: 12px;">
+            ${tagDot}
+            <span style="color: var(--text-3); font-size: 11px; min-width: 64px;">${dateFmt}</span>
+            <span style="color: var(--text-2); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">vs ${escapeHtml(opponentStr)}</span>
+            <span style="color: var(--accent); font-weight: 600;">${ratingStr}</span>
+          </div>
+        `;
+      }).join("");
+      const moreHint = obsForPlayer.length > 5
+        ? `<div style="font-size: 10px; color: var(--text-3); padding: 4px 8px; text-align: center;">+ ${obsForPlayer.length - 5} ${window.obsT("scouting_n_obs")}</div>`
+        : "";
+
+      return `
+        <div class="scouting-player-card" data-pid="${pid}" style="background: rgba(255,255,255,0.03); border: 0.5px solid var(--border); border-radius: 12px; padding: 14px; cursor: default;">
+          <div class="scouting-player-header" data-pid="${pid}" style="display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 10px;">
+            ${photoUrl ? `<img src="${photoUrl}" alt="" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0;" onerror="this.style.display='none'"/>` : ""}
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 13px; font-weight: 600; color: var(--text-1); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(playerName)}</div>
+              <div style="font-size: 11px; color: var(--text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(club)}</div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0;">
+              ${avg != null ? `<div style="font-size: 18px; font-weight: 700; color: var(--accent); line-height: 1;">${avg.toFixed(1)}</div>` : ""}
+              <div style="font-size: 10px; color: var(--text-3); margin-top: 2px;">${obsForPlayer.length} ${window.obsT("scouting_n_obs")}</div>
+            </div>
+          </div>
+          ${topTagHtml ? `<div style="margin-bottom: 8px;">${topTagHtml}</div>` : ""}
+          <div style="border-top: 0.5px solid var(--border); padding-top: 6px;">
+            ${obsRowsHtml}
+            ${moreHint}
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    contentEl.innerHTML = `
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px;">
+        ${playerCardsHtml}
+      </div>
+    `;
+
+    // Wire click su header card → apre modal giocatore
+    contentEl.querySelectorAll(".scouting-player-header").forEach(el => {
+      el.addEventListener("click", () => {
+        const pid = parseInt(el.dataset.pid);
+        if (typeof openPlayerModal === "function") openPlayerModal(pid);
+      });
+    });
+    // Wire click su righe osservazioni → apre modal modifica osservazione
+    contentEl.querySelectorAll(".scouting-obs-row").forEach(el => {
+      el.addEventListener("mouseenter", () => el.style.background = "rgba(255,255,255,0.05)");
+      el.addEventListener("mouseleave", () => el.style.background = "transparent");
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const pid = parseInt(el.dataset.pid);
+        const obsId = el.dataset.obsId;
+        if (typeof window.openObservationCompose === "function") {
+          window.openObservationCompose(pid, obsId);
+        }
+      });
+    });
+
+  } catch (e) {
+    console.warn("[obs-ui] scouting panel error:", e);
+    contentEl.innerHTML = `<div style="padding: 24px; color: #EF4444; font-size: 13px;">Errore caricamento: ${escapeHtml(String(e))}</div>`;
+  }
+};
+
+console.log("[obs-ui] Fase 3 v2 modulo caricato");
