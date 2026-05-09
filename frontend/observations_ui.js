@@ -1260,18 +1260,24 @@ console.log("[obs-ui] Fase 3 v2 modulo caricato");
 const PDF_LOGO_URL = "../data/photos/branding/pid_logo_pdf.png";
 
 function _pdfT(key, fallback) {
-  return (typeof window.t === "function" && window.t(key)) || fallback || key;
+  // Usa la global "t" del file i18n.js (non window.t — non esiste come window.t)
+  if (typeof t === "function") {
+    const val = t(key);
+    if (val && val !== key) return val;
+  }
+  return fallback || key;
 }
 
 function _pdfPlayerData(player) {
   if (!player) return {};
   const heightCm = player.height_cm || (player.height ? player.height : null);
-  const role = player.position_specific || player.position || player.position_general || "—";
+  const rawRole = player.position_specific || player.position || player.position_general || "—";
+  const role = _pdfTranslatePosition(rawRole);
   const dob = player.date_of_birth || "";
   const year = dob ? dob.substring(0, 4) : "—";
   const age = player.age != null ? String(player.age) : "—";
   const club = player.current_club_name || "—";
-  const foot = player.foot || "—";
+  const foot = _pdfTranslateFoot(player.foot);
   // Path locali (no CORS) come priorità, poi URL CDN come fallback
   const photoPaths = [];
   // PRIORITÀ: SOTS locale > TM locale > URL CDN (no CORS)
