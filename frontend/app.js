@@ -4318,7 +4318,7 @@ function renderListPanel() {
   else if (f.sort === "age_asc") items.sort((a,b) => (a.age||999) - (b.age||999));
   else if (f.sort === "age_desc") items.sort((a,b) => (b.age||0) - (a.age||0));
   else if (f.sort === "club") items.sort((a,b) => (a.current_club_name||"").localeCompare(b.current_club_name||""));
-  else if (f.sort === "role") items.sort((a,b) => (a.position_general||"").localeCompare(b.position_general||""));
+  else if (f.sort === "role") items.sort((a,b) => (a.position_specific||"").localeCompare(b.position_specific||""));
   else if (f.sort === "foot") items.sort((a,b) => (a.foot||"").localeCompare(b.foot||""));
   else items.sort((a,b) => (a.full_name||"").localeCompare(b.full_name||""));
 
