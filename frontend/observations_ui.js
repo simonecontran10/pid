@@ -1631,26 +1631,34 @@ async function exportObservationPDF(observationId, playerId) {
   // Assicura che y avanzi almeno fino a fine campo
   if (y < fieldY + fieldH + 2) y = fieldY + fieldH + 2;
 
-  // Performance + Tag
+  // Performance (font grande) + Tag, su riga propria sotto il mini-campo per evitare collisioni
+  y += 4;
   const perfStr = obs.performance_rating != null ? String(obs.performance_rating) : "—";
   const tag = _pdfTagLabel(obs.evaluation_tags);
   pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(9);
   pdf.setTextColor(100, 100, 100);
-  pdf.text(`${_pdfT("pdf_field_performance", "Performance")}:`, col1X, y);
-  pdf.setFont("helvetica", "bold");
+  pdf.text(`${_pdfT("pdf_field_performance", "Performance")}:`, col1X, y + 2);
+  // Performance numero GRANDE
+  pdf.setFontSize(18);
   pdf.setTextColor(20, 130, 90);
-  pdf.text(perfStr, col1X + 30, y);
+  pdf.text(perfStr, col1X + 30, y + 3);
+  // Tag a destra del numero performance, ben dimensionato
   if (tag) {
+    pdf.setFontSize(10);
+    const tagPad = 8;
+    const tagW = pdf.getTextWidth(tag.label) + tagPad * 2;
+    const tagH = 7;
+    const tagX = col1X + 50;
+    const tagY = y - 2;
     pdf.setFillColor(tag.color[0], tag.color[1], tag.color[2]);
-    const tagW = pdf.getTextWidth(tag.label) + 6;
-    pdf.roundedRect(col2X, y - 3.5, tagW, 5, 1, 1, "F");
+    pdf.roundedRect(tagX, tagY, tagW, tagH, 1.5, 1.5, "F");
     pdf.setTextColor(255, 255, 255);
-    pdf.setFontSize(8);
     pdf.setFont("helvetica", "bold");
-    pdf.text(tag.label, col2X + 3, y);
-    pdf.setFontSize(9);
+    pdf.text(tag.label, tagX + tagPad, tagY + 5);
   }
-  y += lineH + 1;
+  pdf.setFontSize(9);
+  y += 9;
 
   // Strengths
   y += 3;
