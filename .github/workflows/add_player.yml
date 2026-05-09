@@ -1,11 +1,10 @@
 name: Admin - Add Player from TM URL
 
-# Triggerable manualmente o da chiamata API
 on:
   workflow_dispatch:
     inputs:
-      url:
-        description: "URL Transfermarkt del giocatore (es. https://www.transfermarkt.com/.../profil/spieler/123456)"
+      urls:
+        description: "URL Transfermarkt giocatore/i (uno per riga, anche 1 solo)"
         required: true
         type: string
 
@@ -40,21 +39,33 @@ jobs:
           pip install -r requirements.txt
           pip install boto3 python-dotenv
 
-      - name: Validate URL
+      - name: Validate URLs
         run: |
-          URL="${{ github.event.inputs.url }}"
-          if ! echo "$URL" | grep -qE 'transfermarkt\.[a-z.]+.*spieler/[0-9]+'; then
-            echo "❌ URL non valido: $URL"
+          URLS="${{ github.event.inputs.urls }}"
+          COUNT=0
+          INVALID=0
+          while IFS= read -r line; do
+            line="$(echo "$line" | xargs)"
+            [ -z "$line" ] && continue
+            if echo "$line" | grep -qE 'transfermarkt\.[a-z.]+.*spieler/[0-9]+'; then
+              COUNT=$((COUNT+1))
+              echo "  OK: $line"
+            else
+              INVALID=$((INVALID+1))
+              echo "  INVALID: $line"
+            fi
+          done <<< "$URLS"
+          echo ""
+          echo "Totale URL validi: $COUNT, invalidi: $INVALID"
+          if [ "$COUNT" -eq 0 ]; then
+            echo "Nessun URL valido. Abort."
             exit 1
           fi
-          echo "✓ URL valido: $URL"
+          echo "$COUNT" > /tmp/url_count.txt
 
-      - name: Run add_players.py
+      - name: Run add_players.py (batch)
         run: |
-          echo "${{ github.event.inputs.url }}" | python3 add_players.py
-
-      - name: Run enrich_sortitoutsi.py
-        run: python3 enrich_sortitoutsi.py || true
+          echo "${{ github.event.inputs.urls }}" | python3 add_players.py
 
       - name: Commit and push if changed
         run: |
@@ -62,22 +73,21 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/ 2>/dev/null || true
           if git diff --cached --quiet; then
-            echo "No git changes to commit"
+            echo "Nessuna modifica da committare"
             exit 0
           fi
-          git commit -m "auto: add player from TM URL ($(date -u +%Y-%m-%d))"
-          # Retry push fino a 5 volte (gestisce push concurrent durante il workflow)
-          for i in 1 2 3 4 5; do
-            echo "Push attempt $i/5"
-            git fetch origin main
-            if git pull --rebase origin main; then
-              if git push; then
-                echo "Push succeeded on attempt $i"
-                exit 0
-              fi
-            fi
-            echo "Push failed on attempt $i, sleeping 10s..."
-            sleep 10
-          done
-          echo "All push attempts failed - committed locally but not pushed"
+          COUNT=$(cat /tmp/url_count.txt 2>/dev/null || echo "?")
+          git commit -m "auto: add ${COUNT} player(s) from TM URL ($(date -u +%Y-%m-%d))"
+          if git push; then
+            echo "Push completato"
+            exit 0
+          fi
+          echo "Push iniziale fallito, provo un rebase difensivo..."
+          git rebase --abort 2>/dev/null || true
+          git fetch origin main
+          if git pull --rebase origin main && git push; then
+            echo "Push riuscito al secondo tentativo"
+            exit 0
+          fi
+          echo "Push fallito definitivamente"
           exit 1

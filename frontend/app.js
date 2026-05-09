@@ -6981,9 +6981,9 @@ function renderAdminPanel() {
       <div class="flex flex-col gap-3">
         <div class="rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
           <h3 class="text-sm font-bold mb-2" style="color: var(--text-1);">Aggiungi nuovo giocatore</h3>
-          <input id="admin-add-url" type="text" placeholder="https://www.transfermarkt.com/.../profil/spieler/..."
-                 class="w-full text-xs px-2 py-1.5 rounded-md mb-2" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
-          <button id="admin-add-submit" class="w-full px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">
+          <textarea id="admin-add-url" rows="5" placeholder="Uno o piu URL Transfermarkt, uno per riga"
+                    class="w-full text-xs px-2 py-1.5 rounded-md mb-2 resize-y" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1); font-family: inherit; min-height: 80px;"></textarea>
+          <button id="admin-add-btn" class="w-full px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">
             Aggiungi giocatore
           </button>
           <div id="admin-add-status" class="text-[11px] mt-2" style="color: var(--text-3);"></div>
@@ -7014,7 +7014,7 @@ function renderAdminPanel() {
     _renderAdminSearchResults();
   }
   
-  const addBtn = document.getElementById("admin-add-submit");
+  const addBtn = document.getElementById("admin-add-btn");
   if (addBtn) addBtn.addEventListener("click", _adminAddPlayer);
   
   if (editingPlayer) {
@@ -7200,34 +7200,93 @@ async function _adminSaveOverrides(pid) {
 async function _adminAddPlayer() {
   const status = document.getElementById("admin-add-status");
   const input = document.getElementById("admin-add-url");
+  const btn = document.getElementById("admin-add-btn");
   if (!input || !status) return;
-  const url = input.value.trim();
-  if (!url) {
-    status.textContent = "Inserisci un URL Transfermarkt.";
+
+  const raw = (input.value || "").trim();
+  if (!raw) {
+    status.style.color = "";
+    status.textContent = "Inserisci uno o piu URL Transfermarkt (uno per riga).";
     return;
   }
-  if (!url.includes("transfermarkt") || !url.match(/spieler\/(\d+)/)) {
-    status.textContent = "URL non valido (deve contenere /spieler/<id>).";
+
+  const lines = raw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+  const seen = new Set();
+  const urls = [];
+  for (const u of lines) {
+    if (!seen.has(u)) {
+      seen.add(u);
+      urls.push(u);
+    }
+  }
+
+  const urlRe = /transfermarkt\.[a-z.]+.*spieler\/\d+/i;
+  const invalid = urls.filter(u => !urlRe.test(u));
+  if (invalid.length > 0) {
+    status.style.color = "#c00";
+    status.textContent = invalid.length + " URL non valido/i (deve contenere /spieler/<id>). Correggi e riprova.";
     return;
   }
-  status.textContent = "Trigger workflow in corso...";
-  
+
+  if (urls.length === 0) {
+    status.textContent = "Nessun URL valido trovato.";
+    return;
+  }
+
+  if (urls.length > 50) {
+    status.style.color = "#c00";
+    status.textContent = "Massimo 50 URL per batch (ne hai inserito " + urls.length + ").";
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+  status.style.color = "";
+  status.textContent = "Avvio workflow per " + urls.length + " giocatore" + (urls.length > 1 ? "i" : "") + "\u2026";
+
   try {
     const resp = await fetch("/admin-add-player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify({ urls }),
     });
+
+    if (resp.status === 409) {
+      const data = await resp.json().catch(() => ({}));
+      const detail = data.detail || {};
+      status.style.color = "#c80";
+      const msg = detail.message || "Un workflow e gia in corso.";
+      status.innerHTML = detail.run_url
+        ? msg + ' <a href="' + detail.run_url + '" target="_blank" rel="noopener">Vedi run</a>'
+        : msg;
+      return;
+    }
+
     if (!resp.ok) {
       const errText = await resp.text();
+      status.style.color = "#c00";
       status.textContent = "Errore: " + errText;
       return;
     }
+
     const data = await resp.json();
-    status.textContent = "Workflow avviato. Aggiornamento dati tra ~5 min.";
+    const minutes = Math.max(3, urls.length);
+    const eta = new Date(Date.now() + minutes * 60 * 1000);
+    const etaStr = eta.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    status.style.color = "#0a0";
+    status.innerHTML =
+      "\u2713 Workflow avviato per " + data.count + " giocatore" + (data.count > 1 ? "i" : "") + ". " +
+      "Completamento previsto: " + etaStr + ". " +
+      '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi progresso</a>';
     input.value = "";
+
   } catch (e) {
+    status.style.color = "#c00";
     status.textContent = "Errore connessione: " + e.message;
+  } finally {
+    setTimeout(() => {
+      if (btn) btn.disabled = false;
+    }, 60000);
   }
 }
 
