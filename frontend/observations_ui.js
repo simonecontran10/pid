@@ -698,6 +698,9 @@ function _obsComposeHtml(player, editing, prefill) {
           style="font-size: 13px; padding: 8px 16px; border-radius: 8px; background: transparent; color: var(--text-2); border: 0.5px solid var(--border); cursor: pointer;">${window.obsT("btn_cancel")}</button>
         <button type="button" id="obs-save-btn"
           style="font-size: 13px; padding: 8px 18px; border-radius: 8px; background: var(--accent); color: #fff; border: none; cursor: pointer; font-weight: 500;">${window.obsT("btn_save")}</button>
+        <button id="obs-export-pdf-btn" type="button" data-pid="${player.tm_player_id}" data-obs-id="${editing?.id || ''}"
+          style="font-size: 13px; padding: 8px 14px; border-radius: 8px; background: rgba(96,165,250,0.10); color: #60A5FA; border: 0.5px solid rgba(96,165,250,0.30); cursor: pointer; font-weight: 500; ${editing?.id ? '' : 'display:none;'}"
+          title="${window.obsT("pdf_export_btn")}">📄 PDF</button>
       </div>
     </div>
   </div>
@@ -1248,3 +1251,525 @@ window.wireScoutingPanel = async function() {
 };
 
 console.log("[obs-ui] Fase 3 v2 modulo caricato");
+
+
+// ============================================================
+// EXPORT PDF — singola osservazione + dossier giocatore
+// ============================================================
+
+function _pdfT(key, fallback) {
+  return (typeof window.t === "function" && window.t(key)) || fallback || key;
+}
+
+function _pdfPlayerData(player) {
+  // Ritorna un oggetto strutturato dei dati giocatore per il PDF
+  if (!player) return {};
+  const heightCm = player.height_cm || (player.height ? player.height : null);
+  const role = player.position_specific || player.position || player.position_general || "—";
+  const dob = player.date_of_birth || "";
+  const year = dob ? dob.substring(0, 4) : "—";
+  const age = player.age != null ? String(player.age) : "—";
+  const club = player.current_club_name || "—";
+  const foot = player.foot || "—";
+  return {
+    name: player.full_name || player.name || "—",
+    year, age, club, foot,
+    height: heightCm ? `${heightCm} cm` : "—",
+    role,
+    photoUrl: player.photo_url || null,
+    sotsFaceUrl: player.sortitoutsi_face_url || null,
+  };
+}
+
+async function _pdfFetchImage(url) {
+  // Fetcha un'immagine come base64 dataURL. Ritorna null se fallisce.
+  if (!url) return null;
+  try {
+    const res = await fetch(url, { mode: "cors" });
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    return await new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onloadend = () => resolve(r.result);
+      r.onerror = () => reject(r.error);
+      r.readAsDataURL(blob);
+    });
+  } catch (e) {
+    console.warn("[pdf] fetch image failed:", url, e);
+    return null;
+  }
+}
+
+function _pdfFmtDate(s) {
+  // "2026-05-09" → "09/05/2026"
+  if (!s) return "—";
+  const m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return s;
+  return `${m[3]}/${m[2]}/${m[1]}`;
+}
+
+function _pdfTagLabel(tag) {
+  // evaluation_tag → ("Prima scelta", colore)
+  const map = {
+    "PRIMA SCELTA": { label: "Prima scelta", color: [34, 197, 94] },
+    "SECONDA SCELTA": { label: "Seconda scelta", color: [251, 191, 36] },
+    "DA SEGUIRE": { label: "Da seguire", color: [96, 165, 250] },
+    "DA SCARTARE": { label: "Da scartare", color: [239, 68, 68] },
+  };
+  if (Array.isArray(tag) && tag.length > 0) tag = tag[0];
+  if (!tag) return null;
+  const t = String(tag).toUpperCase().trim();
+  return map[t] || { label: t, color: [180, 180, 180] };
+}
+
+function _pdfHeader(pdf, title, leftMargin, topY) {
+  // Logo PID (testo stilizzato) + titolo
+  pdf.setFillColor(111, 224, 168);
+  pdf.rect(leftMargin, topY, 6, 6, "F");
+  pdf.setTextColor(40, 40, 40);
+  pdf.setFontSize(14);
+  pdf.setFont("helvetica", "bold");
+  pdf.text("PID", leftMargin + 9, topY + 5);
+  pdf.setFontSize(8);
+  pdf.setFont("helvetica", "normal");
+  pdf.setTextColor(120, 120, 120);
+  pdf.text("Players Intelligence Database", leftMargin + 22, topY + 5);
+  // Titolo a destra
+  pdf.setFontSize(9);
+  pdf.setTextColor(100, 100, 100);
+  const titleW = pdf.getTextWidth(title);
+  pdf.text(title, 210 - leftMargin - titleW, topY + 5);
+  // Linea separatrice
+  pdf.setDrawColor(200, 200, 200);
+  pdf.setLineWidth(0.3);
+  pdf.line(leftMargin, topY + 9, 210 - leftMargin, topY + 9);
+}
+
+async function _pdfDrawPlayerCard(pdf, player, leftMargin, topY) {
+  // Box con foto + dati giocatore. Ritorna la Y di fine box.
+  const data = _pdfPlayerData(player);
+  const cardW = 210 - 2 * leftMargin;
+  const cardH = 36;
+  // Background
+  pdf.setFillColor(248, 248, 248);
+  pdf.roundedRect(leftMargin, topY, cardW, cardH, 2, 2, "F");
+  // Foto
+  const photoX = leftMargin + 3;
+  const photoY = topY + 3;
+  const photoSize = 30;
+  let drawn = false;
+  // Priorità: sortitoutsi_face_url poi photo_url
+  for (const url of [data.sotsFaceUrl, data.photoUrl]) {
+    if (!url) continue;
+    const dataUrl = await _pdfFetchImage(url);
+    if (dataUrl) {
+      try {
+        pdf.addImage(dataUrl, "PNG", photoX, photoY, photoSize, photoSize);
+        drawn = true;
+        break;
+      } catch (e) {
+        try {
+          pdf.addImage(dataUrl, "JPEG", photoX, photoY, photoSize, photoSize);
+          drawn = true;
+          break;
+        } catch (e2) {
+          console.warn("[pdf] addImage failed:", e2);
+        }
+      }
+    }
+  }
+  if (!drawn) {
+    pdf.setFillColor(220, 220, 220);
+    pdf.rect(photoX, photoY, photoSize, photoSize, "F");
+    pdf.setTextColor(140, 140, 140);
+    pdf.setFontSize(7);
+    pdf.text("no photo", photoX + 7, photoY + 17);
+  }
+  // Dati giocatore (a destra della foto)
+  const txtX = photoX + photoSize + 6;
+  let y = topY + 7;
+  pdf.setTextColor(20, 20, 20);
+  pdf.setFontSize(13);
+  pdf.setFont("helvetica", "bold");
+  pdf.text(data.name, txtX, y);
+  y += 6;
+  pdf.setFontSize(9);
+  pdf.setFont("helvetica", "normal");
+  pdf.setTextColor(80, 80, 80);
+  // Riga 1: anno · età · club
+  pdf.text(`${_pdfT("pdf_field_year", "Anno")}: ${data.year}  ·  ${_pdfT("pdf_field_age", "Età")}: ${data.age}  ·  ${_pdfT("pdf_field_club", "Club")}: ${data.club}`, txtX, y);
+  y += 5;
+  // Riga 2: altezza · piede · ruolo
+  pdf.text(`${_pdfT("pdf_field_height", "Altezza")}: ${data.height}  ·  ${_pdfT("pdf_field_foot", "Piede")}: ${data.foot}  ·  ${_pdfT("pdf_field_role", "Ruolo")}: ${data.role}`, txtX, y);
+  return topY + cardH + 4;
+}
+
+async function exportObservationPDF(observationId, playerId) {
+  // Esporta PDF di una singola osservazione.
+  if (!window.jspdf) {
+    alert(_pdfT("pdf_loading_lib", "Caricamento libreria PDF..."));
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+  const leftMargin = 12;
+
+  // Carica giocatore + osservazione
+  const player = (window.state?.players || []).find(p => p.tm_player_id === playerId);
+  if (!player) {
+    alert("Giocatore non trovato.");
+    return;
+  }
+  const allObs = window._obsAllCache || (await window.fetchObservations());
+  const obs = (allObs || []).find(o => o.id === observationId);
+  if (!obs) {
+    alert("Osservazione non trovata.");
+    return;
+  }
+
+  // Header
+  _pdfHeader(pdf, _pdfT("pdf_observation_section", "Osservazione"), leftMargin, 12);
+
+  // Card giocatore
+  let y = await _pdfDrawPlayerCard(pdf, player, leftMargin, 25);
+  y += 4;
+
+  // Sezione osservazione
+  pdf.setFillColor(245, 250, 247);
+  pdf.roundedRect(leftMargin, y, 210 - 2 * leftMargin, 9, 1.5, 1.5, "F");
+  pdf.setTextColor(50, 100, 70);
+  pdf.setFontSize(10);
+  pdf.setFont("helvetica", "bold");
+  pdf.text(`${_pdfT("pdf_observation_section", "Osservazione").toUpperCase()} — ${_pdfFmtDate(obs.match_date)} · vs ${obs.opponent} · ${obs.competition || ""}`, leftMargin + 3, y + 6);
+  y += 13;
+
+  pdf.setTextColor(40, 40, 40);
+  pdf.setFontSize(9);
+  pdf.setFont("helvetica", "normal");
+
+  // Dati relazione su 2 colonne
+  const col1X = leftMargin;
+  const col2X = leftMargin + 95;
+  const lineH = 5.5;
+  const drawRow = (label, value) => {
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(100, 100, 100);
+    pdf.text(`${label}:`, col1X, y);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(30, 30, 30);
+    pdf.text(String(value || "—"), col1X + 30, y);
+    y += lineH;
+  };
+  const drawTwoCol = (l1, v1, l2, v2) => {
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(100, 100, 100);
+    pdf.text(`${l1}:`, col1X, y);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(30, 30, 30);
+    pdf.text(String(v1 || "—"), col1X + 30, y);
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(100, 100, 100);
+    pdf.text(`${l2}:`, col2X, y);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(30, 30, 30);
+    pdf.text(String(v2 || "—"), col2X + 28, y);
+    y += lineH;
+  };
+
+  drawTwoCol(
+    _pdfT("pdf_field_mode", "Modalità"), obs.viewing_mode || "—",
+    _pdfT("pdf_field_minutes", "Minuti"), obs.minutes_played != null ? `${obs.minutes_played}'` : "—"
+  );
+  const rolesStr = Array.isArray(obs.roles_played) && obs.roles_played.length ? obs.roles_played.join(", ") : "—";
+  drawRow(_pdfT("pdf_field_position", "Posizione"), rolesStr);
+  // Performance + Tag
+  const perfStr = obs.performance_rating != null ? String(obs.performance_rating) : "—";
+  const tag = _pdfTagLabel(obs.evaluation_tags);
+  pdf.setFont("helvetica", "bold");
+  pdf.setTextColor(100, 100, 100);
+  pdf.text(`${_pdfT("pdf_field_performance", "Performance")}:`, col1X, y);
+  pdf.setFont("helvetica", "bold");
+  pdf.setTextColor(20, 130, 90);
+  pdf.text(perfStr, col1X + 30, y);
+  if (tag) {
+    pdf.setFillColor(tag.color[0], tag.color[1], tag.color[2]);
+    const tagW = pdf.getTextWidth(tag.label) + 6;
+    pdf.roundedRect(col2X, y - 3.5, tagW, 5, 1, 1, "F");
+    pdf.setTextColor(255, 255, 255);
+    pdf.setFontSize(8);
+    pdf.setFont("helvetica", "bold");
+    pdf.text(tag.label, col2X + 3, y);
+    pdf.setFontSize(9);
+  }
+  y += lineH + 1;
+
+  // Strengths
+  y += 3;
+  if (Array.isArray(obs.strengths) && obs.strengths.length) {
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(34, 130, 90);
+    pdf.text(`${_pdfT("pdf_field_strengths", "Punti di forza")}:`, col1X, y);
+    y += lineH;
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(30, 30, 30);
+    const strLines = pdf.splitTextToSize(obs.strengths.join(" · "), 210 - 2 * leftMargin);
+    strLines.forEach(line => { pdf.text(line, col1X + 3, y); y += lineH; });
+    y += 1;
+  }
+  // Weaknesses
+  if (Array.isArray(obs.weaknesses) && obs.weaknesses.length) {
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(180, 60, 60);
+    pdf.text(`${_pdfT("pdf_field_weaknesses", "Punti deboli")}:`, col1X, y);
+    y += lineH;
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(30, 30, 30);
+    const wLines = pdf.splitTextToSize(obs.weaknesses.join(" · "), 210 - 2 * leftMargin);
+    wLines.forEach(line => { pdf.text(line, col1X + 3, y); y += lineH; });
+    y += 1;
+  }
+
+  // Note
+  if (obs.notes) {
+    y += 2;
+    pdf.setFont("helvetica", "bold");
+    pdf.setTextColor(80, 80, 80);
+    pdf.text(`${_pdfT("pdf_field_notes", "Note")}:`, col1X, y);
+    y += lineH;
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(30, 30, 30);
+    pdf.setFillColor(252, 252, 252);
+    pdf.setDrawColor(220, 220, 220);
+    const noteLines = pdf.splitTextToSize(obs.notes, 210 - 2 * leftMargin - 6);
+    const noteH = noteLines.length * lineH + 4;
+    pdf.roundedRect(col1X, y - 4, 210 - 2 * leftMargin, noteH, 1, 1, "FD");
+    noteLines.forEach(line => { pdf.text(line, col1X + 3, y); y += lineH; });
+  }
+
+  // Footer
+  const footerY = 287;
+  pdf.setDrawColor(220, 220, 220);
+  pdf.setLineWidth(0.2);
+  pdf.line(leftMargin, footerY, 210 - leftMargin, footerY);
+  pdf.setFontSize(8);
+  pdf.setTextColor(140, 140, 140);
+  const insertedBy = obs.author_username || "—";
+  const createdAt = obs.created_at ? _pdfFmtDate(obs.created_at) : "";
+  pdf.text(`${_pdfT("pdf_field_scout", "Inserita da")}: ${insertedBy}  ·  ${createdAt}`, leftMargin, footerY + 4);
+  const exportTs = new Date().toLocaleDateString();
+  const exportTxt = `Export: ${exportTs}`;
+  pdf.text(exportTxt, 210 - leftMargin - pdf.getTextWidth(exportTxt), footerY + 4);
+
+  // Salva
+  const safeName = String(player.full_name || "obs").replace(/[^a-z0-9_-]/gi, "_");
+  const fname = `${_pdfT("pdf_filename_obs", "osservazione")}_${safeName}_${obs.match_date}.pdf`;
+  pdf.save(fname);
+}
+
+async function exportPlayerDossierPDF(playerId) {
+  // Esporta PDF dossier giocatore con TUTTE le sue osservazioni.
+  if (!window.jspdf) { alert(_pdfT("pdf_loading_lib", "")); return; }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
+  const leftMargin = 12;
+
+  const player = (window.state?.players || []).find(p => p.tm_player_id === playerId);
+  if (!player) { alert("Giocatore non trovato."); return; }
+  const all = window._obsAllCache || (await window.fetchObservations());
+  const obsList = (all || []).filter(o => o.tm_player_id === playerId)
+    .sort((a, b) => (b.match_date || "").localeCompare(a.match_date || ""));
+
+  if (obsList.length === 0) {
+    alert(_pdfT("pdf_no_observations", "Nessuna osservazione per questo giocatore."));
+    return;
+  }
+
+  // Header
+  _pdfHeader(pdf, _pdfT("pdf_export_dossier", "Dossier"), leftMargin, 12);
+
+  // Card giocatore
+  let y = await _pdfDrawPlayerCard(pdf, player, leftMargin, 25);
+  y += 4;
+
+  // Sezione visionature
+  pdf.setFillColor(245, 250, 247);
+  pdf.roundedRect(leftMargin, y, 210 - 2 * leftMargin, 9, 1.5, 1.5, "F");
+  pdf.setTextColor(50, 100, 70);
+  pdf.setFontSize(10);
+  pdf.setFont("helvetica", "bold");
+  pdf.text(`${_pdfT("pdf_observations_section", "Visionature").toUpperCase()} (${obsList.length})`, leftMargin + 3, y + 6);
+  y += 13;
+
+  // Tabella header
+  // Colonne: DATA | AVVERSARIO | COMP | POS | MIN | PERF | TAG
+  const tableX = leftMargin;
+  const tableW = 210 - 2 * leftMargin;
+  const cols = [
+    { key: "date", label: _pdfT("pdf_field_date", "Data"), w: 22 },
+    { key: "opp",  label: _pdfT("pdf_field_opponent", "Avversario"), w: 36 },
+    { key: "comp", label: _pdfT("pdf_field_competition", "Competiz."), w: 30 },
+    { key: "pos",  label: _pdfT("pdf_field_position", "Posizione"), w: 38 },
+    { key: "mode", label: _pdfT("pdf_field_mode", "Mod"), w: 12 },
+    { key: "min",  label: _pdfT("pdf_field_minutes", "Min"), w: 12 },
+    { key: "perf", label: _pdfT("pdf_field_performance", "Perf"), w: 14 },
+    { key: "tag",  label: "Tag", w: tableW - 22 - 36 - 30 - 38 - 12 - 12 - 14 },
+  ];
+  const drawTableHeader = (yy) => {
+    pdf.setFillColor(40, 50, 45);
+    pdf.rect(tableX, yy - 4, tableW, 6, "F");
+    pdf.setTextColor(220, 230, 225);
+    pdf.setFontSize(8);
+    pdf.setFont("helvetica", "bold");
+    let cx = tableX + 2;
+    cols.forEach(c => { pdf.text(c.label, cx, yy); cx += c.w; });
+    return yy + 4;
+  };
+  y = drawTableHeader(y);
+
+  // Righe
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(8);
+  let totalMin = 0, totalRated = 0, sumPerf = 0;
+  for (const o of obsList) {
+    if (y > 270) {
+      pdf.addPage();
+      y = 20;
+      y = drawTableHeader(y);
+    }
+    pdf.setDrawColor(230, 230, 230);
+    pdf.setLineWidth(0.1);
+    pdf.line(tableX, y - 1, tableX + tableW, y - 1);
+    pdf.setTextColor(40, 40, 40);
+    let cx = tableX + 2;
+    pdf.text(_pdfFmtDate(o.match_date), cx, y + 3); cx += cols[0].w;
+    pdf.text(String(o.opponent || "").substring(0, 20), cx, y + 3); cx += cols[1].w;
+    pdf.text(String(o.competition || "").substring(0, 18), cx, y + 3); cx += cols[2].w;
+    const pos = Array.isArray(o.roles_played) && o.roles_played.length ? o.roles_played.join(",").substring(0, 22) : "—";
+    pdf.text(pos, cx, y + 3); cx += cols[3].w;
+    pdf.text(String(o.viewing_mode || "—"), cx, y + 3); cx += cols[4].w;
+    if (o.minutes_played != null) { totalMin += o.minutes_played; }
+    pdf.text(o.minutes_played != null ? `${o.minutes_played}'` : "—", cx, y + 3); cx += cols[5].w;
+    if (o.performance_rating != null) {
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor(20, 130, 90);
+      pdf.text(String(o.performance_rating), cx, y + 3);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(40, 40, 40);
+      sumPerf += o.performance_rating;
+      totalRated++;
+    } else {
+      pdf.text("—", cx, y + 3);
+    }
+    cx += cols[6].w;
+    const tag = _pdfTagLabel(o.evaluation_tags);
+    if (tag) {
+      pdf.setFillColor(tag.color[0], tag.color[1], tag.color[2]);
+      const tw = pdf.getTextWidth(tag.label) + 4;
+      pdf.roundedRect(cx, y - 1, Math.min(tw, cols[7].w - 2), 5, 0.8, 0.8, "F");
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(7);
+      pdf.setFont("helvetica", "bold");
+      pdf.text(tag.label, cx + 2, y + 2.5);
+      pdf.setFontSize(8);
+      pdf.setFont("helvetica", "normal");
+      pdf.setTextColor(40, 40, 40);
+    }
+    y += 7;
+  }
+  // Riga totali
+  if (y > 268) { pdf.addPage(); y = 20; }
+  pdf.setDrawColor(160, 160, 160);
+  pdf.setLineWidth(0.4);
+  pdf.line(tableX, y - 1, tableX + tableW, y - 1);
+  pdf.setFillColor(245, 250, 247);
+  pdf.rect(tableX, y - 0.5, tableW, 6, "F");
+  pdf.setTextColor(40, 80, 60);
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(8);
+  pdf.text(_pdfT("pdf_field_total", "TOTALE"), tableX + 2, y + 3);
+  pdf.text(`${obsList.length} ${obsList.length === 1 ? "partita" : "partite"}`, tableX + 22 + 2, y + 3);
+  pdf.text(`${totalMin}'`, tableX + 22 + 36 + 30 + 38 + 12 + 2, y + 3);
+  if (totalRated > 0) {
+    const avg = (sumPerf / totalRated).toFixed(2);
+    pdf.text(avg, tableX + 22 + 36 + 30 + 38 + 12 + 12 + 2, y + 3);
+  }
+  y += 9;
+
+  // Footer
+  const footerY = 287;
+  pdf.setDrawColor(220, 220, 220);
+  pdf.setLineWidth(0.2);
+  pdf.line(leftMargin, footerY, 210 - leftMargin, footerY);
+  pdf.setFontSize(8);
+  pdf.setTextColor(140, 140, 140);
+  const exportTs = new Date().toLocaleDateString();
+  pdf.text(`PID Dossier · ${exportTs}`, leftMargin, footerY + 4);
+  pdf.text(`${obsList.length} osservazion${obsList.length === 1 ? "e" : "i"}`, 210 - leftMargin - 30, footerY + 4);
+
+  // Salva
+  const safeName = String(player.full_name || "dossier").replace(/[^a-z0-9_-]/gi, "_");
+  pdf.save(`${_pdfT("pdf_filename_dossier", "dossier")}_${safeName}.pdf`);
+}
+
+// Handler delegato per bottone PDF nel modal di edit
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest("#obs-export-pdf-btn");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const obsId = btn.dataset.obsId;
+  const pid = parseInt(btn.dataset.pid);
+  if (!obsId || !pid) return;
+  exportObservationPDF(obsId, pid).catch(err => {
+    console.warn("[pdf] export obs failed", err);
+    alert("Errore esportazione PDF: " + err.message);
+  });
+});
+
+// Handler delegato per bottone Dossier PDF nel pannello scouting
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".scouting-export-pdf-btn");
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const pid = parseInt(btn.dataset.pid);
+  if (!pid) return;
+  exportPlayerDossierPDF(pid).catch(err => {
+    console.warn("[pdf] export dossier failed", err);
+    alert("Errore esportazione dossier: " + err.message);
+  });
+});
+
+window.exportObservationPDF = exportObservationPDF;
+window.exportPlayerDossierPDF = exportPlayerDossierPDF;
+
+// Auto-injection: dopo ogni render del pannello scouting, aggiunge bottoni "📄 PDF dossier" alle righe giocatore
+(function _setupScoutingPdfBtns() {
+  if (typeof MutationObserver === "undefined") return;
+  const observe = () => {
+    const root = document.getElementById("observations-scouting-content") || document.getElementById("scouting-content") || document.body;
+    if (!root) return;
+    const mo = new MutationObserver(() => {
+      root.querySelectorAll(".scouting-player-row").forEach(row => {
+        if (row.dataset.pdfBtnInjected === "1") return;
+        const pid = row.dataset.pid;
+        if (!pid) return;
+        const btn = document.createElement("button");
+        btn.className = "scouting-export-pdf-btn";
+        btn.dataset.pid = pid;
+        btn.title = (typeof window.t === "function" && window.t("pdf_export_dossier")) || "Dossier PDF";
+        btn.textContent = "📄";
+        btn.style.cssText = "position: absolute; right: 38px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 6px; background: rgba(96,165,250,0.10); color: #60A5FA; border: 0.5px solid rgba(96,165,250,0.30); cursor: pointer; font-size: 12px; line-height: 1; padding: 0; z-index: 2;";
+        if (getComputedStyle(row).position === "static") row.style.position = "relative";
+        row.appendChild(btn);
+        row.dataset.pdfBtnInjected = "1";
+      });
+    });
+    mo.observe(root, { childList: true, subtree: true });
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", observe);
+  } else {
+    observe();
+  }
+})();

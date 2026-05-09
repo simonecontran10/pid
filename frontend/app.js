@@ -6483,6 +6483,9 @@ async function importSavesFromFile(file) {
     };
     saveCallups(state.callup.store);
     alert(`Importato come "${name}"`);
+  } else if (payload.type === "pid_observations_export") {
+    await importObservationsFromFile(payload);
+    return; // non ricarica savesPanel manualmente, lo fa importObservationsFromFile
   } else {
     alert(`Tipo file sconosciuto: "${payload.type}"`);
     return;
@@ -6670,6 +6673,20 @@ function renderSavesPanel() {
         </div>
         ${callupRows || empty(T("Nessuna convocazione salvata. Vai su 'Convocazione' per crearne una.", "No saved call-ups. Go to 'Call-up' to create one."))}
       </section>
+
+      <!-- OSSERVAZIONI -->
+      <section style="margin-top: 24px; background: var(--surface); border: 0.5px solid var(--border); border-radius: 12px; padding: 16px;" id="saves-obs-section">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="saves-section-title">📝 ${T("Osservazioni", "Observations")}</span>
+            <span id="saves-obs-count-badge" style="font-size: 11px; color: var(--text-3); padding: 2px 8px; background: rgba(255,255,255,0.06); border-radius: 999px;">…</span>
+          </div>
+          <button class="saves-import-btn" data-act="import-obs">📥 ${T("Importa", "Import")}</button>
+        </div>
+        <div id="saves-obs-content">
+          <div style="padding: 14px; text-align: center; color: var(--text-3); font-size: 12px;">${T("Caricamento…", "Loading…")}</div>
+        </div>
+      </section>
     </div>
   `;
 
@@ -6687,6 +6704,7 @@ function renderSavesPanel() {
         case "dup-callup": duplicateCallupSave(name); break;
         case "exp-callup": exportCallupSave(name); break;
         case "del-callup": deleteCallupSave(name); break;
+        case "exp-obs": exportObservationsJSON(); break;
       }
     });
   });
@@ -6703,7 +6721,167 @@ function renderSavesPanel() {
       e.target.value = ""; // reset
     });
   }
+
+  // Render summary delle osservazioni nella sezione Osservazioni
+  _renderObsSummary().catch(err => console.warn("[saves-obs] render error", err));
 }
+
+// ============================================================
+// EXPORT/IMPORT OSSERVAZIONI (Supabase)
+// ============================================================
+
+async function _renderObsSummary() {
+  const content = document.getElementById("saves-obs-content");
+  const badge = document.getElementById("saves-obs-count-badge");
+  if (!content || !badge) return;
+
+  const T = (it, en) => currentLang === "it" ? it : en;
+
+  let all = window._obsAllCache;
+  if (!all) {
+    try {
+      all = await window.fetchObservations();
+      window._obsAllCache = all;
+    } catch (e) {
+      content.innerHTML = `<div style="padding: 14px; text-align: center; color: #FCA5A5; font-size: 12px;">${T("Errore caricamento osservazioni", "Error loading observations")}: ${escapeHtml(String(e))}</div>`;
+      badge.textContent = "—";
+      return;
+    }
+  }
+  const obsList = Array.isArray(all) ? all : [];
+  badge.textContent = String(obsList.length);
+
+  if (obsList.length === 0) {
+    content.innerHTML = `<div style="padding: 24px 14px; text-align: center; color: var(--text-3); font-size: 12px; background: rgba(255,255,255,0.02); border: 0.5px dashed var(--border); border-radius: 8px;">${T("Nessuna osservazione registrata. Vai sul profilo di un giocatore per aggiungerne una.", "No observations yet. Go to a player profile to add one.")}</div>`;
+    return;
+  }
+
+  const playersCount = new Set(obsList.map(o => o.tm_player_id)).size;
+  const lastUpdated = obsList.reduce((max, o) => {
+    const ts = o.updated_at || o.created_at || "";
+    return ts > max ? ts : max;
+  }, "");
+
+  content.innerHTML = `
+    <div class="saves-row" style="display: grid; grid-template-columns: 1.5fr 1fr 1fr auto; gap: 12px; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); border: 0.5px solid var(--border); border-radius: 8px;">
+      <div style="min-width: 0;">
+        <div class="truncate" style="font-size: 13px; font-weight: 600; color: var(--text-1);">${T("Tutte le mie osservazioni", "All my observations")}</div>
+        <div class="truncate" style="font-size: 10px; color: var(--text-3); margin-top: 2px;">${obsList.length} ${obsList.length === 1 ? T("relazione", "report") : T("relazioni", "reports")} · ${playersCount} ${playersCount === 1 ? T("giocatore", "player") : T("giocatori", "players")}</div>
+      </div>
+      <div style="font-size: 11px; color: var(--text-3);">${T("Ultimo agg.", "Last update")}: <span style="color: var(--text-2);">${_formatTs(lastUpdated)}</span></div>
+      <div style="font-size: 11px; color: var(--text-3); font-style: italic;">💡 ${T("Per il PDF dei singoli giocatori vai su Scouting", "For per-player PDFs use Scouting")}</div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="save-action-btn" data-act="exp-obs">⬇️ ${T("Esporta JSON", "Export JSON")}</button>
+      </div>
+    </div>
+  `;
+
+  // Aggancia il listener del bottone (event delegation è già montata sopra ma non rilegge i nuovi nodi —
+  // re-montiamo il listener per il nuovo bottone)
+  content.querySelectorAll(".save-action-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const act = btn.dataset.act;
+      if (act === "exp-obs") exportObservationsJSON();
+    });
+  });
+}
+
+async function exportObservationsJSON() {
+  const all = window._obsAllCache || (await window.fetchObservations());
+  if (!Array.isArray(all) || all.length === 0) {
+    alert(currentLang === "it" ? "Nessuna osservazione da esportare." : "No observations to export.");
+    return;
+  }
+  const username = _currentUsername();
+  const payload = {
+    type: "pid_observations_export",
+    version: 1,
+    exported_at: new Date().toISOString(),
+    exported_by: username,
+    count: all.length,
+    observations: all.map(o => ({
+      tm_player_id: o.tm_player_id,
+      match_date: o.match_date,
+      opponent: o.opponent,
+      competition: o.competition,
+      viewing_mode: o.viewing_mode ?? null,
+      performance_rating: o.performance_rating ?? null,
+      minutes_played: o.minutes_played ?? null,
+      roles_played: o.roles_played || [],
+      evaluation_tags: o.evaluation_tags || [],
+      strengths: o.strengths || [],
+      weaknesses: o.weaknesses || [],
+      notes: o.notes ?? null,
+      author_username: o.author_username || null,
+      created_at: o.created_at || null,
+    })),
+  };
+  const ts = new Date().toISOString().substring(0, 10);
+  _downloadJSON(`osservazioni_${ts}.json`, payload);
+}
+
+async function importObservationsFromFile(payload) {
+  // payload: oggetto già parsato da JSON
+  if (!payload || payload.type !== "pid_observations_export" || !Array.isArray(payload.observations)) {
+    alert("File non valido (atteso pid_observations_export).");
+    return;
+  }
+  const T = (it, en) => currentLang === "it" ? it : en;
+  const incoming = payload.observations;
+  if (incoming.length === 0) {
+    alert(T("File vuoto.", "Empty file."));
+    return;
+  }
+
+  // Trova duplicati: stesso tm_player_id + match_date + opponent
+  const all = window._obsAllCache || (await window.fetchObservations()) || [];
+  const existingKeys = new Set(all.map(o => `${o.tm_player_id}|${o.match_date}|${o.opponent}`));
+  const dups = incoming.filter(o => existingKeys.has(`${o.tm_player_id}|${o.match_date}|${o.opponent}`));
+  const newOnes = incoming.filter(o => !existingKeys.has(`${o.tm_player_id}|${o.match_date}|${o.opponent}`));
+
+  let mode = "all";
+  if (dups.length > 0) {
+    const choice = window.prompt(
+      T(`Trovate ${dups.length} osservazioni già presenti su ${incoming.length} totali.\n\nDigita:\n  1 per Sovrascrivere tutte\n  2 per Saltare i duplicati\n  3 per Annullare`,
+        `Found ${dups.length} duplicates out of ${incoming.length} total.\n\nType:\n  1 to Overwrite all\n  2 to Skip duplicates\n  3 to Cancel`),
+      "2"
+    );
+    if (choice === "1") mode = "overwrite";
+    else if (choice === "2") mode = "skip";
+    else return;
+  }
+
+  let okC = 0, errC = 0, skipC = 0;
+  // Inserisco i nuovi
+  for (const o of newOnes) {
+    try {
+      const r = await window.saveObservation(o);
+      if (r.error) { errC++; console.warn("save err", r.error); }
+      else okC++;
+    } catch (e) { errC++; }
+  }
+  // Gestisci duplicati
+  if (mode === "overwrite") {
+    for (const o of dups) {
+      const existing = all.find(e => e.tm_player_id === o.tm_player_id && e.match_date === o.match_date && e.opponent === o.opponent);
+      if (!existing) continue;
+      try {
+        const r = await window.updateObservation(existing.id, o);
+        if (r.error) { errC++; } else okC++;
+      } catch (e) { errC++; }
+    }
+  } else if (mode === "skip") {
+    skipC = dups.length;
+  }
+  window._obsAllCache = null; // invalida cache
+  alert(T(`Importate ${okC} osservazioni (${skipC} saltate, ${errC} errori).`,
+          `Imported ${okC} observations (${skipC} skipped, ${errC} errors).`));
+  if (typeof renderSavesPanel === "function") renderSavesPanel();
+}
+
+window.exportObservationsJSON = exportObservationsJSON;
+window.importObservationsFromFile = importObservationsFromFile;
+
 
 // ============ INIT ============
 // Handler delegato per bottoni "+ osservazione" nelle ultime partite e drill-down
