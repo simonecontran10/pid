@@ -4,7 +4,8 @@ name: Auto Update Daily (stats only)
 # Aggiorna solo i dati delle partite (run_stats.py --refresh): ~25-40 min
 on:
   schedule:
-    - cron: "0 3 * * *"
+    - cron: "0 3 * * *"   # primario: 03:00 UTC = 05:00 italiana (estate)
+    - cron: "30 6 * * *"  # backup: parte se il primario salta (skip occasionali GitHub)
   workflow_dispatch:  # permette run manuale dal tab Actions
 
 concurrency:
