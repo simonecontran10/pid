@@ -95495,5 +95495,39 @@
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/508642.jpg"
+  },
+  {
+    "tm_player_id": 1108466,
+    "full_name": "Rio Ngumoha",
+    "name_arabic": "Rio Bass Ray Ngumoha Adigun",
+    "date_of_birth": "2008-08-29",
+    "age": 17,
+    "height_cm": 170,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Right Winger",
+      "Left Midfield"
+    ],
+    "place_of_birth": "London",
+    "citizenships": [
+      "England",
+      "Nigeria"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 31,
+    "current_club_name": "Liverpool",
+    "shirt_number": 73,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1108466-1730834754.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1108466",
+    "fetched_at": "2026-05-09T20:17:04Z",
+    "roster_club_id": 31,
+    "roster_club_name": "Liverpool",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1108466.jpg"
   }
 ]
