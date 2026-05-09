@@ -44,6 +44,15 @@ COMPETITIONS = {
         "name": "Serie C - Girone C",
         "url": "https://sortitoutsi.net/football-manager-2026/competition/43127174/italian-serie-cc",
     },
+    "PL1": {
+        "name": "Polish Ekstraklasa",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/129558/pko-bank-polski-ekstraklasa",
+    },
+    "PL2": {
+        "name": "Polish I Liga",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/129559/polish-first-division",
+    },
+
 
 }
 
