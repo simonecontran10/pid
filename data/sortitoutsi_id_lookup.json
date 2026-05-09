@@ -13235,8 +13235,8 @@
     "matched_via": "manual_override_8mag"
   },
   "991459": {
-    "sots_id": 2000150888,
-    "name": "Daniel Mikołajewski",
+    "sots_id": 96109884,
+    "name": "Daniel Mikolajewski",
     "match_score": 1.0,
     "matched_via": "manual_override_8mag"
   },
@@ -19032,6 +19032,108 @@
   "1202299": {
     "sots_id": 2000297870,
     "name": "Nadir El Jamali",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "925778": {
+    "sots_id": 2000144515,
+    "name": "Aleksander Gajgier",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1261639": {
+    "sots_id": 2000518968,
+    "name": "Alex Peskovic",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "1126321": {
+    "sots_id": 2000278712,
+    "name": "Antoni Młynarczyk",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "520503": {
+    "sots_id": 96134804,
+    "name": "Bartłomiej Gradecki",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "576569": {
+    "sots_id": 96127067,
+    "name": "Bartłomiej Ciepiela",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "697437": {
+    "sots_id": 2000047005,
+    "name": "Bartłomiej Kłudka",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "153667": {
+    "sots_id": 96015473,
+    "name": "Bartłomiej Pawłowski",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "697875": {
+    "sots_id": 2000188171,
+    "name": "Bartosz Farbiszewski",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "772903": {
+    "sots_id": 2000131165,
+    "name": "Bekzod Akhmedov",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "177276": {
+    "sots_id": 71049091,
+    "name": "Bogdan Sarnavskyi",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "623331": {
+    "sots_id": 71108252,
+    "name": "Bogdan Viunnyk",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "110231": {
+    "sots_id": 54005161,
+    "name": "Damian Jaroń",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "335294": {
+    "sots_id": 96078126,
+    "name": "Damian Warchoł",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "717662": {
+    "sots_id": 96159228,
+    "name": "Dawid Barnowski",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "861192": {
+    "sots_id": 2000121677,
+    "name": "Dimitrios Keramitsis",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "598565": {
+    "sots_id": 96142884,
+    "name": "Dominik Połap",
+    "match_score": 1.0,
+    "matched_via": "manual_override_8mag"
+  },
+  "532377": {
+    "sots_id": 96128364,
+    "name": "Dominik Sokół",
     "match_score": 1.0,
     "matched_via": "manual_override_8mag"
   }
