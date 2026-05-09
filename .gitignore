@@ -66,3 +66,6 @@ progetto_saudi_REFERENCE.md
 # File >100MB (limite GitHub) — ricreabile localmente con run_stats.py
 data/players_stats.json
 data/players_stats.json
+
+# Patch script applicati una tantum (non committare)
+patch_*.py
