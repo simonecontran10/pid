@@ -5529,3 +5529,112 @@ Branch `feat/observation-player-team` non eliminato (deletable da GitHub UI come
 | Fase 5 PDF Export osservazione (rifinitura layout) | BASSA | 2h | Era Fase 5 originale |
 | Fase 6 JSON Export/Import osservazioni | BASSA | 45 min | Era Fase 6 originale |
 
+
+---
+
+## 10 maggio 2026 — Feature player_team end-to-end + dropdown grids
+
+### Contesto e obiettivo
+
+Sergej Levak osservato a marzo gioca nell'Atalanta U23. A giugno potrebbe andare al PSG. L'osservazione di marzo deve restare correttamente "Atalanta U23 vs Casertana", non diventare "PSG vs Casertana" quando il giocatore cambia club. Serviva uno snapshot storico della squadra del giocatore al momento dell'osservazione. Implementato come campo nuovo `player_team` su `player_observations` Supabase, render con loghi inline ovunque (modal giocatore, sidebar Scouting, PDF singola, PDF dossier).
+
+### Decisioni di design
+
+- **Snapshot storico**, non current_club: salvataggio del nome club al momento dell'inserimento. Modificabile in form (caso Primavera→prima squadra: oggi è in Primavera, gioca con la prima squadra → cambio manualmente).
+- **Default precompilato**: form mostra `current_club_name` come default ma editabile.
+- **Pre-fill dal "+" Ultime partite**: aggiunto `data-team` ai bottoni che apre il form già con tutti i campi compilati (data, opponent, player_team, competition, minuti).
+- **Backfill = no**: vecchie osservazioni con `player_team = null` mostrano solo opponent (compatibilità retroattiva). Aggiornamento manuale solo dove serve.
+- **PDF testo only, no loghi**: nel PDF singola/dossier solo stringa "Squadra vs Avversario" per evitare 400ms extra di rasterizzazione loghi e ridondanza con logo già presente nell'header giocatore.
+
+### Implementazione
+
+**Step 1 — DB Supabase**: `ALTER TABLE player_observations ADD COLUMN player_team TEXT` (nullable). Su SQL Editor, success no rows.
+
+**Step 2 — Form osservazione** (`observations_ui.js`, +1339 char):
+- Nuove i18n IT/EN: `f_player_team`, `f_player_team_ph`, `th_player_team`, `th_match`
+- Default value: `editing?.player_team || prefill?.player_team || (player?.current_club_name || "")`
+- HTML form: layout 3-righe (data full-width, poi player_team + opponent side-by-side)
+- Submit + validazione + payload Supabase con `player_team`
+- Edit pre-fill: replicato il fix datalist HTML5 glitch già esistente per opponent
+
+**Step 3 — Render con logo + nome** (+2693 char):
+- Helper `_obsGetClubByName(name)` con cache lazy `state.clubs` (lookup nome → club obj per logo)
+- Helper `_obsRenderTeamInline(name)` HTML logo 14x14 + escapeHtml(prettyName)
+- Modal giocatore tabella: colonna "Match" unificata `[logo] Squadra vs [logo] Avversario`
+- Sidebar Scouting: stesso pattern uniforme con loghi inline
+- PDF singola osservazione: testo header `Atalanta U23 vs Casertana` (no loghi)
+- PDF dossier tabella REPORTS: colonna "Match" sostituisce "Avversario", concatena `player_team + vs + opponent`, larghezza 50mm (era 36)
+
+### Bug fix correlati durante test produzione
+
+Sequenza di 4 bug emersi a cascata durante il testing della feature:
+
+**Bug 1 — `v.player_team is not defined`** (commit `f45bbc4`)
+PATCH F dello Step 2 usava `v.player_team` dentro `_wireObsCompose`, ma `v` esiste solo in `_obsComposeHtml`. Errore di scope, ho copiato la struttura del JSX senza accorgermi che `v` non era nello scope di `_wireObsCompose`. Sostituito con `player?.current_club_name`.
+
+**Bug 2 — `_pdfTranslatePosition is not defined`** (commit `b81282a`)
+Funzione chiamata in `_pdfPlayerData` riga 1346 ma mai definita. Bug PRE-ESISTENTE non causato dal lavoro di oggi: emerso solo provando export dossier. Soluzione: chiamata `localizeRole(rawRole)` di `app.js` (mappa ROLE_TRANSLATIONS già esistente per IT/EN/FR/AR), con typeof fallback graceful.
+
+**Bug 3 — `_pdfTranslateFoot is not defined`** (commit `844c221`)
+Gemello di Bug 2. Funzione mai definita (anche se citata nel diario v5 di ieri "traduzione foot left→sinistro"). Soluzione: mini-funzione inline con map IT `{left: "sinistro", right: "destro", both: "ambidestro"}` + fallback a `player.foot` raw.
+
+**Bug 4 — Avversario non pre-compilato dal "+"** (stesso commit `844c221`)
+PRE-ESISTENTE. `_wireObsCompose` controllava SOLO `editing.opponent` per applicare il fix datalist HTML5, NON `prefill.opponent`. In modalità prefill (click `+` su Ultime partite) l'input opponent restava vuoto pur avendo il valore in `_obsPrefill`. Soluzione: estesa firma `_wireObsCompose(player, editing, prefill)`, fix JS gestisce entrambe le modalità.
+
+### Workflow PR ed errori procedurali
+
+Pull request #2 `feat/observation-player-team` mergiata su main come `02f93c2`. Però il commit fix `f45bbc4` (`v.player_team` scope) è stato pushato solo sul **branch**, non su main. Vercel deploya da main → produzione restava col bug. Diagnosticato con `git log origin/main` che mostrava `e0b5cd2` invece del commit fix. Risolto con merge da terminale (giustificato per hotfix evidente, niente review formale).
+
+### Bonus fix grids dropdown campionati (commit `65800d4`)
+
+Problema visivo: dropdown nella tab Griglie mostrava codici criptici (SA, SB, C-A, P1, EKS, L1, Other) usando le chiavi i18n `league_short_*`. Nel dropdown principale (tab Lista/Home) erano già giuste con `league_*` ("Serie A", "Serie B", ecc.). Allineato: sostituito 9 chiavi `league_short_*` → `league_*`, aumentato `min-width: 100px → 140px` per dare spazio ai nomi lunghi. Le chiavi `league_short_*` restano in `i18n.js` per altri usi (badge compatti nelle card giocatore).
+
+### Loghi club esteri mancanti — diagnosi e rinvio
+
+Investigato perché 7 dei tuoi preferiti senza logo club (Mathys Detourbet/Troyes, Nadir El Jamali/Saint-Étienne, Triston Rowe/FC Annecy, Jeremy Monga/Leicester, Ibrahim El Kadiri/De Graafschap, Rio Ngumoha/Liverpool, Julius Emefile/Midtjylland U19, Víctor Muñoz/CA Osasuna).
+
+Diagnosi: i club ESISTONO in `clubs.json` con `tm_club_id` valorizzato ma `league_id = "CL"` (catch-all per club esteri non delle 6 leghe scrappate). Tutti hanno `sortitoutsi_team_id = null`, `sortitoutsi_logo_url = null`, `logo_url = null`, e i PNG locali in `clubs_sots/{id}.png` non esistono. Quindi `clubLogo()` ritorna null per tutti i 4 fallback strategici, comportamento atteso.
+
+Stesso pattern per i giocatori (`sortitoutsi_person_id = null` per tutti).
+
+**Decisione**: rinvio task a sessione dedicata. Workflow `auto_update_full.yml` esiste ma è schedulato solo in finestra mercato (15 giu→15 set, 1 gen→15 feb). Oggi 10 mag fuori finestra. Lanciarlo manualmente per 11 giocatori sarebbe sproporzionato (1-2h GitHub Actions). Aggiunto al backlog: scrivere workflow `auto_enrich_metadata.yml` settimanale fuori-finestra che fa solo enrichment metadati (foto/loghi) senza scraping pesante leghe.
+
+### Lezioni apprese
+
+**Anchor di patch su codice eseguibile, mai su commenti**: il primo tentativo PATCH G usava un commento cosmetico (`* 4. prettyClubName...`) come ancora. Match Python fallito per escape sequence delicate. Lezione: sempre `function name() {` o costanti top-level, mai testo cosmetico.
+
+**`v` (form values) ha scope solo in `_obsComposeHtml`**: se uso una variabile in `_wireObsCompose` devo derivarla dal parametro player (`player?.current_club_name`) oppure cambiare la firma per ricevere `prefill` esplicitamente. Sbaglio di scope incollando struttura template senza pensare.
+
+**Bug pre-esistenti emergono solo cliccando**: `_pdfTranslatePosition` e `_pdfTranslateFoot` erano ROTTE da prima ma nessuno aveva mai cliccato Export PDF in produzione fino ad oggi. Il diario menzionava "v5 traduzione foot/position fatta" ma evidentemente la funzione era stata persa in un cleanup successivo. Lezione: ogni feature di export andrebbe testata manualmente almeno una volta dopo refactor importanti.
+
+**PR mergiata ≠ tutti i commit del branch in main**: dopo merge della PR #2, ho continuato a pushare fix sul branch invece che su main. Vercel restava col codice rotto. Imparata di nuovo (era già nel diario di ieri sera): **dopo ogni merge fare git pull main, fare il fix lì, push diretto se hotfix evidente o nuova PR se serve review**.
+
+**Cache browser inganna il debug**: dopo il merge del fix, lo screenshot del PDF dossier mostrava ancora il bug vecchio. Causa: cache Chrome serviva il vecchio observations_ui.js. Soluzione: Cmd+Shift+R aggressivo, o "Empty Cache and Hard Reload" da DevTools, o finestra incognito. Quando un fix sembra "non arrivato" in produzione, prima sospettare cache e verificare con tab Network il `?v=` del file servito.
+
+### Commit pushati nella sessione
+
+- `796fb14` feat(observations): aggiunto campo player_team (snapshot storico squadra giocatore)
+- `02f93c2` Merge pull request #2 from simonecontran10/feat/observation-player-team
+- `f45bbc4` fix(observations): scope error v.player_team in _wireObsCompose
+- `5a6e8cd` Merge branch 'feat/observation-player-team' (manuale dopo merge PR + hotfix)
+- `b81282a` fix(observations-pdf): _pdfTranslatePosition non definita -> uso localizeRole
+- `844c221` fix(observations): 3 bug post-feature player_team (avversario prefill + _pdfTranslateFoot + data-team)
+- `ad5d4fd` feat(observations-pdf): dossier mostra player_team nella tabella REPORTS
+- `65800d4` fix(grids): dropdown filtro campionati con label complete
+
+Branch `feat/observation-player-team` non eliminato (deletable da GitHub UI come `feat/batch-add-player` di ieri).
+
+### TODO aggiornato post-sessione
+
+| Task | Priorità | Stima | Note |
+|---|---|---|---|
+| Workflow `auto_enrich_metadata.yml` settimanale (foto+loghi) | ALTA | 1-2h | Settimanale fuori finestra mercato. Rate limit SOTS, fuzzy match, override manuale. Risolve buchi di Detourbet/Emefile/Rowe ecc. |
+| Espansione SOTS competizioni internazionali (DK, top 5, UCL) | ALTA | 30-60 min | Pre-requisito per task sopra |
+| Recupero retroattivo foto Emefile + altri unmatched stranieri | ALTA | 10 min | Dopo espansione SOTS |
+| Integrazione find_more_sots_matches in add_player.yml | MEDIA | 10-30 min | Opzione A (quick) o B (refactor pulito) |
+| Espansione 5 leghe top + CL (Portogallo pilota) | ALTA | 17-23h | Obiettivo macro |
+| Cleanup naming legacy Saudi (PLAYERS_STATIC_FILE) | BASSA | 2h | Debito tecnico |
+| Drag-and-drop reordering Griglie tab depth chart | BASSA | 1-2h | Era nel TODO di ieri, rimandato di nuovo |
+| Fase 5 PDF Export osservazione (rifinitura layout) | BASSA | 2h | Era Fase 5 originale |
+| Fase 6 JSON Export/Import osservazioni | BASSA | 45 min | Era Fase 6 originale |
+
