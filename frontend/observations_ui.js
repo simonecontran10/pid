@@ -484,7 +484,7 @@ window.openObservationCompose = async function(pid, obsId = null) {
 
   document.getElementById("obs-compose-overlay")?.remove();
   document.body.insertAdjacentHTML("beforeend", _obsComposeHtml(player, editing, prefill));
-  setTimeout(() => _wireObsCompose(player, editing), 0);
+  setTimeout(() => _wireObsCompose(player, editing, prefill), 0);
 };
 
 // ====================================================================
@@ -814,7 +814,7 @@ function _wireFieldClicks() {
   });
 }
 
-function _wireObsCompose(player, editing) {
+function _wireObsCompose(player, editing, prefill) {
   document.getElementById("obs-cancel-btn")?.addEventListener("click", _closeObsCompose);
   document.getElementById("obs-cancel-btn-2")?.addEventListener("click", _closeObsCompose);
   document.getElementById("obs-compose-overlay")?.addEventListener("click", (e) => {
@@ -830,12 +830,14 @@ function _wireObsCompose(player, editing) {
     // In nuovo: usa current_club_name del giocatore (default ragionevole)
     const initialPT = (editing && editing.player_team)
       ? editing.player_team
-      : (player?.current_club_name || "");
+      : ((prefill && prefill.player_team) || (player?.current_club_name || ""));
     if (initialPT) playerTeamInput.value = initialPT;
   }
   const opponentInput = document.getElementById("obs-opponent");
-  if (opponentInput && editing && editing.opponent) {
-    opponentInput.value = editing.opponent;
+  if (opponentInput) {
+    // Fix HTML5 datalist glitch: applico value via JS sia in edit che in prefill mode
+    const initialOpp = (editing && editing.opponent) || (prefill && prefill.opponent) || "";
+    if (initialOpp) opponentInput.value = initialOpp;
   }
 
   _wireFieldClicks();
@@ -1348,7 +1350,11 @@ function _pdfPlayerData(player) {
   const year = dob ? dob.substring(0, 4) : "—";
   const age = player.age != null ? String(player.age) : "—";
   const club = player.current_club_name || "—";
-  const foot = _pdfTranslateFoot(player.foot);
+  const _footMapIt = { left: "sinistro", right: "destro", both: "ambidestro" };
+  const _footRaw = String(player.foot || "").toLowerCase();
+  const foot = (typeof currentLang !== "undefined" && currentLang === "it" && _footMapIt[_footRaw])
+    ? _footMapIt[_footRaw]
+    : (player.foot || "—");
   // Path locali (no CORS) come priorità, poi URL CDN come fallback
   const photoPaths = [];
   // PRIORITÀ: SOTS locale > TM locale > URL CDN (no CORS)

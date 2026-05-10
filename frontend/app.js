@@ -1936,7 +1936,7 @@ function _renderDrillDownMatch(m, stats) {
       <span class="stat-cell" style="font-size: 12px; font-weight: 600; color: var(--text-1); text-align: center;">${score}</span>
       <span class="stat-cell" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; background: ${resBg}; color: ${resColor}; font-weight: 700; font-size: 10px; border: 0.5px solid ${resColor}40;">${resLetter}</span>
       <span class="stat-cell" style="font-size: 12px; font-weight: 700; color: ${m.minutes?'var(--accent)':'var(--text-3)'}; text-align: right; padding: 2px 6px; border-radius: 4px; background: ${m.minutes?'rgba(111,224,168,0.08)':'transparent'};">${m.minutes||0}'</span>
-      ${pid ? `<button class="add-obs-from-match" data-pid="${pid}" data-date="${escapeHtml(_matchDateString(m) || "")}" data-opponent="${escapeHtml(oppName)}" data-competition="${escapeHtml(compName || "")}" data-minutes="${m.minutes||0}" title="${t("add_obs_from_match")}" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; background: rgba(111,224,168,0.08); color: var(--accent); font-size: 14px; line-height: 1; cursor: pointer; border: 0.5px solid rgba(111,224,168,0.25); padding: 0;">+</button>` : ""}
+      ${pid ? `<button class="add-obs-from-match" data-pid="${pid}" data-date="${escapeHtml(_matchDateString(m) || "")}" data-opponent="${escapeHtml(oppName)}" data-team="${escapeHtml((state.players.find(_p => _p.tm_player_id === pid)?.current_club_name) || "")}" data-competition="${escapeHtml(compName || "")}" data-minutes="${m.minutes||0}" title="${t("add_obs_from_match")}" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 4px; background: rgba(111,224,168,0.08); color: var(--accent); font-size: 14px; line-height: 1; cursor: pointer; border: 0.5px solid rgba(111,224,168,0.25); padding: 0;">+</button>` : ""}
     </div>`;
 }
 
@@ -2024,7 +2024,7 @@ function renderRecentMatches(stats) {
           ${assists ? `<span class="stat-cell" style="font-size: 11px; color: var(--accent); font-weight: 700;">${assists}A</span>` : ""}
           <span class="stat-cell" style="font-size: 13px; font-weight: 700; color: ${m.minutes ? "var(--accent)" : "var(--text-3)"}; font-variant-numeric: tabular-nums; padding: 2px 6px; border-radius: 4px; background: ${m.minutes ? "rgba(111,224,168,0.08)" : "transparent"};">${m.minutes||0}'</span>
         </div>
-        <button class="add-obs-from-match" data-pid="${pid}" data-date="${escapeHtml(_matchDateString(m) || "")}" data-opponent="${escapeHtml(oppName)}" data-competition="${escapeHtml(_compName(m.competition_id, m.competition_name) || "")}" data-minutes="${m.minutes||0}" title="${t("add_obs_from_match")}" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px; background: rgba(111,224,168,0.08); color: var(--accent); font-size: 16px; line-height: 1; cursor: pointer; border: 0.5px solid rgba(111,224,168,0.25); padding: 0;">+</button>
+        <button class="add-obs-from-match" data-pid="${pid}" data-date="${escapeHtml(_matchDateString(m) || "")}" data-opponent="${escapeHtml(oppName)}" data-team="${escapeHtml((state.players.find(_p => _p.tm_player_id === pid)?.current_club_name) || "")}" data-competition="${escapeHtml(_compName(m.competition_id, m.competition_name) || "")}" data-minutes="${m.minutes||0}" title="${t("add_obs_from_match")}" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px; background: rgba(111,224,168,0.08); color: var(--accent); font-size: 16px; line-height: 1; cursor: pointer; border: 0.5px solid rgba(111,224,168,0.25); padding: 0;">+</button>
       </div>`;
   }).join("");
 
@@ -6900,6 +6900,7 @@ document.addEventListener("click", (e) => {
   window._obsPrefill = {
     match_date: btn.dataset.date || null,
     opponent: btn.dataset.opponent || null,
+    player_team: btn.dataset.team || null,
     competition: btn.dataset.competition || null,
     minutes_played: btn.dataset.minutes ? parseInt(btn.dataset.minutes, 10) : null,
   };
