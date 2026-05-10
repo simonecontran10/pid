@@ -178,6 +178,10 @@ window.obsT = function(key) {
       footer_avg: "Media performance",
       footer_distrib: "Distribuzione giudizi",
       f_match_date: "Data partita",
+      f_player_team: "Squadra giocatore",
+      f_player_team_ph: "Es. Atalanta",
+      th_player_team: "Squadra",
+      th_match: "Match",
       f_opponent: "Avversario",
       f_opponent_ph: "Es. Sassuolo",
       f_competition: "Competizione",
@@ -223,6 +227,10 @@ window.obsT = function(key) {
       footer_avg: "Average performance",
       footer_distrib: "Verdict distribution",
       f_match_date: "Match date",
+      f_player_team: "Player team",
+      f_player_team_ph: "e.g. Atalanta",
+      th_player_team: "Team",
+      th_match: "Match",
       f_opponent: "Opponent",
       f_opponent_ph: "e.g. Sassuolo",
       f_competition: "Competition",
@@ -316,6 +324,11 @@ window.renderObservationsList = async function(pid) {
       const opponentRaw = o.opponent || "";
       const opponentPretty = (typeof prettyClubName === "function") ? prettyClubName(opponentRaw) : opponentRaw;
       const opponentTrunc = opponentPretty.length > 18 ? opponentPretty.slice(0, 17) + "…" : opponentPretty;
+      // Match cell: player_team (snapshot storico) vs opponent, entrambi con logo
+      const playerTeamRaw = o.player_team || "";
+      const matchHtml = playerTeamRaw
+        ? `${_obsRenderTeamInline(playerTeamRaw)}<span style="margin: 0 5px; color: var(--text-3); font-size: 10px;">vs</span>${_obsRenderTeamInline(opponentRaw)}`
+        : _obsRenderTeamInline(opponentRaw);
       const rolesArr = Array.isArray(o.roles_played) ? o.roles_played : [];
       const rolesShown = rolesArr.slice(0, 3).map(r => r.replace("_", " ")).join(" · ");
       const rolesExtra = rolesArr.length > 3 ? ` +${rolesArr.length - 3}` : "";
@@ -332,7 +345,7 @@ window.renderObservationsList = async function(pid) {
       return `
         <tr class="obs-row" data-obs-id="${o.id}" style="cursor: pointer; border-bottom: 0.5px solid var(--border);">
           <td style="padding: 7px 8px; color: var(--text-2); font-size: 12px; white-space: nowrap;">${dateFmt}</td>
-          <td style="padding: 7px 8px; color: var(--text-1); font-size: 12px; font-weight: 500;">${escapeHtml(opponentTrunc)}</td>
+          <td style="padding: 7px 8px; color: var(--text-1); font-size: 12px; font-weight: 500; white-space: nowrap;">${matchHtml}</td>
           <td class="obs-col-comp" style="padding: 7px 8px; color: var(--text-2); font-size: 12px;">${escapeHtml(compTrunc)}</td>
           <td class="obs-col-role" style="padding: 7px 8px;">${rolesHtml}</td>
           <td class="obs-col-mode" style="padding: 7px 8px;">${modeHtml}</td>
@@ -385,7 +398,7 @@ window.renderObservationsList = async function(pid) {
         <thead>
           <tr style="border-bottom: 0.5px solid var(--border);">
             <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_date")}</th>
-            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_opponent")}</th>
+            <th style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_match")}</th>
             <th class="obs-col-comp" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_competition")}</th>
             <th class="obs-col-role" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_role")}</th>
             <th class="obs-col-mode" style="padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 500; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.05em;">${window.obsT("th_mode")}</th>
@@ -474,6 +487,41 @@ window.openObservationCompose = async function(pid, obsId = null) {
   setTimeout(() => _wireObsCompose(player, editing), 0);
 };
 
+// ====================================================================
+// HELPER: lookup club per nome (case-insensitive, match diretto o pretty)
+// Cache lazy: ricostruita la prima volta che viene chiesta.
+// Usata per renderizzare logo + nome per opponent e player_team
+// (entrambi sono stringhe nel DB, non FK numerici).
+// ====================================================================
+let _obsClubsByNameCache = null;
+function _obsGetClubByName(name) {
+  if (!name || typeof name !== "string") return null;
+  if (!_obsClubsByNameCache) {
+    _obsClubsByNameCache = new Map();
+    const clubs = (typeof state !== "undefined" && state.clubs) ? state.clubs : [];
+    for (const c of clubs) {
+      const raw = c.name || c.club_name || "";
+      if (raw) _obsClubsByNameCache.set(raw.toLowerCase(), c);
+      const pretty = (typeof prettyClubName === "function") ? prettyClubName(raw) : raw;
+      if (pretty && pretty !== raw) _obsClubsByNameCache.set(pretty.toLowerCase(), c);
+    }
+  }
+  return _obsClubsByNameCache.get(name.toLowerCase()) || null;
+}
+
+// Render inline "[logo] Nome" usato in tabella + sidebar.
+// Stile coerente con il resto: logo 14x14, nome testo normale.
+function _obsRenderTeamInline(name) {
+  if (!name) return '<span style="color: var(--text-3);">—</span>';
+  const pretty = (typeof prettyClubName === "function") ? prettyClubName(name) : name;
+  const club = _obsGetClubByName(name);
+  const logo = (club && typeof clubLogo === "function") ? clubLogo(club) : "";
+  const logoHtml = logo
+    ? '<img src="' + logo + '" alt="" style="width: 14px; height: 14px; object-fit: contain; flex-shrink: 0;" onerror="this.style.display=\'none\'"/>'
+    : "";
+  return '<span style="display: inline-flex; align-items: center; gap: 5px; vertical-align: middle;">' + logoHtml + '<span>' + escapeHtml(pretty) + '</span></span>';
+}
+
 function _obsComposeHtml(player, editing, prefill) {
   const isEdit = !!editing;
   const title = isEdit ? window.obsT("edit_obs") : window.obsT("new_obs_title");
@@ -482,6 +530,7 @@ function _obsComposeHtml(player, editing, prefill) {
 
   const v = {
     match_date: editing?.match_date || prefill?.match_date || today,
+    player_team: editing?.player_team || prefill?.player_team || (player?.current_club_name || ""),
     opponent: editing?.opponent || prefill?.opponent || "",
     competition: editing?.competition || prefill?.competition || "",
     competition_is_other: editing
@@ -617,10 +666,18 @@ function _obsComposeHtml(player, editing, prefill) {
             <input id="obs-minutes" type="number" min="0" max="150" step="1" placeholder="${window.obsT("f_minutes_ph")}" value="${v.minutes_played != null ? v.minutes_played : ""}" class="obs-input-base" style="max-width: 200px;">
           </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px;">
             <div>
               <label class="obs-label">${window.obsT("f_match_date")} *</label>
               <input id="obs-match-date" type="date" value="${v.match_date}" class="obs-input-base">
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+            <div>
+              <label class="obs-label">${window.obsT("f_player_team")} *</label>
+              <input id="obs-player-team" type="text" placeholder="${window.obsT("f_player_team_ph")}" list="obs-player-team-list" class="obs-input-base" autocomplete="off">
+              <datalist id="obs-player-team-list">${opponentOptions}</datalist>
             </div>
             <div>
               <label class="obs-label">${window.obsT("f_opponent")} *</label>
@@ -764,9 +821,18 @@ function _wireObsCompose(player, editing) {
     if (e.target.id === "obs-compose-overlay") _closeObsCompose();
   });
 
-  // Fix bug input avversario non modificabile in edit mode:
+  // Fix bug input avversario / player_team non modificabili in edit mode:
   // settiamo il valore via JS DOPO il render invece che inline su `value=""` HTML
   // (il combo `<input value list>` di HTML5 ha glitch noti in edit mode)
+  const playerTeamInput = document.getElementById("obs-player-team");
+  if (playerTeamInput) {
+    // In edit: usa player_team dell'osservazione
+    // In nuovo: usa current_club_name del giocatore (default ragionevole)
+    const initialPT = (editing && editing.player_team)
+      ? editing.player_team
+      : (v.player_team || "");
+    if (initialPT) playerTeamInput.value = initialPT;
+  }
   const opponentInput = document.getElementById("obs-opponent");
   if (opponentInput && editing && editing.opponent) {
     opponentInput.value = editing.opponent;
@@ -879,6 +945,7 @@ async function _saveObsFromForm(player, editing) {
   hideErr();
 
   const matchDate = document.getElementById("obs-match-date").value;
+  const playerTeam = document.getElementById("obs-player-team").value.trim();
   const opponent = document.getElementById("obs-opponent").value.trim();
   const compSel = document.getElementById("obs-competition").value;
   const compOther = document.getElementById("obs-competition-other").value.trim();
@@ -886,7 +953,7 @@ async function _saveObsFromForm(player, editing) {
   const rating = parseFloat(document.getElementById("obs-rating").value);
   const notes = document.getElementById("obs-notes").value.trim();
 
-  if (!matchDate || !opponent || !competition) {
+  if (!matchDate || !playerTeam || !opponent || !competition) {
     showErr(window.obsT("err_required"));
     return;
   }
@@ -916,6 +983,7 @@ async function _saveObsFromForm(player, editing) {
   const payload = {
     tm_player_id: player.tm_player_id,
     match_date: matchDate,
+    player_team: playerTeam,
     opponent: opponent,
     competition: competition,
     viewing_mode: window._obsCompose.selectedViewingMode,
@@ -1128,6 +1196,9 @@ window.wireScoutingPanel = async function() {
           : `<span style="color: var(--text-3); font-size: 11px;">—</span>`;
         const ratingStr = o.performance_rating != null ? o.performance_rating.toFixed(1) : "—";
         const opponentStr = (typeof prettyClubName === "function") ? prettyClubName(o.opponent) : o.opponent;
+        const matchInline = o.player_team
+          ? `${_obsRenderTeamInline(o.player_team)}<span style="margin: 0 4px; color: var(--text-3); font-size: 10px;">vs</span>${_obsRenderTeamInline(o.opponent)}`
+          : `<span style="color: var(--text-3); margin-right: 4px;">vs</span>${_obsRenderTeamInline(o.opponent)}`;
         // Ruoli giocati in questa osservazione
         const rolesArr = Array.isArray(o.roles_played) ? o.roles_played : [];
         // Risolvo sigla → nome esteso (it o en) usando OBSERVATION_ROLE_DEFS
@@ -1152,7 +1223,7 @@ window.wireScoutingPanel = async function() {
           <div class="scouting-obs-row" data-pid="${pid}" data-obs-id="${o.id}" style="display: grid; grid-template-columns: ${GRID}; gap: 10px; align-items: center; padding: 8px 14px; border-bottom: 0.5px solid var(--border); cursor: pointer; transition: background 0.1s; background: rgba(255,255,255,0.015);">
             <div style="display: flex; justify-content: center;">${tagDot}</div>
             <div style="font-size: 12px; color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-              <span style="color: var(--text-3); margin-right: 6px;">${dateFmt}</span>vs ${escapeHtml(opponentStr)}<span style="color: var(--text-3); margin: 0 6px;">·</span><span style="color: var(--text-3); font-size: 11px;">${escapeHtml(o.competition || "")}</span>
+              <span style="color: var(--text-3); margin-right: 6px;">${dateFmt}</span>${matchInline}<span style="color: var(--text-3); margin: 0 6px;">·</span><span style="color: var(--text-3); font-size: 11px;">${escapeHtml(o.competition || "")}</span>
             </div>
             <div style="text-align: center; font-size: 11px; color: ${o.minutes_played != null ? "var(--text-1)" : "var(--text-3)"}; font-variant-numeric: tabular-nums;">${o.minutes_played != null ? o.minutes_played + "'" : "—"}</div>
             <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${rolesObsHtml}</div>
@@ -1572,7 +1643,8 @@ async function exportObservationPDF(observationId, playerId) {
   pdf.setTextColor(50, 100, 70);
   pdf.setFontSize(10);
   pdf.setFont("helvetica", "bold");
-  pdf.text(`${_pdfT("pdf_observation_section", "Osservazione").toUpperCase()} — ${_pdfFmtDate(obs.match_date)} · vs ${obs.opponent} · ${obs.competition || ""}`, leftMargin + 3, y + 6);
+  const _pdfMatchStr = obs.player_team ? `${obs.player_team} vs ${obs.opponent}` : `vs ${obs.opponent}`;
+  pdf.text(`${_pdfT("pdf_observation_section", "Osservazione").toUpperCase()} — ${_pdfFmtDate(obs.match_date)} · ${_pdfMatchStr} · ${obs.competition || ""}`, leftMargin + 3, y + 6);
   y += 13;
 
   pdf.setTextColor(40, 40, 40);
