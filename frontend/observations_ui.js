@@ -1907,13 +1907,13 @@ async function exportPlayerDossierPDF(playerId) {
   const tableW = 210 - 2 * leftMargin;
   const cols = [
     { key: "date", label: _pdfT("pdf_field_date", "Data"), w: 22 },
-    { key: "opp",  label: _pdfT("pdf_field_opponent", "Avversario"), w: 36 },
-    { key: "comp", label: _pdfT("pdf_field_competition", "Competiz."), w: 30 },
-    { key: "pos",  label: _pdfT("pdf_field_position", "Posizione"), w: 38 },
+    { key: "opp",  label: _pdfT("pdf_field_match", "Match"), w: 50 },
+    { key: "comp", label: _pdfT("pdf_field_competition", "Competiz."), w: 28 },
+    { key: "pos",  label: _pdfT("pdf_field_position", "Posizione"), w: 28 },
     { key: "mode", label: _pdfT("pdf_field_mode", "Mod"), w: 12 },
     { key: "min",  label: _pdfT("pdf_field_minutes", "Min"), w: 12 },
     { key: "perf", label: _pdfT("pdf_field_performance", "Perf"), w: 14 },
-    { key: "tag",  label: "Tag", w: tableW - 22 - 36 - 30 - 38 - 12 - 12 - 14 },
+    { key: "tag",  label: "Tag", w: tableW - 22 - 50 - 28 - 28 - 12 - 12 - 14 },
   ];
   const drawTableHeader = (yy) => {
     pdf.setFillColor(40, 50, 45);
@@ -1939,7 +1939,10 @@ async function exportPlayerDossierPDF(playerId) {
     pdf.setTextColor(40, 40, 40);
     let cx = tableX + 2;
     pdf.text(_pdfFmtDate(o.match_date), cx, y + 3); cx += cols[0].w;
-    pdf.text(String(o.opponent || "").substring(0, 20), cx, y + 3); cx += cols[1].w;
+    const _matchTxt = o.player_team
+      ? `${o.player_team} vs ${o.opponent || ""}`
+      : (o.opponent || "");
+    pdf.text(_matchTxt.substring(0, 28), cx, y + 3); cx += cols[1].w;
     pdf.text(String(o.competition || "").substring(0, 18), cx, y + 3); cx += cols[2].w;
     const pos = Array.isArray(o.roles_played) && o.roles_played.length ? o.roles_played.join(",").substring(0, 22) : "—";
     pdf.text(pos, cx, y + 3); cx += cols[3].w;
