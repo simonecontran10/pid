@@ -95560,5 +95560,39 @@
     "sortitoutsi_person_id": null,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null
+  },
+  {
+    "tm_player_id": 796589,
+    "full_name": "Yassine Benhattab",
+    "name_arabic": null,
+    "date_of_birth": "2002-11-18",
+    "age": 23,
+    "height_cm": 170,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Right Winger",
+    "position_others": [
+      "Right Midfield",
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Marseille",
+    "citizenships": [
+      "France",
+      "Algeria"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 1421,
+    "current_club_name": "Stade Reims",
+    "shirt_number": 90,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/796589-1758286910.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/796589",
+    "fetched_at": "2026-05-10T14:00:14Z",
+    "roster_club_id": 1421,
+    "roster_club_name": "Stade Reims",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/796589.jpg"
   }
 ]
