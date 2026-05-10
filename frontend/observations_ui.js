@@ -830,7 +830,7 @@ function _wireObsCompose(player, editing) {
     // In nuovo: usa current_club_name del giocatore (default ragionevole)
     const initialPT = (editing && editing.player_team)
       ? editing.player_team
-      : (v.player_team || "");
+      : (player?.current_club_name || "");
     if (initialPT) playerTeamInput.value = initialPT;
   }
   const opponentInput = document.getElementById("obs-opponent");
