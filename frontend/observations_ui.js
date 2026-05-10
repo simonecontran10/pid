@@ -1343,7 +1343,7 @@ function _pdfPlayerData(player) {
   if (!player) return {};
   const heightCm = player.height_cm || (player.height ? player.height : null);
   const rawRole = player.position_specific || player.position || player.position_general || "—";
-  const role = _pdfTranslatePosition(rawRole);
+  const role = (typeof localizeRole === "function") ? localizeRole(rawRole) : rawRole;
   const dob = player.date_of_birth || "";
   const year = dob ? dob.substring(0, 4) : "—";
   const age = player.age != null ? String(player.age) : "—";
