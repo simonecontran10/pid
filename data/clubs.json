@@ -1833,5 +1833,89 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 969,
+    "name": "Montpellier HSC",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/969",
+    "slug": "montpellier-hsc",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 1290,
+    "name": "Grenoble Foot 38",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/1290",
+    "slug": "grenoble-foot-38",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 9202,
+    "name": "USL Dunkerque",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/9202",
+    "slug": "usl-dunkerque",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 595,
+    "name": "SC Bastia",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/595",
+    "slug": "sc-bastia",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 1080,
+    "name": "Stade Lavallois",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/1080",
+    "slug": "stade-laval",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 667,
+    "name": "RC Strasbourg Alsace",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/667",
+    "slug": "rc-strassburg-alsace",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 3166,
+    "name": "Pau FC",
+    "league_id": "CL",
+    "league_name": "UEFA Champions League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/3166",
+    "slug": "pau-fc",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]
