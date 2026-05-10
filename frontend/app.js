@@ -3413,17 +3413,17 @@ function renderGridsPanel() {
             <option value="Midfield" ${state.grids.filterRole==="Midfield"?"selected":""}>${t("role_mid")}</option>
             <option value="Attack" ${state.grids.filterRole==="Attack"?"selected":""}>${t("role_att")}</option>
           </select>
-          <select id="grids-filter-league" class="filter-select flex-1 min-w-[100px]" style="font-size: 11px; padding: 4px 6px;">
+          <select id="grids-filter-league" class="filter-select flex-1 min-w-[140px]" style="font-size: 11px; padding: 4px 6px;">
             <option value="">${t("filter_all_leagues")}</option>
-            <option value="IT1" ${state.grids.filterLeague==="IT1"?"selected":""}>${t("league_short_it1")}</option>
-            <option value="IT2" ${state.grids.filterLeague==="IT2"?"selected":""}>${t("league_short_it2")}</option>
-            <option value="IT3A" ${state.grids.filterLeague==="IT3A"?"selected":""}>${t("league_short_it3a")}</option>
-            <option value="IT3B" ${state.grids.filterLeague==="IT3B"?"selected":""}>${t("league_short_it3b")}</option>
-            <option value="IT3C" ${state.grids.filterLeague==="IT3C"?"selected":""}>${t("league_short_it3c")}</option>
-            <option value="IJ1" ${state.grids.filterLeague==="IJ1"?"selected":""}>${t("league_short_ij1")}</option>
-            <option value="PL1" ${state.grids.filterLeague==="PL1"?"selected":""}>${t("league_short_pl1")}</option>
-            <option value="PL2" ${state.grids.filterLeague==="PL2"?"selected":""}>${t("league_short_pl2")}</option>
-            <option value="OTHER" ${state.grids.filterLeague==="OTHER"?"selected":""}>${t("league_short_other")}</option>
+            <option value="IT1" ${state.grids.filterLeague==="IT1"?"selected":""}>${t("league_it1")}</option>
+            <option value="IT2" ${state.grids.filterLeague==="IT2"?"selected":""}>${t("league_it2")}</option>
+            <option value="IT3A" ${state.grids.filterLeague==="IT3A"?"selected":""}>${t("league_it3a")}</option>
+            <option value="IT3B" ${state.grids.filterLeague==="IT3B"?"selected":""}>${t("league_it3b")}</option>
+            <option value="IT3C" ${state.grids.filterLeague==="IT3C"?"selected":""}>${t("league_it3c")}</option>
+            <option value="IJ1" ${state.grids.filterLeague==="IJ1"?"selected":""}>${t("league_ij1")}</option>
+            <option value="PL1" ${state.grids.filterLeague==="PL1"?"selected":""}>${t("league_pl1")}</option>
+            <option value="PL2" ${state.grids.filterLeague==="PL2"?"selected":""}>${t("league_pl2")}</option>
+            <option value="OTHER" ${state.grids.filterLeague==="OTHER"?"selected":""}>${t("league_other_filter")}</option>
           </select>
         </div>
         <div class="flex flex-wrap gap-1 mb-1.5">
