@@ -1356,8 +1356,14 @@ function _pdfPlayerData(player) {
     ? _footMapIt[_footRaw]
     : (player.foot || "—");
   // Path locali (no CORS) come priorità, poi URL CDN come fallback
+  // PRIORITÀ: SOTS curated > SOTS lookup esplicito > SOTS face_local > SOTS via person_id > TM locale > URL CDN
+  // Allineata con playerPhoto() di app.js (stessa cascade). Bug fix 11 mag: prima
+  // controllavamo solo sortitoutsi_person_id, ma alcuni giocatori (es. Relja Obric)
+  // hanno sortitoutsi_face_local_lookup valorizzato e person_id=null → PDF cadeva su TM.
   const photoPaths = [];
-  // PRIORITÀ: SOTS locale > TM locale > URL CDN (no CORS)
+  if (player.sortitoutsi_face_local_curated) photoPaths.push("../data/" + player.sortitoutsi_face_local_curated);
+  if (player.sortitoutsi_face_local_lookup) photoPaths.push("../data/" + player.sortitoutsi_face_local_lookup);
+  if (player.sortitoutsi_face_local) photoPaths.push("../data/" + player.sortitoutsi_face_local);
   if (player.sortitoutsi_person_id) photoPaths.push("../data/photos/players_sots_lookup/" + player.sortitoutsi_person_id + ".png");
   if (player.photo_local) photoPaths.push("../data/" + player.photo_local);
   if (player.sortitoutsi_face_url) photoPaths.push(player.sortitoutsi_face_url);
