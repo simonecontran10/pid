@@ -1,12 +1,12 @@
 """
-FastAPI backend per la piattaforma giocatori sauditi.
+FastAPI backend per PID (Players Intelligence Database).
 
 Serve i JSON prodotti dallo scraper come API REST:
 
     GET /                           healthcheck + last_update
     GET /clubs                      lista club (entrambe le leghe)
     GET /clubs/{tm_club_id}         dettagli club
-    GET /clubs/{tm_club_id}/players giocatori sauditi del club
+    GET /clubs/{tm_club_id}/players giocatori del club
     GET /players                    lista compatta (id, name, club, position) per autocomplete
     GET /players/{tm_player_id}     dettaglio (profilo + stats)
     GET /search?q=...               ricerca giocatori per nome / club
@@ -33,7 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 
 CLUBS_FILE = DATA_DIR / "clubs.json"
-PLAYERS_FILE = DATA_DIR / "players_saudi.json"
+PLAYERS_FILE = DATA_DIR / "players_main.json"
 STATS_FILE = DATA_DIR / "players_stats.json"
 LAST_UPDATE_FILE = DATA_DIR / "last_update.json"
 
@@ -46,8 +46,8 @@ def _load(path: Path, default: Any) -> Any:
 
 # ============ APP ============
 app = FastAPI(
-    title="Saudi Players Platform API",
-    description="Dati Transfermarkt per i giocatori sauditi di Pro League e First Division.",
+    title="PID API",
+    description="Dati Transfermarkt per PID (Players Intelligence Database).",
     version="1.0.0",
 )
 app.add_middleware(
@@ -199,7 +199,7 @@ def _player_full(p: dict) -> dict:
 @app.get("/")
 def root() -> dict:
     return {
-        "service": "saudi-players-platform",
+        "service": "pid-api",
         "n_clubs": len(store.clubs),
         "n_players": len(store.players),
         "n_with_stats": len(store.stats),

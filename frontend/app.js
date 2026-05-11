@@ -105,7 +105,7 @@ async function bootstrap() {
   state.opponentNames = oppNames || {};
   state.nationalTeamLookup = nationalTeamLookup || {};
   state.clubs = clubs || [];
-  // PID: modulo U21 disattivato (era specifico Saudi U21 Excel).
+  // PID: modulo U21 disattivato (legacy).
   // Map vuota per compatibilità con eventuali chiamate residue a state.u21MatchesByTmid.
   state.u21MatchesByTmid = new Map();
   const wyscoutByTm = new Map();
@@ -473,7 +473,7 @@ function competitionLogo(compCode) {
   if (!compCode) return null;
   // Casi noti SVG (le 2 UEFA principali pre-existenti)
   const knownSvg = { ACLE: "svg", ACL2: "svg" };
-  // SA2P (Saudi Second Division League) → riusa SDL.png (legacy)
+  // SA2P (legacy Saudi Second Division) → riusa SDL.png
   let code = compCode === "SA2P" ? "SDL" : compCode;
   const ext = knownSvg[code] || "png";
   return _photoUrl(`photos/competitions/${code}.${ext}`);
@@ -734,7 +734,7 @@ function openPlayerModal(pid) {
   const cur = (() => {
     const c = sumSeason(currentSeason.club);
     const n = sumSeason(currentSeason.national);
-    // Aggiunge i totali U21 dell'Excel (Saudi U21 Elite League) per la stagione corrente
+    // Aggiunge i totali U21 dell'Excel (legacy U21 Elite League) per la stagione corrente
     const u21 = (() => {
       const list = _u21MatchesNormalized(pid);
       let apps = 0, minutes = 0;
@@ -1458,7 +1458,7 @@ function _renderClubCareerBox(stats) {
       merged[outCode].minutes_played = (merged[outCode].minutes_played||0) + (s.minutes_played||0);
     }
   }
-  // Aggiungi voce Saudi U21 Elite League dall'Excel (all-time)
+  // Aggiungi voce U21 Elite League dall'Excel (legacy, all-time)
   const u21List = pid != null ? _u21MatchesNormalized(pid) : [];
   if (u21List.length) {
     const apps = u21List.length;
@@ -1658,7 +1658,7 @@ function _matchDateString(m) {
 // Normalizza le partite U21 dell'Excel (build_u21_player_matches.py) in formato compatibile
 // con `recent_matches` di Transfermarkt. Esclude i codici 'B', 'nc', 'nci', 'ncd' (non giocato).
 function _u21MatchesNormalized(pid) {
-  // PID: modulo U21 disattivato (era specifico Saudi U21 Excel).
+  // PID: modulo U21 disattivato (legacy).
   // Quando servirà un modulo Primavera 1 simile, ricostruire qui.
   return [];
 }
@@ -1869,7 +1869,7 @@ function _nationalTeamName(m, stats) {
   return `${country} ${cat}`;
 }
 // Alias di compatibilità (codice esistente potrebbe ancora chiamare il vecchio nome)
-const _saudiNationalTeamName = _nationalTeamName;
+// (alias _saudiNationalTeamName rimosso il 11 mag 2026: uso diretto _nationalTeamName)
 
 function _natCatColor(cat) {
   if (cat === "A") return "var(--accent)";
@@ -1908,7 +1908,7 @@ function _renderDrillDownMatch(m, stats) {
   const score = (m.result_for != null && m.result_against != null) ? `${m.result_for}-${m.result_against}` : "";
 
   // Per partite nazionali: nome nazionale (A / U23 / U20 / Olympic ...) su riga separata, con paese del giocatore
-  const natTeam = _saudiNationalTeamName(m, stats);
+  const natTeam = _nationalTeamName(m, stats);
   const natCat = m.is_national ? (stats?.seasons?.[String(m.season ?? "")]?.national?.[m.competition_id]?.team_category) : null;
   const natColor = natCat ? _natCatColor(natCat) : "var(--comp-nat)";
   const opponentBlock = m.is_national && natTeam
@@ -2789,7 +2789,7 @@ async function exportCallupPDF(callupList) {
 
     // Footer
     pdf.setFontSize(8); pdf.setFont("helvetica","normal"); pdf.setTextColor(150,150,150);
-    pdf.text("Saudi Players Hub", margin, pageH - 6);
+    pdf.text("PID — Players Intelligence Database", margin, pageH - 6);
     pdf.text(dateStr, pageW - margin, pageH - 6, { align: "right" });
 
     const safeName = (title || "callup").replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -4343,7 +4343,7 @@ async function exportGridPDF() {
     pdf.setFillColor(14, 17, 22);
     pdf.rect(pitchX, pitchY + pitchH - 5, pitchW, 5, "F");
     pdf.setFontSize(6); pdf.setFont("helvetica","normal"); pdf.setTextColor(150,170,160);
-    pdf.text("Saudi Players Hub", pitchX + 4, pitchY + pitchH - 1.5);
+    pdf.text("PID — Players Intelligence Database", pitchX + 4, pitchY + pitchH - 1.5);
     pdf.text(dateStr, pitchX + pitchW - 4, pitchY + pitchH - 1.5, { align: "right" });
 
     const safeName = (title || "formazione").replace(/[^a-zA-Z0-9_-]/g, "_");
@@ -5952,7 +5952,7 @@ async function exportMinutesPDF(selectedList) {
     // Footer
     pdf.setFont("helvetica", "italic"); pdf.setFontSize(7);
     pdf.setTextColor(150, 150, 160);
-    pdf.text("Saudi Players Hub", margin, pageH - 4);
+    pdf.text("PID — Players Intelligence Database", margin, pageH - 4);
     pdf.text(today, pageW - margin, pageH - 4, { align: "right" });
 
     const fname = `minutes_${new Date().toISOString().slice(0,10)}.pdf`;
@@ -6176,7 +6176,7 @@ async function _apiGet(path) {
 //   STEP 1/7 REFRESH CLUBS         →  1
 //   STEP 2/7 REFRESH ROSTERS       → 12
 //   STEP 3/7 SCRAPE PROFILI NUOVI  →  3 (di solito 0 in refresh ravvicinati)
-//   STEP 4/7 RE-FILTER SAUDI       →  1
+//   STEP 4/7 RE-FILTER TARGET      →  1
 //   STEP 5/7 ENRICH SORTITOUTSI    →  2
 //   STEP 5b/7 IMPORT WYSCOUT       →  1
 //   STEP 6/7 REFRESH STATS         → 72 (è il più lungo)
@@ -6185,7 +6185,7 @@ const _UPDATE_STEPS = [
   { id: "1", weight: 1,  label: "clubs" },
   { id: "2", weight: 12, label: "rosters" },
   { id: "3", weight: 3,  label: "profili" },
-  { id: "4", weight: 1,  label: "saudi filter" },
+  { id: "4", weight: 1,  label: "target filter" },
   { id: "5", weight: 2,  label: "sortitoutsi" },
   { id: "5b",weight: 1,  label: "wyscout" },
   { id: "6", weight: 72, label: "stats" },
