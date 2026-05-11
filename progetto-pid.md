@@ -5528,3 +5528,5 @@ Branch `feat/observation-player-team` non eliminato (deletable da GitHub UI come
 | Drag-and-drop reordering Griglie tab depth chart | BASSA | 1-2h | Era nel TODO di ieri, rimandato di nuovo |
 | Fase 5 PDF Export osservazione (rifinitura layout) | BASSA | 2h | Era Fase 5 originale |
 | Fase 6 JSON Export/Import osservazioni | BASSA | 45 min | Era Fase 6 originale |
+| Bug pipeline SOTS: face scaricata ma person_id null | MEDIA | 30 min | Caso Relja Obric: `sortitoutsi_face_local_lookup` valorizzato ma `sortitoutsi_person_id`=None. Investigare apply_more_matches.py o find_more_sots_matches.py — probabile commit/write parziale. Workaround attivo in obs_ui.js riga 1366. |
+| Bug pipeline SOTS: face scaricata ma person_id null | MEDIA | 30 min | Caso Relja Obric: `sortitoutsi_face_local_lookup` valorizzato ma `sortitoutsi_person_id`=None. Investigare apply_more_matches.py o find_more_sots_matches.py — probabile commit/write parziale. Workaround attivo in obs_ui.js riga 1366. |
