@@ -181,25 +181,42 @@ def main() -> None:
     else:
         print("  Nessun club nuovo da aggiungere")
 
-    # === SOTS overrides forniti dall'utente via env SOTS_URLS ===
-    # Il workflow add_player.yml espone SOTS_URLS con gli URL SortItOutSi
-    # corrispondenti agli URL TM nello stesso ordine (vuoto = no override).
-    # Quando presente per un giocatore, applichiamo subito il match SOTS:
-    # - estraiamo sots_id dall'URL
-    # - scarichiamo la face PNG
-    # - aggiorniamo sortitoutsi_person_id + face_url + face_local_lookup + profile_url
-    # Questo evita di dover passare per find_more_sots_matches.py settimanale.
+    elapsed = int(time.monotonic() - started)
+    print(f"\n{'='*60}")
+    print(f"  Aggiunti: {n_added}    Aggiornati: {n_updated}    Sauditi: {n_saudi}    Falliti: {n_failed}")
+    print(f"  Elapsed: {elapsed//60}m{elapsed%60}s")
+
+    # Pipeline standard: enrich_sortitoutsi + download_photos PRIMA degli override.
+    # Motivo: enrich_sortitoutsi.py tende a resettare sortitoutsi_team_id/logo_url
+    # a None per i club che non trova (bug noto diario riga 846/1127). Se applichiamo
+    # gli override DOPO i subprocess, restano in place.
+    print("\n→ enrich_sortitoutsi.py ...")
+    subprocess.run([sys.executable, "enrich_sortitoutsi.py"], cwd=ROOT, check=False)
+    print("\n→ download_photos.py ...")
+    subprocess.run([sys.executable, "download_photos.py"], cwd=ROOT, check=False)
+
+    # === SOTS overrides forniti dall'utente via env SOTS_URLS + SOTS_TEAM_URLS ===
+    # Il workflow add_player.yml espone:
+    #   SOTS_URLS:      URL person SortItOutSi giocatori (per face + person_id)
+    #   SOTS_TEAM_URLS: URL team SortItOutSi club (per logo + team_id)
+    # Entrambi sono posizionali rispetto agli URL TM (vuoto = no override).
+    # I team_id sono estratti dall'URL fornito dall'utente, NON dalla pagina person
+    # (che e' bloccata da Cloudflare challenge da alcuni IP).
     import os as _os
     sots_urls_raw = _os.environ.get("SOTS_URLS", "").strip()
-    if sots_urls_raw:
-        sots_urls_list = [s.strip() for s in sots_urls_raw.split("\n")]
-        # Padding a len(ids) con stringhe vuote per matchare posizionalmente
+    sots_team_urls_raw = _os.environ.get("SOTS_TEAM_URLS", "").strip()
+    if sots_urls_raw or sots_team_urls_raw:
+        sots_urls_list = [s.strip() for s in sots_urls_raw.split("\n")] if sots_urls_raw else []
+        sots_team_urls_list = [s.strip() for s in sots_team_urls_raw.split("\n")] if sots_team_urls_raw else []
         while len(sots_urls_list) < len(ids):
             sots_urls_list.append("")
+        while len(sots_team_urls_list) < len(ids):
+            sots_team_urls_list.append("")
         
-        print("\n→ Applicazione override SOTS dall'admin...")
+        print("\n→ Applicazione override SOTS dall'admin (face + logo club)...")
         n_sots_applied = 0
         n_sots_skipped = 0
+        n_clubs_logo_applied = 0
         
         import requests as _req
         from scraper.config import USER_AGENTS as _UA
@@ -207,74 +224,119 @@ def main() -> None:
         
         PHOTOS_DIR = ROOT / "data" / "photos" / "players_sots_lookup"
         PHOTOS_DIR.mkdir(parents=True, exist_ok=True)
+        CLUBS_LOGO_DIR = ROOT / "data" / "photos" / "clubs_sots"
+        CLUBS_LOGO_DIR.mkdir(parents=True, exist_ok=True)
         session = _req.Session()
         
-        # Carico i 3 JSON players per aggiornarli in place
+        # Ricarica i JSON DOPO i subprocess (enrich/download li hanno potenzialmente modificati)
         players_main_data = _load(PLAYERS_SAUDI_FILE, [])
         players_all_data = _load(PLAYERS_ALL_FILE, [])
         players_static_data = _load(PLAYERS_STATIC_FILE, [])
+        clubs_data = _load(CLUBS_FILE, [])
         
-        for pid, sots_url in zip(ids, sots_urls_list):
-            if not sots_url:
+        for pid, sots_url, sots_team_url in zip(ids, sots_urls_list, sots_team_urls_list):
+            if not sots_url and not sots_team_url:
                 continue
-            m = re.search(r"/person/(\d+)/", sots_url)
-            if not m:
-                print(f"  ✗ {pid}: URL SOTS non parsabile: {sots_url[:60]}")
-                n_sots_skipped += 1
-                continue
-            sots_id = int(m.group(1))
             
-            # Scarica face PNG (idempotente: skip se gia esistente >200 bytes)
-            face_path = PHOTOS_DIR / f"{sots_id}.png"
-            face_local = f"photos/players_sots_lookup/{sots_id}.png"
-            if not (face_path.exists() and face_path.stat().st_size > 200):
-                try:
-                    cdn_url = f"https://sortitoutsi.b-cdn.net/uploads/face/face_{sots_id}.png"
-                    r = session.get(cdn_url, headers={"User-Agent": _UA[0]}, timeout=15)
-                    if r.status_code == 200 and r.content and len(r.content) > 200:
-                        face_path.write_bytes(r.content)
-                        print(f"  ✓ {pid}: face scaricata sots_id={sots_id}")
+            # === PARTE 1: SOTS person (face + person_id) ===
+            sots_id = None
+            face_local = None
+            if sots_url:
+                m = re.search(r"/person/(\d+)/", sots_url)
+                if not m:
+                    print(f"  ✗ {pid}: URL SOTS person non parsabile: {sots_url[:60]}")
+                    n_sots_skipped += 1
+                else:
+                    sots_id = int(m.group(1))
+                    face_path = PHOTOS_DIR / f"{sots_id}.png"
+                    face_local = f"photos/players_sots_lookup/{sots_id}.png"
+                    if not (face_path.exists() and face_path.stat().st_size > 200):
+                        try:
+                            cdn_url = f"https://sortitoutsi.b-cdn.net/uploads/face/face_{sots_id}.png"
+                            r = session.get(cdn_url, headers={"User-Agent": _UA[0]}, timeout=15)
+                            if r.status_code == 200 and r.content and len(r.content) > 200:
+                                face_path.write_bytes(r.content)
+                                print(f"  ✓ {pid}: face scaricata sots_id={sots_id}")
+                            else:
+                                print(f"  ⚠ {pid}: face placeholder o errore (status={r.status_code} bytes={len(r.content)})")
+                                face_local = None
+                        except Exception as e:
+                            print(f"  ✗ {pid}: face download error: {e}")
+                            face_local = None
                     else:
-                        print(f"  ⚠ {pid}: face download status {r.status_code} sots_id={sots_id}")
-                        face_local = None
-                except Exception as e:
-                    print(f"  ✗ {pid}: face download error: {e}")
-                    face_local = None
-            else:
-                print(f"  ✓ {pid}: face gia in cache sots_id={sots_id}")
+                        print(f"  ✓ {pid}: face gia in cache sots_id={sots_id}")
+                    
+                    # Aggiorna i 3 JSON players nel record del giocatore
+                    for data_list in (players_main_data, players_all_data, players_static_data):
+                        for p_rec in data_list:
+                            if p_rec.get("tm_player_id") == pid:
+                                p_rec["sortitoutsi_person_id"] = sots_id
+                                p_rec["sortitoutsi_face_url"] = _face_url(sots_id)
+                                p_rec["sortitoutsi_profile_url"] = _profile_url(sots_id, p_rec.get("full_name"))
+                                if face_local:
+                                    p_rec["sortitoutsi_face_local_lookup"] = face_local
+                                break
+                    n_sots_applied += 1
             
-            # Aggiorna i 3 JSON nel record del giocatore
-            full_name = None
-            for data_list in (players_main_data, players_all_data, players_static_data):
-                for p_rec in data_list:
-                    if p_rec.get("tm_player_id") == pid:
-                        full_name = full_name or p_rec.get("full_name")
-                        p_rec["sortitoutsi_person_id"] = sots_id
-                        p_rec["sortitoutsi_face_url"] = _face_url(sots_id)
-                        p_rec["sortitoutsi_profile_url"] = _profile_url(sots_id, p_rec.get("full_name"))
-                        if face_local:
-                            p_rec["sortitoutsi_face_local_lookup"] = face_local
-                        break
+            # === PARTE 2: SOTS team (logo + team_id) ===
+            if sots_team_url:
+                m_team = re.search(r"/team/(\d+)/", sots_team_url)
+                if not m_team:
+                    print(f"  ✗ {pid}: URL SOTS team non parsabile: {sots_team_url[:60]}")
+                else:
+                    sots_team_id = int(m_team.group(1))
+                    # Trova tm_club_id del giocatore
+                    player_tm_club_id = None
+                    for data_list in (players_main_data, players_all_data, players_static_data):
+                        for p_rec in data_list:
+                            if p_rec.get("tm_player_id") == pid:
+                                player_tm_club_id = p_rec.get("current_club_id")
+                                break
+                        if player_tm_club_id:
+                            break
+                    
+                    if player_tm_club_id:
+                        club_rec = next((c for c in clubs_data if c.get("tm_club_id") == int(player_tm_club_id)), None)
+                        if club_rec:
+                            logo_url = f"https://sortitoutsi.b-cdn.net/uploads/team/{sots_team_id}.png"
+                            logo_path = CLUBS_LOGO_DIR / f"{int(player_tm_club_id)}.png"
+                            logo_local = f"photos/clubs_sots/{int(player_tm_club_id)}.png"
+                            
+                            # Setta sempre sortitoutsi_team_id (anche se logo placeholder)
+                            club_rec["sortitoutsi_team_id"] = sots_team_id
+                            club_rec["sortitoutsi_logo_url"] = logo_url
+                            
+                            if not (logo_path.exists() and logo_path.stat().st_size > 200):
+                                try:
+                                    logo_r = session.get(logo_url, headers={"User-Agent": _UA[0]}, timeout=15)
+                                    # Skip placeholder GIF (SOTS ritorna 43-byte gif quando logo manca)
+                                    ct = logo_r.headers.get("content-type", "")
+                                    if logo_r.status_code == 200 and "png" in ct.lower() and len(logo_r.content) > 200:
+                                        logo_path.write_bytes(logo_r.content)
+                                        club_rec["sortitoutsi_logo_local"] = logo_local
+                                        n_clubs_logo_applied += 1
+                                        print(f"  ✓ {pid}: club logo scaricato tm_club_id={player_tm_club_id} sots_team={sots_team_id}")
+                                    else:
+                                        print(f"  ⚠ {pid}: club logo NON disponibile su SOTS CDN (placeholder/gif). team_id={sots_team_id} comunque settato.")
+                                except Exception as e:
+                                    print(f"  ✗ {pid}: club logo download error: {e}")
+                            else:
+                                club_rec["sortitoutsi_logo_local"] = logo_local
+                                print(f"  ✓ {pid}: club logo gia in cache tm_club_id={player_tm_club_id}")
+                        else:
+                            print(f"  ⚠ {pid}: club tm_club_id={player_tm_club_id} non trovato in clubs.json")
+                    else:
+                        print(f"  ⚠ {pid}: player non trovato nei JSON, skip club logo")
             
-            n_sots_applied += 1
             time.sleep(0.3)  # gentile con SOTS CDN
         
-        # Salva i 3 JSON aggiornati
-        if n_sots_applied > 0:
+        # Salva i JSON aggiornati
+        if n_sots_applied > 0 or n_clubs_logo_applied > 0:
             _save(PLAYERS_SAUDI_FILE, players_main_data)
             _save(PLAYERS_ALL_FILE, players_all_data)
             _save(PLAYERS_STATIC_FILE, players_static_data)
-            print(f"  Applicati {n_sots_applied} override SOTS, skippati {n_sots_skipped}")
-
-    elapsed = int(time.monotonic() - started)
-    print(f"\n{'='*60}")
-    print(f"  Aggiunti: {n_added}    Aggiornati: {n_updated}    Sauditi: {n_saudi}    Falliti: {n_failed}")
-    print(f"  Elapsed: {elapsed//60}m{elapsed%60}s")
-
-    print("\n→ enrich_sortitoutsi.py ...")
-    subprocess.run([sys.executable, "enrich_sortitoutsi.py"], cwd=ROOT, check=False)
-    print("\n→ download_photos.py ...")
-    subprocess.run([sys.executable, "download_photos.py"], cwd=ROOT, check=False)
+            _save(CLUBS_FILE, clubs_data)
+            print(f"  Applicati {n_sots_applied} face override, {n_clubs_logo_applied} club logo, skippati {n_sots_skipped}")
     print("\nFatto. Hard reload del browser (⌘⇧R) per vedere i nuovi giocatori.")
 
 
