@@ -314,9 +314,14 @@ def main() -> None:
                             logo_path = CLUBS_LOGO_DIR / f"{int(player_tm_club_id)}.png"
                             logo_local = f"photos/clubs_sots/{int(player_tm_club_id)}.png"
                             
-                            # Setta sempre sortitoutsi_team_id (anche se logo placeholder)
+                            # Setta sempre sortitoutsi_team_id (anche se logo placeholder),
+                            # cosi' harvest_sots_rosters.py puo' usarlo per fetchare la rosa.
+                            # Logo_url e logo_local invece vengono settati SOLO se il download
+                            # ha esito positivo (PNG vero, non placeholder GIF). Motivo: il frontend
+                            # clubLogo() fa fallback su sortitoutsi_logo_url se logo_local e' None,
+                            # quindi settare l'URL placeholder produrrebbe un quadrato bianco invece
+                            # della lettera fallback.
                             club_rec["sortitoutsi_team_id"] = sots_team_id
-                            club_rec["sortitoutsi_logo_url"] = logo_url
                             
                             if not (logo_path.exists() and logo_path.stat().st_size > 200):
                                 try:
@@ -326,6 +331,7 @@ def main() -> None:
                                     if logo_r.status_code == 200 and "png" in ct.lower() and len(logo_r.content) > 200:
                                         logo_path.write_bytes(logo_r.content)
                                         club_rec["sortitoutsi_logo_local"] = logo_local
+                                        club_rec["sortitoutsi_logo_url"] = logo_url
                                         n_clubs_logo_applied += 1
                                         print(f"  ✓ {pid}: club logo scaricato tm_club_id={player_tm_club_id} sots_team={sots_team_id}")
                                     else:
