@@ -95555,12 +95555,13 @@
     "shirt_number": 18,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/default.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1261825",
-    "fetched_at": "2026-05-09T20:43:24Z",
+    "fetched_at": "2026-05-12T10:58:03Z",
     "roster_club_id": 9054,
     "roster_club_name": "Midtjylland U19",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_person_id": 2000371773,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000371773.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000371773/julius-emefile",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000371773.png"
   },
   {
     "tm_player_id": 796589,
