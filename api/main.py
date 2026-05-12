@@ -19,6 +19,7 @@ Run dev:
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import threading
 import time
@@ -474,14 +475,42 @@ def admin_add_player(payload: dict = Body(...)):
     if not urls:
         raise HTTPException(status_code=400, detail="Nessun URL valido fornito")
     
+    # Opzionale: sots_urls (URL SortItOutSi corrispondenti, uno per riga nello stesso ordine).
+    # Se forniti, add_players.py li usera' per scaricare la face SOTS e popolare
+    # sortitoutsi_person_id senza dover passare per find_more_sots_matches.py.
+    # Validazione: solo formato URL person/<id>, lasciare vuoto se non disponibile.
+    sots_urls_raw: list[str] = []
+    if "sots_urls" in payload:
+        s_input = payload["sots_urls"]
+        if isinstance(s_input, list):
+            sots_urls_raw = [str(s) for s in s_input]
+        elif isinstance(s_input, str):
+            sots_urls_raw = s_input.split("\n")
+    sots_urls: list[str] = []
+    for s in sots_urls_raw:
+        s = s.strip()
+        if not s:
+            sots_urls.append("")  # mantiene posizionalita': "" = no match per quel giocatore
+        elif re.search(r"sortitoutsi\.net/.*/person/\d+/", s):
+            sots_urls.append(s)
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"URL SortItOutSi non valido: {s[:80]}. Deve contenere /person/<id>/"
+            )
+    # Tronca/padda sots_urls per matchare len(urls) — eccessi ignorati, mancanti = ""
+    if sots_urls and len(sots_urls) > len(urls):
+        sots_urls = sots_urls[:len(urls)]
+    while len(sots_urls) < len(urls):
+        sots_urls.append("")
+    
     if len(urls) > 50:
         raise HTTPException(
             status_code=400,
             detail=f"Massimo 50 URL per batch (ricevuti {len(urls)}). Spezza in piu richieste."
         )
     
-    # Validazione regex
-    import re
+    # Validazione regex (re importato a livello modulo)
     url_re = re.compile(r'transfermarkt\.[a-z.]+.*spieler/\d+')
     invalid = [u for u in urls if not url_re.search(u)]
     if invalid:
@@ -528,7 +557,10 @@ def admin_add_player(payload: dict = Body(...)):
     api_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_player.yml/dispatches"
     body = _json_admin.dumps({
         "ref": "main",
-        "inputs": {"urls": "\n".join(urls)}
+        "inputs": {
+            "urls": "\n".join(urls),
+            "sots_urls": "\n".join(sots_urls) if any(sots_urls) else "",
+        }
     }).encode("utf-8")
     
     req = _urlreq.Request(

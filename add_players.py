@@ -181,6 +181,91 @@ def main() -> None:
     else:
         print("  Nessun club nuovo da aggiungere")
 
+    # === SOTS overrides forniti dall'utente via env SOTS_URLS ===
+    # Il workflow add_player.yml espone SOTS_URLS con gli URL SortItOutSi
+    # corrispondenti agli URL TM nello stesso ordine (vuoto = no override).
+    # Quando presente per un giocatore, applichiamo subito il match SOTS:
+    # - estraiamo sots_id dall'URL
+    # - scarichiamo la face PNG
+    # - aggiorniamo sortitoutsi_person_id + face_url + face_local_lookup + profile_url
+    # Questo evita di dover passare per find_more_sots_matches.py settimanale.
+    import os as _os
+    sots_urls_raw = _os.environ.get("SOTS_URLS", "").strip()
+    if sots_urls_raw:
+        sots_urls_list = [s.strip() for s in sots_urls_raw.split("\n")]
+        # Padding a len(ids) con stringhe vuote per matchare posizionalmente
+        while len(sots_urls_list) < len(ids):
+            sots_urls_list.append("")
+        
+        print("\n→ Applicazione override SOTS dall'admin...")
+        n_sots_applied = 0
+        n_sots_skipped = 0
+        
+        import requests as _req
+        from scraper.config import USER_AGENTS as _UA
+        from scraper.sortitoutsi import face_url as _face_url, profile_url as _profile_url
+        
+        PHOTOS_DIR = ROOT / "data" / "photos" / "players_sots_lookup"
+        PHOTOS_DIR.mkdir(parents=True, exist_ok=True)
+        session = _req.Session()
+        
+        # Carico i 3 JSON players per aggiornarli in place
+        players_main_data = _load(PLAYERS_SAUDI_FILE, [])
+        players_all_data = _load(PLAYERS_ALL_FILE, [])
+        players_static_data = _load(PLAYERS_STATIC_FILE, [])
+        
+        for pid, sots_url in zip(ids, sots_urls_list):
+            if not sots_url:
+                continue
+            m = re.search(r"/person/(\d+)/", sots_url)
+            if not m:
+                print(f"  ✗ {pid}: URL SOTS non parsabile: {sots_url[:60]}")
+                n_sots_skipped += 1
+                continue
+            sots_id = int(m.group(1))
+            
+            # Scarica face PNG (idempotente: skip se gia esistente >200 bytes)
+            face_path = PHOTOS_DIR / f"{sots_id}.png"
+            face_local = f"photos/players_sots_lookup/{sots_id}.png"
+            if not (face_path.exists() and face_path.stat().st_size > 200):
+                try:
+                    cdn_url = f"https://sortitoutsi.b-cdn.net/uploads/face/face_{sots_id}.png"
+                    r = session.get(cdn_url, headers={"User-Agent": _UA[0]}, timeout=15)
+                    if r.status_code == 200 and r.content and len(r.content) > 200:
+                        face_path.write_bytes(r.content)
+                        print(f"  ✓ {pid}: face scaricata sots_id={sots_id}")
+                    else:
+                        print(f"  ⚠ {pid}: face download status {r.status_code} sots_id={sots_id}")
+                        face_local = None
+                except Exception as e:
+                    print(f"  ✗ {pid}: face download error: {e}")
+                    face_local = None
+            else:
+                print(f"  ✓ {pid}: face gia in cache sots_id={sots_id}")
+            
+            # Aggiorna i 3 JSON nel record del giocatore
+            full_name = None
+            for data_list in (players_main_data, players_all_data, players_static_data):
+                for p_rec in data_list:
+                    if p_rec.get("tm_player_id") == pid:
+                        full_name = full_name or p_rec.get("full_name")
+                        p_rec["sortitoutsi_person_id"] = sots_id
+                        p_rec["sortitoutsi_face_url"] = _face_url(sots_id)
+                        p_rec["sortitoutsi_profile_url"] = _profile_url(sots_id, p_rec.get("full_name"))
+                        if face_local:
+                            p_rec["sortitoutsi_face_local_lookup"] = face_local
+                        break
+            
+            n_sots_applied += 1
+            time.sleep(0.3)  # gentile con SOTS CDN
+        
+        # Salva i 3 JSON aggiornati
+        if n_sots_applied > 0:
+            _save(PLAYERS_SAUDI_FILE, players_main_data)
+            _save(PLAYERS_ALL_FILE, players_all_data)
+            _save(PLAYERS_STATIC_FILE, players_static_data)
+            print(f"  Applicati {n_sots_applied} override SOTS, skippati {n_sots_skipped}")
+
     elapsed = int(time.monotonic() - started)
     print(f"\n{'='*60}")
     print(f"  Aggiunti: {n_added}    Aggiornati: {n_updated}    Sauditi: {n_saudi}    Falliti: {n_failed}")

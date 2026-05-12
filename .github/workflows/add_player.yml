@@ -7,6 +7,11 @@ on:
         description: "URL Transfermarkt giocatore/i (uno per riga, anche 1 solo)"
         required: true
         type: string
+      sots_urls:
+        description: "URL SortItOutSi giocatore/i corrispondenti (opzionale, uno per riga nello stesso ordine)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: add-player
@@ -64,6 +69,8 @@ jobs:
           echo "$COUNT" > /tmp/url_count.txt
 
       - name: Run add_players.py (batch)
+        env:
+          SOTS_URLS: ${{ github.event.inputs.sots_urls }}
         run: |
           echo "${{ github.event.inputs.urls }}" | python3 add_players.py
 
