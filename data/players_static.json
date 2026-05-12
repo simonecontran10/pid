@@ -95355,12 +95355,13 @@
     "shirt_number": 11,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1171981-1749199277.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1171981",
-    "fetched_at": "2026-05-08T20:36:34Z",
+    "fetched_at": "2026-05-12T10:03:21Z",
     "roster_club_id": 1095,
     "roster_club_name": "Troyes",
     "sortitoutsi_person_id": null,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000269819.png",
     "photo_local": "photos/players_tm/1171981.jpg"
   },
   {
