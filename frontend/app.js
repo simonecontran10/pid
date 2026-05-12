@@ -7332,6 +7332,8 @@ async function _adminAddPlayer() {
       "Completamento previsto: " + etaStr + ". " +
       '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi progresso</a>';
     input.value = "";
+    if (sotsInput) sotsInput.value = "";
+    if (sotsTeamInput) sotsTeamInput.value = "";
 
   } catch (e) {
     status.style.color = "#c00";
