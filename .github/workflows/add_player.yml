@@ -12,6 +12,11 @@ on:
         required: false
         type: string
         default: ""
+      sots_team_urls:
+        description: "URL SortItOutSi club/i corrispondenti (opzionale, uno per riga, per scaricare logo SOTS del club)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: add-player
@@ -71,6 +76,7 @@ jobs:
       - name: Run add_players.py (batch)
         env:
           SOTS_URLS: ${{ github.event.inputs.sots_urls }}
+          SOTS_TEAM_URLS: ${{ github.event.inputs.sots_team_urls }}
         run: |
           echo "${{ github.event.inputs.urls }}" | python3 add_players.py
 

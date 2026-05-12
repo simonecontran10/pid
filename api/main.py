@@ -504,6 +504,34 @@ def admin_add_player(payload: dict = Body(...)):
     while len(sots_urls) < len(urls):
         sots_urls.append("")
     
+    # Opzionale: sots_team_urls (URL pagina team SortItOutSi del club del giocatore).
+    # Quando fornito, add_players.py estrae il sots_team_id dalla URL (regex /team/<id>/),
+    # scarica il logo, e aggiorna clubs.json. Necessario perche' alcuni team SOTS non
+    # hanno il logo PNG sul CDN (placeholder GIF 43 bytes), serve fornitura manuale.
+    sots_team_urls_raw: list[str] = []
+    if "sots_team_urls" in payload:
+        st_input = payload["sots_team_urls"]
+        if isinstance(st_input, list):
+            sots_team_urls_raw = [str(s) for s in st_input]
+        elif isinstance(st_input, str):
+            sots_team_urls_raw = st_input.split("\n")
+    sots_team_urls: list[str] = []
+    for s in sots_team_urls_raw:
+        s = s.strip()
+        if not s:
+            sots_team_urls.append("")
+        elif re.search(r"sortitoutsi\.net/.*/team/\d+/", s):
+            sots_team_urls.append(s)
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"URL SortItOutSi team non valido: {s[:80]}. Deve contenere /team/<id>/"
+            )
+    if sots_team_urls and len(sots_team_urls) > len(urls):
+        sots_team_urls = sots_team_urls[:len(urls)]
+    while len(sots_team_urls) < len(urls):
+        sots_team_urls.append("")
+    
     if len(urls) > 50:
         raise HTTPException(
             status_code=400,
@@ -560,6 +588,7 @@ def admin_add_player(payload: dict = Body(...)):
         "inputs": {
             "urls": "\n".join(urls),
             "sots_urls": "\n".join(sots_urls) if any(sots_urls) else "",
+            "sots_team_urls": "\n".join(sots_team_urls) if any(sots_team_urls) else "",
         }
     }).encode("utf-8")
     
