@@ -238,6 +238,18 @@ def main() -> None:
             if not sots_url and not sots_team_url:
                 continue
             
+            # Skip se player non esiste nei JSON (es. scrape TM fallito con 502)
+            # Senza questo controllo scaricheremmo face PNG orfane non collegate a nessun record.
+            player_exists = any(
+                p_rec.get("tm_player_id") == pid
+                for data_list in (players_main_data, players_all_data, players_static_data)
+                for p_rec in data_list
+            )
+            if not player_exists:
+                print(f"  ⚠ {pid}: player non in DB (scrape TM probabilmente fallito), skip override SOTS")
+                n_sots_skipped += 1
+                continue
+            
             # === PARTE 1: SOTS person (face + person_id) ===
             sots_id = None
             face_local = None
