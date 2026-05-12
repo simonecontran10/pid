@@ -95523,7 +95523,7 @@
     "shirt_number": 73,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1108466-1730834754.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1108466",
-    "fetched_at": "2026-05-09T20:17:04Z",
+    "fetched_at": "2026-05-12T11:14:12Z",
     "roster_club_id": 31,
     "roster_club_name": "Liverpool",
     "sortitoutsi_person_id": null,
@@ -96015,9 +96015,9 @@
     "fetched_at": "2026-05-12T11:10:28Z",
     "roster_club_id": 1184,
     "roster_club_name": "Genk",
-    "sortitoutsi_person_id": 2000090654,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000090654.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000090654/ayumu-yokoyama",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/835775.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000090654.png"
   }
