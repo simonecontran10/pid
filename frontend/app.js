@@ -6985,9 +6985,12 @@ function renderAdminPanel() {
           <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL Transfermarkt</label>
           <textarea id="admin-add-url" rows="4" placeholder="Uno o piu URL Transfermarkt, uno per riga"
                     class="w-full text-xs px-2 py-1.5 rounded-md mb-2 resize-y" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1); font-family: inherit; min-height: 64px;"></textarea>
-          <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL SortItOutSi <span style="color: var(--text-3); text-transform: none;">(opzionale, stesso ordine, lascia vuote le righe senza match)</span></label>
-          <textarea id="admin-add-sots-url" rows="4" placeholder="URL SortItOutSi corrispondenti (opzionale, uno per riga). Lascia vuota la riga se non hai il match SOTS per quel giocatore."
-                    class="w-full text-xs px-2 py-1.5 rounded-md mb-2 resize-y" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1); font-family: inherit; min-height: 64px;"></textarea>
+          <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL SortItOutSi giocatore <span style="color: var(--text-3); text-transform: none;">(opzionale, stesso ordine)</span></label>
+          <textarea id="admin-add-sots-url" rows="3" placeholder="URL SortItOutSi giocatore (es. /person/123/nome)"
+                    class="w-full text-xs px-2 py-1.5 rounded-md mb-2 resize-y" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1); font-family: inherit; min-height: 56px;"></textarea>
+          <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL SortItOutSi club <span style="color: var(--text-3); text-transform: none;">(opzionale, per logo)</span></label>
+          <textarea id="admin-add-sots-team-url" rows="3" placeholder="URL SortItOutSi team del club (es. /team/456/nome-club). Per scaricare logo SOTS del club."
+                    class="w-full text-xs px-2 py-1.5 rounded-md mb-2 resize-y" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1); font-family: inherit; min-height: 56px;"></textarea>
           <button id="admin-add-btn" class="w-full px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">
             Aggiungi giocatore
           </button>
@@ -7206,6 +7209,7 @@ async function _adminAddPlayer() {
   const status = document.getElementById("admin-add-status");
   const input = document.getElementById("admin-add-url");
   const sotsInput = document.getElementById("admin-add-sots-url");
+  const sotsTeamInput = document.getElementById("admin-add-sots-team-url");
   const btn = document.getElementById("admin-add-btn");
   if (!input || !status) return;
 
@@ -7230,32 +7234,43 @@ async function _adminAddPlayer() {
   }
   
   // URL SOTS posizionali (allineati per riga con gli URL TM originali, prima di dedupe)
-  const sotsRaw = (sotsInput?.value || "").trim();
-  let sotsUrls = [];
-  if (sotsRaw) {
-    const sotsLines = sotsRaw.split(/\r?\n/).map(s => s.trim());
-    // Allineamento: prendo sotsLines[i] per ogni linea TM originale, scarto duplicati TM
-    const sotsByUrl = new Map();
+  // Helper: allinea posizionalmente una textarea optional a urls (deduplicato)
+  const alignToUrls = (rawText) => {
+    if (!rawText) return [];
+    const lines = rawText.split(/\r?\n/).map(s => s.trim());
+    const byUrl = new Map();
     const origLines = raw.split(/\r?\n/).map(s => s.trim());
     for (let i = 0; i < origLines.length; i++) {
       const u = origLines[i];
       if (!u) continue;
-      const s = (i < sotsLines.length) ? sotsLines[i] : "";
-      // Per URL duplicato, mantengo solo il PRIMO sots associato (se non vuoto) o l'eventuale non-vuoto
-      if (!sotsByUrl.has(u) || (s && !sotsByUrl.get(u))) {
-        sotsByUrl.set(u, s);
+      const s = (i < lines.length) ? lines[i] : "";
+      if (!byUrl.has(u) || (s && !byUrl.get(u))) {
+        byUrl.set(u, s);
       }
     }
-    // Ricostruisco sotsUrls in ordine di urls deduplicati
-    sotsUrls = urls.map(u => sotsByUrl.get(u) || "");
-    // Valido formato URL SOTS (solo righe non vuote)
-    const sotsRe = /sortitoutsi\.net\/.*\/person\/\d+\//i;
-    const sotsInvalid = sotsUrls.filter(s => s && !sotsRe.test(s));
-    if (sotsInvalid.length > 0) {
-      status.style.color = "#c00";
-      status.textContent = sotsInvalid.length + " URL SortItOutSi non valido/i (deve contenere /person/<id>/). Correggi e riprova.";
-      return;
-    }
+    return urls.map(u => byUrl.get(u) || "");
+  };
+  
+  // URL SOTS person allineati
+  const sotsRaw = (sotsInput?.value || "").trim();
+  const sotsUrls = alignToUrls(sotsRaw);
+  const sotsRe = /sortitoutsi\.net\/.*\/person\/\d+\//i;
+  const sotsInvalid = sotsUrls.filter(s => s && !sotsRe.test(s));
+  if (sotsInvalid.length > 0) {
+    status.style.color = "#c00";
+    status.textContent = sotsInvalid.length + " URL SortItOutSi person non valido/i (deve contenere /person/<id>/). Correggi e riprova.";
+    return;
+  }
+  
+  // URL SOTS team allineati
+  const sotsTeamRaw = (sotsTeamInput?.value || "").trim();
+  const sotsTeamUrls = alignToUrls(sotsTeamRaw);
+  const sotsTeamRe = /sortitoutsi\.net\/.*\/team\/\d+\//i;
+  const sotsTeamInvalid = sotsTeamUrls.filter(s => s && !sotsTeamRe.test(s));
+  if (sotsTeamInvalid.length > 0) {
+    status.style.color = "#c00";
+    status.textContent = sotsTeamInvalid.length + " URL SortItOutSi team non valido/i (deve contenere /team/<id>/). Correggi e riprova.";
+    return;
   }
 
   const urlRe = /transfermarkt\.[a-z.]+.*spieler\/\d+/i;
@@ -7285,7 +7300,7 @@ async function _adminAddPlayer() {
     const resp = await fetch("/admin-add-player", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ urls, sots_urls: sotsUrls }),
+      body: JSON.stringify({ urls, sots_urls: sotsUrls, sots_team_urls: sotsTeamUrls }),
     });
 
     if (resp.status === 409) {
