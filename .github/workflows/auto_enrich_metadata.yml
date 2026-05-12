@@ -1,0 +1,104 @@
+name: Auto Enrich Metadata (SOTS faces weekly)
+
+# Gira ogni domenica alle 05:00 UTC (= 07:00 italiana estate, 06:00 inverno).
+# Cerca nuovi match SortItOutSi per i giocatori senza sortitoutsi_person_id
+# (es. nuovi aggiunti via add_player.yml, primavere, prestiti, "new arrival"),
+# verifica DOB, scarica face PNG, e aggiorna i 3 JSON players_*.json.
+#
+# Settimanale per:
+# - non hammerare sortitoutsi.net (no API ufficiale, rate limit non documentato)
+# - rispettare il budget GitHub Actions free tier (2000 min/mese)
+# - foto/loghi/match non cambiano abbastanza spesso da richiedere daily
+on:
+  schedule:
+    - cron: "0 5 * * 0"   # Domenica 05:00 UTC
+  workflow_dispatch:       # permette run manuale dal tab Actions
+
+concurrency:
+  group: auto-enrich
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  enrich-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Find new SOTS matches (DOB-verified)
+        run: |
+          echo "Searching for new SOTS matches..."
+          python3 find_more_sots_matches.py
+          echo ""
+          echo "=== Output files ==="
+          ls -la data/sots_more_matches_*.xlsx 2>/dev/null || echo "No output files"
+
+      - name: Apply auto-confirmed matches
+        run: |
+          if [ -f data/sots_more_matches_confirmed.xlsx ]; then
+            # Verifica che abbia almeno 1 riga (oltre header)
+            COUNT=$(python3 -c "
+          from openpyxl import load_workbook
+          wb = load_workbook('data/sots_more_matches_confirmed.xlsx', data_only=True)
+          ws = wb.active
+          rows = [r for r in ws.iter_rows(min_row=2, values_only=True) if r and r[0]]
+          print(len(rows))
+          ")
+            echo "Found $COUNT confirmed matches to apply"
+            if [ "$COUNT" -gt 0 ]; then
+              python3 apply_more_matches.py
+            else
+              echo "No new matches, skipping apply"
+            fi
+          else
+            echo "confirmed.xlsx not generated, skipping apply"
+          fi
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          # Aggiungi solo i file rilevanti
+          git add data/players_main.json data/players_static.json data/players_all.json data/sortitoutsi_id_lookup.json 2>/dev/null || true
+          git add data/photos/players_sots_lookup/ 2>/dev/null || true
+          # NON committare gli Excel (intermedi)
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          # Conta i nuovi match per il commit message
+          N_NEW=$(git diff --cached data/sortitoutsi_id_lookup.json | grep -c "^+.*sots_id" || echo "?")
+          git commit -m "auto: weekly SOTS enrichment (${N_NEW:-?} new matches, $(date -u +%Y-%m-%d))"
+          # Retry push fino a 3 volte
+          for i in 1 2 3; do
+            echo "Push attempt $i/3"
+            if git pull --rebase origin main && git push; then
+              echo "Push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "Push failed, retrying..."
+            sleep 5
+          done
+          echo "All push attempts failed"
+          exit 1
