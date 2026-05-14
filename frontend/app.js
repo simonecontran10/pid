@@ -7294,7 +7294,7 @@ async function _adminAddPlayer() {
 
   if (btn) btn.disabled = true;
   status.style.color = "";
-  status.textContent = "Avvio workflow per " + urls.length + " giocatore" + (urls.length > 1 ? "i" : "") + "\u2026";
+  status.textContent = "Avvio workflow per " + urls.length + " " + (urls.length > 1 ? "giocatori" : "giocatore") + "\u2026";
 
   try {
     const resp = await fetch("/admin-add-player", {
@@ -7328,7 +7328,7 @@ async function _adminAddPlayer() {
 
     status.style.color = "#0a0";
     status.innerHTML =
-      "\u2713 Workflow avviato per " + data.count + " giocatore" + (data.count > 1 ? "i" : "") + ". " +
+      "\u2713 Workflow avviato per " + data.count + " " + (data.count > 1 ? "giocatori" : "giocatore") + ". " +
       "Completamento previsto: " + etaStr + ". " +
       '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi progresso</a>';
     input.value = "";
