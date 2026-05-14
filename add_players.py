@@ -19,6 +19,7 @@ Uso:
 from __future__ import annotations
 
 import sys
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -101,6 +102,8 @@ def main() -> None:
 
     client = TransfermarktClient()
     n_added = n_updated = n_saudi = n_failed = 0
+    failed_ids: list[int] = []  # tm_id dei giocatori falliti (per report + exit code)
+    added_names: list[str] = []  # nomi dei giocatori effettivamente aggiunti
     started = time.monotonic()
 
     for i, pid in enumerate(ids, 1):
@@ -123,6 +126,7 @@ def main() -> None:
                 # non hanno il campo: il pannello li ignora semplicemente.
                 prof["added_date"] = _dt.date.today().isoformat()
                 n_added += 1
+                added_names.append(prof.get("full_name") or f"pid={pid}")
             profiles_by_id[pid] = prof
 
             saudi_flag = bool(prof.get("is_saudi_eligible"))
@@ -140,6 +144,7 @@ def main() -> None:
             print(f"  [{i}/{len(ids)}]  {prof.get('full_name','?'):<32}  ({prof.get('current_club_name') or '-'})  [{tag}]")
         except Exception as e:
             n_failed += 1
+            failed_ids.append(pid)
             print(f"  [{i}/{len(ids)}]  FAIL pid={pid}: {type(e).__name__}: {e}")
 
         if i % 10 == 0:
@@ -364,6 +369,49 @@ def main() -> None:
             _save(CLUBS_FILE, clubs_data)
             print(f"  Applicati {n_sots_applied} face override, {n_clubs_logo_applied} club logo, skippati {n_sots_skipped}")
     print("\nFatto. Hard reload del browser (⌘⇧R) per vedere i nuovi giocatori.")
+
+    # === Report finale + exit code ===
+    # Se ci sono stati fallimenti (es. 403/502 da TM), usciamo con codice 1 cosi'
+    # il workflow GitHub risulta ROSSO (non verde fuorviante) e parte l'email
+    # automatica di notifica. Scriviamo anche un riepilogo su GITHUB_STEP_SUMMARY
+    # cosi' nella pagina del run si vede subito chi e' stato inserito e chi no.
+    print(f"\n{'='*60}")
+    print("  REPORT FINALE")
+    if added_names:
+        print(f"  ✓ INSERITI ({len(added_names)}): {', '.join(added_names)}")
+    if n_updated:
+        print(f"  ↻ AGGIORNATI: {n_updated}")
+    if failed_ids:
+        print(f"  ✗ FALLITI ({len(failed_ids)}): tm_id {', '.join(str(x) for x in failed_ids)}")
+        print(f"    → Probabile 403/502 da Transfermarkt (blocco IP runner). Ri-submetti gli stessi URL: GitHub assegnera' un IP diverso.")
+
+    # GITHUB_STEP_SUMMARY: tabella markdown visibile nella pagina del run
+    _summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if _summary_path:
+        try:
+            with open(_summary_path, "a", encoding="utf-8") as _sf:
+                _sf.write("## Aggiunta giocatori — Report\n\n")
+                _sf.write(f"- **Inseriti**: {n_added}\n")
+                _sf.write(f"- **Aggiornati**: {n_updated}\n")
+                _sf.write(f"- **Falliti**: {n_failed}\n\n")
+                if added_names:
+                    _sf.write("### ✓ Inseriti\n")
+                    for _nm in added_names:
+                        _sf.write(f"- {_nm}\n")
+                    _sf.write("\n")
+                if failed_ids:
+                    _sf.write("### ✗ Falliti (da ri-submettere)\n")
+                    for _fid in failed_ids:
+                        _sf.write(f"- tm_id `{_fid}` — https://www.transfermarkt.com/-/profil/spieler/{_fid}\n")
+                    _sf.write("\n_Causa probabile: 403/502 da Transfermarkt (blocco IP runner temporaneo). "
+                              "Ri-submetti gli stessi URL dall'Admin: GitHub assegnera' un IP runner diverso._\n")
+        except Exception as _e:
+            print(f"  [warn] impossibile scrivere GITHUB_STEP_SUMMARY: {_e}")
+
+    # Exit code: 1 se ci sono fallimenti (workflow rosso + email), 0 altrimenti
+    if failed_ids:
+        print(f"\n  Exit 1: {len(failed_ids)} giocatori non aggiunti. Vedi sopra.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

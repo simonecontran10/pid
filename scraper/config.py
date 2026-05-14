@@ -70,7 +70,15 @@ REQUEST_TIMEOUT = 15
 SLEEP_BETWEEN_REQUESTS = 1.5
 MAX_RETRIES = 3
 BACKOFF_BASE = 3
-MAX_TOTAL_WAIT_PER_REQUEST = 60
+MAX_TOTAL_WAIT_PER_REQUEST = 300  # alzato da 60 per dare spazio ai retry lunghi sul 403
+
+# Gestione 403 Forbidden: spesso e' un blocco IP temporaneo (es. runner GitHub
+# bloccato da Transfermarkt anti-bot). A differenza del 404 (pagina inesistente,
+# inutile ritentare), il 403 si risolve aspettando: l'IP si sblocca dopo minuti.
+# Backoff dedicato piu' lungo: 20s, 40s, 80s, 160s.
+RETRY_ON_403 = True
+BACKOFF_403_BASE = 20
+MAX_RETRIES_403 = 4
 
 # === Output JSON ===
 CLUBS_FILE = DATA_DIR / "clubs.json"

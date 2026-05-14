@@ -74,13 +74,19 @@ jobs:
           echo "$COUNT" > /tmp/url_count.txt
 
       - name: Run add_players.py (batch)
+        id: run_add
         env:
           SOTS_URLS: ${{ github.event.inputs.sots_urls }}
           SOTS_TEAM_URLS: ${{ github.event.inputs.sots_team_urls }}
         run: |
           echo "${{ github.event.inputs.urls }}" | python3 add_players.py
 
+      # Commit step con if:always() — deve girare ANCHE se add_players.py esce 1
+      # (alcuni giocatori falliti). I giocatori riusciti vanno comunque salvati;
+      # add_players.py esce 1 solo per segnalare i fallimenti, ma i dati sul disco
+      # dei riusciti sono validi e vanno committati.
       - name: Commit and push if changed
+        if: always()
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"

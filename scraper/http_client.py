@@ -8,11 +8,14 @@ from typing import Any, Optional
 import requests
 
 from .config import (
+    BACKOFF_403_BASE,
     BACKOFF_BASE,
     DEFAULT_HEADERS,
     MAX_RETRIES,
+    MAX_RETRIES_403,
     MAX_TOTAL_WAIT_PER_REQUEST,
     REQUEST_TIMEOUT,
+    RETRY_ON_403,
     SLEEP_BETWEEN_REQUESTS,
     USER_AGENTS,
     XHR_HEADERS_EXTRA,
@@ -47,7 +50,11 @@ class TransfermarktClient:
     def _do_get(self, url: str, headers: dict, retries: int) -> requests.Response:
         last_exc: Optional[Exception] = None
         request_started = time.monotonic()
-        for attempt in range(1, retries + 1):
+        # Il loop gira fino al massimo tra retries normali e retries-403, perche'
+        # il 403 (blocco IP) merita piu' tentativi degli altri errori. I rami
+        # interni controllano comunque il proprio limite specifico.
+        max_attempts = max(retries, MAX_RETRIES_403 if RETRY_ON_403 else retries)
+        for attempt in range(1, max_attempts + 1):
             self._wait_if_needed()
             # Hard-deadline: se cumulativamente abbiamo speso troppo tempo, abort.
             if time.monotonic() - request_started > MAX_TOTAL_WAIT_PER_REQUEST:
@@ -62,7 +69,20 @@ class TransfermarktClient:
                     print(f"    [rate-limited {resp.status_code}] sleep {backoff}s, retry {attempt}/{retries}")
                     time.sleep(backoff)
                     continue
-                # 404, 403, ecc: non ritentare
+                if resp.status_code == 403 and RETRY_ON_403:
+                    # 403 = quasi sempre blocco IP temporaneo (anti-bot). Ritenta con
+                    # backoff lungo: l'IP si sblocca dopo minuti, non secondi.
+                    # Usa una nuova User-Agent ad ogni tentativo (header rotation gia'
+                    # gestita a monte da _build_headers, ma rinnoviamo per sicurezza).
+                    if attempt >= MAX_RETRIES_403:
+                        print(f"    [403 forbidden] esauriti {MAX_RETRIES_403} tentativi su {url}")
+                        resp.raise_for_status()
+                    backoff = BACKOFF_403_BASE * (2 ** (attempt - 1))
+                    print(f"    [403 forbidden] blocco IP probabile, sleep {backoff}s, retry {attempt}/{MAX_RETRIES_403}")
+                    time.sleep(backoff)
+                    headers["User-Agent"] = random.choice(USER_AGENTS)
+                    continue
+                # 404 e altri 4xx: pagina inesistente o errore client, NON ritentare
                 resp.raise_for_status()
             except requests.Timeout as e:
                 last_exc = e
