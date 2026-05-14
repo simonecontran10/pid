@@ -539,46 +539,89 @@ function applyFilters() {
 }
 
 // ============ RENDER PLAYERS (card piccole + logo club) ============
+// Genera l'HTML di una singola card giocatore. Estratto da renderPlayers() per
+// poter essere riusato anche dal pannello "Aggiunti di recente".
+function playerCardHTML(p) {
+  const club = state.clubsById.get(p.current_club_id);
+  const logo = clubLogo(club);
+  const goals = totalGoals2025(p.tm_player_id);
+  const goalsBadge = goals > 0
+    ? `<span class="absolute top-1 right-1 px-1 py-0.5 text-[10px] rounded font-bold stat-cell" title="${currentLang==='it'?goals+' gol nella stagione 25/26':goals+' goals season 25/26'}" style="background: rgba(251,191,36,0.20); color: #FBBF24; border: 0.5px solid rgba(251,191,36,0.30);">\u26bd${goals}</span>`
+    : "";
+  const shirt = p.shirt_number
+    ? `<div class="absolute top-1 left-1" title="${currentLang==='it'?'Maglia '+p.shirt_number:'Shirt '+p.shirt_number}" style="width: 26px; height: 30px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));">
+        <svg viewBox="0 0 26 30" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+          <path d="M 5 1 L 9 1 Q 13 4 17 1 L 21 1 L 25 6 L 21 9 L 21 28 Q 21 29 20 29 L 6 29 Q 5 29 5 28 L 5 9 L 1 6 Z" fill="#1A1F26" stroke="#6FE0A8" stroke-width="0.8"/>
+          <text x="13" y="20" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#6FE0A8">${p.shirt_number}</text>
+        </svg>
+      </div>`
+    : "";
+  return `
+  <button class="player-card text-left rounded-xl overflow-hidden relative" data-pid="${p.tm_player_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
+    <div class="overflow-hidden relative" style="aspect-ratio: 1/1; background: linear-gradient(180deg, #21262E 0%, #14181E 100%);">
+      ${shirt}${goalsBadge}
+      ${(() => { const fl = nationFlag(p); return fl ? `<div class="absolute bottom-1 left-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${fl}" alt="" class="w-8 h-8 object-contain" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>` : ""; })()}
+      <img src="${playerPhoto(p)}" alt="${escapeHtml(p.full_name)}" class="w-full h-full object-contain" loading="lazy"
+           style="padding: 14px;"
+           onerror="(function(img){var fb=${JSON.stringify(p.photo_url || '')};var av='https://ui-avatars.com/api/?name=${encodeURIComponent(p.full_name||'?')}&size=256&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45';if(fb && img.src!==fb && fb.indexOf('default')<0){img.src=fb;img.onerror=function(){img.onerror=null;img.src=av;};}else{img.onerror=null;img.src=av;}})(this)"/>
+      ${logo ? `<div class="absolute bottom-1 right-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${logo}" alt="" class="w-8 h-8 object-contain" loading="lazy"/></div>` : ""}
+    </div>
+    <div class="px-2 py-2">
+      <div class="text-[13px] font-semibold leading-tight truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)||"\u2014"}</div>
+      <div class="flex items-center justify-between mt-1.5 gap-1">
+        <span class="text-[10px] px-1.5 py-0.5 rounded truncate" style="background: var(--accent-bg); color: var(--accent);">${escapeHtml(localizeRole(p.position_specific || p.position_general))}</span>
+        <span class="text-[10px] stat-cell flex-shrink-0" style="color: var(--text-3);">${birthYear(p) || (p.age || "")}</span>
+      </div>
+    </div>
+  </button>`;
+}
+
+// Pannello "Aggiunti di recente": mostra i giocatori con campo added_date,
+// ordinati per data discendente, limitati ai 20 piu' recenti. Se nessun
+// giocatore ha added_date (es. DB pre-feature), il pannello resta nascosto.
+function renderRecentAdditions() {
+  const section = document.getElementById("recent-additions");
+  if (!section) return;
+  const recent = state.players
+    .filter(p => p.added_date)
+    .sort((a, b) => String(b.added_date).localeCompare(String(a.added_date)))
+    .slice(0, 20);
+  if (recent.length === 0) {
+    section.classList.add("hidden");
+    return;
+  }
+  section.classList.remove("hidden");
+  const countEl = document.getElementById("recent-additions-count");
+  if (countEl) countEl.textContent = String(recent.length);
+  const grid = document.getElementById("recent-additions-grid");
+  if (grid) {
+    grid.innerHTML = recent.map(p => playerCardHTML(p)).join("");
+    grid.querySelectorAll("[data-pid]").forEach(el => {
+      el.addEventListener("click", () => openPlayerModal(parseInt(el.dataset.pid)));
+    });
+  }
+}
+
+// Wiring del toggle collassabile del pannello "Aggiunti di recente"
+function wireRecentAdditionsToggle() {
+  const toggle = document.getElementById("recent-additions-toggle");
+  const body = document.getElementById("recent-additions-body");
+  const chevron = document.getElementById("recent-additions-chevron");
+  if (!toggle || !body || toggle.dataset.wired) return;
+  toggle.dataset.wired = "1";
+  toggle.addEventListener("click", () => {
+    const isHidden = body.classList.toggle("hidden");
+    if (chevron) chevron.style.transform = isHidden ? "rotate(0deg)" : "rotate(180deg)";
+  });
+}
+
 function renderPlayers() {
   const grid = document.getElementById("players-grid");
   if (!state.filtered.length) {
     grid.innerHTML = `<div class="col-span-full text-center py-12" style="color: var(--text-3);">${t("no_results")}</div>`;
     return;
   }
-  grid.innerHTML = state.filtered.map(p => {
-    const club = state.clubsById.get(p.current_club_id);
-    const logo = clubLogo(club);
-    const goals = totalGoals2025(p.tm_player_id);
-    const goalsBadge = goals > 0
-      ? `<span class="absolute top-1 right-1 px-1 py-0.5 text-[10px] rounded font-bold stat-cell" title="${currentLang==='it'?goals+' gol nella stagione 25/26':goals+' goals season 25/26'}" style="background: rgba(251,191,36,0.20); color: #FBBF24; border: 0.5px solid rgba(251,191,36,0.30);">⚽${goals}</span>`
-      : "";
-    const shirt = p.shirt_number
-      ? `<div class="absolute top-1 left-1" title="${currentLang==='it'?'Maglia '+p.shirt_number:'Shirt '+p.shirt_number}" style="width: 26px; height: 30px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.6));">
-          <svg viewBox="0 0 26 30" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
-            <path d="M 5 1 L 9 1 Q 13 4 17 1 L 21 1 L 25 6 L 21 9 L 21 28 Q 21 29 20 29 L 6 29 Q 5 29 5 28 L 5 9 L 1 6 Z" fill="#1A1F26" stroke="#6FE0A8" stroke-width="0.8"/>
-            <text x="13" y="20" text-anchor="middle" font-family="-apple-system, sans-serif" font-size="11" font-weight="700" fill="#6FE0A8">${p.shirt_number}</text>
-          </svg>
-        </div>`
-      : "";
-    return `
-    <button class="player-card text-left rounded-xl overflow-hidden relative" data-pid="${p.tm_player_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
-      <div class="overflow-hidden relative" style="aspect-ratio: 1/1; background: linear-gradient(180deg, #21262E 0%, #14181E 100%);">
-        ${shirt}${goalsBadge}
-        ${(() => { const fl = nationFlag(p); return fl ? `<div class="absolute bottom-1 left-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${fl}" alt="" class="w-8 h-8 object-contain" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>` : ""; })()}
-        <img src="${playerPhoto(p)}" alt="${escapeHtml(p.full_name)}" class="w-full h-full object-contain" loading="lazy"
-             style="padding: 14px;"
-             onerror="(function(img){var fb=${JSON.stringify(p.photo_url || '')};var av='https://ui-avatars.com/api/?name=${encodeURIComponent(p.full_name||'?')}&size=256&background=1A1F26&color=6FE0A8&bold=true&font-size=0.45';if(fb && img.src!==fb && fb.indexOf('default')<0){img.src=fb;img.onerror=function(){img.onerror=null;img.src=av;};}else{img.onerror=null;img.src=av;}})(this)"/>
-        ${logo ? `<div class="absolute bottom-1 right-1 w-8 h-8 flex items-center justify-center" style="filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6));"><img src="${logo}" alt="" class="w-8 h-8 object-contain" loading="lazy"/></div>` : ""}
-      </div>
-      <div class="px-2 py-2">
-        <div class="text-[13px] font-semibold leading-tight truncate" style="color: var(--text-1);">${escapeHtml(p.full_name)||"—"}</div>
-        <div class="flex items-center justify-between mt-1.5 gap-1">
-          <span class="text-[10px] px-1.5 py-0.5 rounded truncate" style="background: var(--accent-bg); color: var(--accent);">${escapeHtml(localizeRole(p.position_specific || p.position_general))}</span>
-          <span class="text-[10px] stat-cell flex-shrink-0" style="color: var(--text-3);">${birthYear(p) || (p.age || "")}</span>
-        </div>
-      </div>
-    </button>`;
-  }).join("");
+  grid.innerHTML = state.filtered.map(p => playerCardHTML(p)).join("");
   grid.querySelectorAll("[data-pid]").forEach(el => el.addEventListener("click", (ev) => {
     // Se il click è sulla stella, gestiscila e non aprire il modal
     const star = ev.target.closest("[data-fav]");
@@ -6066,6 +6109,15 @@ function setActiveTab(route) {
   setVisible("scouting-panel-main", route === "scouting");
   setVisible("filters", route === "home");
   setVisible("stats-bar", route === "home");
+  // Pannello "Aggiunti di recente": visibile solo in home. renderRecentAdditions()
+  // gestisce internamente il caso "nessun giocatore con added_date" (resta hidden).
+  if (route === "home") {
+    setVisible("recent-additions", true);
+    renderRecentAdditions();
+    wireRecentAdditionsToggle();
+  } else {
+    setVisible("recent-additions", false);
+  }
   if (route === "compare") renderCompare();
   if (route === "scouting" && typeof window.renderScoutingPanel === "function") {
     const sp = document.getElementById("scouting-panel-main");

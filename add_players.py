@@ -29,6 +29,7 @@ import json
 import re
 import subprocess
 import time
+import datetime as _dt
 
 from scraper.config import (
     DATA_DIR,
@@ -110,10 +111,17 @@ def main() -> None:
             if existing:
                 prof["roster_club_id"] = existing.get("roster_club_id") or prof.get("current_club_id")
                 prof["roster_club_name"] = existing.get("roster_club_name") or prof.get("current_club_name")
+                # Preserva added_date se il giocatore era gia' stato aggiunto in passato
+                if existing.get("added_date"):
+                    prof["added_date"] = existing["added_date"]
                 n_updated += 1
             else:
                 prof["roster_club_id"] = prof.get("current_club_id")
                 prof["roster_club_name"] = prof.get("current_club_name")
+                # Data di primo inserimento nel DB (usata dal pannello "Aggiunti di recente"
+                # nella Home del frontend). I giocatori pre-esistenti a questa feature
+                # non hanno il campo: il pannello li ignora semplicemente.
+                prof["added_date"] = _dt.date.today().isoformat()
                 n_added += 1
             profiles_by_id[pid] = prof
 

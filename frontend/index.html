@@ -203,6 +203,27 @@
     </div>
   </section>
 
+  <!-- Pannello collassabile "Aggiunti di recente" — popolato da renderRecentAdditions() in app.js.
+       Resta nascosto (hidden) se nessun giocatore ha il campo added_date. -->
+  <section id="recent-additions" class="mb-5 hidden">
+    <button id="recent-additions-toggle" class="w-full rounded-xl p-3 flex items-center justify-between"
+            style="background: var(--surface); border: 0.5px solid var(--border); cursor: pointer;">
+      <span class="flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" style="color: var(--accent);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        <span class="text-sm font-semibold" style="color: var(--text-1);" data-i18n="recent_additions">Aggiunti di recente</span>
+        <span id="recent-additions-count" class="text-xs px-1.5 py-0.5 rounded-full" style="background: var(--accent); color: #0E1116; font-weight: 700;"></span>
+      </span>
+      <svg id="recent-additions-chevron" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" style="color: var(--text-3); transition: transform 0.2s;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div id="recent-additions-body" class="hidden mt-2 rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
+      <div id="recent-additions-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 xl:grid-cols-8 gap-1.5"></div>
+    </div>
+  </section>
+
   <section class="mb-5 relative">
     <div class="rounded-xl p-1.5 flex items-center gap-2" style="background: var(--surface); border: 0.5px solid var(--border);">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-2" style="color: var(--text-3);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
