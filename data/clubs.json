@@ -1929,5 +1929,17 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 415,
+    "name": "FC Toulouse",
+    "league_id": "FR1",
+    "league_name": "Ligue 1",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/415",
+    "slug": "fc-toulouse",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]

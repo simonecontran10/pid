@@ -96021,5 +96021,72 @@
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/835775.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000090654.png"
+  },
+  {
+    "tm_player_id": 743599,
+    "full_name": "Emersonn",
+    "name_arabic": null,
+    "date_of_birth": "2004-07-16",
+    "age": 21,
+    "height_cm": 193,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Centre-Forward",
+    "position_others": [
+      "Right Winger",
+      "Left Winger"
+    ],
+    "place_of_birth": "Cachoeiro de Itapemirim",
+    "citizenships": [
+      "Brazil"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 415,
+    "current_club_name": "Toulouse",
+    "shirt_number": 20,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/743599-1744294419.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/743599",
+    "fetched_at": "2026-05-14T11:14:11Z",
+    "roster_club_id": 415,
+    "roster_club_name": "Toulouse",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/743599.jpg"
+  },
+  {
+    "tm_player_id": 463613,
+    "full_name": "Yann Gboho",
+    "name_arabic": "Yann-Alexandre Gboho Gnantin",
+    "date_of_birth": "2001-01-14",
+    "age": 25,
+    "height_cm": 178,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Attacking Midfield",
+      "Right Winger"
+    ],
+    "place_of_birth": "Man",
+    "citizenships": [
+      "France",
+      "Cote d'Ivoire"
+    ],
+    "is_target_eligible": true,
+    "is_saudi_eligible": true,
+    "current_club_id": 415,
+    "current_club_name": "Toulouse",
+    "shirt_number": 10,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/463613-1672485001.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/463613",
+    "fetched_at": "2026-05-14T11:14:15Z",
+    "roster_club_id": 415,
+    "roster_club_name": "Toulouse",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/463613.jpg"
   }
 ]
