@@ -5530,3 +5530,151 @@ Branch `feat/observation-player-team` non eliminato (deletable da GitHub UI come
 | Fase 6 JSON Export/Import osservazioni | BASSA | 45 min | Era Fase 6 originale |
 | Bug pipeline SOTS: face scaricata ma person_id null | MEDIA | 30 min | Caso Relja Obric: `sortitoutsi_face_local_lookup` valorizzato ma `sortitoutsi_person_id`=None. Investigare apply_more_matches.py o find_more_sots_matches.py — probabile commit/write parziale. Workaround attivo in obs_ui.js riga 1366. |
 | Bug pipeline SOTS: face scaricata ma person_id null | MEDIA | 30 min | Caso Relja Obric: `sortitoutsi_face_local_lookup` valorizzato ma `sortitoutsi_person_id`=None. Investigare apply_more_matches.py o find_more_sots_matches.py — probabile commit/write parziale. Workaround attivo in obs_ui.js riga 1366. |
+---
+
+## 14 maggio 2026 (giovedì) — Hardening pipeline add_player + pannello "Aggiunti di recente"
+
+Sessione di consolidamento dopo i bug emersi nei test del 12 mag. Tre filoni: aggiunta nuova di 4 giocatori reali in produzione, una feature UX (pannello "Aggiunti di recente"), e un fix strutturale alla pipeline `add_player` per gestire i fallimenti TM in modo robusto.
+
+### 4 giocatori aggiunti via Admin
+
+- **Emerson Aparecido** (tm=743599) e **Yann Gboho** (tm=463613) → **Toulouse** (FR1). Workflow run #20 ok in 1m14s. Toulouse aggiunto come nuovo club al DB.
+- **Emiliano Filippis** (tm=821678) e **Wisdom Amey** (tm=818878) → **Pianese**. Primo submit (#21) fallito con 403 Forbidden su entrambi (blocco IP runner). Re-submit immediato → IP runner diverso → 200 OK → entrambi in DB.
+
+Pattern confermato (già visto col 502 di Yokoyama il 12 mag): i fallimenti `add_player` sono quasi sempre problemi esterni transient (TM anti-bot su IP runner GitHub), non bug del codice. Re-submit immediato funziona perché GitHub Actions assegna IP runner diversi a run diversi.
+
+### Bug fix typo "giocatorei"
+
+Riga 7297 e 7331 di `frontend/app.js`: lo status del workflow concatenava `"giocator" + "e" + (n > 1 ? "i" : "")` producendo `"giocatorei"` al plurale. Fix: sostituito con `(urls.length > 1 ? "giocatori" : "giocatore")`. Commit `d24b81c`.
+
+### Feature — pannello collassabile "Aggiunti di recente"
+
+Sezione nuova nella Home che mostra i giocatori aggiunti di recente, ordinati per data discendente, max 20.
+
+**Implementazione:**
+
+1. **`add_players.py`**: nuovo campo `added_date` (formato `YYYY-MM-DD`) salvato sui NUOVI record nel ramo `else`. Sugli aggiornamenti preserva `added_date` esistente. I ~2880 giocatori pre-feature non hanno il campo: il pannello li ignora semplicemente. Aggiunto `import datetime as _dt` a riga 32.
+
+2. **`frontend/index.html`** (righe 208-225): nuova `<section id="recent-additions">` tra `stats-bar` e search bar, nascosta di default (`class="hidden"`). Header cliccabile con icona +, label "Aggiunti di recente", contatore badge accent, chevron animato. Body collassabile con grid responsive 3-8 colonne.
+
+3. **`frontend/app.js`**: 
+   - Estratto `playerCardHTML(p)` come funzione riutilizzabile (prima era inline nel `.map()` di `renderPlayers()`)
+   - Nuova `renderRecentAdditions()`: filtra `state.players.filter(p => p.added_date)`, ordina per data desc, slice 20, popola la grid. Se nessun giocatore ha `added_date`, nasconde l'intera section
+   - Nuova `wireRecentAdditionsToggle()`: gestisce il click dell'header per espandere/collassare con rotazione chevron 180°
+   - Agganciato al routing della Home in `setVisible()`: `if (route === "home") { setVisible("recent-additions", true); renderRecentAdditions(); wireRecentAdditionsToggle(); }`
+
+4. **`frontend/i18n.js`**: chiave `recent_additions` in EN ("Recently added") e IT ("Aggiunti di recente").
+
+Il pannello apparirà a partire dai prossimi giocatori aggiunti via Admin. I 4 di oggi (Emerson/Gboho/Filippis/Amey) sono stati scrappati PRIMA del fix, quindi non hanno `added_date` e non compaiono nel pannello (è il comportamento voluto).
+
+Commit `f8bdce0`.
+
+### Feature — retry pazienti su 403 + exit code rosso su fallimenti (C+A)
+
+Risolve il bug strutturale emerso con Yokoyama (502 il 12 mag), Filippis e Amey (403 oggi): quando TM blocca l'IP runner, lo script `add_players.py` falliva silenziosamente con workflow ✅ verde, costringendo a controllo manuale per accorgersi.
+
+**Causa root identificata** (riga 64-66 di `http_client.py`): il `_do_get` aveva un commento esplicito `# 404, 403, ecc: non ritentare` che mandava il 403 dritto a `raise_for_status()`. Sbagliato — il 403 da blocco IP merita backoff lungo (l'IP si sblocca dopo minuti), il 404 invece sì.
+
+**Fix A — retry pazienti** (`scraper/config.py` + `scraper/http_client.py`):
+- Nuovi parametri config: `RETRY_ON_403=True`, `BACKOFF_403_BASE=20`, `MAX_RETRIES_403=4`. Backoff progressivo: 20s/40s/80s/160s.
+- `MAX_TOTAL_WAIT_PER_REQUEST` alzato 60→300s per dare spazio ai backoff lunghi del 403.
+- `_do_get` ora ha ramo dedicato per `resp.status_code == 403 and RETRY_ON_403`: ritenta con backoff lungo + rotazione User-Agent ad ogni tentativo. Il 404 resta `raise_for_status()` immediato (giustamente).
+- Loop esteso: `for attempt in range(1, max_attempts + 1)` con `max_attempts = max(retries, MAX_RETRIES_403)` per permettere al 403 di sfruttare i suoi 4 tentativi.
+
+**Fix C — exit code + report** (`add_players.py` + `add_player.yml`):
+- Inizializzo `failed_ids: list[int] = []` e `added_names: list[str] = []` accanto ai contatori (righe 105-106).
+- Nel ramo `except` del for-loop scrape: `failed_ids.append(pid)` oltre a `n_failed += 1` (riga 147).
+- Nel ramo "nuovo giocatore": `added_names.append(prof.get("full_name") or f"pid={pid}")` (riga 129).
+- Report finale dopo "Fatto. Hard reload..." (riga 366):
+  - Lista INSERITI con nome
+  - Lista FALLITI con tm_id + hint "Probabile 403/502, ri-submetti"
+  - Scrittura su `GITHUB_STEP_SUMMARY`: tabella markdown con sezione ✓ Inseriti e ✗ Falliti (con link diretto TM per ogni fallito) — visibile nella pagina del run GitHub Actions senza scorrere i log
+- `sys.exit(1)` se `failed_ids` non vuoto → workflow ❌ rosso + email GitHub automatica.
+- Aggiunto `import os` a riga 22 (per accedere a `GITHUB_STEP_SUMMARY`).
+
+**Fix workflow YAML** (`add_player.yml`):
+- Step "Commit and push if changed" ora ha `if: always()`. Motivo: con `sys.exit(1)` da `add_players.py`, lo step commit sarebbe stato saltato (default `if: success()`), perdendo anche i giocatori riusciti. Con `if: always()`, i riusciti vengono comunque committati anche se altri falliscono.
+
+**Comportamento atteso d'ora in poi:**
+- Tutti riescono → workflow verde, commit normale.
+- Alcuni falliscono → `add_players.py` esce 1 → workflow rosso → email a Simone. I giocatori riusciti SONO comunque committati. Tabella nello Step Summary mostra esattamente chi è dentro e chi va re-submittato.
+- Tutti falliscono → workflow rosso, niente da committare → step "Nessuna modifica da committare" → exit 0 dello step (workflow comunque rosso per via di add_players.py).
+- 403 transient → molti si auto-risolvono coi 4 retry da 20-40-80-160s + rotazione UA, senza intervento utente.
+
+Commit `e6d0029`.
+
+### Commit della giornata (cronologico)
+
+```
+5c202be  auto: add 2 player(s) (Emerson + Gboho - Toulouse)
+b515772  auto: add 2 player(s) (retry workflow)
+b6d974e  auto: add 2 player(s) (Filippis + Amey - Pianese)
+d24b81c  fix(admin-ui): typo 'giocatorei' -> 'giocatori'
+f8bdce0  feat(home): pannello collassabile 'Aggiunti di recente'
+0bcda09  auto: daily stats refresh (2026-05-14)
+e6d0029  feat(add_player): retry pazienti 403 + exit code rosso
+```
+
+### File modificati
+
+**Codice:**
+- `scraper/config.py`: +RETRY_ON_403, +BACKOFF_403_BASE=20, +MAX_RETRIES_403=4, MAX_TOTAL_WAIT_PER_REQUEST 60→300
+- `scraper/http_client.py`: ramo 403 dedicato, loop esteso max(retries, MAX_RETRIES_403)
+- `add_players.py`: campo `added_date` sui nuovi, tracking failed_ids/added_names, report finale, GITHUB_STEP_SUMMARY, sys.exit(1), import os e import datetime
+- `.github/workflows/add_player.yml`: `if: always()` sullo step Commit
+- `frontend/index.html`: sezione `#recent-additions` con header + body collassabile
+- `frontend/app.js`: estratto `playerCardHTML()`, nuove `renderRecentAdditions()` e `wireRecentAdditionsToggle()`, fix typo "giocatorei", agganciate al routing Home in `setVisible()`
+- `frontend/i18n.js`: chiave `recent_additions` IT+EN
+
+**Dati:**
+- 4 nuovi player nei 3 JSON (Emerson, Gboho, Filippis, Amey)
+- `clubs.json`: + FC Toulouse, + Pianese (2 nuovi club)
+- 2 nuove foto TM scaricate (`data/photos/players_tm/463613.jpg`, `743599.jpg`)
+
+### Lezioni della sessione
+
+1. **403/502 da TM = blocco IP runner**, non bug nostro. Re-submit funziona quasi sempre (IP runner diverso). Ora il sistema lo gestisce in autonomia coi retry lunghi sul 403.
+2. **`if: success()` di default sui step GitHub Actions** è un trabocchetto quando lo script principale esce con codice ≠ 0: senza `if: always()` perdi anche il lavoro parziale riuscito.
+3. **`GITHUB_STEP_SUMMARY` è oro** per i workflow che processano N elementi indipendenti: dà visibilità immediata su cosa è andato/non è andato senza scorrere log lunghi.
+
+---
+
+## Backlog aggiornato
+
+### ⭐ NUOVO OBIETTIVO STRATEGICO — Mondiale 2026
+
+Importare nel DB **tutti i giocatori che parteciperanno al Mondiale di quest'estate (estate 2026)**. Simone ha già **alcune liste** delle convocazioni/pre-convocazioni nazionali pronte da elaborare.
+
+**Domande aperte per la prossima sessione:**
+- Quante nazionali e quanti giocatori in totale? (32 nazionali x ~26 giocatori = ~830 player, ma probabilmente molti già in DB se giocano in top 5 / IT / PL)
+- Formato delle liste in possesso di Simone (TXT? Excel? PDF? URL TM delle liste convocate?)
+- Workflow di import: 
+  - Opzione A: estendere `add_player.yml` per accettare batch >50 URL (oggi limite 50)
+  - Opzione B: nuovo workflow dedicato `import_world_cup.yml` con input file
+  - Opzione C: script locale `import_wc_squad.py` che processa una lista per nazionale alla volta
+- Tema "national_team" come campo dedicato nel record player? (es. `world_cup_2026_squad: "Italy"`)
+- UI: pannello/filtro dedicato per "Mondiale 2026"? Tab nella sidebar?
+
+Prossimo step: condividere le liste con Claude, decidere strategy, implementare.
+
+### Resto del backlog (priorità invariate)
+
+| Task | Priorità | ETA | Note |
+|---|---|---|---|
+| **Megapack loghi/foto SOTS** | ALTA | 2-3h | 21 GB rar in Downloads (metallic_logos 5.3GB + cutout_megapack 15.7GB). **Bloccato da disco pieno**: solo 2.1 GB liberi su 926 GB totali. Desktop 334 GB, Movies 193 GB, Downloads 76 GB. Richiede prima pulizia o disco esterno (≥30 GB liberi). Strategia: estrarre fuori dal repo, script Python copia selettiva solo `<sots_team_id>.png`/`<sots_person_id>.png` necessari. |
+| Bug pipeline SOTS face vs person_id (Relja Obric) | MEDIA | 30 min | Workaround attivo in obs_ui.js riga 1366. Investigare apply_more_matches.py/find_more_sots_matches.py |
+| Drag-and-drop reordering Griglie tab depth chart | BASSA | 1-2h | Era nel TODO da varie sessioni |
+| Fase 5 PDF Export osservazione (rifinitura layout) | BASSA | 2h | |
+| Fase 6 JSON Export/Import osservazioni | BASSA | 45 min | |
+| Cleanup naming legacy Saudi (PLAYERS_STATIC_FILE) | BASSA | 2h | Debito tecnico |
+| Bug enrich_sortitoutsi.py reset team_id | BASSA | 30 min | Workaround attivo: blocco SOTS override applicato DOPO subprocess |
+
+### Stato infra
+
+- Daily stats refresh cron (03 UTC) + backup (06:30 UTC) → funzionano regolarmente.
+- Weekly auto_enrich_metadata (domenica 05 UTC) → funziona ma copertura limitata.
+- Admin 3-textarea → validato in produzione con 4 giocatori reali.
+- "Aggiunti di recente" → live, attivo, parte da nuovi inserimenti d'ora in avanti.
+- Retry 403 + exit rosso → live, gestione robusta dei fallimenti TM.
+
+---
