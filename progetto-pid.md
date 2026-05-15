@@ -5678,3 +5678,200 @@ Prossimo step: condividere le liste con Claude, decidere strategy, implementare.
 - Retry 403 + exit rosso → live, gestione robusta dei fallimenti TM.
 
 ---
+---
+
+## 15 maggio 2026 (venerdì) — WC2026 Fase 1-3 + Cleanup Saudi legacy
+
+Sessione lunga divisa in due filoni intrecciati. Filone A: pipeline completa di scraping/risoluzione delle rose del Mondiale 2026 (dalla Wikipedia ai tm_id), arrivata al test funzionale ma con l'import vero dei 130 giocatori **rimandato**. Filone B: cleanup strutturale del debito tecnico "Saudi legacy" emerso a metà sessione, completato fino al merge in main.
+
+### A1 — Recupero contesto e setup obiettivo Mondiale
+
+Riapertura del piano "Mondiale 2026" scritto nel diario di ieri. Decisioni strategiche prese all'inizio:
+
+- **Tag dedicato** sui giocatori (`wc2026_squad`, `wc2026_shirt`, `wc2026_pos`) come campi su `players_main.json`, non tabella Supabase separata: zero migrazioni schema, frontend filtra con `.filter()`, segue il pattern dati esistente, e il Mondiale è un evento one-shot quindi normalizzare in tabella sarebbe over-engineering.
+- **Solo rose final**, niente pre-list 55-uomini. Quando le rose definitive vengono annunciate da una nazionale, l'aggiungiamo; le 55-uomini saranno saltate finché non si trasformano in 26-uomini ufficiali.
+- **Source primaria Wikipedia**: Simone ha incollato come campione la rosa Francia con il formato standard di Wikipedia (`No. | Pos. | Player | Date of birth (age) | Caps | Goals | Club`).
+
+### A2 — `parse_wikipedia_squad.py` (parser Wikipedia → JSON)
+
+Script nuovo per estrarre rose nazionali da Wikipedia. Iterazioni multiple per arrivare alla versione che funziona.
+
+**Iterazione 1 — paste manuale**: regex `PLAYER_RE` su testo flat. Parsato 26/26 player della Francia incollata. Funzionava ma richiedeva paste manuale per ogni nazionale.
+
+**Iterazione 2 — fetch da URL hub**: tentato `https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads`. Fallimento istruttivo: ispezionando l'HTML reale, la pagina hub al 15 maggio è **praticamente vuota** — 48 tabelle senza righe (FIFA chiede rose ufficiali entro il 2 giugno, quindi la pagina si popolerà nelle prossime 2 settimane). Inoltre Wikipedia hub non usa heading `mw-headline` per le sezioni nazionali — distingue le 48 sezioni solo dal nome dell'allenatore precedente ciascuna tabella. Strategia abbandonata.
+
+**Iterazione 3 — pagine nazionali**: switchato a `https://en.wikipedia.org/wiki/{Country}_national_football_team` (sezione "Current squad"). Lì le rose ci sono, perché quando una nazionale annuncia i 26, aggiorna sia la pagina hub (vuota al momento) che la pagina principale della nazionale (popolata). Mappa hardcoded delle 48 qualificate al Mondiale 2026 con URL Wikipedia ciascuna, gestendo i casi non-standard (USA/Australia/Canada usano `_men%27s_national_soccer_team`, Curaçao con encoding URL).
+
+**Iterazione 4 — parser cella-per-cella**: il primo tentativo di parsing HTML usava `_table_to_flat_text` (concatenazione di righe) + la regex `PLAYER_RE`. Risultato disastroso: i numeri di player si attaccavano al club del player precedente (`Milan 1`, `Rennes 23`, `Mbappé ( captain )` con spazi interni). Rifatto da zero con `_parse_table_rows` che parsa cella per cella usando direttamente l'HTML strutturato (lookup colonne via header `_table_header_columns`).
+
+**Iterazione 5 — fix dati reali**: il dump cell-by-cell della pagina Francia ha rivelato 3 differenze tra HTML reale e mio modello mentale:
+1. Pos = `"1 GK"` (Wikipedia mette un numero d'ordinamento prima dell'abbreviazione, per sort interno). Fix: regex `\b(GK|DF|MF|FW)\b`.
+2. DOB = `"( 1995-07-03 ) 3 July 1995 (age\xa030)"` — ISO date all'inizio (più affidabile), NBSP (`\xa0`) attorno all'età. Riscritto `parse_dob`: cerca prima `\d{4}-\d{2}-\d{2}` (ISO), fallback al pattern testuale "DD Month YYYY (age N)".
+3. Club = `"Milan"` puro (senza federazione), quindi `club_country` resta vuoto in modalità HTML. Accettabile: TM ce l'avrà più ricca.
+
+**Iterazione 6 — classificazione status**: aggiunto `_classify_squad_status` che riconosce nel testo della pagina se la rosa è `final` (`"called up to/for the 2026 FIFA World Cup"`), `preliminary` (`"preliminary squad"`, `"55-man preliminary"`), `pending` (`"will announce their final squad on..."`) o `unknown`. Default: importa SOLO le rose final, salta tutto il resto. Flag `--include-preliminary` per opt-in.
+
+**Iterazione 7 — fix Bosnia**: Bosnia annunciata l'11 maggio ma cella `No.` (numero maglia) **vuota** per tutti i 26 giocatori. Wikipedia li assegna pochi giorni prima del torneo. Il parser scartava le righe con `shirt=None`. Fix: gate riga = Pos valida (GK/DF/MF/FW), shirt opzionale.
+
+**Risultati batch finale (`--all --dry-run` al 15 maggio sera):**
+- 5/48 nazionali con rosa final: **France** (26), **Bosnia and Herzegovina** (26, senza numeri), **Iraq** (26), **Japan** (26, senza numeri — annunciato in giornata), **New Zealand** (26).
+- 7/48 con pre-list (skip): Argentina, Brazil, Colombia, Czech Republic, Mexico, Paraguay, Qatar, Uzbekistan.
+- 36/48 `unknown` (rose generiche "Current squad" non agganciate al WC2026): Algeria, Australia, Austria, Belgium, Canada, Cape Verde, Croatia, Curaçao, DR Congo, Ecuador, Egypt, England, Germany, Ghana, Haiti, Iran, Ivory Coast, Jordan, Morocco, Netherlands, Norway, Panama, Portugal, Saudi Arabia, Scotland, Senegal, South Africa, South Korea, Spain, Sweden, Switzerland, Tunisia, Turkey, United States, Uruguay.
+
+Totale parsati e salvati in `data/wc2026_squads_raw.json`: **130 giocatori in 5 nazionali**.
+
+### A3 — `resolve_wc2026_urls.py` (Wikipedia name → Transfermarkt tm_id)
+
+Secondo script: per ogni giocatore parsato fa search su TM Schnellsuche e disambigua con la DOB.
+
+**Strategia matching 5-livelli** (auto-accept solo per match alta confidenza):
+1. **DOB exact** + nome con overlap token ≥ 2 → auto-accept (`dob_exact`)
+2. **DOB tolerant** (±1 giorno) → auto-accept (`dob_tolerant`). Gestisce errori dati timezone Wikipedia vs TM.
+3. **Profile fetch** per i top-5 candidati per nome (se DOB manca nella search row di TM) → poi confronto.
+4. **Name unique** — nome esatto normalizzato + 1 solo candidato → auto-accept (`name_unique`), promosso a `dob_exact` se `--validate-all` è attivo.
+5. **Rescue** — se ≤3 candidati totali e c'è DOB target, fetch profilo per tutti anche se nome ha overlap basso. Gestisce translitterazioni esotiche.
+
+**Normalizzazione nomi**: rimuove diacritici (`Kylian Mbappé → kylian mbappe`), apostrofi (`N'Golo Kanté → ngolo kante`), trattini, punteggiatura. Tokenizza e filtra token <2 char.
+
+**Riuso TransfermarktClient**: importa `from scraper.http_client import TransfermarktClient`, segue convenzioni `add_players.py` (rate limiting, retry 403 con backoff lungo, header rotation). Niente client ad-hoc.
+
+**Fetch DOB profilo allineato a `scraper/profiles.py`**: dopo un fix iniziale con regex sbagliate (`Aug 21, 2002`), allineato alla logica della pipeline esistente: legge il valore della info-table TM `Date of birth/Age` nel formato `19/08/1991 (34)` (DD/MM/YYYY), stesso pattern di `_parse_dob_age` in produzione.
+
+**Override file `data/wc2026_overrides.json`**: per i casi che TM non risolve mai (translitterazioni esotiche dall'arabo iracheno). Formato `{"Country|Player Name": tm_player_id}`. Lo script li applica come bypass prima della Schnellsuche.
+
+**Risultati batch finale (`--validate-all` su 130 giocatori):**
+
+| Nazionale | Risolti | Note |
+|---|---|---|
+| Francia | 26/26 | tutto dob_exact incluso 4 omonimi (Brice Samba, Lucas Hernández, Ibrahima Konaté, Ousmane Dembélé) risolti via fetch profilo DOB |
+| Bosnia | 26/26 | dob_exact, nessuna stranezza |
+| Iraq | 26/26 | 21 dob_exact + 5 manual_override (Frans Putros → tm 166460, Ahmed Maknzi → "Ahmed Hasan" tm 881506, Ibrahim Bayesh → tm 560957, Akam Hashim → "Akam Hashem" tm 933541) |
+| Giappone | 26/26 | dob_exact |
+| Nuova Zelanda | 26/26 | 25 dob_exact + 1 manual_override (Tommy Smith → tm 54381, 6 omonimi su TM tutti con DOB diverse) |
+| **Totale** | **130/130** | 96% dob_exact, 4% manual override, 0 unresolved |
+
+Tempo totale: ~8 minuti per i 130 giocatori (8s/player medio per Schnellsuche + profile fetch). Output: `urls_wc2026.txt` con 130 URL TM, ready per `add_players.py`.
+
+### A4 — Test 3 player nel DB (riuscito)
+
+Prima dell'import vero dei 130, test di sicurezza su 3 player con `head -3 urls_wc2026.txt > /tmp/urls_test.txt && python3 add_players.py /tmp/urls_test.txt`. I 3 scelti per disegno: **Frans Dhia Putros / Tommy Smith / Ibrahim Bayesh** — i più "atipici" del dataset (tutti override manuali con URL stub `https://www.transfermarkt.com/-/profil/spieler/{id}` invece dello slug nome canonico). Se passano questi, gli altri 127 sono in discesa.
+
+Risultato: **3/3 inseriti senza errori**. `extract_tm_id` di `add_players.py` estrae correttamente il tm_id dall'URL stub e fa fetch del profilo canonico TM (che restituisce il nome ufficiale completo: "Frans Dhia Putros" invece di "Frans Putros"). 3 club nuovi auto-creati: Persib (IN1L Indonesia), Braintree Town (CNAT Conference National England), Al-Dhafra FC (UAE1).
+
+Le modifiche del test sono state successivamente **scartate** (`git checkout --`) per ripartire puliti prima del cleanup Saudi e dell'import vero finale.
+
+### B1 — Cleanup Saudi legacy (filone parallelo, completato)
+
+Mentre verificavo il test 3 player, l'output mostrava `[SAUDI ✓]` come tag per ogni giocatore. Simone ha legittimamente chiesto di rimuoverlo — è confusing perché PID non è il Saudi Players Hub. Audit completo del codebase ha rivelato che il refactor "Saudi → PID" era stato iniziato mesi fa e fermato a metà: file rinominati (`players_main.json`), ma alias deprecated (`PLAYERS_SAUDI_FILE`, `is_saudi_eligible`, `filter_saudi_profiles`) sparsi in 9+ file Python ancora attivi. Più 3 file scheduler legacy che puntavano al vecchio Saudi Players Hub (`~/Desktop/tm_project/`), zombi che fallivano in silenzio da settimane per macOS TCC (`Operation not permitted`).
+
+**Commit 1 — `chore(scheduler)` (16fe15e)**: rimossa cartella `scheduler/` (3 file: plist + 2 shell) che puntava a tm_project. Gli scheduler PID reali vivono in `~/Library/LaunchAgents/` (`com.simone.pid.daily/full.june/full.september`), completamente indipendenti dalla cartella nel repo.
+
+**Commit 2 — `refactor` (2a75986)**: 69 sostituzioni puntuali via script Python `apply_saudi_cleanup.py` (one-shot, non committato):
+- Costante `PLAYERS_SAUDI_FILE` → `PLAYERS_MAIN_FILE` (in 9 file)
+- Variabili `saudi_by_id` → `main_by_id`, `n_saudi` → `n_target`, `saudi_flag` → `target_flag`
+- Stampe: `"SAUDI ✓"` → `"✓"`, `"Sauditi: N"` → `"In DB: N"`, `"=== STEP 4/4: FILTRO SAUDITI ==="` → `"=== STEP 4/4: FILTRO TARGET ==="`
+- Docstring/commenti aggiornati a terminologia neutra
+- Rimosso campo `is_saudi_eligible` dal dict di `scrape_player_profile` (restava solo come alias retrocompatibilità di `is_target_eligible`, mai usato in lettura altrove)
+- Eliminato `scraper/filter_saudi.py` (re-export wrapper senza importatori)
+- Rimossi alias deprecated da `config.py` e `filter_target.py`
+
+**NON toccato**: `"Saudi Arabia"` come nazionalità (dato valido, usato anche in WC2026 con `NATIONAL_TEAMS_URLS["Saudi Arabia"] = ...`), `"Saudi Pro League"` come nome lega, frontend localStorage keys `saudi_callups_v1`/`saudi_minutes_v1` (commento esistente dice "non rinominare", sono dati utente legacy).
+
+**Verifiche pre-commit**: `py_compile` su 12 file OK, import runtime su 8 entry-point OK, `grep -rn "PLAYERS_SAUDI_FILE\|is_saudi_eligible\|filter_saudi"` ritorna vuoto. Test funzionale `add_players.py` sui 3 player di prima: stampa `[✓]` e `In DB: 3` correttamente.
+
+**Saldo**: 17 file modificati, +109/-279 = **170 righe nette eliminate** di dead code. Mergeato in main e pushato su origin/main come fast-forward.
+
+### Decisione "import 130 player rimandato"
+
+Sessione fermata prima dell'import vero dei 130 per scelta di Simone ("aggiorna il diario e poi aspettiamo a caricare tutti i giocatori"). Lo stato attuale del repo:
+
+- `data/wc2026_squads_raw.json` (130 player con `tm_player_id` + `match_method` valorizzati) — untracked
+- `data/wc2026_overrides.json` (5 override manuali) — untracked
+- `data/wc2026_unresolved.csv` (vuoto dopo gli override) — untracked
+- `urls_wc2026.txt` (130 URL TM) — untracked
+- `parse_wikipedia_squad.py` (671 righe) — untracked
+- `resolve_wc2026_urls.py` (~480 righe) — untracked
+- 3 foto test `data/photos/players_tm/166460.png/54381.jpg/560957.png` — untracked
+- 2 backup `players_*.json.bak-pre-wc2026` — untracked (NON committare, aggiungere a `.gitignore`)
+
+Pronto per ripartire: la prossima sessione lancia `add_players.py urls_wc2026.txt` (~20-25 min per 130 player) e committa tutto il bundle WC2026.
+
+### Commit pushati nella sessione
+
+```
+16fe15e  chore(scheduler): rimuove cartella scheduler/ legacy del fork
+2a75986  refactor: rimuove residui Saudi legacy dal naming Python
+```
+
+(Niente commit WC2026 per scelta — i file restano untracked fino a sessione successiva.)
+
+### File toccati (non WC2026)
+
+**Commit 16fe15e**:
+- `scheduler/com.saudi-players.update-stats.plist` (deleted)
+- `scheduler/install_scheduler.sh` (deleted)
+- `scheduler/update_stats.sh` (deleted)
+
+**Commit 2a75986**:
+- `add_players.py`: rinominate variabili + print, rimosso import alias
+- `add_seconde_squadre.py`: `is_saudi_eligible` → `is_target_eligible`
+- `build_deploy.sh`: `players_saudi.json` → `players_main.json` nella lista file deploy
+- `download_photos.py`: variabili e commenti
+- `enrich_sortitoutsi.py`: variabili e commenti
+- `run_static.py`: `step_filter_saudi` → `step_filter_target`, metriche
+- `run_stats.py`: variabili e messaggi
+- `run_update.py`: `step_refilter_saudi` → `step_refilter_target`, metriche
+- `scrape_sortitoutsi_ids.py`: variabili e messaggi
+- `scraper/config.py`: rimosso alias `SAUDI_NATIONALITY` e `PLAYERS_SAUDI_FILE`
+- `scraper/filter_target.py`: rimossi alias `is_saudi_eligible` e `filter_saudi_profiles`
+- `scraper/filter_saudi.py` (deleted)
+- `scraper/leagues.py`: docstring
+- `scraper/profiles.py`: rimosso campo `is_saudi_eligible` dal dict output
+
+### Lezioni della sessione
+
+1. **L'ispezione dell'HTML reale è non-negoziabile**: iterazioni 1-4 del parser Wikipedia sono state inefficienti perché lavoravo "a tentativi" sul modello mentale del formato. L'aggiunta del flag `--debug` con dump cella-per-cella è stato lo sblocco — un giro di debug e ho fixato 3 bug in un colpo. Pattern: per ogni scraper nuovo, **prima** un dump diagnostico dell'output reale, **poi** la logica.
+
+2. **Le pagine hub di Wikipedia sono spesso vuote**: quando un evento è "in arrivo" (FIFA chiede rose entro il 2 giugno), la pagina aggregata `2026_FIFA_World_Cup_squads` resta uno scheletro vuoto fino all'ultimo. Le rose vere stanno sulle pagine nazionali singole, che si popolano man mano. Convenzione utile per futuri scraper di eventi sportivi.
+
+3. **TM Schnellsuche non mostra DOB nelle search rows** ma `Date of birth/Age` nella info-table del profilo sì, in formato `DD/MM/YYYY (AGE)`. Tutta la disambiguazione affidabile passa di lì. Fortunatamente la pipeline PID già scrappa quella colonna per il dataset principale, quindi il pattern era riusabile.
+
+4. **Cleanup parziale è peggio di niente**: il refactor Saudi → PID lasciato a metà aveva creato confusione strutturale. Print `[SAUDI ✓]` su giocatori italiani/giapponesi/iracheni è la punta dell'iceberg: dietro c'erano alias deprecated, file `re-export` (`filter_saudi.py`) e scheduler zombi. Vale la pena chiudere i refactor completamente, anche quando "funzionano lo stesso" — il debito si paga in confusione cognitiva e bug futuri.
+
+5. **`git add -A` con untracked che non vuoi committare è un trabocchetto**: ho dovuto fare `git restore --staged` su 11 file dopo un add troppo aggressivo. Per i commit selettivi è meglio elencare i file esplicitamente o usare un `.gitignore` mirato.
+
+6. **Idempotenza paga**: tutti gli script di oggi (`parse_wikipedia_squad.py`, `resolve_wc2026_urls.py`, `add_players.py` esistente) sono idempotenti — rilanciarli sui dati già processati non duplica nulla. Permette test sicuri ("3 player" + "26 + 26 + 26" + "130") e re-run senza paura.
+
+---
+
+## Backlog aggiornato post-sessione 15 mag
+
+### ⏭ Prossima sessione — chiusura WC2026
+
+1. **Import vero dei 130 player**: `python3 add_players.py urls_wc2026.txt` (stima 20-25 min). Verificare zero fallimenti, eventuali 403 transient gestiti dai retry implementati il 14 mag.
+2. **Tag WC2026** (`tag_wc2026.py` da scrivere): script che legge `data/wc2026_squads_raw.json` e arricchisce `players_main.json` con `wc2026_squad` (es. "France"), `wc2026_shirt` (es. 16 o `null` per Bosnia/Giappone senza numeri), `wc2026_pos` (GK/DF/MF/FW).
+3. **Frontend filter "Mondiale 2026"**: dropdown o tab che filtra `state.players.filter(p => p.wc2026_squad)`. Stima 30-45 min.
+4. **Commit del bundle WC2026**: i 6 file untracked + 3 foto test + (eventualmente) `tag_wc2026.py`. Backup `.bak-pre-wc2026` → aggiungere a `.gitignore` o eliminare.
+5. **Re-run periodico** del flow Wikipedia → import man mano che le altre 36+ nazionali annunciano le rose finali (deadline 2 giugno).
+
+### Backlog precedente (priorità invariate)
+
+| Task | Priorità | ETA | Note |
+|---|---|---|---|
+| **Megapack loghi/foto SOTS** | ALTA | 2-3h | 21 GB rar in Downloads, bloccato da disco pieno |
+| Workflow `auto_enrich_metadata.yml` settimanale | ALTA | 1-2h | Settimanale fuori finestra mercato |
+| Espansione SOTS competizioni internazionali (DK, top 5, UCL) | ALTA | 30-60 min | Pre-requisito metadata enrich |
+| Espansione 5 leghe top + CL (Portogallo pilota) | ALTA | 17-23h | Obiettivo macro |
+| Bug pipeline SOTS face vs person_id (Relja Obric) | MEDIA | 30 min | Workaround attivo obs_ui.js |
+| Drag-and-drop reordering Griglie tab depth chart | BASSA | 1-2h | Rimandato da varie sessioni |
+| Fase 5 PDF Export osservazione (rifinitura layout) | BASSA | 2h | |
+| Fase 6 JSON Export/Import osservazioni | BASSA | 45 min | |
+| Bug enrich_sortitoutsi.py reset team_id | BASSA | 30 min | Workaround attivo |
+
+### Stato infra post-sessione
+
+- Cleanup Saudi → PID **completato** (16fe15e + 2a75986 pushati). Codice e print ora coerenti con il branding "PID".
+- WC2026 pipeline costruita e validata su 130 giocatori (5 nazionali), **import vero in attesa**.
+- Daily stats refresh cron continua a girare normalmente (nessuna interazione con i cambi di oggi: la costante `PLAYERS_SAUDI_FILE` era già aliasata a `PLAYERS_MAIN_FILE`, quindi nessuna regressione runtime).
+
+---
