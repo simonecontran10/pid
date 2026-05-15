@@ -69,3 +69,7 @@ data/players_stats.json
 
 # Patch script applicati una tantum (non committare)
 patch_*.py
+
+# WC2026 - file generati e backup di sessione
+data/*.bak-pre-*
+data/wc2026_unresolved.csv
