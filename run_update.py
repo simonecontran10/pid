@@ -16,13 +16,13 @@ il resto.
      Confronta nuovi roster vs players_all.json esistente.
      Skip totale se 0 nuovi giocatori (caso comune nei refresh ravvicinati).
 
-  4. RE-FILTER SAUDI
-     Aggiorna players_saudi.json includendo i nuovi sauditi.
+  4. RE-FILTER TARGET
+     Aggiorna players_main.json includendo i nuovi giocatori target.
 
   5. ENRICH SORTITOUTSI + IMPORT WYSCOUT
      Idempotenti, costo ~1s.
 
-  6. REFRESH STATS PER TUTTI I SAUDITI
+  6. REFRESH STATS PER TUTTI I TARGET
      1 chiamata API per giocatore (~250 chiamate, ~5 min).
      Le presenze cambiano ogni giornata, conviene rifarle tutte.
 
@@ -54,13 +54,13 @@ from scraper.config import (
     CLUBS_FILE,
     DATA_DIR,
     LAST_UPDATE_FILE,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATIC_FILE,
     PLAYERS_STATS_FILE,
     ROSTERS_FILE,
     SEASONS,
 )
-from scraper.filter_target import filter_target_profiles as filter_saudi_profiles  # alias, da rinominare in cleanup futuro
+from scraper.filter_target import filter_target_profiles
 from scraper.http_client import TransfermarktClient
 from scraper.leagues import scrape_all_leagues
 from scraper.profiles import scrape_player_profile
@@ -175,21 +175,21 @@ def step_scrape_new_profiles(new_ids: set[int], rosters: dict,
     return done
 
 
-def step_refilter_saudi() -> tuple[int, int]:
-    """Riapplica il filtro saudita su players_all.json. Ritorna (n_saudi, n_new_saudi)."""
-    _section("STEP 4/7 — RE-FILTER SAUDI")
+def step_refilter_target() -> tuple[int, int]:
+    """Riapplica il filtro target su players_all.json. Ritorna (n_target, n_new_target)."""
+    _section("STEP 4/7 — RE-FILTER TARGET")
     all_profiles = _load(PLAYERS_ALL_FILE, [])
-    saudi = filter_saudi_profiles(all_profiles)
+    target = filter_target_profiles(all_profiles)
 
-    prev_saudi = _load(PLAYERS_SAUDI_FILE, [])
-    prev_ids = {p["tm_player_id"] for p in prev_saudi}
-    new_saudi_count = sum(1 for p in saudi if p["tm_player_id"] not in prev_ids)
+    prev_target = _load(PLAYERS_MAIN_FILE, [])
+    prev_ids = {p["tm_player_id"] for p in prev_target}
+    new_target_count = sum(1 for p in target if p["tm_player_id"] not in prev_ids)
 
-    _save(PLAYERS_SAUDI_FILE, saudi)
-    _save(PLAYERS_STATIC_FILE, saudi)
-    print(f"  total saudi: {len(saudi)}")
-    print(f"  nuovi saudi nello snapshot: {new_saudi_count}")
-    return len(saudi), new_saudi_count
+    _save(PLAYERS_MAIN_FILE, target)
+    _save(PLAYERS_STATIC_FILE, target)
+    print(f"  total target: {len(target)}")
+    print(f"  nuovi nello snapshot: {new_target_count}")
+    return len(target), new_target_count
 
 
 def step_enrich_sortitoutsi() -> None:
@@ -214,26 +214,26 @@ def step_refresh_stats(seasons: list[int], client: TransfermarktClient,
     if skip:
         print("  --no-stats: SKIP")
         return 0
-    saudi = _load(PLAYERS_SAUDI_FILE, [])
-    if not saudi:
-        print("  no saudi players. SKIP.")
+    target = _load(PLAYERS_MAIN_FILE, [])
+    if not target:
+        print("  no target players. SKIP.")
         return 0
-    print(f"  refreshing stats per {len(saudi)} giocatori")
+    print(f"  refreshing stats per {len(target)} giocatori")
     started = time.monotonic()
     out: list[dict] = []
-    for i, p in enumerate(saudi, 1):
+    for i, p in enumerate(target, 1):
         pid = p["tm_player_id"]
         try:
             s = scrape_player_stats(pid, client, seasons=seasons)
             out.append(s)
         except Exception as e:
-            print(f"    [{i}/{len(saudi)}] FAIL {p.get('full_name')}: {e}")
+            print(f"    [{i}/{len(target)}] FAIL {p.get('full_name')}: {e}")
             continue
-        if i % 25 == 0 or i == len(saudi):
+        if i % 25 == 0 or i == len(target):
             elapsed = time.monotonic() - started
             rate = i / elapsed if elapsed else 0
-            eta = (len(saudi) - i) / rate if rate else 0
-            print(f"    [{i}/{len(saudi)}]  ETA {int(eta//60)}m{int(eta%60):02d}s")
+            eta = (len(target) - i) / rate if rate else 0
+            print(f"    [{i}/{len(target)}]  ETA {int(eta//60)}m{int(eta%60):02d}s")
     _save(PLAYERS_STATS_FILE, out)
     elapsed = int(time.monotonic() - started)
     print(f"  done in {elapsed//60}m{elapsed%60}s")
@@ -266,7 +266,7 @@ def main() -> None:
         clubs, n_new_clubs = step_refresh_clubs(client, prev_clubs)
         rosters, new_pids = step_refresh_rosters(clubs, client, prev_rosters)
         n_new_profiles = step_scrape_new_profiles(new_pids, rosters, client)
-        n_saudi, n_new_saudi = step_refilter_saudi()
+        n_target, n_new_target = step_refilter_target()
         step_enrich_sortitoutsi()
         step_import_wyscout()
         n_stats = step_refresh_stats(SEASONS, client, skip=no_stats)
@@ -277,8 +277,8 @@ def main() -> None:
             "n_new_clubs": n_new_clubs,
             "n_new_player_ids_in_rosters": len(new_pids),
             "n_new_profiles_scraped": n_new_profiles,
-            "n_saudi": n_saudi,
-            "n_new_saudi": n_new_saudi,
+            "n_target": n_target,
+            "n_new_target": n_new_target,
             "n_stats_refreshed": n_stats,
             "elapsed_seconds": int(time.monotonic() - t0),
             "completed_at": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -296,7 +296,7 @@ def main() -> None:
         _save(LAST_UPDATE_FILE, metrics)
 
     print(f"\n{'='*70}\n  COMPLETATO in {metrics['elapsed_seconds']//60}m{metrics['elapsed_seconds']%60}s\n{'='*70}")
-    print(f"  saudi totali: {metrics.get('n_saudi')}")
+    print(f"  target totali: {metrics.get('n_target')}")
     print(f"  nuovi profili scrapati: {metrics.get('n_new_profiles_scraped')}")
     print(f"  stats aggiornate: {metrics.get('n_stats_refreshed')}")
 

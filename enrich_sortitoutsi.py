@@ -15,7 +15,7 @@ Da lanciare DOPO run_static.py. Esegue:
    Se data/photos/players_curated/{sots_id}.png esiste -> usa la foto curata.
    Se data/photos/clubs_curated/{sots_team_id}.png esiste -> usa il logo curato.
 
-Aggiorna in-place: data/clubs.json, data/players_all.json, data/players_saudi.json,
+Aggiorna in-place: data/clubs.json, data/players_all.json, data/players_main.json,
 data/players_static.json. Riusabile (idempotente).
 
 Uso:
@@ -32,7 +32,7 @@ import json
 from scraper.config import (
     CLUBS_FILE,
     DATA_DIR,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATIC_FILE,
 )
 from scraper.sortitoutsi import (
@@ -382,13 +382,13 @@ def main() -> None:
               f"{s['face_curated']} face curate, {s['fix_club']} club fixed, "
               f"{s['name_override']} name overrides")
 
-    # SAUDI
-    saudi = _load(PLAYERS_SAUDI_FILE)
-    if saudi:
-        s = enrich_dataset(saudi)
-        _save(PLAYERS_SAUDI_FILE, saudi)
-        _save(PLAYERS_STATIC_FILE, saudi)
-        print(f"  players_saudi.json: {s['face']}/{len(saudi)} face URL, "
+    # MAIN
+    main = _load(PLAYERS_MAIN_FILE)
+    if main:
+        s = enrich_dataset(main)
+        _save(PLAYERS_MAIN_FILE, main)
+        _save(PLAYERS_STATIC_FILE, main)
+        print(f"  players_main.json: {s['face']}/{len(main)} face URL, "
               f"{s['face_curated']} face curate, {s['fix_club']} club fixed")
 
     print("\nFatto.")

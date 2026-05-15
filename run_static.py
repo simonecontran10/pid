@@ -4,8 +4,8 @@ run_static.py — Scrape PRODUZIONE dei dati fissi.
 Esegue, in ordine:
 1. Lista club delle 2 leghe (SA1 + SA2L) -> data/clubs.json
 2. Rosa di ogni club -> data/rosters.json
-3. Profilo di OGNI giocatore (sauditi e stranieri) -> data/players_all.json
-4. Filtro Saudi (citizenship include 'Saudi Arabia') -> data/players_saudi.json
+3. Profilo di OGNI giocatore -> data/players_all.json
+4. Filtro target -> data/players_main.json
 
 Resume:
 - Ripartenza automatica: se un giocatore è già in players_all.json, viene saltato.
@@ -32,11 +32,11 @@ from scraper.config import (
     CLUBS_FILE,
     DATA_DIR,
     LAST_UPDATE_FILE,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATIC_FILE,
     ROSTERS_FILE,
 )
-from scraper.filter_target import filter_target_profiles as filter_saudi_profiles  # alias, da rinominare in cleanup futuro
+from scraper.filter_target import filter_target_profiles
 from scraper.http_client import TransfermarktClient
 from scraper.leagues import scrape_all_leagues
 from scraper.profiles import scrape_player_profile
@@ -142,16 +142,16 @@ def step_profiles(rosters: dict, client: TransfermarktClient) -> list[dict]:
     return profiles
 
 
-def step_filter_saudi(profiles: list[dict]) -> list[dict]:
-    print("\n=== STEP 4/4: FILTRO SAUDITI ===")
-    saudi = filter_saudi_profiles(profiles)
-    _save_json(PLAYERS_SAUDI_FILE, saudi)
-    # Conserva la versione "static" come alias dei sauditi (sarà la fonte primaria della UI)
-    _save_json(PLAYERS_STATIC_FILE, saudi)
+def step_filter_target(profiles: list[dict]) -> list[dict]:
+    print("\n=== STEP 4/4: FILTRO TARGET ===")
+    target = filter_target_profiles(profiles)
+    _save_json(PLAYERS_MAIN_FILE, target)
+    # Conserva la versione "static" come alias (sarà la fonte primaria della UI)
+    _save_json(PLAYERS_STATIC_FILE, target)
     print(f"  total profiles: {len(profiles)}")
-    print(f"  saudi-eligible: {len(saudi)} ({len(saudi)*100/max(len(profiles),1):.1f}%)")
-    print(f"  saved to {PLAYERS_SAUDI_FILE.name}")
-    return saudi
+    print(f"  target-eligible: {len(target)} ({len(target)*100/max(len(profiles),1):.1f}%)")
+    print(f"  saved to {PLAYERS_MAIN_FILE.name}")
+    return target
 
 
 def main() -> None:
@@ -162,7 +162,7 @@ def main() -> None:
         clubs = step_clubs(client)
         rosters = step_rosters(clubs, client)
         profiles = step_profiles(rosters, client)
-        saudi = step_filter_saudi(profiles)
+        target = step_filter_target(profiles)
     except KeyboardInterrupt:
         print("\n\n[INTERROTTO] Il progresso è già salvato. Rilancia per riprendere.")
         sys.exit(130)
@@ -173,7 +173,7 @@ def main() -> None:
         "elapsed_seconds_static": elapsed,
         "n_clubs": len(clubs),
         "n_profiles_total": len(profiles),
-        "n_saudi": len(saudi),
+        "n_target": len(target),
     })
     print(f"\nDONE in {elapsed//60}m{elapsed%60}s")
 

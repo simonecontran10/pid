@@ -84,7 +84,7 @@ MAX_RETRIES_403 = 4
 CLUBS_FILE = DATA_DIR / "clubs.json"
 ROSTERS_FILE = DATA_DIR / "rosters.json"
 PLAYERS_STATIC_FILE = DATA_DIR / "players_static.json"
-# Rinominato da PLAYERS_SAUDI_FILE (era player saudita-specifico)
+# File principale dei giocatori PID (rinominato da players_saudi.json del fork originale)
 PLAYERS_MAIN_FILE = DATA_DIR / "players_main.json"
 PLAYERS_STATS_FILE = DATA_DIR / "players_stats.json"
 LAST_UPDATE_FILE = DATA_DIR / "last_update.json"
@@ -224,5 +224,3 @@ def national_team_label(category: str, country: str = None) -> str:
 # === Compatibilità retroattiva (alias) ===
 # Mantengo i vecchi nomi per non rompere import esistenti durante la migrazione.
 # Da rimuovere quando tutti i moduli scraper sono migrati.
-SAUDI_NATIONALITY = TARGET_NATIONALITY  # alias deprecato
-PLAYERS_SAUDI_FILE = PLAYERS_MAIN_FILE  # alias deprecato

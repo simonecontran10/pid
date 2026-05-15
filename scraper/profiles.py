@@ -278,9 +278,7 @@ def parse_profile(html: str, player_id: int) -> dict:
         "place_of_birth": place_of_birth,
         "citizenships": citizenships,
         # PID: è_eligible vale sempre True (siamo uno scouting hub di una lega, includiamo tutti).
-        # Mantengo il campo "is_saudi_eligible" per retrocompatibilità (alias di is_target_eligible).
         "is_target_eligible": True,
-        "is_saudi_eligible": True,  # alias deprecato
         "current_club_id": club_id,
         "current_club_name": club_name_h,
         "shirt_number": shirt,

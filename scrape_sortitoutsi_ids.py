@@ -14,7 +14,7 @@ Output:
   data/sortitoutsi_id_lookup.json  (mapping completo)
   data/photos/players_sots_lookup/{sots_id}.png  (face scaricate)
 
-Aggiorna in-place players_saudi.json e players_all.json con i nuovi sortitoutsi_*.
+Aggiorna in-place players_main.json e players_all.json con i nuovi sortitoutsi_*.
 
 Uso:
     source venv/bin/activate
@@ -38,7 +38,7 @@ from bs4 import BeautifulSoup
 from scraper.config import (
     CLUBS_FILE,
     DATA_DIR,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATIC_FILE,
     SLEEP_BETWEEN_REQUESTS,
     USER_AGENTS,
@@ -222,15 +222,15 @@ def main() -> None:
         if i + 1 < len(sys.argv):
             limit = int(sys.argv[i + 1])
 
-    saudi = _load(PLAYERS_SAUDI_FILE, [])
+    target = _load(PLAYERS_MAIN_FILE, [])
     clubs = _load(CLUBS_FILE, [])
-    if not saudi or not clubs:
-        print("[FATAL] data/players_saudi.json o data/clubs.json mancanti.")
+    if not target or not clubs:
+        print("[FATAL] data/players_main.json o data/clubs.json mancanti.")
         return
 
     # Indicizza giocatori per club
     by_club: dict[int, list[dict]] = {}
-    for p in saudi:
+    for p in target:
         cid = p.get("current_club_id")
         if cid:
             by_club.setdefault(cid, []).append(p)
@@ -241,8 +241,8 @@ def main() -> None:
         clubs_with_sots = clubs_with_sots[:limit]
 
     print(f"Club con sortitoutsi_team_id: {len(clubs_with_sots)}/{len(clubs)}")
-    total_saudi_in_those = sum(len(by_club.get(c["tm_club_id"], [])) for c in clubs_with_sots)
-    print(f"Saudi in quei club: {total_saudi_in_those}")
+    total_target_in_those = sum(len(by_club.get(c["tm_club_id"], [])) for c in clubs_with_sots)
+    print(f"Target in quei club: {total_target_in_those}")
     print()
 
     lookup = _load(LOOKUP_FILE, {})
@@ -258,7 +258,7 @@ def main() -> None:
         sots_team = club["sortitoutsi_team_id"]
         club_name = club["name"]
         tm_players = by_club.get(cid_tm, [])
-        print(f"[{i}/{len(clubs_with_sots)}] {club_name}  (TM saudi: {len(tm_players)}, sots_team: {sots_team})")
+        print(f"[{i}/{len(clubs_with_sots)}] {club_name}  (TM target: {len(tm_players)}, sots_team: {sots_team})")
 
         sots_roster = fetch_team_roster(sots_team, club_name, session)
         time.sleep(SLEEP_BETWEEN_REQUESTS)
@@ -298,7 +298,7 @@ def main() -> None:
 
     # ===== FASE 2: fallback search per gli unmatched =====
     print(f"\n=== Fallback search per giocatori non trovati nelle rose ===")
-    unmatched = [p for p in saudi if str(p["tm_player_id"]) not in lookup]
+    unmatched = [p for p in target if str(p["tm_player_id"]) not in lookup]
     print(f"  da cercare: {len(unmatched)} giocatori")
     if "--no-search" in sys.argv:
         print("  --no-search: salto questa fase")
@@ -332,8 +332,8 @@ def main() -> None:
         print(f"\n  fase 2 fatta: +{search_found} match via search, +{search_face_dl} face")
 
     # Aggiorna i JSON con sortitoutsi_*
-    print("\nAggiorno players_saudi.json e players_all.json ...")
-    for path in (PLAYERS_SAUDI_FILE, PLAYERS_STATIC_FILE, PLAYERS_ALL_FILE):
+    print("\nAggiorno players_main.json e players_all.json ...")
+    for path in (PLAYERS_MAIN_FILE, PLAYERS_STATIC_FILE, PLAYERS_ALL_FILE):
         if not path.exists():
             continue
         data = _load(path, [])

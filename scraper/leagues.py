@@ -1,4 +1,4 @@
-"""Estrae la lista club di una lega (Saudi Pro League, First Division)."""
+"""Estrae la lista club di una lega da Transfermarkt."""
 
 import re
 from typing import Optional

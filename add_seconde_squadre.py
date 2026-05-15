@@ -261,7 +261,7 @@ def main() -> None:
                 n_added += 1
             profiles_by_id[pid] = prof
 
-            eligible = bool(prof.get("is_saudi_eligible"))  # alias storico, in realtà = is_target_eligible
+            eligible = bool(prof.get("is_target_eligible"))
             if eligible:
                 main_by_id[pid] = prof
                 n_eligible += 1

@@ -2,7 +2,7 @@
 
 PID — country-agnostic: per default ogni profilo è 'eligible' perché PID raccoglie
 TUTTI i giocatori delle leghe target (Serie A include 28+ nazionalità diverse).
-Il filtro per nazionalità del Saudi Players Hub originale qui non si applica.
+Il filtro per nazionalità del progetto originale qui non si applica.
 
 Manteniamo l'API per:
 - Compatibilità con `run_static.py`, `add_players.py`, `run_update.py` (chiamano `is_target_eligible`)
@@ -38,7 +38,5 @@ def filter_target_profiles(profiles: list[dict]) -> list[dict]:
 
 
 # === Compatibilità retroattiva ===
-# Alias per moduli che ancora importano `is_saudi_eligible` / `filter_saudi_profiles`.
+
 # Da rimuovere dopo aver migrato run_static.py, run_update.py, add_players.py.
-is_saudi_eligible = is_target_eligible
-filter_saudi_profiles = filter_target_profiles

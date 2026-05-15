@@ -1,7 +1,7 @@
 """
-run_stats.py — Scrape stats per i giocatori sauditi (presenze stagione).
+run_stats.py — Scrape stats per i giocatori target (presenze stagione).
 
-Riusa data/players_saudi.json (prodotto da run_static.py) e per ogni
+Riusa data/players_main.json (prodotto da run_static.py) e per ogni
 giocatore chiama l'API /ceapi/performance-game/{id}, aggregando per
 (stagione, competizione, club/nazionale).
 
@@ -28,7 +28,7 @@ from datetime import datetime, timezone
 
 from scraper.config import (
     LAST_UPDATE_FILE,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATS_FILE,
     SEASONS,
 )
@@ -51,11 +51,11 @@ def _save_json(path: Path, data) -> None:
 def main() -> None:
     refresh = "--refresh" in sys.argv
 
-    if not PLAYERS_SAUDI_FILE.exists():
-        print(f"[FATAL] {PLAYERS_SAUDI_FILE} non esiste. Lancia prima run_static.py")
+    if not PLAYERS_MAIN_FILE.exists():
+        print(f"[FATAL] {PLAYERS_MAIN_FILE} non esiste. Lancia prima run_static.py")
         sys.exit(1)
-    saudi = _load_json(PLAYERS_SAUDI_FILE, [])
-    print(f"Saudi players to fetch stats for: {len(saudi)}")
+    target = _load_json(PLAYERS_MAIN_FILE, [])
+    print(f"Target players to fetch stats for: {len(target)}")
 
     stats_by_id: dict[str, dict] = {}
     if not refresh and PLAYERS_STATS_FILE.exists():
@@ -64,7 +64,7 @@ def main() -> None:
             stats_by_id[str(s["tm_player_id"])] = s
         print(f"resume from cache: {len(stats_by_id)} stats already done")
 
-    pending = [p for p in saudi if str(p["tm_player_id"]) not in stats_by_id]
+    pending = [p for p in target if str(p["tm_player_id"]) not in stats_by_id]
     print(f"to fetch: {len(pending)}")
 
     client = TransfermarktClient()

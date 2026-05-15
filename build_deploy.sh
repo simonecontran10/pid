@@ -32,7 +32,7 @@ cp -r frontend/index.html frontend/i18n.js frontend/app.js "$DIST/"
 echo "  frontend copiato"
 
 # 3) JSON essenziali per la UI (no debug)
-for f in clubs.json players_unified.json players_saudi.json players_static.json \
+for f in clubs.json players_unified.json players_main.json players_static.json \
          players_stats.json wyscout_players.json last_update.json; do
   if [ -f "data/$f" ]; then
     cp "data/$f" "$DIST/data/"

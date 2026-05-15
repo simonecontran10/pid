@@ -6,7 +6,7 @@ Per ogni URL:
   1. Estrae tm_player_id
   2. Scrape profilo (nome, foto, anagrafica, ruolo, club, ecc.)
   3. Scrape stats (presenze 24/25 + 25/26, club + nazionale)
-  4. Aggiunge a players_all.json + (se saudita) a players_saudi.json
+  4. Aggiunge a players_all.json + players_main.json
   5. Aggiorna players_stats.json
 
 Alla fine lancia enrich_sortitoutsi + download_photos.
@@ -34,13 +34,13 @@ import datetime as _dt
 
 from scraper.config import (
     DATA_DIR,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATIC_FILE,
     PLAYERS_STATS_FILE,
     CLUBS_FILE,
     SEASONS,
 )
-from scraper.filter_target import is_target_eligible as is_saudi_eligible  # alias, da rinominare in cleanup futuro
+from scraper.filter_target import is_target_eligible
 from scraper.http_client import TransfermarktClient
 from scraper.profiles import scrape_player_profile
 from scraper.stats import scrape_player_stats
@@ -93,15 +93,15 @@ def main() -> None:
     profiles_by_id: dict[int, dict] = {}
     for p in _load(PLAYERS_ALL_FILE, []):
         profiles_by_id[p["tm_player_id"]] = p
-    saudi_by_id: dict[int, dict] = {}
-    for p in _load(PLAYERS_SAUDI_FILE, []):
-        saudi_by_id[p["tm_player_id"]] = p
+    main_by_id: dict[int, dict] = {}
+    for p in _load(PLAYERS_MAIN_FILE, []):
+        main_by_id[p["tm_player_id"]] = p
     stats_by_id: dict[int, dict] = {}
     for s in _load(PLAYERS_STATS_FILE, []):
         stats_by_id[s["tm_player_id"]] = s
 
     client = TransfermarktClient()
-    n_added = n_updated = n_saudi = n_failed = 0
+    n_added = n_updated = n_target = n_failed = 0
     failed_ids: list[int] = []  # tm_id dei giocatori falliti (per report + exit code)
     added_names: list[str] = []  # nomi dei giocatori effettivamente aggiunti
     started = time.monotonic()
@@ -129,18 +129,18 @@ def main() -> None:
                 added_names.append(prof.get("full_name") or f"pid={pid}")
             profiles_by_id[pid] = prof
 
-            saudi_flag = bool(prof.get("is_saudi_eligible"))
-            if saudi_flag:
-                saudi_by_id[pid] = prof
-                n_saudi += 1
-                # scrape stats SOLO per i sauditi
+            target_flag = bool(prof.get("is_target_eligible"))
+            if target_flag:
+                main_by_id[pid] = prof
+                n_target += 1
+                # scrape stats SOLO per i giocatori target
                 try:
                     s = scrape_player_stats(pid, client, seasons=SEASONS)
                     stats_by_id[pid] = s
                 except Exception as e:
                     print(f"    [stats fail] pid={pid}: {e}")
 
-            tag = "SAUDI ✓" if saudi_flag else "non-saudi"
+            tag = "✓" if target_flag else "skip"
             print(f"  [{i}/{len(ids)}]  {prof.get('full_name','?'):<32}  ({prof.get('current_club_name') or '-'})  [{tag}]")
         except Exception as e:
             n_failed += 1
@@ -149,13 +149,13 @@ def main() -> None:
 
         if i % 10 == 0:
             _save(PLAYERS_ALL_FILE, list(profiles_by_id.values()))
-            _save(PLAYERS_SAUDI_FILE, list(saudi_by_id.values()))
-            _save(PLAYERS_STATIC_FILE, list(saudi_by_id.values()))
+            _save(PLAYERS_MAIN_FILE, list(main_by_id.values()))
+            _save(PLAYERS_STATIC_FILE, list(main_by_id.values()))
             _save(PLAYERS_STATS_FILE, list(stats_by_id.values()))
 
     _save(PLAYERS_ALL_FILE, list(profiles_by_id.values()))
-    _save(PLAYERS_SAUDI_FILE, list(saudi_by_id.values()))
-    _save(PLAYERS_STATIC_FILE, list(saudi_by_id.values()))
+    _save(PLAYERS_MAIN_FILE, list(main_by_id.values()))
+    _save(PLAYERS_STATIC_FILE, list(main_by_id.values()))
     _save(PLAYERS_STATS_FILE, list(stats_by_id.values()))
 
     # ============ AUTO-CREAZIONE CLUB ============
@@ -196,7 +196,7 @@ def main() -> None:
 
     elapsed = int(time.monotonic() - started)
     print(f"\n{'='*60}")
-    print(f"  Aggiunti: {n_added}    Aggiornati: {n_updated}    Sauditi: {n_saudi}    Falliti: {n_failed}")
+    print(f"  Aggiunti: {n_added}    Aggiornati: {n_updated}    In DB: {n_target}    Falliti: {n_failed}")
     print(f"  Elapsed: {elapsed//60}m{elapsed%60}s")
 
     # Pipeline standard: enrich_sortitoutsi + download_photos PRIMA degli override.
@@ -242,7 +242,7 @@ def main() -> None:
         session = _req.Session()
         
         # Ricarica i JSON DOPO i subprocess (enrich/download li hanno potenzialmente modificati)
-        players_main_data = _load(PLAYERS_SAUDI_FILE, [])
+        players_main_data = _load(PLAYERS_MAIN_FILE, [])
         players_all_data = _load(PLAYERS_ALL_FILE, [])
         players_static_data = _load(PLAYERS_STATIC_FILE, [])
         clubs_data = _load(CLUBS_FILE, [])
@@ -363,7 +363,7 @@ def main() -> None:
         
         # Salva i JSON aggiornati
         if n_sots_applied > 0 or n_clubs_logo_applied > 0:
-            _save(PLAYERS_SAUDI_FILE, players_main_data)
+            _save(PLAYERS_MAIN_FILE, players_main_data)
             _save(PLAYERS_ALL_FILE, players_all_data)
             _save(PLAYERS_STATIC_FILE, players_static_data)
             _save(CLUBS_FILE, clubs_data)

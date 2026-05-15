@@ -1,7 +1,7 @@
 """
 download_photos.py — Scarica in locale foto giocatori e loghi club.
 
-Per ogni giocatore in data/players_saudi.json scarica:
+Per ogni giocatore in data/players_main.json scarica:
 - photo_url di Transfermarkt        -> data/photos/players_tm/{tm_player_id}.<ext>
 - sortitoutsi_face_url               -> data/photos/players_sots/{tm_player_id}.png
 
@@ -37,7 +37,7 @@ import requests
 from scraper.config import (
     CLUBS_FILE,
     DATA_DIR,
-    PLAYERS_SAUDI_FILE,
+    PLAYERS_MAIN_FILE,
     PLAYERS_STATIC_FILE,
     SLEEP_BETWEEN_REQUESTS,
     USER_AGENTS,
@@ -211,16 +211,16 @@ def main() -> None:
     refresh = "--refresh" in sys.argv
     dl = Downloader(sleep=0.4)
 
-    # Players (sauditi)
-    saudi = _load(PLAYERS_SAUDI_FILE) or []
-    download_player_photos(saudi, dl, refresh)
-    _save(PLAYERS_SAUDI_FILE, saudi)
-    _save(PLAYERS_STATIC_FILE, saudi)
+    # Players (main)
+    main = _load(PLAYERS_MAIN_FILE) or []
+    download_player_photos(main, dl, refresh)
+    _save(PLAYERS_MAIN_FILE, main)
+    _save(PLAYERS_STATIC_FILE, main)
 
-    # Players (tutti — per coerenza, anche non-saudi possono comparire altrove)
+    # Players (tutti — per coerenza, anche fuori-target possono comparire altrove)
     all_players = _load(PLAYERS_ALL_FILE) or []
     if all_players:
-        # Riusa stesso downloader; i sauditi sono già cached.
+        # Riusa stesso downloader; i main sono già cached.
         download_player_photos(all_players, dl, refresh)
         _save(PLAYERS_ALL_FILE, all_players)
 
