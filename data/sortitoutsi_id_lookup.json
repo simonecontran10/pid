@@ -5407,9 +5407,8 @@
   "197751": {
     "sots_id": 43094070,
     "name": "Alberto Cerri",
-    "club": "Cesena FC",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/43094070.png"
   },
   "523318": {
@@ -12303,17 +12302,15 @@
   "827734": {
     "sots_id": 49061476,
     "name": "Ange-Yoan Bonny",
-    "club": "Inter Milan",
-    "match_score": 0.667,
-    "matched_via": "team_roster",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/49061476.png"
   },
   "897423": {
     "sots_id": 2000218552,
     "name": "David Odogu",
-    "club": "AC Milan",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/2000218552.png"
   },
   "1082774": {
@@ -12333,25 +12330,22 @@
   "914934": {
     "sots_id": 2000113465,
     "name": "Henrik Meister",
-    "club": "Pisa Sporting Club",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/2000113465.png"
   },
   "367284": {
     "sots_id": 53122155,
     "name": "Leo Østigård",
-    "club": "Genoa CFC",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/53122155.png"
   },
   "464469": {
     "sots_id": 53138523,
     "name": "Torbjørn Heggem",
-    "club": "Bologna FC 1909",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/53138523.png"
   },
   "336160": {
@@ -12364,33 +12358,29 @@
   "886189": {
     "sots_id": 2000098802,
     "name": "Daniel Theiner",
-    "club": "FC Südtirol",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/2000098802.png"
   },
   "651008": {
     "sots_id": 2000025557,
     "name": "Davide Pio Stabile",
-    "club": "Virtus Entella",
-    "match_score": 0.667,
-    "matched_via": "team_roster",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/2000025557.png"
   },
   "411666": {
     "sots_id": 43272168,
     "name": "Emanuele Adamo",
-    "club": "Spezia Calcio",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/43272168.png"
   },
   "905700": {
     "sots_id": 2000088332,
     "name": "Magnus Brøndbo",
-    "club": "Delfino Pescara 1936",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/2000088332.png"
   },
   "20005": {
@@ -12403,9 +12393,8 @@
   "818448": {
     "sots_id": 43500463,
     "name": "Alessandro Marcandalli",
-    "club": "Genoa CFC",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/43500463.png"
   },
   "1056269": {
@@ -13279,9 +13268,8 @@
   "265088": {
     "sots_id": 43167354,
     "name": "Manuel Locatelli",
-    "club": "Juventus FC",
     "match_score": 1.0,
-    "matched_via": "team_roster",
+    "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/43167354.png"
   },
   "1159864": {
@@ -20147,5 +20135,117 @@
     "name": "Fabian Hiszpański",
     "match_score": 1.0,
     "matched_via": "manual_override_8mag"
+  },
+  "1178476": {
+    "sots_id": 2000279641,
+    "name": "Antoine Sekongo",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000279641.png"
+  },
+  "804548": {
+    "sots_id": 49050068,
+    "name": "Baptiste Mouazan",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/49050068.png"
+  },
+  "743599": {
+    "sots_id": 19409149,
+    "name": "Emersonn",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/19409149.png"
+  },
+  "821678": {
+    "sots_id": 2000047967,
+    "name": "Emiliano Filippis",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000047967.png"
+  },
+  "923757": {
+    "sots_id": 2000183134,
+    "name": "Ewen Jaouen",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000183134.png"
+  },
+  "1151929": {
+    "sots_id": 2000333625,
+    "name": "Gessime Yassine",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000333625.png"
+  },
+  "508642": {
+    "sots_id": 37075213,
+    "name": "Ibrahim El Kadiri",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/37075213.png"
+  },
+  "1245948": {
+    "sots_id": 2000474101,
+    "name": "Jeremy Monga",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000474101.png"
+  },
+  "1117092": {
+    "sots_id": 2000402614,
+    "name": "Joseph Kalulu",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000402614.png"
+  },
+  "655012": {
+    "sots_id": 2000022188,
+    "name": "Lucas Stassin",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000022188.png"
+  },
+  "1132634": {
+    "sots_id": 12095307,
+    "name": "Martial Tia",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/12095307.png"
+  },
+  "984593": {
+    "sots_id": 2000283795,
+    "name": "Triston Rowe",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000283795.png"
+  },
+  "935231": {
+    "sots_id": 2000126470,
+    "name": "Víctor Muñoz",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000126470.png"
+  },
+  "818878": {
+    "sots_id": 2000097938,
+    "name": "Wisdom Amey",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/2000097938.png"
+  },
+  "463613": {
+    "sots_id": 49038961,
+    "name": "Yann Gboho",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/49038961.png"
+  },
+  "796589": {
+    "sots_id": 49056530,
+    "name": "Yassine Benhattab",
+    "match_score": 1.0,
+    "matched_via": "manual_override",
+    "face_local": "photos/players_sots_lookup/49056530.png"
   }
 }
