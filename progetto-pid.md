@@ -5875,3 +5875,87 @@ Pronto per ripartire: la prossima sessione lancia `add_players.py urls_wc2026.tx
 - Daily stats refresh cron continua a girare normalmente (nessuna interazione con i cambi di oggi: la costante `PLAYERS_SAUDI_FILE` era già aliasata a `PLAYERS_MAIN_FILE`, quindi nessuna regressione runtime).
 
 ---
+
+## 16-17 maggio 2026 (sabato-domenica) — WC2026 espansione + fix definitivo conflitti cron
+
+Sessione su due filoni: estensione della pipeline WC2026 a nuove nazionali (incluso un nuovo resolver per nomi non-latini), e la risoluzione strutturale e definitiva del bug ricorrente dei conflitti merge nel daily stats refresh, che si trascinava da 4 sessioni (8, 13, 15, 17 mag).
+
+### A1 — Passate incrementali parse Wikipedia: 8 to 9 nazionali
+
+Rilancio periodico di parse_wikipedia_squad.py --all per pescare le rose annunciate nelle ore precedenti. Progressione: 5 nazionali (15 mag), +3 (Belgium, Haiti, Tunisia to 8), +1 (South Korea to 9). Le 39 restanti ancora pending/preliminary (deadline FIFA 2 giugno).
+
+Bug critico scoperto - parser overwrite: la prima passata --all dopo il commit del 15 mag ha azzerato i tm_player_id di TUTTE le 8 nazionali gia risolte. Causa: parse_wikipedia_squad.py riga ~713 faceva squads[country] = {...players: new...} sovrascrivendo l'intera voce paese. Fix con patch_parse_preserve_tm.py (one-shot): prima di riscrivere, merge per-player preservando tm_player_id/tm_profile_url/match_method (match per nome). Verificato: dopo il fix le passate mantengono i tm_id.
+
+### A2 — resolve_wc2026_from_squad.py: resolver per nazionali a nomi non-latini
+
+resolve_wc2026_urls.py (Schnellsuche per nome) fallisce per Corea: 1/26. Causa: TM romanizza i nomi coreani in ordine nome/cognome invertito (WP "Kim Seung-gyu" vs TM "Seung-gyu Kim") e translitterazioni diverse (WP "Lee Ki-hyuk" vs TM "gi-hyuk-lee"). Stesso problema atteso per Iran, Arabia Saudita, Giappone.
+
+Approccio nuovo: scaricare la pagina rosa TM nazionale, estrarre (tm_id, DOB) di tutti i 26 dalla table.items in 1 request, matchare per DOB con i giocatori Wikipedia. DOB = identificatore forte indipendente dalla romanizzazione. Sviluppo: debug_tm_squad_page.py per dump struttura HTML (usa TransfermarktClient interno, web fetch diretto bloccato Cloudflare); v1 match esatto DOB 23/26; v2 tolleranza DOB +/-1g + report TM-non-matchati. Recupero finale: TM aveva aggiornato la rosa nazionale, rilancio script = 26/26 match per DOB.
+
+Lezione operativa critica: per nazionali a nomi non-latini usare SOLO resolve_wc2026_from_squad.py. NON lanciare resolve_wc2026_urls.py --reresolve su quelle: azzera i tm_id e rifa search-per-nome che fallisce. (Successo in sessione: --reresolve ha riportato Corea 26/26 a 3/26, recuperato rilanciando resolve_wc2026_from_squad.py idempotente.)
+
+Stato finale WC2026: 9/48 nazionali, 235 player risolti (Belgium 27, Bosnia 26, France 26, Haiti 26, Iraq 26, Japan 26, New Zealand 26, South Korea 26, Tunisia 26). 13 override manuali in wc2026_overrides.json.
+
+### B — Fix DEFINITIVO conflitti merge daily stats refresh
+
+Storia del bug: conflitto su data/last_update.json durante il push del cron notturno. Gia toccato 8 mag (retry pull-rebase 3x), 8 mag sera (permissions), 13 mag (stesso bug su add_player.yml: loop retry 5x senza git rebase --abort tra tentativi to stato rebase persistente to All push attempts failed). Il 17 mag ricapitato sul daily.
+
+Causa root (confermata dal diario): i 2 schedule del workflow (0 3 * * * + backup 30 6 * * *) si accavallano per i ritardi cron di GitHub Actions. Entrambi rigenerano last_update.json, vanno in conflitto, e il loop di retry senza rebase --abort resta incastrato su "unmerged files". Gli scheduler launchd Mac NON sono piu attori attivi (diario 1307-1313: "ora gira tutto in cloud"): un solo attore reale ma 2 schedule che si pestano i piedi.
+
+Soluzione professionale a 5 componenti (commit 1cee796):
+
+1. scripts/git-merge-newer-json.py - merge driver custom. In conflitto su last_update.json legge le due versioni JSON, confronta stats_completed_at (poi completed_at, updated_at), tiene quella col timestamp piu recente. Deterministico: il file e puro metadata rigenerato a ogni run.
+
+2. .gitattributes - data/last_update.json merge=newer-json. SOLO quel file. I file lista (players_main/static/all.json, clubs.json) NON lo usano: "tieni il piu recente" scarterebbe entita aggiunte nell'altro ramo.
+
+3. scripts/setup_git_merge_driver.sh - il driver e referenziato da .gitattributes (versionato) ma definito in .git/config (NON versionato). Questo script lo registra; idempotente; chiamato dal workflow GitHub (ogni run) e dallo script Mac.
+
+4. .github/workflows/auto_update_daily.yml - step Setup git merge driver + retry 5x che sui conflitti residui fa git rebase --abort tra tentativi (pezzo mancante diagnosticato il 13 mag). fetch-depth 0 per il rebase.
+
+5. auto_update_daily.sh (script Mac, Piano B diario 9 mag) - stesso fix. Inoltre git add -A to add SELETTIVO dei 5 file rigenerabili: evita di committare lavori in corso non correlati (problema vissuto il 15 mag con i file WC2026).
+
+Test con conflitto simulato: due branch divergenti modificano stats_completed_at (08:00 vs 20:00), git merge to "[merge-newer-json] risolto automaticamente: ours piu recente (20:00 > 08:00)", merge completato senza marker di conflitto. PASS. Branch test eliminati, stato ripristinato.
+
+Il sistema regge l'accavallamento dei cron senza intervento manuale. Prima verifica reale: run notturno 17 to 18 mag.
+
+### Commit della sessione (cronologico)
+
+d1c370b  feat(wc2026): pipeline Wikipedia to Transfermarkt per 8 nazionali (209 player)
+afcaa37  data: 16 nuovi override SOTS (foto FM26) [sessione 15, push tardivo]
+94d0123  feat(wc2026): South Korea (26) + resolver alternativo per nomi non-latini
+1cee796  fix(ci): risoluzione definitiva conflitti merge daily stats refresh
+(piu i commit auto: daily stats refresh 2cade5c/b23f372 dal cron, integrati via rebase durante la sessione)
+
+### File creati/modificati
+
+WC2026: resolve_wc2026_from_squad.py (nuovo, resolver via rosa TM + match DOB); parse_wikipedia_squad.py (patch anti-overwrite); data/wc2026_squads_raw.json (+South Korea, 9 naz / 235 player); data/wc2026_overrides.json (13 override); urls_wc2026.txt (235 URL); debug_tm_squad_page.py (untracked, gitignorato debug_*).
+
+Fix CI: scripts/git-merge-newer-json.py (nuovo); scripts/setup_git_merge_driver.sh (nuovo); .gitattributes (nuovo); .github/workflows/auto_update_daily.yml (setup driver + retry abort); auto_update_daily.sh (setup driver + retry abort + add selettivo).
+
+### Lezioni della sessione
+
+1. Leggere il diario PRIMA di proporre fix infrastrutturali: la prima diagnosi del bug cron (3 attori, disattivare launchd) era sbagliata. Il diario chiariva che launchd e gia morto e che lo stesso bug era gia stato risolto per add_player.yml con rebase --abort. La soluzione corretta era coerente con decisioni gia prese.
+
+2. Un merge driver custom e la risposta giusta per file di metadata rigenerabili: quando un file fa SEMPRE conflitto perche cambia a ogni run e la sua verita e deterministica (ultimo timestamp vince), il driver elimina il problema alla radice invece di gestirlo col retry. Solo dove la risoluzione automatica e semanticamente sicura - mai su file-lista.
+
+3. Scraper per nazionali a nomi non-latini: search-per-nome strutturalmente inaffidabile (romanizzazione, ordine nome/cognome). Scaricare la pagina-rosa e matchare per DOB e piu robusto: 1 request invece di 26, DOB identificatore forte e stabile. Riusabile per Iran, Arabia Saudita, Giappone.
+
+4. --reresolve e distruttivo su nazionali risolte da un altro resolver: azzera i tm_id e rifa da zero. Documentato come nota operativa nel commit.
+
+5. Idempotenza salva: resolve_wc2026_from_squad.py idempotente - dopo che --reresolve ha distrutto Corea (26 to 3), rilanciarlo ha ricostruito 26/26 senza danni.
+
+### Backlog aggiornato post-sessione 16-17 mag
+
+Chiusura WC2026 (ancora da fare): 1) Import vero python3 add_players.py urls_wc2026.txt (235 player, ~30 min, 3 gia in DB); 2) tag_wc2026.py (campi wc2026_squad/shirt/pos); 3) Frontend filter "Mondiale 2026"; 4) Re-run periodico parse to resolve man mano che le 39 restanti annunciano (deadline 2 giugno) - per non-latine usare resolve_wc2026_from_squad.py.
+
+Verifica post-fix CI: controllare run notturno 17 to 18 mag con curl -s https://pid-nine.vercel.app/data/last_update.json | grep stats_completed_at, deve mostrare la data del 18. Primo test reale del merge driver in produzione.
+
+Backlog precedente invariato: Megapack SOTS (bloccato disco pieno), auto_enrich_metadata settimanale, espansione SOTS internazionali, espansione 5 leghe top, bug SOTS face/person_id, drag-drop Griglie, Fase 5 PDF / Fase 6 JSON export osservazioni, bug enrich_sortitoutsi reset team_id.
+
+### Stato infra post-sessione
+
+- Conflitti cron daily refresh: RISOLTI definitivamente (merge driver newer-json + retry con rebase --abort, testato con conflitto simulato to PASS). Da verificare il primo run reale in produzione.
+- WC2026: 9/48 nazionali, 235 player risolti, pipeline robusta (parser anti-overwrite + resolver alternativo per non-latini). Import nel DB ancora in attesa.
+- Daily stats refresh: completamente automatico, nessun intervento manuale previsto.
+
+---
