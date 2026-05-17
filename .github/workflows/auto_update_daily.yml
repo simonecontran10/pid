@@ -24,7 +24,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Python
@@ -39,8 +39,13 @@ jobs:
           if [ -f requirements.txt ]; then
             pip install -r requirements.txt
           fi
-          # boto3+dotenv se non già in requirements (per upload_to_r2.py)
           pip install boto3 python-dotenv
+
+      - name: Setup git merge driver (anti-conflict last_update.json)
+        run: |
+          bash scripts/setup_git_merge_driver.sh
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
 
       - name: Hash pre-run players_stats.json
         id: pre
@@ -80,24 +85,50 @@ jobs:
 
       - name: Commit and push if changed
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          # Aggiungi solo i file dati / metadata, non players_stats.json (che è su R2)
+          # Aggiungi solo i file dati/metadata rigenerabili (players_stats.json è su R2)
           git add data/last_update.json data/players_main.json data/players_static.json data/players_all.json data/clubs.json 2>/dev/null || true
+
           if git diff --cached --quiet; then
             echo "No git changes to commit"
             exit 0
           fi
+
           git commit -m "auto: daily stats refresh ($(date -u +%Y-%m-%d))"
-          # Retry push fino a 3 volte (per gestire push concurrent fatti durante il workflow)
-          for i in 1 2 3; do
-            echo "Push attempt $i/3"
-            if git pull --rebase origin main && git push; then
-              echo "Push succeeded on attempt $i"
-              exit 0
+
+          # Retry robusto. Il merge driver newer-json (da .gitattributes +
+          # setup step) risolve automaticamente i conflitti su last_update.json
+          # durante il rebase. Per i conflitti su altri file (raro: solo se
+          # arrivano nuovi giocatori da un altro push concorrente) si fa
+          # rebase --abort e si ritenta da pull pulito.
+          for i in 1 2 3 4 5; do
+            echo "::group::Push attempt $i/5"
+
+            if git pull --rebase origin main; then
+              if git push; then
+                echo "Push succeeded on attempt $i"
+                echo "::endgroup::"
+                exit 0
+              fi
+              echo "Push rifiutato (race con altro push). Retry..."
+            else
+              # Il pull --rebase si è fermato. Verifica se ci sono ancora
+              # conflitti NON risolti dal merge driver.
+              if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+                echo "Conflitti residui non auto-risolti:"
+                git diff --name-only --diff-filter=U
+                # Strategia di sicurezza: abortisci il rebase e riprova da capo.
+                # Il prossimo run di run_stats.py rigenererà comunque i dati.
+                git rebase --abort 2>/dev/null || true
+              else
+                # Nessun conflitto residuo: il rebase potrebbe essere completo,
+                # ritenta solo il push.
+                git rebase --continue 2>/dev/null || true
+              fi
             fi
-            echo "Push failed, retrying..."
-            sleep 5
+
+            echo "::endgroup::"
+            sleep $((i * 10))
           done
-          echo "All push attempts failed"
+
+          echo "::error::All push attempts failed dopo 5 tentativi"
           exit 1

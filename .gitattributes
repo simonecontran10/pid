@@ -1,0 +1,21 @@
+# Merge driver per il file di metadata rigenerabile dai cron (daily stats refresh).
+#
+# PROBLEMA RISOLTO: ogni notte fino a 3 attori (GitHub Actions schedule 03:00,
+# schedule backup 06:30, scheduler launchd del Mac) rigeneravano
+# data/last_update.json e provavano a pushare. Le sovrapposizioni causavano
+# "CONFLICT (content): Merge conflict in data/last_update.json" che bloccava
+# il push del cron ("All push attempts failed").
+#
+# SOLUZIONE: il driver `newer-json` (definito in .git/config, installato da
+# scripts/setup_git_merge_driver.sh) risolve il conflitto automaticamente
+# tenendo la versione col timestamp `stats_completed_at` piu recente. E'
+# deterministico e corretto perche last_update.json e' puro metadata: la
+# versione "vera" e' sempre quella dell'esecuzione completata piu di recente,
+# e comunque il run successivo lo rigenera.
+data/last_update.json merge=newer-json
+
+# NOTA: players_main/static/all.json e clubs.json NON usano questo driver.
+# Sono liste di entita (giocatori/club), non metadata: una risoluzione
+# "tieni il piu recente" potrebbe scartare entita aggiunte nell'altro ramo.
+# Per quei file il workflow usa rebase con strategia dedicata (vedi
+# auto_update_daily.yml).

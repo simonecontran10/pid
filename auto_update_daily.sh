@@ -103,15 +103,46 @@ if [ "$PRE_META_HASH" != "$POST_META_HASH" ]; then
 fi
 # Anche altri file potrebbero cambiare in futuro (clubs.json, ij1_clubs.json, ecc.)
 # git status include tutto ciò che è tracciato
-PENDING=$(git status --porcelain | wc -l | tr -d ' ')
-if [ "$PENDING" -gt 0 ]; then
-  log "git changes ($PENDING file). Commit + push ..."
-  git add -A >> "$LOG_FILE" 2>&1
-  git commit -m "auto: daily stats refresh ($(date +%Y-%m-%d))" >> "$LOG_FILE" 2>&1 || fail "git commit fallito"
-  git push >> "$LOG_FILE" 2>&1 || fail "git push fallito"
-  log "git push OK"
-else
+# Setup merge driver (idempotente) per auto-risolvere conflitti last_update.json
+bash scripts/setup_git_merge_driver.sh >> "$LOG_FILE" 2>&1 || log "WARN: setup merge driver fallito (continuo comunque)"
+
+# Add SELETTIVO: solo i file dati/metadata rigenerabili dal refresh.
+# (NIENTE git add -A: evita di committare lavori in corso non correlati.)
+git add data/last_update.json data/players_main.json data/players_static.json \
+        data/players_all.json data/clubs.json >> "$LOG_FILE" 2>&1 || true
+
+if git diff --cached --quiet; then
   log "no git changes"
+else
+  log "git changes rilevate. Commit + push robusto ..."
+  git commit -m "auto: daily stats refresh ($(date +%Y-%m-%d))" >> "$LOG_FILE" 2>&1 || fail "git commit fallito"
+
+  PUSHED=0
+  for i in 1 2 3 4 5; do
+    log "push attempt $i/5"
+    if git pull --rebase origin main >> "$LOG_FILE" 2>&1; then
+      if git push >> "$LOG_FILE" 2>&1; then
+        log "git push OK (attempt $i)"
+        PUSHED=1
+        break
+      fi
+      log "push rifiutato (race), retry..."
+    else
+      # Pull/rebase fermo: il driver newer-json risolve last_update.json da solo.
+      # Se restano conflitti su altri file, abortisci e ritenta da pull pulito.
+      if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
+        log "conflitti residui non auto-risolti: $(git diff --name-only --diff-filter=U | tr '\n' ' ')"
+        git rebase --abort >> "$LOG_FILE" 2>&1 || true
+      else
+        git rebase --continue >> "$LOG_FILE" 2>&1 || true
+      fi
+    fi
+    sleep $((i * 10))
+  done
+
+  if [ "$PUSHED" -ne 1 ]; then
+    fail "git push fallito dopo 5 tentativi"
+  fi
 fi
 
 # === SUCCESS ===
