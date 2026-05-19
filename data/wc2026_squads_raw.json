@@ -140,7 +140,10 @@
         "caps": 6,
         "goals": 0,
         "club": "Sturm Graz",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 805534,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/805534",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
@@ -3885,7 +3888,10 @@
         "caps": 8,
         "goals": 3,
         "club": "Benfica",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 611855,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/611855",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
@@ -4556,7 +4562,10 @@
         "caps": 27,
         "goals": 0,
         "club": "Aris Limassol",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 395685,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/395685",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
@@ -4721,7 +4730,10 @@
         "caps": 30,
         "goals": 5,
         "club": "AEL",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 74297,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/74297",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
@@ -4852,7 +4864,10 @@
         "caps": 42,
         "goals": 0,
         "club": "Porto",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 357153,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/357153",
+        "match_method": "manual_override"
       },
       {
         "shirt": 12,
@@ -5003,7 +5018,10 @@
         "caps": 74,
         "goals": 3,
         "club": "Manchester City",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 258004,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/258004",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
@@ -5014,7 +5032,10 @@
         "caps": 48,
         "goals": 0,
         "club": "Fenerbahçe",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 231572,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/231572",
+        "match_method": "manual_override"
       },
       {
         "shirt": 5,
@@ -5523,7 +5544,10 @@
         "caps": 1,
         "goals": 0,
         "club": "Kilmarnock",
-        "club_country": ""
+        "club_country": "",
+        "tm_player_id": 1082993,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1082993",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
