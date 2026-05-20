@@ -2001,5 +2001,17 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 89,
+    "name": "1.FC Union Berlin",
+    "league_id": "L1",
+    "league_name": "Bundesliga",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/89",
+    "slug": "1-fc-union-berlin",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]
