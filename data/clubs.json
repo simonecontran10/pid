@@ -1941,5 +1941,41 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 2288,
+    "name": "Swansea City",
+    "league_id": "GB2",
+    "league_name": "Championship",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/2288",
+    "slug": "swansea-city",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 1158,
+    "name": "FC Lorient",
+    "league_id": "FR1",
+    "league_name": "Ligue 1",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/1158",
+    "slug": "fc-lorient",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 383,
+    "name": "PSV Eindhoven",
+    "league_id": "NL1",
+    "league_name": "Eredivisie",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/383",
+    "slug": "psv-eindhoven",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]
