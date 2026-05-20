@@ -1977,5 +1977,29 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 989,
+    "name": "AFC Bournemouth",
+    "league_id": "GB1",
+    "league_name": "Premier League",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/989",
+    "slug": "afc-bournemouth",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 630,
+    "name": "Racing Santander",
+    "league_id": "ES2",
+    "league_name": "LaLiga2",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/630",
+    "slug": "racing-santander",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]
