@@ -58,11 +58,13 @@ https://www.transfermarkt.com/ante-budimir/profil/spieler/46413
 https://www.transfermarkt.com/anthony-elanga/profil/spieler/583189
 https://www.transfermarkt.com/anthony-ralston/profil/spieler/388171
 https://www.transfermarkt.com/ao-tanaka/profil/spieler/489359
+https://www.transfermarkt.com/ardon-jashari/profil/spieler/608172
 https://www.transfermarkt.com/arjany-martha/profil/spieler/572519
 https://www.transfermarkt.com/armando-obispo/profil/spieler/339337
 https://www.transfermarkt.com/armin-gigovic/profil/spieler/651269
 https://www.transfermarkt.com/arthur-masuaku/profil/spieler/181380
 https://www.transfermarkt.com/arthur-theate/profil/spieler/368891
+https://www.transfermarkt.com/aurele-amenda/profil/spieler/635645
 https://www.transfermarkt.com/aurelien-tchouameni/profil/spieler/413112
 https://www.transfermarkt.com/axel-tuanzebe/profil/spieler/342046
 https://www.transfermarkt.com/axel-witsel/profil/spieler/35047
@@ -82,6 +84,7 @@ https://www.transfermarkt.com/billy-gilmour/profil/spieler/423744
 https://www.transfermarkt.com/bradley-barcola/profil/spieler/708265
 https://www.transfermarkt.com/brandley-kuwas/profil/spieler/232219
 https://www.transfermarkt.com/brandon-mechele/profil/spieler/236168
+https://www.transfermarkt.com/breel-embolo/profil/spieler/237662
 https://www.transfermarkt.com/bremer/profil/spieler/516716
 https://www.transfermarkt.com/brian-cipenga/profil/spieler/700565
 https://www.transfermarkt.com/brice-samba/profil/spieler/191056
@@ -96,12 +99,14 @@ https://www.transfermarkt.com/carlens-arcus/profil/spieler/371686
 https://www.transfermarkt.com/carney-chukwuemeka/profil/spieler/659459
 https://www.transfermarkt.com/casemiro/profil/spieler/16306
 https://www.transfermarkt.com/cedric-bakambu/profil/spieler/127048
+https://www.transfermarkt.com/cedric-itten/profil/spieler/243856
 https://www.transfermarkt.com/chancel-mbemba/profil/spieler/203348
 https://www.transfermarkt.com/charles-de-ketelaere/profil/spieler/435772
 https://www.transfermarkt.com/charles-pickel/profil/spieler/243879
 https://www.transfermarkt.com/che-adams/profil/spieler/346779
 https://www.transfermarkt.com/chris-wood/profil/spieler/108725
 https://www.transfermarkt.com/christ-inao-oulai/profil/spieler/1279526
+https://www.transfermarkt.com/christian-fassnacht/profil/spieler/250490
 https://www.transfermarkt.com/christoph-baumgartner/profil/spieler/324278
 https://www.transfermarkt.com/cj-dos-santos/profil/spieler/532096
 https://www.transfermarkt.com/clement-akpa/profil/spieler/806793
@@ -109,6 +114,7 @@ https://www.transfermarkt.com/craig-gordon/profil/spieler/12589
 https://www.transfermarkt.com/daichi-kamada/profil/spieler/356141
 https://www.transfermarkt.com/dailon-livramento/profil/spieler/676411
 https://www.transfermarkt.com/daizen-maeda/profil/spieler/420931
+https://www.transfermarkt.com/dan-ndoye/profil/spieler/365108
 https://www.transfermarkt.com/daniel-svensson/profil/spieler/579287
 https://www.transfermarkt.com/danilo/profil/spieler/145707
 https://www.transfermarkt.com/danilo/profil/spieler/808509
@@ -116,6 +122,7 @@ https://www.transfermarkt.com/danley-jean-jacques/profil/spieler/628834
 https://www.transfermarkt.com/david-affengruber/profil/spieler/452483
 https://www.transfermarkt.com/david-alaba/profil/spieler/59016
 https://www.transfermarkt.com/dayot-upamecano/profil/spieler/344695
+https://www.transfermarkt.com/denis-zakaria/profil/spieler/334526
 https://www.transfermarkt.com/dennis-hadzikadunic/profil/spieler/322065
 https://www.transfermarkt.com/deroy-duarte/profil/spieler/432852
 https://www.transfermarkt.com/derrick-etienne-jr-/profil/spieler/354763
@@ -124,6 +131,7 @@ https://www.transfermarkt.com/deveron-fonville/profil/spieler/708989
 https://www.transfermarkt.com/diego-moreira/profil/spieler/655006
 https://www.transfermarkt.com/diney-borges/profil/spieler/349570
 https://www.transfermarkt.com/diogo-dalot/profil/spieler/357147
+https://www.transfermarkt.com/djibril-sow/profil/spieler/212723
 https://www.transfermarkt.com/dodi-lukebakio/profil/spieler/303259
 https://www.transfermarkt.com/dominic-hyam/profil/spieler/263268
 https://www.transfermarkt.com/dominik-kotarski/profil/spieler/370997
@@ -149,12 +157,14 @@ https://www.transfermarkt.com/eloy-room/profil/spieler/79294
 https://www.transfermarkt.com/elye-wahi/profil/spieler/659542
 https://www.transfermarkt.com/emil-holm/profil/spieler/496745
 https://www.transfermarkt.com/endrick/profil/spieler/971570
+https://www.transfermarkt.com/eray-comert/profil/spieler/298583
 https://www.transfermarkt.com/eric-smith/profil/spieler/292534
 https://www.transfermarkt.com/ermedin-demirovic/profil/spieler/335457
 https://www.transfermarkt.com/ermin-mahmic/profil/spieler/803049
 https://www.transfermarkt.com/esmir-bajraktarevic/profil/spieler/925862
 https://www.transfermarkt.com/evan-ndicka/profil/spieler/371149
 https://www.transfermarkt.com/evann-guessand/profil/spieler/500689
+https://www.transfermarkt.com/fabian-rieder/profil/spieler/507341
 https://www.transfermarkt.com/fabinho/profil/spieler/225693
 https://www.transfermarkt.com/fahad-talib/profil/spieler/377268
 https://www.transfermarkt.com/finn-surman/profil/spieler/724809
@@ -179,7 +189,9 @@ https://www.transfermarkt.com/godfried-roemeratoe/profil/spieler/393241
 https://www.transfermarkt.com/goncalo-guedes/profil/spieler/225122
 https://www.transfermarkt.com/goncalo-inacio/profil/spieler/549006
 https://www.transfermarkt.com/goncalo-ramos/profil/spieler/550550
+https://www.transfermarkt.com/granit-xhaka/profil/spieler/111455
 https://www.transfermarkt.com/grant-hanley/profil/spieler/121385
+https://www.transfermarkt.com/gregor-kobel/profil/spieler/257814
 https://www.transfermarkt.com/gue-sung-cho/profil/spieler/652537
 https://www.transfermarkt.com/guela-doue/profil/spieler/711980
 https://www.transfermarkt.com/gustaf-lagerbielke/profil/spieler/485395
@@ -232,6 +244,7 @@ https://www.transfermarkt.com/joao-neves/profil/spieler/670681
 https://www.transfermarkt.com/joao-paulo/profil/spieler/623965
 https://www.transfermarkt.com/joaquin-seys/profil/spieler/981196
 https://www.transfermarkt.com/joe-bell/profil/spieler/345700
+https://www.transfermarkt.com/johan-manzambi/profil/spieler/927353
 https://www.transfermarkt.com/john-mcginn/profil/spieler/193116
 https://www.transfermarkt.com/john-souttar/profil/spieler/235767
 https://www.transfermarkt.com/johny-placide/profil/spieler/51035
@@ -295,6 +308,7 @@ https://www.transfermarkt.com/lionel-mpasi-nzau/profil/spieler/164915
 https://www.transfermarkt.com/livano-comenencia/profil/spieler/626764
 https://www.transfermarkt.com/logan-costa/profil/spieler/484988
 https://www.transfermarkt.com/louicius-deedson/profil/spieler/646108
+https://www.transfermarkt.com/luca-jaquez/profil/spieler/539798
 https://www.transfermarkt.com/lucas-bergvall/profil/spieler/866246
 https://www.transfermarkt.com/lucas-digne/profil/spieler/126664
 https://www.transfermarkt.com/lucas-hernandez/profil/spieler/281963
@@ -308,6 +322,7 @@ https://www.transfermarkt.com/maghnes-akliouche/profil/spieler/745200
 https://www.transfermarkt.com/malo-gusto/profil/spieler/620322
 https://www.transfermarkt.com/manaf-younis/profil/spieler/945266
 https://www.transfermarkt.com/manu-kone/profil/spieler/624690
+https://www.transfermarkt.com/manuel-akanji/profil/spieler/284730
 https://www.transfermarkt.com/marcel-sabitzer/profil/spieler/106987
 https://www.transfermarkt.com/marcio-rosa/profil/spieler/398048
 https://www.transfermarkt.com/marco-friedl/profil/spieler/156990
@@ -323,6 +338,7 @@ https://www.transfermarkt.com/martin-baturina/profil/spieler/580451
 https://www.transfermarkt.com/martin-erlic/profil/spieler/357003
 https://www.transfermarkt.com/martin-experience/profil/spieler/804885
 https://www.transfermarkt.com/martin-zlomislic/profil/spieler/495320
+https://www.transfermarkt.com/marvin-keller/profil/spieler/500763
 https://www.transfermarkt.com/mateo-kovacic/profil/spieler/51471
 https://www.transfermarkt.com/matheus-cunha/profil/spieler/517894
 https://www.transfermarkt.com/matheus-nunes/profil/spieler/601883
@@ -340,9 +356,11 @@ https://www.transfermarkt.com/michael-gregoritsch/profil/spieler/120205
 https://www.transfermarkt.com/michael-olise/profil/spieler/566723
 https://www.transfermarkt.com/michael-svoboda/profil/spieler/438961
 https://www.transfermarkt.com/michael-woud/profil/spieler/350347
+https://www.transfermarkt.com/michel-aebischer/profil/spieler/237658
 https://www.transfermarkt.com/mike-maignan/profil/spieler/182906
 https://www.transfermarkt.com/mike-penders/profil/spieler/834397
 https://www.transfermarkt.com/min-jae-kim/profil/spieler/503482
+https://www.transfermarkt.com/miro-muheim/profil/spieler/298603
 https://www.transfermarkt.com/mohamed-amine-ben-hamida/profil/spieler/454495
 https://www.transfermarkt.com/mohamed-kone/profil/spieler/911985
 https://www.transfermarkt.com/mohanad-ali/profil/spieler/589646
@@ -357,6 +375,7 @@ https://www.transfermarkt.com/nathanael-mbuku/profil/spieler/557614
 https://www.transfermarkt.com/neymar/profil/spieler/68290
 https://www.transfermarkt.com/ngalayel-mukau/profil/spieler/1016015
 https://www.transfermarkt.com/ngolo-kante/profil/spieler/225083
+https://www.transfermarkt.com/nico-elvedi/profil/spieler/192635
 https://www.transfermarkt.com/nicolas-pepe/profil/spieler/343052
 https://www.transfermarkt.com/nicolas-raskin/profil/spieler/422763
 https://www.transfermarkt.com/nicolas-seiwald/profil/spieler/404950
@@ -366,6 +385,7 @@ https://www.transfermarkt.com/nikola-katic/profil/spieler/422051
 https://www.transfermarkt.com/nikola-moro/profil/spieler/316934
 https://www.transfermarkt.com/nikola-vasilj/profil/spieler/248454
 https://www.transfermarkt.com/nikola-vlasic/profil/spieler/293200
+https://www.transfermarkt.com/noah-okafor/profil/spieler/346890
 https://www.transfermarkt.com/noah-sadiki/profil/spieler/727089
 https://www.transfermarkt.com/nuno-da-costa/profil/spieler/306166
 https://www.transfermarkt.com/nuno-mendes/profil/spieler/616341
@@ -392,8 +412,10 @@ https://www.transfermarkt.com/rayan-cherki/profil/spieler/607223
 https://www.transfermarkt.com/rayan-elloumi/profil/spieler/1273985
 https://www.transfermarkt.com/rayan/profil/spieler/1012564
 https://www.transfermarkt.com/rebin-sulaka/profil/spieler/217073
+https://www.transfermarkt.com/remo-freuler/profil/spieler/148252
 https://www.transfermarkt.com/renato-veiga/profil/spieler/805714
 https://www.transfermarkt.com/ricardo-ade/profil/spieler/278145
+https://www.transfermarkt.com/ricardo-rodriguez/profil/spieler/86784
 https://www.transfermarkt.com/ricardo-velho/profil/spieler/527026
 https://www.transfermarkt.com/riechedly-bazoer/profil/spieler/216443
 https://www.transfermarkt.com/ritsu-doan/profil/spieler/358504
@@ -406,6 +428,7 @@ https://www.transfermarkt.com/roshon-van-eijma/profil/spieler/401029
 https://www.transfermarkt.com/ross-stewart/profil/spieler/447995
 https://www.transfermarkt.com/ruben-neves/profil/spieler/225161
 https://www.transfermarkt.com/ruben-providence/profil/spieler/536520
+https://www.transfermarkt.com/ruben-vargas/profil/spieler/345886
 https://www.transfermarkt.com/rui-silva/profil/spieler/234811
 https://www.transfermarkt.com/ryan-christie/profil/spieler/188077
 https://www.transfermarkt.com/ryan-mendes/profil/spieler/111627
@@ -427,6 +450,7 @@ https://www.transfermarkt.com/seung-ho-paik/profil/spieler/282689
 https://www.transfermarkt.com/sherel-floranus/profil/spieler/315211
 https://www.transfermarkt.com/shogo-taniguchi/profil/spieler/307870
 https://www.transfermarkt.com/shurandy-sambo/profil/spieler/412937
+https://www.transfermarkt.com/silvan-widmer/profil/spieler/168989
 https://www.transfermarkt.com/simon-adingra/profil/spieler/658536
 https://www.transfermarkt.com/simon-banza/profil/spieler/344869
 https://www.transfermarkt.com/sontje-hansen/profil/spieler/485582
@@ -489,8 +513,10 @@ https://www.transfermarkt.com/yu-min-cho/profil/spieler/561212
 https://www.transfermarkt.com/yuito-suzuki/profil/spieler/668606
 https://www.transfermarkt.com/yukinari-sugawara/profil/spieler/405385
 https://www.transfermarkt.com/yuto-nagatomo/profil/spieler/79522
+https://www.transfermarkt.com/yvon-mvogo/profil/spieler/147051
 https://www.transfermarkt.com/zaid-ismail/profil/spieler/1132850
 https://www.transfermarkt.com/zaid-tahseen/profil/spieler/931147
+https://www.transfermarkt.com/zeki-amdouni/profil/spieler/548729
 https://www.transfermarkt.com/zeno-debast/profil/spieler/548193
 https://www.transfermarkt.com/zidane-iqbal/profil/spieler/686845
 https://www.transfermarkt.com/zion-suzuki/profil/spieler/432298
