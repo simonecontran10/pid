@@ -2544,9 +2544,22 @@ function renderCallupPanel() {
       "First Name", "Last Name", "Date of Birth", "Nationality",
       "Position General", "Position Specific", "Other Positions",
       "Foot", "Height (cm)", "Shirt Number", "Club",
-      "Photo URL", "TM Profile URL", "TM ID", "Sortitoutsi ID",
-      "Place of Birth"
+      "Photo URL Best", "Photo URL", "TM Profile URL", "TM ID",
+      "Sortitoutsi ID", "Place of Birth"
     ]];
+    // Resolve the best photo URL by walking PID's own cascade. We use the
+    // same playerPhoto() helper but turn the relative ../data/... path into
+    // an absolute https URL so PitchPlan can fetch it directly. ui-avatars
+    // fallbacks are filtered out (they're not real photos).
+    const bestPhotoUrl = (p) => {
+      const raw = playerPhoto(p);
+      if (!raw) return "";
+      if (raw.startsWith("https://ui-avatars.com/")) return "";
+      if (raw.startsWith("../data/")) {
+        return `${location.origin}/data/${raw.slice("../data/".length)}`;
+      }
+      return raw; // already absolute (Transfermarkt remote)
+    };
     callupList.forEach(p => {
       const [first, last] = splitName(p.full_name);
       const nat = Array.isArray(p.citizenships) && p.citizenships.length
@@ -2558,7 +2571,7 @@ function renderCallupPanel() {
         p.position_general || "", p.position_specific || "", others,
         p.foot || "", p.height_cm || "", p.shirt_number || "",
         p.current_club_name || "",
-        p.photo_url || "", p.tm_profile_url || "",
+        bestPhotoUrl(p), p.photo_url || "", p.tm_profile_url || "",
         p.tm_player_id || "", p.sortitoutsi_person_id || "",
         p.place_of_birth || ""
       ]);
