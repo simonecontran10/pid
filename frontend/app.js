@@ -2514,11 +2514,31 @@ function renderCallupPanel() {
     // import in PitchPlan needs zero manual mapping. Keep English headers
     // here (PitchPlan recognises both EN and IT column names).
     const splitName = (full) => {
+      // Split into first name and last name, keeping surname particles
+      // (de, van, da, di, della, ...) attached to the surname.
+      // Examples:
+      //   "David de Gea"        -> ["David",  "de Gea"]
+      //   "Robin van Persie"    -> ["Robin",  "van Persie"]
+      //   "Henrikh Mkhitaryan"  -> ["Henrikh","Mkhitaryan"]
+      //   "Aaron Ciammaglichella" -> ["Aaron","Ciammaglichella"]
+      const PARTICLES = new Set([
+        "de","da","di","del","della","dello","dei","degli","delle","dal",
+        "dalla","dallo","dai","dagli","dalle","von","van","der","den","ten",
+        "ter","la","le","lo","el","al","ibn","bin","ben","mc","mac","du","des"
+      ]);
       const s = String(full || "").trim();
       if (!s) return ["", ""];
-      const i = s.lastIndexOf(" ");
-      if (i < 0) return ["", s];
-      return [s.slice(0, i), s.slice(i + 1)];
+      const parts = s.split(/\s+/);
+      if (parts.length === 1) return ["", parts[0]];
+      // Walk from the second-to-last token toward the start and grow the
+      // surname as long as we keep finding particles.
+      let lastStart = parts.length - 1;
+      while (lastStart > 1 && PARTICLES.has(parts[lastStart - 1].toLowerCase())) {
+        lastStart--;
+      }
+      const first = parts.slice(0, lastStart).join(" ");
+      const last = parts.slice(lastStart).join(" ");
+      return [first, last];
     };
     const rows = [[
       "First Name", "Last Name", "Date of Birth", "Nationality",
