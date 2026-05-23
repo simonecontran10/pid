@@ -2510,11 +2510,37 @@ function renderCallupPanel() {
   });
 
   document.getElementById("callup-export")?.addEventListener("click", () => {
-    const rows = [["Name","Club","Position","Year of birth","Age","Foot","Height (cm)","TM ID"]];
+    // pt56: rich CSV designed for PitchPlan import. Columns chosen so an
+    // import in PitchPlan needs zero manual mapping. Keep English headers
+    // here (PitchPlan recognises both EN and IT column names).
+    const splitName = (full) => {
+      const s = String(full || "").trim();
+      if (!s) return ["", ""];
+      const i = s.lastIndexOf(" ");
+      if (i < 0) return ["", s];
+      return [s.slice(0, i), s.slice(i + 1)];
+    };
+    const rows = [[
+      "First Name", "Last Name", "Date of Birth", "Nationality",
+      "Position General", "Position Specific", "Other Positions",
+      "Foot", "Height (cm)", "Shirt Number", "Club",
+      "Photo URL", "TM Profile URL", "TM ID", "Sortitoutsi ID",
+      "Place of Birth"
+    ]];
     callupList.forEach(p => {
+      const [first, last] = splitName(p.full_name);
+      const nat = Array.isArray(p.citizenships) && p.citizenships.length
+        ? p.citizenships[0] : "";
+      const others = Array.isArray(p.position_others)
+        ? p.position_others.join("; ") : "";
       rows.push([
-        p.full_name||"", p.current_club_name||"", p.position_specific||p.position_general||"",
-        birthYear(p)||"", p.age||"", p.foot||"", p.height_cm||"", p.tm_player_id
+        first, last, p.date_of_birth || "", nat,
+        p.position_general || "", p.position_specific || "", others,
+        p.foot || "", p.height_cm || "", p.shirt_number || "",
+        p.current_club_name || "",
+        p.photo_url || "", p.tm_profile_url || "",
+        p.tm_player_id || "", p.sortitoutsi_person_id || "",
+        p.place_of_birth || ""
       ]);
     });
     const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
