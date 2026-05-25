@@ -6546,7 +6546,10 @@ function exportGridSave(name) {
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
-  _downloadJSON(`griglia_${name.replace(/[^a-z0-9_-]/gi, "_")}.json`, payload);
+  // pt63: filename = "<nome griglia> griglia.json" (es. "Atalanta griglia.json")
+  // Sanitizzo solo i caratteri vietati nei filename cross-platform.
+  const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
+  _downloadJSON(`${safe} griglia.json`, payload);
 }
 
 function exportCallupSave(name) {
@@ -6563,7 +6566,9 @@ function exportCallupSave(name) {
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
-  _downloadJSON(`convocazione_${name.replace(/[^a-z0-9_-]/gi, "_")}.json`, payload);
+  // pt63: filename = "<nome> convocazione.json" (coerente con la griglia)
+  const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
+  _downloadJSON(`${safe} convocazione.json`, payload);
 }
 
 // Importa file JSON e aggiunge a store (rinomina automatica se collisione)
