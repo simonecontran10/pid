@@ -3461,6 +3461,7 @@ function renderGridsPanel() {
           <button id="grids-to-callup" class="text-[11px] px-2 py-1 rounded-md" style="background: var(--accent-bg); color: var(--accent); border: 0.5px solid rgba(111,224,168,0.30); font-weight: 600;">${t("add_to_callup")}</button>
           <button id="grids-export-pdf" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(96,165,250,0.10); color: var(--info); border: 0.5px solid rgba(96,165,250,0.20);">${t("export_pdf")}</button>
           <button id="grids-export-pptx" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(245,158,11,0.10); color: #F59E0B; border: 0.5px solid rgba(245,158,11,0.20);">${t("export_pptx")}</button>
+          <button id="grids-export-json" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(167,139,250,0.10); color: #A78BFA; border: 0.5px solid rgba(167,139,250,0.20);">${currentLang==="it"?"Esporta JSON":"Export JSON"}</button>
           <button id="grids-clear" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(239,68,68,0.10); color: #EF4444; border: 0.5px solid rgba(239,68,68,0.20);">${t("clear_btn")}</button>
         </div>
 
@@ -3831,6 +3832,32 @@ async function _gridsExportPptx(buttonEl) {
   });
   document.getElementById("grids-export-pdf")?.addEventListener("click", async () => {
     await exportGridPDF();
+  });
+
+  // Esporta la griglia corrente come JSON (formato pid_grid_save) — pronto
+  // per essere importato in PitchPlan come "formazione probabile avversari"
+  document.getElementById("grids-export-json")?.addEventListener("click", () => {
+    const hasPlayers = Object.values(state.grids.assigned || {}).some(ids => Array.isArray(ids) && ids.length > 0);
+    if (!hasPlayers) {
+      alert(currentLang==="it"?"La griglia è vuota.":"Grid is empty.");
+      return;
+    }
+    const name = state.grids.currentName || (currentLang==="it"?"griglia":"grid");
+    const payload = {
+      type: "pid_grid_save",
+      version: 1,
+      name,
+      formation: state.grids.formation || "4-3-3",
+      assigned: state.grids.assigned || {},
+      _meta: {
+        created_by: _currentUsername(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
+      exported_at: new Date().toISOString(),
+      exported_by: _currentUsername(),
+    };
+    _downloadJSON(`griglia_${name.replace(/[^a-z0-9_-]/gi, "_")}.json`, payload);
   });
 
   // Porta tutti i giocatori della griglia in Convocazione (titolari + riserve, deduplicati)
