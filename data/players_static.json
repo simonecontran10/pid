@@ -96389,10 +96389,43 @@
     "roster_club_id": 89,
     "roster_club_name": "Union Berlin",
     "added_date": "2026-05-20",
-    "sortitoutsi_person_id": 37051440,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_37051440.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/37051440/danilho-doekhi",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/387047.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37051440.png"
+  },
+  {
+    "tm_player_id": 950393,
+    "full_name": "Viery",
+    "name_arabic": null,
+    "date_of_birth": "2005-01-02",
+    "age": 21,
+    "height_cm": 187,
+    "foot": "left",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Left-Back"
+    ],
+    "place_of_birth": "Ubá",
+    "citizenships": [
+      "Brazil"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 210,
+    "current_club_name": "Grêmio",
+    "shirt_number": 44,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/950393-1773183484.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/950393",
+    "fetched_at": "2026-05-29T19:00:08Z",
+    "roster_club_id": 210,
+    "roster_club_name": "Grêmio",
+    "added_date": "2026-05-29",
+    "sortitoutsi_person_id": 2000255823,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000255823.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000255823/viery",
+    "photo_local": "photos/players_tm/950393.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000255823.png"
   }
 ]
