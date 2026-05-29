@@ -2021,7 +2021,19 @@
     "league_name": "Campeonato Brasileiro Série A",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/210",
     "slug": "gremio-porto-alegre",
-    "sortitoutsi_team_id": 324,
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 609,
+    "name": "Cruzeiro Esporte Clube",
+    "league_id": "BRA1",
+    "league_name": "Campeonato Brasileiro Série A",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/609",
+    "slug": "ec-cruzeiro-belo-horizonte",
+    "sortitoutsi_team_id": 321,
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
