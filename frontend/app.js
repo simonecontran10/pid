@@ -3881,7 +3881,10 @@ async function _gridsExportPptx(buttonEl) {
       alert(currentLang==="it"?"La griglia è vuota.":"Grid is empty.");
       return;
     }
-    const name = state.grids.currentName || (currentLang==="it"?"griglia":"grid");
+    // pt68: il nome corrente della griglia salvata sta in state.grids.store.currentName
+    // (non state.grids.currentName che non esiste — bug precedente che faceva
+    // fallback sempre a "griglia").
+    const name = state.grids.store?.currentName || (currentLang==="it"?"griglia":"grid");
     const payload = {
       type: "pid_grid_save",
       version: 1,
@@ -3896,10 +3899,10 @@ async function _gridsExportPptx(buttonEl) {
       exported_at: new Date().toISOString(),
       exported_by: _currentUsername(),
     };
-    // pt68: filename = nome esatto della griglia + .json (es. "griglia_inter.json"
-    // se la griglia è salvata con quel nome). Sanitizzo solo i caratteri vietati.
+    // pt68: filename = "<nome>_griglia.json" (es. "Inter_griglia.json").
+    // Sanitizzo solo i caratteri vietati cross-platform.
     const safe = (name || "griglia").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "griglia";
-    _downloadJSON(`${safe}.json`, payload);
+    _downloadJSON(`${safe}_griglia.json`, payload);
   });
 
   // Porta tutti i giocatori della griglia in Convocazione (titolari + riserve, deduplicati)
@@ -6588,10 +6591,10 @@ function exportGridSave(name) {
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
-  // pt68: filename = "<nome griglia>.json" (es. "griglia_inter.json")
+  // pt68: filename = "<nome>_griglia.json" (es. "Inter_griglia.json").
   // Sanitizzo solo i caratteri vietati nei filename cross-platform.
   const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
-  _downloadJSON(`${safe}.json`, payload);
+  _downloadJSON(`${safe}_griglia.json`, payload);
 }
 
 function exportCallupSave(name) {
@@ -6608,9 +6611,9 @@ function exportCallupSave(name) {
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
-  // pt68: filename = "<nome>.json" (coerente con la griglia)
+  // pt68: filename = "<nome>_convocazione.json" (coerente con la griglia).
   const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
-  _downloadJSON(`${safe}.json`, payload);
+  _downloadJSON(`${safe}_convocazione.json`, payload);
 }
 
 // Importa file JSON e aggiunge a store (rinomina automatica se collisione)
