@@ -103,31 +103,64 @@ def _split_club_league(cell) -> tuple[str, str]:
     return "", ""
 
 
-def scrape(seasons: list[int], rows_per_season: int, output_csv: Path) -> None:
+def _parse_fee_to_eur_m(fee: str) -> float:
+    """Converte una stringa fee TM in milioni di euro (float).
+    Esempi:
+      "€145.00m" → 145.0
+      "€500k"    → 0.5
+      "free transfer" / "loan transfer" / "?" → 0.0
+    """
+    if not fee:
+        return 0.0
+    s = fee.strip().lower()
+    if 'free' in s or 'loan' in s or s in ('-', '?'):
+        return 0.0
+    # rimuovo € e simili
+    s = s.replace('€', '').replace(',', '.').strip()
+    try:
+        if s.endswith('m'):
+            return float(s[:-1])
+        if s.endswith('k'):
+            return float(s[:-1]) / 1000.0
+        # numero puro
+        return float(s) / 1_000_000.0
+    except ValueError:
+        return 0.0
+
+
+def scrape(seasons: list[int], rows_per_season: int, pages_to_scan: int, output_csv: Path) -> None:
+    """Scarica `pages_to_scan` pagine per stagione, poi ordina per FEE
+    decrescente e prende le prime `rows_per_season` per stagione."""
     client = TransfermarktClient()
-    pages_per_season = (rows_per_season + PER_PAGE - 1) // PER_PAGE
     all_rows: list[dict] = []
     for season in seasons:
         season_label = f"{season}/{(season + 1) % 100:02d}"
-        print(f"=== Stagione {season_label} ({pages_per_season} pagine) ===")
+        print(f"=== Stagione {season_label} ({pages_to_scan} pagine = {pages_to_scan*PER_PAGE} righe massime) ===")
         season_rows: list[dict] = []
-        for page in range(1, pages_per_season + 1):
+        for page in range(1, pages_to_scan + 1):
             url = BASE_URL.format(season=season, page=page)
             print(f"  Pagina {page}…", end=" ", flush=True)
             try:
                 html = client.get_html(url)
                 rows = parse_page(html, season_label)
+                if not rows:
+                    print('vuota — stop')
+                    break
                 season_rows.extend(rows)
                 print(f"+{len(rows)} (totale stagione: {len(season_rows)})")
             except Exception as e:
                 print(f"ERR {type(e).__name__}: {e}")
                 continue
-            if len(season_rows) >= rows_per_season:
-                break
-        # tronco al numero richiesto
+        # Ordino per fee desc e prendo i top
+        season_rows.sort(key=lambda r: _parse_fee_to_eur_m(r.get('fee', '')), reverse=True)
         season_rows = season_rows[:rows_per_season]
+        # Aggiorno il rank rispetto al nuovo ordinamento (1..N per fee)
+        for i, r in enumerate(season_rows, 1):
+            r['rank'] = i
         all_rows.extend(season_rows)
-        print(f"  → {len(season_rows)} trasferimenti raccolti")
+        top_fee = season_rows[0]['fee'] if season_rows else '-'
+        last_fee = season_rows[-1]['fee'] if season_rows else '-'
+        print(f"  → top {len(season_rows)} per FEE: da {top_fee} a {last_fee}")
 
     # Scrivo CSV
     output_csv.parent.mkdir(parents=True, exist_ok=True)
@@ -147,5 +180,10 @@ if __name__ == "__main__":
     # Ultime 3 stagioni: 2025/26, 2024/25, 2023/24
     seasons = [2025, 2024, 2023]
     rows_per_season = 150
+    # Scarico 50 pagine = 1250 righe per stagione, poi top 150 per fee.
+    # TM ordina la lista per market value di default, quindi serve un
+    # surplus per intercettare anche i trasferimenti onerosi di giocatori
+    # con valore di mercato non altissimo (es. Saudi League).
+    pages_to_scan = 50
     output = Path("/Users/simone/Desktop/transfers_top_3seasons.csv")
-    scrape(seasons, rows_per_season, output)
+    scrape(seasons, rows_per_season, pages_to_scan, output)
