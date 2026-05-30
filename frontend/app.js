@@ -576,16 +576,21 @@ function playerCardHTML(p) {
   </button>`;
 }
 
-// Pannello "Aggiunti di recente": mostra i giocatori con campo added_date,
-// ordinati per data discendente, limitati ai 20 piu' recenti. Se nessun
-// giocatore ha added_date (es. DB pre-feature), il pannello resta nascosto.
+// Pannello "Aggiunti di recente": mostra i giocatori inseriti negli ultimi
+// 2 giorni di calendario (≈ 48 ore — granularita' del campo added_date che
+// e' una data ISO YYYY-MM-DD, non un timestamp). Ordinati per data
+// discendente. Se nessun giocatore ricade nella finestra, il pannello resta
+// nascosto. Limit massimo 200 come safety net.
 function renderRecentAdditions() {
   const section = document.getElementById("recent-additions");
   if (!section) return;
+  // Cutoff: 48h fa, formato YYYY-MM-DD per confronto stringa diretto.
+  const cutoffIso = new Date(Date.now() - 48 * 60 * 60 * 1000)
+    .toISOString().slice(0, 10);
   const recent = state.players
-    .filter(p => p.added_date)
+    .filter(p => p.added_date && String(p.added_date) >= cutoffIso)
     .sort((a, b) => String(b.added_date).localeCompare(String(a.added_date)))
-    .slice(0, 20);
+    .slice(0, 200);
   if (recent.length === 0) {
     section.classList.add("hidden");
     return;
