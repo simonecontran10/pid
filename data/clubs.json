@@ -1805,7 +1805,7 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/31",
     "slug": "fc-liverpool",
-    "sortitoutsi_team_id": null,
+    "sortitoutsi_team_id": 676,
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": "photos/clubs_sots/31.png",
     "logo_url": null
@@ -2033,7 +2033,7 @@
     "league_name": "Campeonato Brasileiro Série A",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/609",
     "slug": "ec-cruzeiro-belo-horizonte",
-    "sortitoutsi_team_id": 321,
+    "sortitoutsi_team_id": null,
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
