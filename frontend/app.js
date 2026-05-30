@@ -1005,6 +1005,9 @@ function openPlayerModal(pid) {
           <button id="modal-notes-toggle" style="padding: 5px 10px; border-radius: 8px; background: transparent; color: var(--info); border: 0.5px solid rgba(96,165,250,0.30); font-size: 11px; cursor: pointer; white-space: nowrap;">
             📝 ${currentLang==="it"?"Note":"Notes"}${(state.playerNotes && state.playerNotes[pid]) ? ` <span class="stat-cell" style="color: var(--accent); font-size: 9px;">●</span>` : ""}
           </button>
+          <button id="modal-export-json" title="${currentLang==="it"?"Esporta i dati per importare il giocatore in PitchPlan (sezione avversari)":"Export player data for PitchPlan opponents"}" style="padding: 5px 10px; border-radius: 8px; background: rgba(167,139,250,0.10); color: #A78BFA; border: 0.5px solid rgba(167,139,250,0.30); font-size: 11px; cursor: pointer; white-space: nowrap;">
+            ⬇️ ${currentLang==="it"?"Esporta JSON":"Export JSON"}
+          </button>
         </div>
       </div>
     </div>
@@ -1114,6 +1117,42 @@ function openPlayerModal(pid) {
     // Riapri modal per riflettere stato del bottone
     openPlayerModal(pid);
     if (typeof renderCallupPanel === "function") renderCallupPanel();
+  });
+
+  // ---- Esporta JSON singolo giocatore (pt68) ----
+  // Costruisce un payload nel formato che PitchPlan capisce dall'endpoint
+  // /players/{id} di PID, ma "consumabile" da un file invece che dalla rete.
+  // L'utente lo apre nella sezione avversari -> Importa giocatore.
+  document.getElementById("modal-export-json")?.addEventListener("click", () => {
+    const p = state.players.find(x => x.tm_player_id === pid);
+    if (!p) { alert("Giocatore non trovato."); return; }
+    const payload = {
+      type: "pid_opponent_player",
+      version: 1,
+      exported_at: new Date().toISOString(),
+      exported_by: _currentUsername(),
+      player: {
+        tm_player_id: p.tm_player_id,
+        full_name: p.full_name,
+        age: p.age ?? null,
+        date_of_birth: p.date_of_birth ?? null,
+        foot: p.foot ?? null,
+        position_general: p.position_general ?? null,
+        position_specific: p.position_specific ?? null,
+        position_specific2: (Array.isArray(p.position_others) && p.position_others[0]) || null,
+        shirt_number: p.shirt_number ?? null,
+        photo_url: p.photo_url ?? null,
+        sortitoutsi_face_local_lookup: p.sortitoutsi_face_local_lookup ?? null,
+        sortitoutsi_face_local_curated: p.sortitoutsi_face_local_curated ?? null,
+        sortitoutsi_face_url: p.sortitoutsi_face_url ?? null,
+        citizenships: p.citizenships ?? null,
+        height_cm: p.height_cm ?? null,
+        current_club_id: p.current_club_id ?? null,
+        current_club_name: p.current_club_name ?? null,
+      },
+    };
+    const safe = (p.full_name || `player_${p.tm_player_id}`).replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || `player_${p.tm_player_id}`;
+    _downloadJSON(`${safe}.json`, payload);
   });
 
   // ---- Note giocatore: AUTO-SAVE persistente in localStorage (resta finché non cancelli) ----
@@ -3857,7 +3896,10 @@ async function _gridsExportPptx(buttonEl) {
       exported_at: new Date().toISOString(),
       exported_by: _currentUsername(),
     };
-    _downloadJSON(`griglia_${name.replace(/[^a-z0-9_-]/gi, "_")}.json`, payload);
+    // pt68: filename = nome esatto della griglia + .json (es. "griglia_inter.json"
+    // se la griglia è salvata con quel nome). Sanitizzo solo i caratteri vietati.
+    const safe = (name || "griglia").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "griglia";
+    _downloadJSON(`${safe}.json`, payload);
   });
 
   // Porta tutti i giocatori della griglia in Convocazione (titolari + riserve, deduplicati)
@@ -6546,10 +6588,10 @@ function exportGridSave(name) {
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
-  // pt63: filename = "<nome griglia> griglia.json" (es. "Atalanta griglia.json")
+  // pt68: filename = "<nome griglia>.json" (es. "griglia_inter.json")
   // Sanitizzo solo i caratteri vietati nei filename cross-platform.
   const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
-  _downloadJSON(`${safe} griglia.json`, payload);
+  _downloadJSON(`${safe}.json`, payload);
 }
 
 function exportCallupSave(name) {
@@ -6566,9 +6608,9 @@ function exportCallupSave(name) {
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
-  // pt63: filename = "<nome> convocazione.json" (coerente con la griglia)
+  // pt68: filename = "<nome>.json" (coerente con la griglia)
   const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
-  _downloadJSON(`${safe} convocazione.json`, payload);
+  _downloadJSON(`${safe}.json`, payload);
 }
 
 // Importa file JSON e aggiunge a store (rinomina automatica se collisione)
