@@ -10157,9 +10157,9 @@
         "goals": 0,
         "club": "MC Alger",
         "club_country": "",
-        "tm_player_id": null,
-        "tm_profile_url": null,
-        "match_method": "unresolved"
+        "tm_player_id": 748439,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/748439",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
@@ -10381,9 +10381,9 @@
         "goals": 0,
         "club": "Charleroi",
         "club_country": "",
-        "tm_player_id": null,
-        "tm_profile_url": null,
-        "match_method": "unresolved"
+        "tm_player_id": 748445,
+        "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/748445",
+        "match_method": "manual_override"
       },
       {
         "shirt": null,
