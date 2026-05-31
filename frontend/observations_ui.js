@@ -25,55 +25,60 @@
 //  COSTANTI: liste valori (canoniche in italiano)
 // ============================================================
 
-// 37 caratteristiche categorizzate (ordine alfabetico dentro ogni categoria)
+// pt68: tassonomia rivista — caratteristiche piu' focalizzate per categoria.
+// L'ordine all'interno di ogni categoria e' significativo (cosi' come da spec).
 window.OBSERVATION_TRAITS_BY_CATEGORY = {
   "TATTICA": [
-    "Fase difensiva",
-    "Fase offensiva",
-    "Intelligenza tattica",
-    "Letture tattiche",
-    "Transizioni difensive",
-    "Transizioni offensive",
+    "Inizio manovra",
+    "Visione di gioco/Scan",
+    "Posizionamento",
+    "Dinamismo",
+    "Progressione",
+    "Inserimento senza palla",
+    "Smarcamento",
+    "Gioco tra le linee",
+    "Profondità",
+    "Recupero palloni",
+    "Preventive",
   ],
   "TECNICA": [
-    "Assist",
     "Conduzione palla",
+    "Passaggi chiave",
+    "Assist/Ultimo passaggio",
     "Cross",
-    "Dribbling 1c1",
-    "Finalizzazione",
-    "Inizio manovra",
-    "Passaggi Chiave",
-    "Rifinitura",
-    "Tecnica",
     "Tiro/Calcio",
-    "Visione di gioco",
+    "Dribbling 1c1",
+    "Gioco aereo",
+    "Protezione palla",
+    "Duelli difensivi",
+    "1vs1 difensivo",
+    "Intercetti",
   ],
   "COMPORTAMENTI": [
     "Aggressività",
-    "Agonismo",
-    "Gioco per la squadra",
-    "Intensità",
+    "Agonismo/Intensità",
     "Personalità",
+    "Comunicazione",
+    "Gestione pressione",
   ],
   "FISICO": [
-    "1vs1 difensivo",
-    "Ampiezza",
-    "Area di rigore offensiva",
-    "Dinamismo",
-    "Duelli difensivi",
-    "Forza fisica",
-    "Gioco aereo",
-    "Inserimenti senza palla",
-    "Jolly",
-    "Profondità",
-    "Progressione",
-    "Rapidità primi metri",
-    "Recupero palloni",
-    "Spazi stretti",
+    "Struttura",
+    "Forza",
     "Velocità",
+    "Resistenza",
+    "Accelerazione/Rapidità primi metri",
+    "Agilità",
   ],
   "PORTIERE": [
-    "Uscite",
+    "Gioco con i piedi",
+    "Precisione gioco lungo",
+    "Uscite alte",
+    "Uscite basse",
+    "Blocco/Presa",
+    "Copertura degli spazi",
+    "Posizionamento",
+    "Riflessi",
+    "Rigori",
   ],
 };
 
@@ -557,18 +562,34 @@ function _obsComposeHtml(player, editing, prefill) {
       style="font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 999px; cursor: pointer; border: 0.5px solid ${tg.color}; background: ${isOn ? tg.color : "transparent"}; color: ${isOn ? "#fff" : tg.color}; white-space: nowrap;">${escapeHtml(window.obsLocalize(tg.value))}</button>`;
   }).join(" ");
 
-  // Trait chips per categorie (per strengths in verde, per weaknesses in rosso)
-  const renderCategorizedChips = (selected, accentColor) => {
+  // pt68: chip tri-stato — un'unica lista con click che cicla
+  //   nessuno → forza (verde) → debolezza (rosso) → nessuno.
+  // I dati continuano a essere salvati in due array (selectedStrengths/
+  // selectedWeaknesses) per compatibilita' con DB e PDF.
+  const COL_FORZA = "#22C55E";
+  const COL_DEBOL = "#EF4444";
+  const chipStyle = (state) => {
+    if (state === "forza")    return `border: 0.5px solid ${COL_FORZA}; background: ${COL_FORZA}22; color: ${COL_FORZA};`;
+    if (state === "debolezza") return `border: 0.5px solid ${COL_DEBOL}; background: ${COL_DEBOL}22; color: ${COL_DEBOL};`;
+    return "border: 0.5px solid var(--border); background: transparent; color: var(--text-2);";
+  };
+  const traitState = (t) => {
+    if (window._obsCompose.selectedStrengths.includes(t))   return "forza";
+    if (window._obsCompose.selectedWeaknesses.includes(t)) return "debolezza";
+    return "none";
+  };
+  const renderCategorizedChips = () => {
     return Object.entries(window.OBSERVATION_TRAITS_BY_CATEGORY).map(([cat, traits]) => {
       const chipsHtml = traits.map(t => {
-        const isOn = selected.includes(t);
+        const st = traitState(t);
         return `<button type="button" class="obs-chip" data-trait="${escapeHtml(t)}"
-          style="font-size: 10px; padding: 3px 8px; border-radius: 999px; cursor: pointer; border: 0.5px solid ${isOn ? accentColor : "var(--border)"}; background: ${isOn ? accentColor + "22" : "transparent"}; color: ${isOn ? accentColor : "var(--text-2)"}; white-space: nowrap;">${escapeHtml(window.obsLocalize(t))}</button>`;
+          style="font-size: 11px; padding: 4px 10px; border-radius: 999px; cursor: pointer; white-space: nowrap; transition: all 120ms ease; ${chipStyle(st)}">${escapeHtml(window.obsLocalize(t))}</button>`;
       }).join(" ");
+      // pt68: header categoria con accent verde (richiesta utente).
       return `
-        <div style="margin-bottom: 8px;">
-          <div style="font-size: 9px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; font-weight: 600;">${escapeHtml(window.obsLocalize(cat))}</div>
-          <div style="display: flex; flex-wrap: wrap; gap: 3px;">${chipsHtml}</div>
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 11px; color: ${COL_FORZA}; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; font-weight: 700;">${escapeHtml(window.obsLocalize(cat))}</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 5px;">${chipsHtml}</div>
         </div>
       `;
     }).join("");
@@ -729,22 +750,20 @@ function _obsComposeHtml(player, editing, prefill) {
         </div>
       </div>
 
-      <!-- STRENGTHS / WEAKNESSES SIDE BY SIDE -->
-      <div class="obs-traits-grid" style="margin-top: 18px;">
-        <div>
-          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-            <div style="width: 3px; height: 14px; background: #22C55E; border-radius: 2px;"></div>
-            <span style="font-size: 12px; font-weight: 700; color: #22C55E; text-transform: uppercase; letter-spacing: 0.06em;">${window.obsT("f_strengths")}</span>
-          </div>
-          <div id="obs-strengths-chips">${renderCategorizedChips(window._obsCompose.selectedStrengths, "#22C55E")}</div>
+      <!-- pt68: lista unica caratteristiche con chip tri-stato (forza/debolezza/none). -->
+      <div style="margin-top: 18px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px; font-size: 12px;">
+          <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-1); font-weight: 500;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#22C55E;"></span>
+            Forza
+          </span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--text-1); font-weight: 500;">
+            <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#EF4444;"></span>
+            Debolezza
+          </span>
+          <span style="color: var(--text-3); font-style: italic;">— clicca per ciclare</span>
         </div>
-        <div>
-          <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-            <div style="width: 3px; height: 14px; background: #EF4444; border-radius: 2px;"></div>
-            <span style="font-size: 12px; font-weight: 700; color: #EF4444; text-transform: uppercase; letter-spacing: 0.06em;">${window.obsT("f_weaknesses")}</span>
-          </div>
-          <div id="obs-weaknesses-chips">${renderCategorizedChips(window._obsCompose.selectedWeaknesses, "#EF4444")}</div>
-        </div>
+        <div id="obs-traits-chips">${renderCategorizedChips()}</div>
       </div>
 
       <!-- ERROR + BUTTONS -->
@@ -891,23 +910,55 @@ function _wireObsCompose(player, editing, prefill) {
     });
   });
 
-  function _wireTraitChips(containerId, listKey, accentColor) {
-    document.getElementById(containerId)?.querySelectorAll(".obs-chip").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const trait = btn.dataset.trait;
-        const list = window._obsCompose[listKey];
-        const idx = list.indexOf(trait);
-        if (idx >= 0) list.splice(idx, 1);
-        else list.push(trait);
-        const isOn = idx < 0;
-        btn.style.borderColor = isOn ? accentColor : "var(--border)";
-        btn.style.background = isOn ? accentColor + "22" : "transparent";
-        btn.style.color = isOn ? accentColor : "var(--text-2)";
+  // pt68: chip tri-stato — click cicla nessuno → forza → debolezza → nessuno.
+  // Per ogni chip di un trait, riapplichiamo lo stile a TUTTI i chip con lo
+  // stesso data-trait (utile se il trait compare in piu' categorie, es.
+  // "Posizionamento" sia in TATTICA che in PORTIERE).
+  const COL_FORZA_W = "#22C55E";
+  const COL_DEBOL_W = "#EF4444";
+  function _applyChipStyle(btn, state) {
+    if (state === "forza") {
+      btn.style.border = `0.5px solid ${COL_FORZA_W}`;
+      btn.style.background = `${COL_FORZA_W}22`;
+      btn.style.color = COL_FORZA_W;
+    } else if (state === "debolezza") {
+      btn.style.border = `0.5px solid ${COL_DEBOL_W}`;
+      btn.style.background = `${COL_DEBOL_W}22`;
+      btn.style.color = COL_DEBOL_W;
+    } else {
+      btn.style.border = "0.5px solid var(--border)";
+      btn.style.background = "transparent";
+      btn.style.color = "var(--text-2)";
+    }
+  }
+  document.getElementById("obs-traits-chips")?.querySelectorAll(".obs-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const trait = btn.dataset.trait;
+      const strengths = window._obsCompose.selectedStrengths;
+      const weaknesses = window._obsCompose.selectedWeaknesses;
+      const inS = strengths.indexOf(trait);
+      const inW = weaknesses.indexOf(trait);
+      let nextState;
+      if (inS < 0 && inW < 0) {
+        // none → forza
+        strengths.push(trait);
+        nextState = "forza";
+      } else if (inS >= 0) {
+        // forza → debolezza
+        strengths.splice(inS, 1);
+        weaknesses.push(trait);
+        nextState = "debolezza";
+      } else {
+        // debolezza → none
+        weaknesses.splice(inW, 1);
+        nextState = "none";
+      }
+      // Aggiorna tutti i chip con questo trait (caso "Posizionamento" duplicato).
+      document.querySelectorAll(`#obs-traits-chips .obs-chip[data-trait="${CSS.escape(trait)}"]`).forEach(b => {
+        _applyChipStyle(b, nextState);
       });
     });
-  }
-  _wireTraitChips("obs-strengths-chips", "selectedStrengths", "#22C55E");
-  _wireTraitChips("obs-weaknesses-chips", "selectedWeaknesses", "#EF4444");
+  });
 
   document.getElementById("obs-save-btn")?.addEventListener("click", () => _saveObsFromForm(player, editing));
 
