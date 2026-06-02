@@ -1,0 +1,2129 @@
+{
+  "per_nation": {
+    "Algeria": {
+      "country_code": "ALG",
+      "n_players": 26,
+      "avg_age": 26.9,
+      "avg_height": 182.7,
+      "tallest": {
+        "name": "MASTIL Melvin Melvin Feycal MASTIL MASTIL",
+        "height_cm": 194,
+        "dob": "2000-02-19",
+        "club": "FC Stade Nyonnais"
+      },
+      "shortest": {
+        "name": "AMOURA Mohamed Mohammed Elamine AMOURA AMOURA",
+        "height_cm": 170,
+        "dob": "2000-05-09",
+        "club": "VfL Wolfsburg"
+      },
+      "oldest": {
+        "name": "MAHREZ Riyad Riyad Karim MAHREZ MAHREZ",
+        "dob": "1991-02-21",
+        "club": "Al Ahli FC"
+      },
+      "youngest": {
+        "name": "MAZA Ibrahim Ibrahim MAZA MAZA",
+        "dob": "2005-11-24",
+        "club": "Bayer Leverkusen"
+      }
+    },
+    "Argentina": {
+      "country_code": "ARG",
+      "n_players": 26,
+      "avg_age": 29.1,
+      "avg_height": 179.7,
+      "tallest": {
+        "name": "MARTINEZ Emiliano Damián Emiliano MARTÍNEZ E. MARTINEZ",
+        "height_cm": 195,
+        "dob": "1992-09-02",
+        "club": "Aston Villa FC"
+      },
+      "shortest": {
+        "name": "ALVAREZ Julian Julián ÁLVAREZ J. ALVAREZ",
+        "height_cm": 170,
+        "dob": "2000-01-31",
+        "club": "Atlético De Madrid"
+      },
+      "oldest": {
+        "name": "MESSI Lionel Lionel Andrés MESSI MESSI",
+        "dob": "1987-06-24",
+        "club": "Inter Miami CF"
+      },
+      "youngest": {
+        "name": "PAZ Nico Nicolas PAZ MARTÍNEZ NICO PAZ",
+        "dob": "2004-09-08",
+        "club": "Como"
+      }
+    },
+    "Australia": {
+      "country_code": "AUS",
+      "n_players": 26,
+      "avg_age": 27.4,
+      "avg_height": 183.6,
+      "tallest": {
+        "name": "SOUTTAR Harry Harry James SOUTTAR SOUTTAR",
+        "height_cm": 198,
+        "dob": "1998-10-22",
+        "club": "Leicester City FC"
+      },
+      "shortest": {
+        "name": "IRANKUNDA Nestory Nestory IRANKUNDA IRANKUNDA",
+        "height_cm": 165,
+        "dob": "2006-02-09",
+        "club": "Watford FC"
+      },
+      "oldest": {
+        "name": "BEHICH Aziz Aziz BEHICH BEHICH",
+        "dob": "1990-12-16",
+        "club": "Melbourne City FC"
+      },
+      "youngest": {
+        "name": "HERRINGTON Lucas Lucas HERRINGTON HERRINGTON",
+        "dob": "2007-09-05",
+        "club": "Colorado Rapids"
+      }
+    },
+    "Austria": {
+      "country_code": "AUT",
+      "n_players": 26,
+      "avg_age": 28.5,
+      "avg_height": 184.7,
+      "tallest": {
+        "name": "WIEGELE Florian Florian WIEGELE WIEGELE",
+        "height_cm": 205,
+        "dob": "2001-03-21",
+        "club": "FC Viktoria Plzeň"
+      },
+      "shortest": {
+        "name": "SCHMID Romano Romano SCHMID SCHMID",
+        "height_cm": 168,
+        "dob": "2000-01-27",
+        "club": "SV Werder Bremen"
+      },
+      "oldest": {
+        "name": "ARNAUTOVIC Marko Marko ARNAUTOVIC ARNAUTOVIC",
+        "dob": "1989-04-19",
+        "club": "FK Crvena Zvezda"
+      },
+      "youngest": {
+        "name": "WANNER Paul Paul WANNER WANNER",
+        "dob": "2005-12-23",
+        "club": "PSV Eindhoven"
+      }
+    },
+    "Belgium": {
+      "country_code": "BEL",
+      "n_players": 26,
+      "avg_age": 27.6,
+      "avg_height": 185.8,
+      "tallest": {
+        "name": "PENDERS Mike Mike Louis PENDERS PENDERS",
+        "height_cm": 200,
+        "dob": "2005-07-31",
+        "club": "RC Strasbourg"
+      },
+      "shortest": {
+        "name": "TROSSARD Leandro Leandro TROSSARD TROSSARD",
+        "height_cm": 172,
+        "dob": "1994-12-04",
+        "club": "Arsenal FC"
+      },
+      "oldest": {
+        "name": "WITSEL Axel Axel Laurent A WITSEL WITSEL",
+        "dob": "1989-01-12",
+        "club": "Girona FC"
+      },
+      "youngest": {
+        "name": "PENDERS Mike Mike Louis PENDERS PENDERS",
+        "dob": "2005-07-31",
+        "club": "RC Strasbourg"
+      }
+    },
+    "Bosnia And Herzegovina": {
+      "country_code": "BIH",
+      "n_players": 26,
+      "avg_age": 26.4,
+      "avg_height": 187.2,
+      "tallest": {
+        "name": "RADELJIC Stjepan Stjepan RADELJIC RADELJIĆ",
+        "height_cm": 201,
+        "dob": "1997-09-05",
+        "club": "HNK Rijeka"
+      },
+      "shortest": {
+        "name": "BAJRAKTAREVIC Esmir Esmir BAJRAKTAREVIC BAJRAKTAREVIĆ",
+        "height_cm": 175,
+        "dob": "2005-03-10",
+        "club": "PSV Eindhoven"
+      },
+      "oldest": {
+        "name": "DZEKO Edin Edin DŽEKO DŽEKO",
+        "dob": "1986-03-17",
+        "club": "FC Schalke 04"
+      },
+      "youngest": {
+        "name": "JURKAS Mladen Mladen JURKAS JURKAS",
+        "dob": "2007-10-07",
+        "club": "FK Borac Banja Luka"
+      }
+    },
+    "Brazil": {
+      "country_code": "BRA",
+      "n_players": 26,
+      "avg_age": 29.2,
+      "avg_height": 182.8,
+      "tallest": {
+        "name": "ALISSON Álisson Ramsés BECKER A. BECKER",
+        "height_cm": 193,
+        "dob": "1992-10-02",
+        "club": "Liverpool FC"
+      },
+      "shortest": {
+        "name": "ENDRICK Endrick Felipe MOREIRA DE SOUSA PESSOA ENDRICK",
+        "height_cm": 172,
+        "dob": "2006-07-21",
+        "club": "Olympique Lyonnais"
+      },
+      "oldest": {
+        "name": "WEVERTON Weverton PEREIRA DA SILVA WEVERTON",
+        "dob": "1987-12-13",
+        "club": "Grêmio FBPA"
+      },
+      "youngest": {
+        "name": "RAYAN Rayan Vitor SIMPLICIO ROCHA RAYAN",
+        "dob": "2006-08-03",
+        "club": "AFC Bournemouth"
+      }
+    },
+    "Canada": {
+      "country_code": "CAN",
+      "n_players": 26,
+      "avg_age": 26.9,
+      "avg_height": 182.1,
+      "tallest": {
+        "name": "DAVID Promise Promise Oluwatobi Emmanuel DAVID PROMISE",
+        "height_cm": 195,
+        "dob": "2001-07-03",
+        "club": "Royale Union Saint-Gilloise"
+      },
+      "shortest": {
+        "name": "FLORES Marcelo Marcelo FLORES MARCELO",
+        "height_cm": 164,
+        "dob": "2003-10-01",
+        "club": "Tigres UANL"
+      },
+      "oldest": {
+        "name": "OSORIO Jonathan Jonathan OSORIO OSORIO",
+        "dob": "1992-06-12",
+        "club": "Toronto FC"
+      },
+      "youngest": {
+        "name": "DE FOUGEROLLES Luc Luc ROLLET DE FOUGEROLLES DE FOUGEROLLES",
+        "dob": "2005-10-12",
+        "club": "FCV Dender EH"
+      }
+    },
+    "Cape Verde": {
+      "country_code": "CPV",
+      "n_players": 26,
+      "avg_age": 29.7,
+      "avg_height": 181.3,
+      "tallest": {
+        "name": "KELVIN PIRES Kelvin SPENCER PIRES KELVIN",
+        "height_cm": 193,
+        "dob": "2000-06-05",
+        "club": "SJK"
+      },
+      "shortest": {
+        "name": "GARRY RODRIGUES Garry MENDES RODRIGUES RODRIGUES",
+        "height_cm": 173,
+        "dob": "1990-11-27",
+        "club": "Apollon Limassol"
+      },
+      "oldest": {
+        "name": "VOZINHA Josimar José ÉVORA DIAS VOZINHA",
+        "dob": "1986-06-03",
+        "club": "GD Chaves"
+      },
+      "youngest": {
+        "name": "WAGNER PINA Wagner Fabricio CARDOSO DE PINA WAGNER P.",
+        "dob": "2002-11-03",
+        "club": "Trabzonspor"
+      }
+    },
+    "Colombia": {
+      "country_code": "COL",
+      "n_players": 26,
+      "avg_age": 30.1,
+      "avg_height": 180.0,
+      "tallest": {
+        "name": "MONTERO Alvaro Álvaro David MONTERO PERALES MONTERO",
+        "height_cm": 201,
+        "dob": "1995-03-29",
+        "club": "CA Vélez Sars\u0000eld"
+      },
+      "shortest": {
+        "name": "CAMPAZ Leandro Jaminton Leandro CAMPAZ CAMPAZ",
+        "height_cm": 166,
+        "dob": "2000-05-24",
+        "club": "CA Rosario Central"
+      },
+      "oldest": {
+        "name": "OSPINA David David OSPINA RAMIREZ OSPINA",
+        "dob": "1988-08-31",
+        "club": "Atlético Nacional"
+      },
+      "youngest": {
+        "name": "PUERTA Gustavo Gustavo Adolfo PUERTA MOLANO PUERTA",
+        "dob": "2003-07-23",
+        "club": "Racing Santander"
+      }
+    },
+    "Congo DR": {
+      "country_code": "COD",
+      "n_players": 26,
+      "avg_age": 29.1,
+      "avg_height": 181.0,
+      "tallest": {
+        "name": "KAPUADI Steve Steve Nkanu KAPUADI KAPUADI",
+        "height_cm": 196,
+        "dob": "1998-04-30",
+        "club": "Widzew Łódź"
+      },
+      "shortest": {
+        "name": "SADIKI Noah Noah Junior SADIKI SADIKI",
+        "height_cm": 165,
+        "dob": "2004-12-17",
+        "club": "Sunderland AFC"
+      },
+      "oldest": {
+        "name": "BAKAMBU Cedric Cedric BAKAMBU BAKAMBU",
+        "dob": "1991-04-11",
+        "club": "Real Betis"
+      },
+      "youngest": {
+        "name": "EPOLO Matthieu Matthieu Luka EPOLO EPOLO",
+        "dob": "2005-01-15",
+        "club": "Standard Liège"
+      }
+    },
+    "Croatia": {
+      "country_code": "CRO",
+      "n_players": 26,
+      "avg_age": 28.3,
+      "avg_height": 184.8,
+      "tallest": {
+        "name": "MATANOVIC Igor Igor MATANOVIĆ MATANOVIĆ",
+        "height_cm": 194,
+        "dob": "2003-03-31",
+        "club": "SC Freiburg"
+      },
+      "shortest": {
+        "name": "MODRIC Luka Luka MODRIĆ MODRIĆ",
+        "height_cm": 172,
+        "dob": "1985-09-09",
+        "club": "AC Milan"
+      },
+      "oldest": {
+        "name": "MODRIC Luka Luka MODRIĆ MODRIĆ",
+        "dob": "1985-09-09",
+        "club": "AC Milan"
+      },
+      "youngest": {
+        "name": "VUSKOVIC Luka Luka VUŠKOVIĆ VUŠKOVIĆ",
+        "dob": "2007-02-24",
+        "club": "Hamburger SV"
+      }
+    },
+    "Curaçao": {
+      "country_code": "CUW",
+      "n_players": 26,
+      "avg_age": 28.0,
+      "avg_height": 181.9,
+      "tallest": {
+        "name": "LOCADIA Juergen Jürgen Leonardo LOCADIA LOCADIA",
+        "height_cm": 193,
+        "dob": "1993-11-07",
+        "club": "Miami FC"
+      },
+      "shortest": {
+        "name": "ANTONISSE Jeremy Jeremy Cornelis Jacobus ANTONISSE ANTONISSE",
+        "height_cm": 164,
+        "dob": "2002-03-29",
+        "club": "AE Ki\u0000sia FC"
+      },
+      "oldest": {
+        "name": "ROOM Eloy Eloy Victor ROOM ROOM",
+        "dob": "1989-02-06",
+        "club": "Miami FC"
+      },
+      "youngest": {
+        "name": "COMENENCIA Livano Livano Shyron Liomar COMENENCIA COMENENCIA",
+        "dob": "2004-02-03",
+        "club": "FC Zürich"
+      }
+    },
+    "Czechia": {
+      "country_code": "CZE",
+      "n_players": 26,
+      "avg_age": 27.6,
+      "avg_height": 185.7,
+      "tallest": {
+        "name": "CHORY Tomas Tomáš CHORÝ CHORÝ",
+        "height_cm": 199,
+        "dob": "1995-01-26",
+        "club": "SK Slavia Praha"
+      },
+      "shortest": {
+        "name": "SADILEK Michal Michal SADÍLEK SADÍLEK",
+        "height_cm": 169,
+        "dob": "1999-05-31",
+        "club": "SK Slavia Praha"
+      },
+      "oldest": {
+        "name": "DARIDA Vladimir Vladimír DARIDA DARIDA",
+        "dob": "1990-08-08",
+        "club": "FC Hradec Králové"
+      },
+      "youngest": {
+        "name": "SOCHUREK Hugo Hugo SOCHŮREK SOCHŮREK",
+        "dob": "2008-06-07",
+        "club": "AC Sparta Praha"
+      }
+    },
+    "Côte D'Ivoire": {
+      "country_code": "CIV",
+      "n_players": 26,
+      "avg_age": 25.8,
+      "avg_height": 182.9,
+      "tallest": {
+        "name": "LAFONT Alban Alban-Marc LAFONT LAFONT",
+        "height_cm": 196,
+        "dob": "1999-01-23",
+        "club": "Panathinaikos FC"
+      },
+      "shortest": {
+        "name": "GUIAGON Parfait Parfait GUIAGON GUIAGON",
+        "height_cm": 165,
+        "dob": "2001-02-22",
+        "club": "Sporting Charleroi"
+      },
+      "oldest": {
+        "name": "SERI Jean Michael Jean Michael SERI SERI",
+        "dob": "1991-07-19",
+        "club": "NK Maribor"
+      },
+      "youngest": {
+        "name": "DIOMANDE Yan Yan DIOMANDE YAN DIOMANDE",
+        "dob": "2006-11-14",
+        "club": "RB Leipzig"
+      }
+    },
+    "Ecuador": {
+      "country_code": "ECU",
+      "n_players": 26,
+      "avg_age": 26.1,
+      "avg_height": 180.5,
+      "tallest": {
+        "name": "POROZO Jackson Jackson Gabriel POROZO VERNAZA POROZO",
+        "height_cm": 192,
+        "dob": "2000-08-04",
+        "club": "Club Tijuana"
+      },
+      "shortest": {
+        "name": "ALCIVAR Jordy Jordy Jose ALCÍVAR MACÍAS ALCIVAR",
+        "height_cm": 168,
+        "dob": "1999-08-05",
+        "club": "Independiente Del Valle"
+      },
+      "oldest": {
+        "name": "GALINDEZ Hernan Hernán Ismael GALÍNDEZ GALINDEZ",
+        "dob": "1987-03-30",
+        "club": "CA Huracán"
+      },
+      "youngest": {
+        "name": "PAEZ Kendry Ray Kendry PAEZ ANDRADE PAEZ",
+        "dob": "2007-05-04",
+        "club": "CA River Plate"
+      }
+    },
+    "Egypt": {
+      "country_code": "EGY",
+      "n_players": 26,
+      "avg_age": 29.1,
+      "avg_height": 181.2,
+      "tallest": {
+        "name": "MOSTAFA SHOUBIR Mostafa Ahmed Abdelaziz Mohame SHOUBIR SHOUBIR",
+        "height_cm": 195,
+        "dob": "2000-05-15",
+        "club": "Al Ahly FC"
+      },
+      "shortest": {
+        "name": "MAHMOUD SABER Mahmoud Saber Abdelmohsen H ABDELMOHSEN M. SABER",
+        "height_cm": 170,
+        "dob": "2001-07-30",
+        "club": "ZED FC"
+      },
+      "oldest": {
+        "name": "MAHDY SOLIMAN Mahdy Mohamed Soliman IBRAHIM M. SOLIMAN",
+        "dob": "1987-06-08",
+        "club": "Zamalek SC"
+      },
+      "youngest": {
+        "name": "HAMZA ABDELKARIM Hamza Mohamed Abdelkarim E SELIM ABDELKARIM",
+        "dob": "2008-01-01",
+        "club": "FC Barcelona"
+      }
+    },
+    "England": {
+      "country_code": "ENG",
+      "n_players": 26,
+      "avg_age": 27.1,
+      "avg_height": 184.2,
+      "tallest": {
+        "name": "BURN Dan Daniel Johnson BURN BURN",
+        "height_cm": 201,
+        "dob": "1992-05-09",
+        "club": "Newcastle United FC"
+      },
+      "shortest": {
+        "name": "OREILLY Nico Nico O'REILLY O'REILLY",
+        "height_cm": 177,
+        "dob": "2005-03-21",
+        "club": "Manchester City FC"
+      },
+      "oldest": {
+        "name": "HENDERSON Jordan Jordan Brian HENDERSON J. HENDERSON",
+        "dob": "1990-06-17",
+        "club": "Brentford FC"
+      },
+      "youngest": {
+        "name": "MAINOO Kobbie Kobbie Boateng MAINOO MAINOO",
+        "dob": "2005-04-19",
+        "club": "Manchester United FC"
+      }
+    },
+    "France": {
+      "country_code": "FRA",
+      "n_players": 26,
+      "avg_age": 27.0,
+      "avg_height": 184.9,
+      "tallest": {
+        "name": "KONATE Ibrahima Ibrahima KONATÉ KONATE",
+        "height_cm": 194,
+        "dob": "1999-05-25",
+        "club": "Liverpool FC"
+      },
+      "shortest": {
+        "name": "KANTE Ngolo N'golo KANTE KANTE",
+        "height_cm": 171,
+        "dob": "1991-03-29",
+        "club": "Fenerbahçe SK"
+      },
+      "oldest": {
+        "name": "KANTE Ngolo N'golo KANTE KANTE",
+        "dob": "1991-03-29",
+        "club": "Fenerbahçe SK"
+      },
+      "youngest": {
+        "name": "ZAIRE-EMERY Warren Warren Marie Jean-Pierre ZAÏRE-EMERY ZAIRE EMERY",
+        "dob": "2006-03-08",
+        "club": "Paris Saint-Germain"
+      }
+    },
+    "Germany": {
+      "country_code": "GER",
+      "n_players": 26,
+      "avg_age": 28.0,
+      "avg_height": 185.4,
+      "tallest": {
+        "name": "WOLTEMADE Nick Nick WOLTEMADE WOLTEMADE",
+        "height_cm": 198,
+        "dob": "2002-02-14",
+        "club": "Newcastle United FC"
+      },
+      "shortest": {
+        "name": "KARL Lennart Lennart KARL KARL",
+        "height_cm": 170,
+        "dob": "2008-02-22",
+        "club": "FC Bayern München"
+      },
+      "oldest": {
+        "name": "NEUER Manuel Manuel Peter NEUER NEUER",
+        "dob": "1986-03-27",
+        "club": "FC Bayern München"
+      },
+      "youngest": {
+        "name": "KARL Lennart Lennart KARL KARL",
+        "dob": "2008-02-22",
+        "club": "FC Bayern München"
+      }
+    },
+    "Ghana": {
+      "country_code": "GHA",
+      "n_players": 26,
+      "avg_age": 27.0,
+      "avg_height": 182.6,
+      "tallest": {
+        "name": "OPOKU Jerome Jerome OPOKU OPOKU",
+        "height_cm": 197,
+        "dob": "1998-10-14",
+        "club": "Başakşehir FK"
+      },
+      "shortest": {
+        "name": "BAAH Christopher Bonsu Christopher Bonsu BAAH BAAH",
+        "height_cm": 172,
+        "dob": "2004-12-14",
+        "club": "Al Qadsiah FC"
+      },
+      "oldest": {
+        "name": "AYEW Jordan Jordan Pierre AYEW AYEW",
+        "dob": "1991-09-11",
+        "club": "Leicester City FC"
+      },
+      "youngest": {
+        "name": "YIRENKYI Caleb Caleb Marfo YIRENKYI CALEB",
+        "dob": "2006-01-15",
+        "club": "FC Nordsjælland"
+      }
+    },
+    "Haiti": {
+      "country_code": "HAI",
+      "n_players": 26,
+      "avg_age": 27.6,
+      "avg_height": 181.4,
+      "tallest": {
+        "name": "PIERROT Frantzdy Frantzdy PIERROT PIERROT",
+        "height_cm": 194,
+        "dob": "1995-03-29",
+        "club": "Çaykur Rizespor"
+      },
+      "shortest": {
+        "name": "BELLEGARDE Jean-Ricner Jean Ricner BELLEGARDE BELLEGARDE",
+        "height_cm": 170,
+        "dob": "1998-06-27",
+        "club": "Wolverhampton Wanderers FC"
+      },
+      "oldest": {
+        "name": "PLACIDE Johny Johny PLACIDE PLACIDE",
+        "dob": "1988-01-29",
+        "club": "SC Bastia"
+      },
+      "youngest": {
+        "name": "THERMONCY Keeto Keeto THERMONCY THERMONCY",
+        "dob": "2006-03-29",
+        "club": "BSC Young Boys"
+      }
+    },
+    "IR Iran": {
+      "country_code": "IRN",
+      "n_players": 26,
+      "avg_age": 30.3,
+      "avg_height": 183.7,
+      "tallest": {
+        "name": "BEIRANVAND Alireza Ali Reza SAFARBEIRANVAND BEIRANVAND",
+        "height_cm": 195,
+        "dob": "1992-09-21",
+        "club": "Tractor Sazi Tabriz FC"
+      },
+      "shortest": {
+        "name": "GHAYEDI Mehdi Mehdi GHAYEDI MEHDI GHAYEDI",
+        "height_cm": 166,
+        "dob": "1998-12-05",
+        "club": "Al Nasr SC"
+      },
+      "oldest": {
+        "name": "KHALILZADEH Shoja Shojae KHALILZADEH SHOJA",
+        "dob": "1989-05-14",
+        "club": "Tractor Sazi Tabriz FC"
+      },
+      "youngest": {
+        "name": "RAZAGHINIA Amirmohammad Amirmohammad RAZAGHINIA RAZAGH",
+        "dob": "2006-04-11",
+        "club": "Esteghlal Tehran FC"
+      }
+    },
+    "Iraq": {
+      "country_code": "IRQ",
+      "n_players": 26,
+      "avg_age": 27.2,
+      "avg_height": 183.2,
+      "tallest": {
+        "name": "REBIN GHAREEB Rebin Ghareeb Solaka ADHAMAT REBIN",
+        "height_cm": 193,
+        "dob": "1992-04-12",
+        "club": "Port FC"
+      },
+      "shortest": {
+        "name": "YOUSSEF AMYN Youssef Wali Faeq AMYN YOUSSEF",
+        "height_cm": 172,
+        "dob": "2003-08-21",
+        "club": "AEK Larnaca FC"
+      },
+      "oldest": {
+        "name": "JALAL HASSAN Jalal Hasan Hachim HACHIM JALAL",
+        "dob": "1991-05-18",
+        "club": "Al Zawra'a SC"
+      },
+      "youngest": {
+        "name": "MARKO FARJI Marko Jabbar Hussein HUSSEIN MARKO",
+        "dob": "2004-03-16",
+        "club": "Venezia FC"
+      }
+    },
+    "Japan": {
+      "country_code": "JPN",
+      "n_players": 26,
+      "avg_age": 27.8,
+      "avg_height": 181.3,
+      "tallest": {
+        "name": "GOTO Keisuke Keisuke GOTO GOTO",
+        "height_cm": 191,
+        "dob": "2005-06-03",
+        "club": "Sint-Truiden VV"
+      },
+      "shortest": {
+        "name": "NAGATOMO Yuto Yuto NAGATOMO NAGATOMO",
+        "height_cm": 170,
+        "dob": "1986-09-12",
+        "club": "FC Tokyo"
+      },
+      "oldest": {
+        "name": "NAGATOMO Yuto Yuto NAGATOMO NAGATOMO",
+        "dob": "1986-09-12",
+        "club": "FC Tokyo"
+      },
+      "youngest": {
+        "name": "GOTO Keisuke Keisuke GOTO GOTO",
+        "dob": "2005-06-03",
+        "club": "Sint-Truiden VV"
+      }
+    },
+    "Jordan": {
+      "country_code": "JOR",
+      "n_players": 26,
+      "avg_age": 28.4,
+      "avg_height": 180.4,
+      "tallest": {
+        "name": "ABDALLAH ALFAKHORI Abdallah Ra'ed Mahmoud ALFAKHORI ALFAKHORI",
+        "height_cm": 190,
+        "dob": "2000-01-22",
+        "club": "Al Wahdat SC"
+      },
+      "shortest": {
+        "name": "MOHAMMAD ABUZRAIQ Mohammad Faisal Yousef ABU ZRAIQ ABU ZRAIQ",
+        "height_cm": 170,
+        "dob": "1997-12-30",
+        "club": "Raja Casablanca"
+      },
+      "oldest": {
+        "name": "SALEEM OBAID Saleem Amer Saleem OBAID SALEEM",
+        "dob": "1992-01-17",
+        "club": "Al Hussein SC"
+      },
+      "youngest": {
+        "name": "IBRAHIM SABRA Ibrahim Mohammad Abdallah SABRA SABRA",
+        "dob": "2006-02-01",
+        "club": "NK Lokomotiva Zagreb"
+      }
+    },
+    "Korea Republic": {
+      "country_code": "KOR",
+      "n_players": 26,
+      "avg_age": 28.1,
+      "avg_height": 181.9,
+      "tallest": {
+        "name": "SONG Bumkeun Bumkeun SONG BUMKEUN",
+        "height_cm": 196,
+        "dob": "1997-10-15",
+        "club": "Jeonbuk Hyundai Motors FC"
+      },
+      "shortest": {
+        "name": "KIM Moonhwan Moonhwan KIM MOONHWAN",
+        "height_cm": 173,
+        "dob": "1995-08-01",
+        "club": "Daejeon Hana Citizen FC"
+      },
+      "oldest": {
+        "name": "KIM Seunggyu Seunggyu KIM SEUNGGYU",
+        "dob": "1990-09-30",
+        "club": "FC Tokyo"
+      },
+      "youngest": {
+        "name": "BAE Junho Junho BAE JUNHO",
+        "dob": "2003-08-21",
+        "club": "Stoke City FC"
+      }
+    },
+    "Mexico": {
+      "country_code": "MEX",
+      "n_players": 26,
+      "avg_age": 27.9,
+      "avg_height": 179.5,
+      "tallest": {
+        "name": "MONTES Cesar César Jasib MONTES CASTRO C. MONTES",
+        "height_cm": 191,
+        "dob": "1997-02-24",
+        "club": "FC Lokomotiv Moscow"
+      },
+      "shortest": {
+        "name": "PINEDA Orbelin Orbelín PINEDA ALVARADO ORBELÍN",
+        "height_cm": 169,
+        "dob": "1996-03-24",
+        "club": "AEK Athens"
+      },
+      "oldest": {
+        "name": "OCHOA Guillermo Francisco Guillermo OCHOA MAGAÑA G. OCHOA",
+        "dob": "1985-07-13",
+        "club": "AEL Limassol"
+      },
+      "youngest": {
+        "name": "MORA Gilberto Gilberto Rafael MORA ZAMBRANO G. MORA",
+        "dob": "2008-10-14",
+        "club": "Club Tijuana"
+      }
+    },
+    "Morocco": {
+      "country_code": "MAR",
+      "n_players": 26,
+      "avg_age": 26.4,
+      "avg_height": 182.7,
+      "tallest": {
+        "name": "DIOP Issa Issa Laye Lucas Jean DIOP ISSA",
+        "height_cm": 194,
+        "dob": "1997-01-09",
+        "club": "Fulham FC"
+      },
+      "shortest": {
+        "name": "DIAZ Brahim Brahim ABDELKADER DÍAZ BRAHIM",
+        "height_cm": 170,
+        "dob": "1999-08-03",
+        "club": "Real Madrid C. F."
+      },
+      "oldest": {
+        "name": "EL KAJOUI Munir Monir EL KAJOUI EL KAJOUI",
+        "dob": "1989-05-10",
+        "club": "RS Berkane"
+      },
+      "youngest": {
+        "name": "BOUADDI Ayyoub Ayyoub BOUADDI BOUADDI",
+        "dob": "2007-10-02",
+        "club": "Lille OSC"
+      }
+    },
+    "Netherlands": {
+      "country_code": "NED",
+      "n_players": 26,
+      "avg_age": 27.7,
+      "avg_height": 184.9,
+      "tallest": {
+        "name": "WEGHORST Wout Wout François Maria WEGHORST WEGHORST",
+        "height_cm": 197,
+        "dob": "1992-08-07",
+        "club": "AFC Ajax"
+      },
+      "shortest": {
+        "name": "SUMMERVILLE Crysencio Crysencio Jilbert Sylverio Cir SUMMERVILLE SUMMERVILLE",
+        "height_cm": 172,
+        "dob": "2001-10-30",
+        "club": "West Ham United FC"
+      },
+      "oldest": {
+        "name": "DE ROON Marten Marten Elco DE ROON DE ROON",
+        "dob": "1991-03-29",
+        "club": "Atalanta Bergamo"
+      },
+      "youngest": {
+        "name": "HATO Jorrel Jorrel Evan HATO HATO",
+        "dob": "2006-03-07",
+        "club": "Chelsea FC"
+      }
+    },
+    "New Zealand": {
+      "country_code": "NZL",
+      "n_players": 26,
+      "avg_age": 28.1,
+      "avg_height": 183.5,
+      "tallest": {
+        "name": "WOUD Michael Michael Cornelis WOUD WOUD",
+        "height_cm": 196,
+        "dob": "1999-01-16",
+        "club": "Auckland FC"
+      },
+      "shortest": {
+        "name": "BARBAROUSES Kosta Kosta BARBAROUSES BARBAROUSES",
+        "height_cm": 171,
+        "dob": "1990-02-19",
+        "club": "WS Wanderers FC"
+      },
+      "oldest": {
+        "name": "BOXALL Michael Michael Joseph BOXALL BOXALL",
+        "dob": "1988-08-18",
+        "club": "Minnesota United FC"
+      },
+      "youngest": {
+        "name": "BINDON Tyler Tyler Grant BINDON BINDON",
+        "dob": "2005-01-27",
+        "club": "She\u0000eld United FC"
+      }
+    },
+    "Norway": {
+      "country_code": "NOR",
+      "n_players": 26,
+      "avg_age": 26.8,
+      "avg_height": 187.2,
+      "tallest": {
+        "name": "AJER Kristoffer Kristoffer Vassbakk Köpp AJER VASSBAKK AJER",
+        "height_cm": 198,
+        "dob": "1998-04-17",
+        "club": "Brentford FC"
+      },
+      "shortest": {
+        "name": "SCHJELDERUP Andreas Andreas Rædergård SCHJELDERUP SCHJELDERUP",
+        "height_cm": 177,
+        "dob": "2004-06-01",
+        "club": "SL Ben\u0000ca"
+      },
+      "oldest": {
+        "name": "NYLAND Orjan Ørjan Haskjold NYLAND NYLAND",
+        "dob": "1990-09-10",
+        "club": "Sevilla FC"
+      },
+      "youngest": {
+        "name": "NUSA Antonio Antonio Eromonsele Nordby NUSA NUSA",
+        "dob": "2005-04-17",
+        "club": "RB Leipzig"
+      }
+    },
+    "Panama": {
+      "country_code": "PAN",
+      "n_players": 26,
+      "avg_age": 30.4,
+      "avg_height": 181.6,
+      "tallest": {
+        "name": "FARINA Edgardo Edgardo Issac FARIÑA WYNTER FARIÑA",
+        "height_cm": 195,
+        "dob": "2001-10-19",
+        "club": "FC Pari Nizhny Novgorod"
+      },
+      "shortest": {
+        "name": "YANIS Cesar César Augusto YANIS VELASCO YANIS",
+        "height_cm": 160,
+        "dob": "1996-01-28",
+        "club": "CD Cobresal"
+      },
+      "oldest": {
+        "name": "QUINTERO Alberto Alberto Abdiel QUINTERO MEDINA QUINTERO",
+        "dob": "1987-12-18",
+        "club": "CD Plaza Amador"
+      },
+      "youngest": {
+        "name": "FARINA Edgardo Edgardo Issac FARIÑA WYNTER FARIÑA",
+        "dob": "2001-10-19",
+        "club": "FC Pari Nizhny Novgorod"
+      }
+    },
+    "Paraguay": {
+      "country_code": "PAR",
+      "n_players": 26,
+      "avg_age": 29.0,
+      "avg_height": 181.6,
+      "tallest": {
+        "name": "CANALE Jose Jose Maria CANALE DOMINGUEZ CANALE",
+        "height_cm": 192,
+        "dob": "1996-07-20",
+        "club": "CA Lanús"
+      },
+      "shortest": {
+        "name": "ROMERO GAMARRA Alejandro Alejandro Sebastian ROMERO GAMARRA R. GAMARRA",
+        "height_cm": 165,
+        "dob": "1995-01-11",
+        "club": "Al Ain FC"
+      },
+      "oldest": {
+        "name": "FERNANDEZ Gatito Roberto Junior FERNANDEZ TORRES FERNANDEZ",
+        "dob": "1988-03-29",
+        "club": "Cerro Porteño"
+      },
+      "youngest": {
+        "name": "MAIDANA Alexandro Alexandro MAIDANA MENDIETA MAIDANA",
+        "dob": "2005-07-26",
+        "club": "CA Talleres"
+      }
+    },
+    "Portugal": {
+      "country_code": "POR",
+      "n_players": 26,
+      "avg_age": 28.0,
+      "avg_height": 181.5,
+      "tallest": {
+        "name": "JOSE SA José Pedro MALHEIRO DE SÁ JOSÉ SÁ",
+        "height_cm": 192,
+        "dob": "1993-01-17",
+        "club": "Wolverhampton Wanderers FC"
+      },
+      "shortest": {
+        "name": "FRANCISCO CONCEICAO Francisco FERNANDES DA CONCEIÇÃO F. CONCEIÇÃO",
+        "height_cm": 166,
+        "dob": "2002-12-14",
+        "club": "Juventus FC"
+      },
+      "oldest": {
+        "name": "CRISTIANO RONALDO Cristiano Ronaldo DOS SANTOS AVEIRO RONALDO",
+        "dob": "1985-02-05",
+        "club": "Al Nassr FC"
+      },
+      "youngest": {
+        "name": "JOAO NEVES João Pedro GONÇALVES NEVES JOÃO NEVES",
+        "dob": "2004-09-27",
+        "club": "Paris Saint-Germain"
+      }
+    },
+    "Qatar": {
+      "country_code": "QAT",
+      "n_players": 26,
+      "avg_age": 29.5,
+      "avg_height": 179.4,
+      "tallest": {
+        "name": "MOHAMMED MUNTARI Mohammed MUNTARI MUNTARI",
+        "height_cm": 192,
+        "dob": "1993-12-20",
+        "club": "Al Gharafa SC"
+      },
+      "shortest": {
+        "name": "TAHSIN JAMSHID Tahsin Mohammad JAMSHID TAHSIN",
+        "height_cm": 166,
+        "dob": "2006-06-16",
+        "club": "Al Duhail SC"
+      },
+      "oldest": {
+        "name": "ABDULAZIZ HATEM Abdelaziz Hatim A MOHAMED A. AZIZ",
+        "dob": "1990-01-01",
+        "club": "Al Rayyan SC"
+      },
+      "youngest": {
+        "name": "TAHSIN JAMSHID Tahsin Mohammad JAMSHID TAHSIN",
+        "dob": "2006-06-16",
+        "club": "Al Duhail SC"
+      }
+    },
+    "Saudi Arabia": {
+      "country_code": "KSA",
+      "n_players": 26,
+      "avg_age": 28.5,
+      "avg_height": 178.4,
+      "tallest": {
+        "name": "MOHAMED KANNO Mohamed Ibrahim A KANNO KANNO",
+        "height_cm": 191,
+        "dob": "1994-09-22",
+        "club": "Al Hilal SC"
+      },
+      "shortest": {
+        "name": "ALI MAJRASHI Ali Hassan M MAJRASHI MAJRASHI",
+        "height_cm": 169,
+        "dob": "1999-10-02",
+        "club": "Al Ahli FC"
+      },
+      "oldest": {
+        "name": "AHMED ALKASSAR Ahmed Ali H ALKASSAR ALKASSAR",
+        "dob": "1991-05-08",
+        "club": "Al Qadsiah FC"
+      },
+      "youngest": {
+        "name": "MUSAB ALJUWAYR Musab Fahad Z ALJUWAYR MUSAB",
+        "dob": "2003-06-20",
+        "club": "Al Qadsiah FC"
+      }
+    },
+    "Scotland": {
+      "country_code": "SCO",
+      "n_players": 26,
+      "avg_age": 29.2,
+      "avg_height": 184.5,
+      "tallest": {
+        "name": "GUNN Angus Angus Fraser James GUNN GUNN",
+        "height_cm": 196,
+        "dob": "1996-01-22",
+        "club": "Nottingham Forest FC"
+      },
+      "shortest": {
+        "name": "GANNON-DOAK Ben Ben Gannon DOAK GANNON DOAK",
+        "height_cm": 173,
+        "dob": "2005-11-11",
+        "club": "AFC Bournemouth"
+      },
+      "oldest": {
+        "name": "GORDON Craig Craig Sinclair GORDON GORDON",
+        "dob": "1982-12-31",
+        "club": "Heart Of Midlothian FC"
+      },
+      "youngest": {
+        "name": "FLETCHER Tyler Tyler Robert FLETCHER FLETCHER",
+        "dob": "2007-03-19",
+        "club": "Manchester United FC"
+      }
+    },
+    "Senegal": {
+      "country_code": "SEN",
+      "n_players": 26,
+      "avg_age": 27.1,
+      "avg_height": 184.0,
+      "tallest": {
+        "name": "DIAW Mory Mory DIAW DIAW",
+        "height_cm": 197,
+        "dob": "1993-06-22",
+        "club": "Le Havre AC"
+      },
+      "shortest": {
+        "name": "DIATTA Krepin Krépin DIATTA KRÉPIN",
+        "height_cm": 173,
+        "dob": "1999-02-25",
+        "club": "AS Monaco"
+      },
+      "oldest": {
+        "name": "GUEYE Idrissa Gana Idrissa Gana GUEYE GANA",
+        "dob": "1989-09-26",
+        "club": "Everton FC"
+      },
+      "youngest": {
+        "name": "MBAYE Ibrahim Ibrahim MBAYE MBAYE",
+        "dob": "2008-01-24",
+        "club": "Paris Saint-Germain"
+      }
+    },
+    "South Africa": {
+      "country_code": "RSA",
+      "n_players": 26,
+      "avg_age": 26.8,
+      "avg_height": 178.8,
+      "tallest": {
+        "name": "SITHOLE Sphephelo Sphephelo S'miso SITHOLE SITHOLE",
+        "height_cm": 197,
+        "dob": "1999-03-03",
+        "club": "CD Tondela"
+      },
+      "shortest": {
+        "name": "SEBELEBELE Kamogelo Kamogelo Michael SEBELEBELE SEBELEBELE",
+        "height_cm": 166,
+        "dob": "2002-07-21",
+        "club": "Orlando Pirates FC"
+      },
+      "oldest": {
+        "name": "ZWANE Themba Themba ZWANE ZWANE",
+        "dob": "1989-08-03",
+        "club": "Mamelodi Sundowns FC"
+      },
+      "youngest": {
+        "name": "MBOKAZI Mbekezeli Mbekezeli Mfanu\u0000kile MBOKAZI MBOKAZI",
+        "dob": "2005-09-19",
+        "club": "Chicago Fire FC"
+      }
+    },
+    "Spain": {
+      "country_code": "ESP",
+      "n_players": 26,
+      "avg_age": 26.7,
+      "avg_height": 181.7,
+      "tallest": {
+        "name": "GARCIA Joan Joan GARCIA PONS JOAN GARCIA",
+        "height_cm": 194,
+        "dob": "2001-05-04",
+        "club": "FC Barcelona"
+      },
+      "shortest": {
+        "name": "GRIMALDO Alex Alejandro GRIMALDO GARCÍA GRIMALDO",
+        "height_cm": 171,
+        "dob": "1995-09-20",
+        "club": "Bayer Leverkusen"
+      },
+      "oldest": {
+        "name": "IGLESIAS Borja Borja IGLESIAS QUINTÁS B. IGLESIAS",
+        "dob": "1993-01-17",
+        "club": "RC Celta Vigo"
+      },
+      "youngest": {
+        "name": "YAMAL Lamine Lamine Yamal NASRAOUI EBANA LAMINE YAMAL",
+        "dob": "2007-07-13",
+        "club": "FC Barcelona"
+      }
+    },
+    "Sweden": {
+      "country_code": "SWE",
+      "n_players": 26,
+      "avg_age": 27.6,
+      "avg_height": 186.2,
+      "tallest": {
+        "name": "WIDELL ZETTERSTROM Jacob Jacob Mikael WIDELL ZETTERSTRÖM ZETTERSTRÖM",
+        "height_cm": 197,
+        "dob": "1998-07-11",
+        "club": "Derby County FC"
+      },
+      "shortest": {
+        "name": "AYARI Yasin Yasin AYARI AYARI",
+        "height_cm": 172,
+        "dob": "2003-10-06",
+        "club": "Brighton & Hove Albion FC"
+      },
+      "oldest": {
+        "name": "NORDFELDT Kristoffer Bo Kristoffer NORDFELDT NORDFELDT",
+        "dob": "1989-06-23",
+        "club": "AIK Stockholm"
+      },
+      "youngest": {
+        "name": "BERGVALL Lucas Lucas Erik Holger BERGVALL BERGVALL",
+        "dob": "2006-02-02",
+        "club": "Tottenham Hotspur FC"
+      }
+    },
+    "Switzerland": {
+      "country_code": "SUI",
+      "n_players": 26,
+      "avg_age": 28.3,
+      "avg_height": 185.2,
+      "tallest": {
+        "name": "KOBEL Gregor Gregor KOBEL KOBEL",
+        "height_cm": 196,
+        "dob": "1997-12-06",
+        "club": "Borussia Dortmund"
+      },
+      "shortest": {
+        "name": "VARGAS Ruben Ruben Estephan VARGAS MARITNEZ VARGAS",
+        "height_cm": 179,
+        "dob": "1998-08-05",
+        "club": "Sevilla FC"
+      },
+      "oldest": {
+        "name": "FREULER Remo Remo Marco FREULER FREULER",
+        "dob": "1992-04-15",
+        "club": "Bologna FC"
+      },
+      "youngest": {
+        "name": "MANZAMBI Johan Johan Kula MANZAMBI MANZAMBI",
+        "dob": "2005-10-14",
+        "club": "SC Freiburg"
+      }
+    },
+    "Tunisia": {
+      "country_code": "TUN",
+      "n_players": 26,
+      "avg_age": 26.6,
+      "avg_height": 184.6,
+      "tallest": {
+        "name": "MASTOURI Hazem Hazem MASTOURI MASTOURI",
+        "height_cm": 191,
+        "dob": "1997-06-18",
+        "club": "FC Dynamo Makhachkala"
+      },
+      "shortest": {
+        "name": "AYARI Khalil Khalil AYARI AYARI",
+        "height_cm": 174,
+        "dob": "2005-02-02",
+        "club": "Paris Saint-Germain"
+      },
+      "oldest": {
+        "name": "ABDI Ali Ali ELABDI ABDI",
+        "dob": "1993-12-20",
+        "club": "OGC Nice"
+      },
+      "youngest": {
+        "name": "ELLOUMI Rayan Rayan ELLOUMI ELLOUMI",
+        "dob": "2007-09-17",
+        "club": "Vancouver Whitecaps FC"
+      }
+    },
+    "Turkey": {
+      "country_code": "TUR",
+      "n_players": 26,
+      "avg_age": 27.7,
+      "avg_height": 183.8,
+      "tallest": {
+        "name": "BAYINDIR Altay Altay BAYINDIR ALTAY",
+        "height_cm": 198,
+        "dob": "1998-04-14",
+        "club": "Manchester United FC"
+      },
+      "shortest": {
+        "name": "AKTURKOGLU Kerem Muhammed Kerem AKTÜRKOĞLU AKTÜRKOĞLU",
+        "height_cm": 172,
+        "dob": "1998-10-21",
+        "club": "Fenerbahçe SK"
+      },
+      "oldest": {
+        "name": "GUNOK Mert Fehmi Mert GÜNOK MERT",
+        "dob": "1989-03-01",
+        "club": "Fenerbahçe SK"
+      },
+      "youngest": {
+        "name": "UZUN Can Can Yılmaz UZUN CAN UZUN",
+        "dob": "2005-11-11",
+        "club": "Eintracht Frankfurt"
+      }
+    },
+    "United States": {
+      "country_code": "USA",
+      "n_players": 26,
+      "avg_age": 26.9,
+      "avg_height": 183.4,
+      "tallest": {
+        "name": "FREESE Matt Matthew Andrew Geary FREESE FREESE",
+        "height_cm": 198,
+        "dob": "1998-09-02",
+        "club": "New York City FC"
+      },
+      "shortest": {
+        "name": "ZENDEJAS Alex Alejandro ZENDEJAS SAAVEDRA ZENDEJAS",
+        "height_cm": 167,
+        "dob": "1998-02-07",
+        "club": "Club América"
+      },
+      "oldest": {
+        "name": "REAM Tim Timothy Michael REAM REAM",
+        "dob": "1987-10-05",
+        "club": "Charlotte FC"
+      },
+      "youngest": {
+        "name": "FREEMAN Alex Alexander Michael FREEMAN FREEMAN",
+        "dob": "2004-08-09",
+        "club": "Villarreal CF"
+      }
+    },
+    "Uruguay": {
+      "country_code": "URU",
+      "n_players": 26,
+      "avg_age": 28.7,
+      "avg_height": 180.5,
+      "tallest": {
+        "name": "BUENO Santiago Santiago Ignacio BUENO SCIUTTO S. BUENO",
+        "height_cm": 191,
+        "dob": "1998-11-09",
+        "club": "Wolverhampton Wanderers FC"
+      },
+      "shortest": {
+        "name": "DE LA CRUZ Nicolas Diego Nicolás DE LA CRUZ ARCOSA N. DE LA CRUZ",
+        "height_cm": 167,
+        "dob": "1997-06-01",
+        "club": "CR Flamengo"
+      },
+      "oldest": {
+        "name": "MUSLERA Fernando Nestor Fernando MUSLERA MICOL F. MUSLERA",
+        "dob": "1986-06-16",
+        "club": "Estudiantes LP"
+      },
+      "youngest": {
+        "name": "PELLISTRI Facundo Facundo PELLISTRI REBOLLO F. PELLISTRI",
+        "dob": "2001-12-20",
+        "club": "Panathinaikos FC"
+      }
+    },
+    "Uzbekistan": {
+      "country_code": "UZB",
+      "n_players": 26,
+      "avg_age": 28.5,
+      "avg_height": 181.8,
+      "tallest": {
+        "name": "SHOMURODOV Eldor Eldor SHOMURODOV SHOMURODOV",
+        "height_cm": 190,
+        "dob": "1995-06-29",
+        "club": "Başakşehir FK"
+      },
+      "shortest": {
+        "name": "FAYZULLAEV Abbosbek Abbosbek FAYZULLAEV FAYZULLAEV",
+        "height_cm": 167,
+        "dob": "2003-10-03",
+        "club": "Başakşehir FK"
+      },
+      "oldest": {
+        "name": "YUSUPOV Utkir Utkir YUSUPOV YUSUPOV",
+        "dob": "1991-01-04",
+        "club": "PFC Navbahor Namangan"
+      },
+      "youngest": {
+        "name": "KARIMOV Behruzjon Behruzjon KARIMOV KARIMOV",
+        "dob": "2007-08-07",
+        "club": "Surkhon FK"
+      }
+    }
+  },
+  "top_clubs": [
+    [
+      "Manchester City FC",
+      19
+    ],
+    [
+      "FC Bayern München",
+      18
+    ],
+    [
+      "Arsenal FC",
+      16
+    ],
+    [
+      "Paris Saint-Germain",
+      16
+    ],
+    [
+      "FC Barcelona",
+      15
+    ],
+    [
+      "Atlético De Madrid",
+      12
+    ],
+    [
+      "Manchester United FC",
+      12
+    ],
+    [
+      "Crystal Palace FC",
+      12
+    ],
+    [
+      "Al Hilal SC",
+      12
+    ],
+    [
+      "Borussia Dortmund",
+      11
+    ],
+    [
+      "Liverpool FC",
+      11
+    ],
+    [
+      "Galatasaray SK",
+      11
+    ],
+    [
+      "Real Madrid C. F.",
+      10
+    ],
+    [
+      "PSV Eindhoven",
+      10
+    ],
+    [
+      "AC Milan",
+      10
+    ],
+    [
+      "Fenerbahçe SK",
+      10
+    ],
+    [
+      "SK Slavia Praha",
+      10
+    ],
+    [
+      "Al Ahli FC",
+      9
+    ],
+    [
+      "Aston Villa FC",
+      9
+    ],
+    [
+      "CR Flamengo",
+      9
+    ],
+    [
+      "Sunderland AFC",
+      9
+    ],
+    [
+      "Al Ahly FC",
+      9
+    ],
+    [
+      "Al Nassr FC",
+      9
+    ],
+    [
+      "Lille OSC",
+      8
+    ],
+    [
+      "Eintracht Frankfurt",
+      8
+    ],
+    [
+      "OGC Nice",
+      8
+    ],
+    [
+      "Tottenham Hotspur FC",
+      8
+    ],
+    [
+      "SL Ben\u0000ca",
+      8
+    ],
+    [
+      "Chelsea FC",
+      8
+    ],
+    [
+      "TSG Hoffenheim",
+      8
+    ],
+    [
+      "Brighton & Hove Albion FC",
+      8
+    ],
+    [
+      "VfB Stuttgart",
+      8
+    ],
+    [
+      "Newcastle United FC",
+      8
+    ],
+    [
+      "Villarreal CF",
+      8
+    ],
+    [
+      "Celtic FC",
+      8
+    ],
+    [
+      "Mamelodi Sundowns FC",
+      8
+    ],
+    [
+      "Orlando Pirates FC",
+      8
+    ],
+    [
+      "Olympique Marseille",
+      7
+    ],
+    [
+      "Al Duhail SC",
+      7
+    ],
+    [
+      "Bayer Leverkusen",
+      7
+    ],
+    [
+      "RC Strasbourg",
+      7
+    ],
+    [
+      "Real Betis",
+      7
+    ],
+    [
+      "SE Palmeiras",
+      7
+    ],
+    [
+      "FC Internazionale Milano",
+      7
+    ],
+    [
+      "FC Viktoria Plzeň",
+      7
+    ],
+    [
+      "Sporting CP",
+      7
+    ],
+    [
+      "Atalanta Bergamo",
+      7
+    ],
+    [
+      "BSC Young Boys",
+      6
+    ],
+    [
+      "RB Leipzig",
+      6
+    ],
+    [
+      "1. FSV Mainz 05",
+      6
+    ]
+  ],
+  "top_leagues": [
+    [
+      "ENG",
+      200
+    ],
+    [
+      "GER",
+      109
+    ],
+    [
+      "FRA",
+      86
+    ],
+    [
+      "ESP",
+      86
+    ],
+    [
+      "ITA",
+      71
+    ],
+    [
+      "KSA",
+      49
+    ],
+    [
+      "TUR",
+      45
+    ],
+    [
+      "USA",
+      42
+    ],
+    [
+      "NED",
+      38
+    ],
+    [
+      "POR",
+      32
+    ],
+    [
+      "BRA",
+      32
+    ],
+    [
+      "QAT",
+      29
+    ],
+    [
+      "BEL",
+      29
+    ],
+    [
+      "MEX",
+      27
+    ],
+    [
+      "IRN",
+      23
+    ],
+    [
+      "CZE",
+      22
+    ],
+    [
+      "SCO",
+      20
+    ],
+    [
+      "EGY",
+      20
+    ],
+    [
+      "RSA",
+      19
+    ],
+    [
+      "ARG",
+      17
+    ],
+    [
+      "UZB",
+      16
+    ],
+    [
+      "UAE",
+      15
+    ],
+    [
+      "IRQ",
+      15
+    ],
+    [
+      "DEN",
+      14
+    ],
+    [
+      "SUI",
+      12
+    ],
+    [
+      "RUS",
+      12
+    ],
+    [
+      "GRE",
+      12
+    ],
+    [
+      "JOR",
+      11
+    ],
+    [
+      "CYP",
+      10
+    ],
+    [
+      "KOR",
+      8
+    ]
+  ],
+  "home_share": {
+    "Algeria": {
+      "home": 3,
+      "total": 26,
+      "pct": 11.5
+    },
+    "Argentina": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Australia": {
+      "home": 5,
+      "total": 26,
+      "pct": 19.2
+    },
+    "Austria": {
+      "home": 3,
+      "total": 26,
+      "pct": 11.5
+    },
+    "Belgium": {
+      "home": 3,
+      "total": 26,
+      "pct": 11.5
+    },
+    "Bosnia And Herzegovina": {
+      "home": 1,
+      "total": 26,
+      "pct": 3.8
+    },
+    "Brazil": {
+      "home": 7,
+      "total": 26,
+      "pct": 26.9
+    },
+    "Cape Verde": {
+      "home": 0,
+      "total": 26,
+      "pct": 0.0
+    },
+    "Canada": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Colombia": {
+      "home": 1,
+      "total": 26,
+      "pct": 3.8
+    },
+    "Congo DR": {
+      "home": 0,
+      "total": 26,
+      "pct": 0.0
+    },
+    "Côte D'Ivoire": {
+      "home": 0,
+      "total": 26,
+      "pct": 0.0
+    },
+    "Croatia": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Curaçao": {
+      "home": 0,
+      "total": 26,
+      "pct": 0.0
+    },
+    "Czechia": {
+      "home": 17,
+      "total": 26,
+      "pct": 65.4
+    },
+    "Ecuador": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Egypt": {
+      "home": 17,
+      "total": 26,
+      "pct": 65.4
+    },
+    "England": {
+      "home": 21,
+      "total": 26,
+      "pct": 80.8
+    },
+    "France": {
+      "home": 8,
+      "total": 26,
+      "pct": 30.8
+    },
+    "Germany": {
+      "home": 19,
+      "total": 26,
+      "pct": 73.1
+    },
+    "Ghana": {
+      "home": 1,
+      "total": 26,
+      "pct": 3.8
+    },
+    "Haiti": {
+      "home": 1,
+      "total": 26,
+      "pct": 3.8
+    },
+    "IR Iran": {
+      "home": 17,
+      "total": 26,
+      "pct": 65.4
+    },
+    "Iraq": {
+      "home": 10,
+      "total": 26,
+      "pct": 38.5
+    },
+    "Japan": {
+      "home": 3,
+      "total": 26,
+      "pct": 11.5
+    },
+    "Jordan": {
+      "home": 11,
+      "total": 26,
+      "pct": 42.3
+    },
+    "Korea Republic": {
+      "home": 7,
+      "total": 26,
+      "pct": 26.9
+    },
+    "Mexico": {
+      "home": 12,
+      "total": 26,
+      "pct": 46.2
+    },
+    "Morocco": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Netherlands": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "New Zealand": {
+      "home": 8,
+      "total": 26,
+      "pct": 30.8
+    },
+    "Norway": {
+      "home": 4,
+      "total": 26,
+      "pct": 15.4
+    },
+    "Panama": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Paraguay": {
+      "home": 3,
+      "total": 26,
+      "pct": 11.5
+    },
+    "Portugal": {
+      "home": 5,
+      "total": 26,
+      "pct": 19.2
+    },
+    "Qatar": {
+      "home": 25,
+      "total": 26,
+      "pct": 96.2
+    },
+    "Saudi Arabia": {
+      "home": 25,
+      "total": 26,
+      "pct": 96.2
+    },
+    "Scotland": {
+      "home": 8,
+      "total": 26,
+      "pct": 30.8
+    },
+    "Senegal": {
+      "home": 0,
+      "total": 26,
+      "pct": 0.0
+    },
+    "South Africa": {
+      "home": 19,
+      "total": 26,
+      "pct": 73.1
+    },
+    "Spain": {
+      "home": 17,
+      "total": 26,
+      "pct": 65.4
+    },
+    "Sweden": {
+      "home": 3,
+      "total": 26,
+      "pct": 11.5
+    },
+    "Switzerland": {
+      "home": 2,
+      "total": 26,
+      "pct": 7.7
+    },
+    "Tunisia": {
+      "home": 6,
+      "total": 26,
+      "pct": 23.1
+    },
+    "Turkey": {
+      "home": 15,
+      "total": 26,
+      "pct": 57.7
+    },
+    "Uruguay": {
+      "home": 0,
+      "total": 26,
+      "pct": 0.0
+    },
+    "United States": {
+      "home": 7,
+      "total": 26,
+      "pct": 26.9
+    },
+    "Uzbekistan": {
+      "home": 15,
+      "total": 26,
+      "pct": 57.7
+    }
+  },
+  "continent_per_nation": {
+    "Algeria": {
+      "Europa": 73.1,
+      "Africa": 15.4,
+      "Asia": 11.5
+    },
+    "Argentina": {
+      "Europa": 80.8,
+      "Sud America": 11.5,
+      "Nord America": 7.7
+    },
+    "Australia": {
+      "Europa": 61.5,
+      "Asia": 7.7,
+      "Oceania": 19.2,
+      "Nord America": 11.5
+    },
+    "Austria": {
+      "Europa": 100.0
+    },
+    "Belgium": {
+      "Europa": 100.0
+    },
+    "Bosnia And Herzegovina": {
+      "Europa": 100.0
+    },
+    "Brazil": {
+      "Europa": 65.4,
+      "Sud America": 26.9,
+      "Asia": 7.7
+    },
+    "Cape Verde": {
+      "Europa": 84.6,
+      "Asia": 7.7,
+      "Nord America": 7.7
+    },
+    "Canada": {
+      "Nord America": 34.6,
+      "Europa": 65.4
+    },
+    "Colombia": {
+      "Sud America": 38.5,
+      "Europa": 50.0,
+      "Nord America": 11.5
+    },
+    "Congo DR": {
+      "Europa": 92.3,
+      "Africa": 3.8,
+      "Asia": 3.8
+    },
+    "Côte D'Ivoire": {
+      "Europa": 96.2,
+      "Asia": 3.8
+    },
+    "Croatia": {
+      "Europa": 92.3,
+      "Nord America": 7.7
+    },
+    "Curaçao": {
+      "Nord America": 7.7,
+      "Europa": 80.8,
+      "Asia": 11.5
+    },
+    "Czechia": {
+      "Europa": 100.0
+    },
+    "Ecuador": {
+      "Sud America": 38.5,
+      "Europa": 50.0,
+      "Nord America": 11.5
+    },
+    "Egypt": {
+      "Africa": 65.4,
+      "Asia": 11.5,
+      "Europa": 23.1
+    },
+    "England": {
+      "Europa": 96.2,
+      "Asia": 3.8
+    },
+    "France": {
+      "Europa": 96.2,
+      "Asia": 3.8
+    },
+    "Germany": {
+      "Europa": 100.0
+    },
+    "Ghana": {
+      "Europa": 92.3,
+      "Asia": 3.8,
+      "Africa": 3.8
+    },
+    "Haiti": {
+      "Europa": 69.2,
+      "Sud America": 3.8,
+      "Nord America": 23.1,
+      "Asia": 3.8
+    },
+    "IR Iran": {
+      "Asia": 84.6,
+      "Europa": 15.4
+    },
+    "Iraq": {
+      "Asia": 57.7,
+      "Europa": 34.6,
+      "Nord America": 3.8,
+      "?": 3.8
+    },
+    "Japan": {
+      "Europa": 88.5,
+      "Asia": 11.5
+    },
+    "Jordan": {
+      "Asia": 84.6,
+      "Africa": 7.7,
+      "Europa": 7.7
+    },
+    "Korea Republic": {
+      "Asia": 38.5,
+      "Europa": 57.7,
+      "Nord America": 3.8
+    },
+    "Mexico": {
+      "Nord America": 46.2,
+      "Europa": 50.0,
+      "Asia": 3.8
+    },
+    "Morocco": {
+      "Asia": 7.7,
+      "Europa": 80.8,
+      "Africa": 11.5
+    },
+    "Netherlands": {
+      "Europa": 96.2,
+      "Sud America": 3.8
+    },
+    "New Zealand": {
+      "Europa": 53.8,
+      "Oceania": 38.5,
+      "Nord America": 7.7
+    },
+    "Norway": {
+      "Europa": 100.0
+    },
+    "Panama": {
+      "Sud America": 26.9,
+      "Europa": 23.1,
+      "Nord America": 42.3,
+      "Asia": 7.7
+    },
+    "Paraguay": {
+      "Sud America": 57.7,
+      "Europa": 23.1,
+      "Nord America": 15.4,
+      "Asia": 3.8
+    },
+    "Portugal": {
+      "Europa": 88.5,
+      "Asia": 11.5
+    },
+    "Qatar": {
+      "Asia": 96.2,
+      "Europa": 3.8
+    },
+    "Saudi Arabia": {
+      "Asia": 96.2,
+      "Europa": 3.8
+    },
+    "Scotland": {
+      "Europa": 96.2,
+      "Asia": 3.8
+    },
+    "Senegal": {
+      "Europa": 84.6,
+      "Asia": 15.4
+    },
+    "South Africa": {
+      "Africa": 73.1,
+      "Europa": 19.2,
+      "Nord America": 7.7
+    },
+    "Spain": {
+      "Europa": 100.0
+    },
+    "Sweden": {
+      "Europa": 96.2,
+      "Nord America": 3.8
+    },
+    "Switzerland": {
+      "Europa": 100.0
+    },
+    "Tunisia": {
+      "Africa": 23.1,
+      "Europa": 73.1,
+      "Nord America": 3.8
+    },
+    "Turkey": {
+      "Europa": 96.2,
+      "Asia": 3.8
+    },
+    "Uruguay": {
+      "Sud America": 34.6,
+      "Europa": 42.3,
+      "Nord America": 19.2,
+      "Asia": 3.8
+    },
+    "United States": {
+      "Nord America": 34.6,
+      "Europa": 65.4
+    },
+    "Uzbekistan": {
+      "Asia": 88.5,
+      "Europa": 11.5
+    }
+  }
+}

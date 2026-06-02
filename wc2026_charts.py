@@ -1,0 +1,1109 @@
+"""
+wc2026_charts.py — Genera grafici WC2026 in formato 16:9 (1920×1080)
+con font Avenir Next Condensed e logo SC in basso a destra.
+
+Carica:
+  • data/wc2026_squads_fifa.json (rose + altezza + club)
+  • data/wc2026_national_caps.json (media caps nazionale)
+  • data/wc2026_analysis.json (top club, leghe, ecc.)
+  • data/wc2026_coaches.json (allenatori + nazionalità)
+
+Output: charts/<slug>.png (1920×1080, dpi=120)
+Logo: se ~/Desktop/sc_logo.png esiste lo usa, altrimenti disegna "SC"
+testuale come fallback.
+"""
+from __future__ import annotations
+import json
+import math
+from pathlib import Path
+from collections import Counter
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+from matplotlib import font_manager, rcParams
+from matplotlib.patches import Rectangle
+
+# -------------------- FONT --------------------
+FONT_TTC = "/System/Library/Fonts/Avenir Next Condensed.ttc"
+font_manager.fontManager.addfont(FONT_TTC)
+rcParams["font.family"] = "Avenir Next Condensed"
+rcParams["font.weight"] = "medium"
+rcParams["axes.titleweight"] = "bold"
+rcParams["axes.labelweight"] = "medium"
+
+# -------------------- LOGO + ASSET PATHS --------------------
+IMG_ROOT = Path("/Users/simone/Desktop/Immagini")
+LOGO_PATH = IMG_ROOT / "Logo SC.png"
+NATION_LOGOS_ROOT = IMG_ROOT / "Loghi nazioni"
+# pt69: cartelle club EXTRA fuori da IMG_ROOT (es. Saudi Pro League).
+EXTRA_CLUB_ROOTS = [
+    Path("/Users/simone/Desktop/Arabia Saudita/Immagini/Loghi club"),
+]
+
+# Map nation-name (chiave usata nei JSON) → filename (senza .png)
+# I file vivono in Loghi nazioni/<Continente>/<filename>.png — costruisco
+# un index al volo, ma alcuni nomi richiedono alias per il match.
+NATION_FILE_ALIAS = {
+    "Bosnia and Herzegovina": "Bosnia-Herzegovina",
+    "Bosnia And Herzegovina": "Bosnia-Herzegovina",
+    "Bosnia-Erzegovina": "Bosnia-Herzegovina",
+    "Cape Verde": "Cape-Verde",
+    "Congo DR": "Congo-Kinshasa",
+    "DR Congo": "Congo-Kinshasa",
+    "Côte D'Ivoire": "Cote-dIvoire",
+    "Ivory Coast": "Cote-dIvoire",
+    "Curaçao": "Curacao",
+    "Cabo Verde": "Cape-Verde",
+    "USA": "United-States",
+    "Czechia": "Czech-Republic",
+    "Czech Republic": "Czech-Republic",
+    "IR Iran": "Iran",
+    "Korea Republic": "South-Korea",
+    "South Korea": "South-Korea",
+    "New Zealand": "New-Zealand",
+    "Saudi Arabia": "Saudi-Arabia",
+    "South Africa": "South-Africa",
+    "United States": "United-States",
+}
+
+
+# pt69: nomi mostrati nei chart — SOLO Bosnia viene accorciata (nome troppo
+# lungo che si sovrapponeva alla bandiera). Tutte le altre nazioni mantengono
+# il nome originale del PDF FIFA.
+NATION_DISPLAY = {
+    "Bosnia And Herzegovina": "Bosnia-Erz.",
+    "Bosnia and Herzegovina": "Bosnia-Erz.",
+}
+
+
+def display_name(n: str) -> str:
+    return NATION_DISPLAY.get(n, n)
+
+
+def display_nations(lst: list[str]) -> list[str]:
+    return [display_name(n) for n in lst]
+
+
+def nation_logo_path(nation: str) -> Path | None:
+    """Cerca il file logo per la nazione, prima via alias, poi via match diretto."""
+    target = NATION_FILE_ALIAS.get(nation, nation).lower()
+    for cont in NATION_LOGOS_ROOT.iterdir():
+        if not cont.is_dir():
+            continue
+        for f in cont.glob("*.png"):
+            if f.stem.lower() == target:
+                return f
+    return None
+
+
+# pt69: codice nazione 3-letter (FIFA) → nome usato in NATION_FILE_ALIAS o
+# direttamente file logo. Serve per chart che hanno solo codici (es. "ENG"
+# per Premier League nel chart Campionati di militanza).
+CODE_TO_NATION = {
+    "ALG": "Algeria", "ARG": "Argentina", "AUS": "Australia", "AUT": "Austria",
+    "BEL": "Belgium", "BIH": "Bosnia and Herzegovina", "BRA": "Brazil",
+    "CAN": "Canada", "CIV": "Côte D'Ivoire", "COD": "DR Congo",
+    "COL": "Colombia", "CPV": "Cape Verde", "CRO": "Croatia",
+    "CUW": "Curaçao", "CZE": "Czech Republic", "ECU": "Ecuador",
+    "EGY": "Egypt", "ENG": "England", "ESP": "Spain", "FRA": "France",
+    "GER": "Germany", "GHA": "Ghana", "HAI": "Haiti", "IRN": "Iran",
+    "IRQ": "Iraq", "ITA": "Italy", "JAM": "Jamaica", "JOR": "Jordan",
+    "JPN": "Japan", "KOR": "South Korea", "KSA": "Saudi Arabia",
+    "MAR": "Morocco", "MEX": "Mexico", "NED": "Netherlands", "NOR": "Norway",
+    "NZL": "New Zealand", "PAN": "Panama", "PAR": "Paraguay",
+    "POR": "Portugal", "QAT": "Qatar", "RSA": "South Africa",
+    "SCO": "Scotland", "SEN": "Senegal", "SUI": "Switzerland",
+    "SWE": "Sweden", "TUN": "Tunisia", "TUR": "Turkey", "URU": "Uruguay",
+    "USA": "United States", "UZB": "Uzbekistan",
+    # Club countries non-WC (servono per il chart campionati)
+    "ARGC": "Argentina", "CHI": "Chile", "PER": "Peru", "VEN": "Venezuela",
+    "BOL": "Bolivia", "URC": "Uruguay", "HON": "Honduras", "CRC": "Costa Rica",
+    "GUA": "Guatemala", "MAS": "Malaysia", "THA": "Thailand", "VIE": "Vietnam",
+    "INA": "Indonesia", "CHN": "China", "HKG": "Hong Kong", "SIN": "Singapore",
+    "UAE": "United Arab Emirates", "BHR": "Bahrain", "KUW": "Kuwait",
+    "OMA": "Oman", "LBN": "Lebanon", "SYR": "Syria", "ISR": "Israel",
+    "RUS": "Russia", "UKR": "Ukraine", "POL": "Poland", "ROU": "Romania",
+    "HUN": "Hungary", "BUL": "Bulgaria", "GRE": "Greece", "SRB": "Serbia",
+    "SVK": "Slovakia", "SVN": "Slovenia", "DEN": "Denmark", "FIN": "Finland",
+    "ISL": "Iceland", "MLT": "Malta", "CYP": "Cyprus", "ALB": "Albania",
+    "AZE": "Azerbaijan", "ARM": "Armenia", "GEO": "Georgia", "KAZ": "Kazakhstan",
+    "MNE": "Montenegro", "MDA": "Moldova", "MKD": "Macedonia",
+    "IRL": "Ireland", "NIR": "Northern Ireland", "WAL": "Wales",
+    "ALG": "Algeria", "NGA": "Nigeria", "CMR": "Cameroon", "ANG": "Angola",
+    "MLI": "Mali", "BFA": "Burkina Faso", "GAB": "Gabon", "ZAM": "Zambia",
+    "ZIM": "Zimbabwe", "BEN": "Benin", "TOG": "Togo", "GUI": "Guinea",
+    "MTN": "Mauritania", "LBY": "Libya", "SDN": "Sudan", "KEN": "Kenya",
+    "UGA": "Uganda", "ETH": "Ethiopia", "RWA": "Rwanda", "BDI": "Burundi",
+    "TAN": "Tanzania", "MOZ": "Mozambique", "MAD": "Madagascar",
+    "BOT": "Botswana", "NAM": "Namibia", "LES": "Lesotho", "MWI": "Malawi",
+}
+
+
+def code_logo_path(code: str) -> Path | None:
+    """Codice 3-letter → file logo nazione."""
+    nation = CODE_TO_NATION.get(code, code)
+    return nation_logo_path(nation)
+
+
+# Mapping club FIFA name → filename (senza .png) sotto IMG_ROOT.
+# Cercato in TUTTE le subdir EXCEPT "Loghi nazioni" (per evitare di
+# matchare la nazione invece del club). File trovati durante la mappa
+# iniziale sono hardcoded; il fallback fa un substring search case-insensitive.
+CLUB_FILE_ALIAS = {
+    "Manchester City FC": "Manchester City",
+    "FC Bayern München": "Bayern Monaco",
+    "Arsenal FC": "Arsenal FC logo PNG",
+    "Paris Saint-Germain": "Paris Saint Germain",
+    "FC Barcelona": "Barcelona logo",
+    "Atlético De Madrid": "Atletico Madrid logo",
+    "Manchester United FC": "Manchester United FC logo PNG",
+    "Crystal Palace FC": "Crystal Palace FC logo PNG",
+    "Liverpool FC": "Liverpool FC logo PNG",
+    "Real Madrid C. F.": "Real Madrid logo",
+    "AC Milan": "Milan",
+    "Aston Villa FC": "Aston Villa FC logo PNG",
+    "PSV Eindhoven": "Psv.cc",
+    # pt71: club italiani — file gia' presenti in Stemmi Club e Nazioni/
+    "ACF Fiorentina": "Fiorentina",
+    "FC Internazionale Milano": "Inter",
+    "SSC Napoli": "Napoli",
+    "Atalanta Bergamo": "Atalanta",
+    "Juventus FC": "Juventus",
+    "Bologna FC": "Bologna",
+}
+
+# Estensioni cercate
+IMG_EXT = {".png", ".PNG", ".jpg", ".jpeg", ".webp"}
+
+
+def _all_club_files() -> dict[str, Path]:
+    """Indicizza una volta tutti i PNG di Immagini (escluso Loghi nazioni)
+    + cartelle EXTRA_CLUB_ROOTS e ritorna una mappa stem-lowercase → Path."""
+    if not hasattr(_all_club_files, "_cache"):
+        idx: dict[str, Path] = {}
+        for p in IMG_ROOT.rglob("*.png"):
+            # Escludi le bandiere nazionali (già indicizzate altrove)
+            if "Loghi nazioni" in p.parts:
+                continue
+            idx[p.stem.lower().strip()] = p
+        # Aggiungi le cartelle extra
+        for root in EXTRA_CLUB_ROOTS:
+            if not root.exists():
+                continue
+            for p in root.rglob("*.png"):
+                idx[p.stem.lower().strip()] = p
+        _all_club_files._cache = idx
+    return _all_club_files._cache  # type: ignore[attr-defined]
+
+
+def _strip_accents(s: str) -> str:
+    """Rimuove diacritici: 'Fenerbahçe' → 'Fenerbahce', 'Atlético' → 'Atletico'."""
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", s)
+                   if unicodedata.category(c) != "Mn")
+
+
+def club_logo_path(club: str) -> Path | None:
+    """Ritorna il path del logo per il club. Prima alias diretto, poi
+    fuzzy substring match sul nome (rimuovendo suffissi tipo 'FC' e
+    normalizzando accenti per matchare es. Fenerbahçe ↔ Fenerbahce)."""
+    idx = _all_club_files()
+    alias = CLUB_FILE_ALIAS.get(club)
+    if alias:
+        p = idx.get(alias.lower())
+        if p:
+            return p
+    import re
+    # pt69: normalizzo accenti SIA sul nome club SIA sui filename indice,
+    # così Fenerbahçe match Fenerbahce.png.
+    club_norm = _strip_accents(club.lower())
+    tokens = re.findall(r"[a-z]+", club_norm)
+    stop = {"fc", "sc", "sk", "cf", "ac", "fk", "cr", "de", "do", "of", "the", "club"}
+    tokens = [t for t in tokens if t not in stop and len(t) > 2]
+    if not tokens:
+        return None
+    # Indice normalizzato → path
+    idx_norm = {_strip_accents(stem): path for stem, path in idx.items()}
+    for stem, path in idx_norm.items():
+        if all(t in stem for t in tokens):
+            return path
+    for stem, path in idx_norm.items():
+        if tokens[0] in stem:
+            return path
+    return None
+
+# -------------------- COLORI --------------------
+COLORS = {
+    "primary":   "#0f172a",  # nero/blu scuro testi
+    "accent":    "#16a34a",  # verde PitchPlan
+    "muted":     "#94a3b8",
+    "bg":        "#ffffff",
+    "grid":      "#e2e8f0",
+    "bar1":      "#1e293b",
+    "bar2":      "#16a34a",
+    "bar3":      "#0ea5e9",
+    "bar4":      "#f59e0b",
+    "bar5":      "#dc2626",
+}
+
+# Palette per nazionali (10 colori ciclici)
+NATION_PALETTE = ["#16a34a", "#0ea5e9", "#f59e0b", "#dc2626", "#a855f7",
+                  "#06b6d4", "#84cc16", "#ec4899", "#64748b", "#8b5cf6"]
+
+
+# -------------------- HELPERS --------------------
+def setup_fig(figsize=(16, 9)) -> tuple[plt.Figure, plt.Axes]:
+    """Crea figura 16:9 a 3840×2160 4K UHD (dpi=240). Override figsize
+    per chart con tante righe (es. 48 nazionali) dove serve più altezza."""
+    fig, ax = plt.subplots(figsize=figsize, dpi=240)
+    fig.patch.set_facecolor(COLORS["bg"])
+    ax.set_facecolor(COLORS["bg"])
+    for s in ["top", "right"]:
+        ax.spines[s].set_visible(False)
+    for s in ["left", "bottom"]:
+        ax.spines[s].set_color(COLORS["muted"])
+        ax.spines[s].set_linewidth(0.8)
+    ax.grid(True, axis="x", color=COLORS["grid"], linewidth=0.7, zorder=0)
+    ax.tick_params(colors=COLORS["primary"], labelsize=14)
+    return fig, ax
+
+
+def add_logo(fig: plt.Figure) -> None:
+    """Logo SC in alto a destra (più piccolo, brand discreto)."""
+    if LOGO_PATH and LOGO_PATH.exists():
+        img = mpimg.imread(str(LOGO_PATH))
+        # Box [left, bottom, width, height] in figure-fraction.
+        # Più piccolo (3.5% width × 5% height) e in alto a destra.
+        ax_logo = fig.add_axes([0.945, 0.91, 0.035, 0.06], zorder=10)
+        ax_logo.imshow(img)
+        ax_logo.axis("off")
+    else:
+        fig.text(0.97, 0.94, "SC", ha="right", va="top",
+                 fontsize=28, fontweight="bold",
+                 color=COLORS["muted"], family="Avenir Next Condensed")
+
+
+def _safe_imread(path: Path):
+    """Carica un'immagine via PIL (più tollerante di mpimg sui PNG mascherati)."""
+    try:
+        from PIL import Image
+        import numpy as np
+        with Image.open(str(path)) as im:
+            return np.array(im.convert("RGBA"))
+    except Exception as e:
+        print(f"   ⚠️  skip {path.name}: {e}")
+        return None
+
+
+def add_club_logos(ax: plt.Axes, clubs: list[str], size_px: int = 28,
+                   xpad_points: int = -85) -> None:
+    """Disegna il logo di ogni club a sinistra del label."""
+    from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+    yticks = ax.get_yticks()
+    for y, c in zip(yticks, clubs):
+        lp = club_logo_path(c)
+        if not lp:
+            continue
+        img = _safe_imread(lp)
+        if img is None:
+            continue
+        oi = OffsetImage(img, zoom=size_px / max(img.shape[0], img.shape[1]))
+        ab = AnnotationBbox(oi, (0, y),
+                            xybox=(xpad_points, 0), xycoords=("axes fraction", "data"),
+                            boxcoords="offset points",
+                            frameon=False, box_alignment=(0.5, 0.5))
+        ax.add_artist(ab)
+
+
+def add_code_logos(ax: plt.Axes, codes: list[str], size_px: int = 22,
+                   xpad_points: int = -80) -> None:
+    """Come add_nation_logos ma input = lista di codici 3-letter (es. ENG)."""
+    from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+    yticks = ax.get_yticks()
+    for y, code in zip(yticks, codes):
+        lp = code_logo_path(code)
+        if not lp:
+            continue
+        img = mpimg.imread(str(lp))
+        oi = OffsetImage(img, zoom=size_px / max(img.shape[0], img.shape[1]))
+        ab = AnnotationBbox(oi, (0, y),
+                            xybox=(xpad_points, 0), xycoords=("axes fraction", "data"),
+                            boxcoords="offset points",
+                            frameon=False, box_alignment=(0.5, 0.5))
+        ax.add_artist(ab)
+
+
+def add_nation_logos(ax: plt.Axes, nations: list[str], xpos_data: float | None = None,
+                     size_px: int = 60) -> None:
+    """Disegna il logo di ogni nazione a sinistra del proprio tick.
+    nations: lista nomi nelle stesse posizioni y delle barre (in ordine
+    bottom-up di matplotlib, come ax.barh fa). xpos_data: posizione in
+    coordinate dati; se None usa lo 0 dell'asse (poi sposta a sinistra)."""
+    from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+
+    yticks = ax.get_yticks()
+    for y, n in zip(yticks, nations):
+        lp = nation_logo_path(n)
+        if not lp:
+            continue
+        img = mpimg.imread(str(lp))
+        oi = OffsetImage(img, zoom=size_px / max(img.shape[0], img.shape[1]))
+        # box_alignment 0.5,0.5 → centrato sul tick; xy in coord assi
+        # (xytext usa axis fraction, neg per stare A SINISTRA del label).
+        ab = AnnotationBbox(oi, (0, y),
+                            xybox=(-110, 0), xycoords=("axes fraction", "data"),
+                            boxcoords="offset points",
+                            frameon=False, box_alignment=(0.5, 0.5))
+        ax.add_artist(ab)
+
+
+def add_footer(fig: plt.Figure, source: str = "Fonte: FIFA"):
+    fig.text(0.04, 0.04, source, ha="left", va="bottom",
+             fontsize=11, color=COLORS["muted"], style="italic")
+
+
+def add_title(fig: plt.Figure, title: str, subtitle: str = ""):
+    fig.text(0.04, 0.94, title, ha="left", va="top",
+             fontsize=32, fontweight="bold", color=COLORS["primary"])
+    if subtitle:
+        fig.text(0.04, 0.89, subtitle, ha="left", va="top",
+                 fontsize=18, color=COLORS["muted"])
+
+
+def savefig(fig: plt.Figure, name: str) -> None:
+    out = Path("charts")
+    out.mkdir(exist_ok=True)
+    fpath = out / f"{name}.png"
+    fig.savefig(fpath, dpi=240, bbox_inches=None,
+                facecolor=COLORS["bg"], edgecolor="none")
+    plt.close(fig)
+    print(f"  ✓ {fpath}")
+
+
+# -------------------- CHARTS --------------------
+def chart_national_caps_avg():
+    """Bar horizontal: media caps senior per nazionale (top 25)."""
+    rows = json.load(open("data/wc2026_national_caps.json"))
+    rows_sorted = sorted(rows, key=lambda r: r["avg"], reverse=True)[:25]
+    nations = [r["nation"] for r in rows_sorted][::-1]
+    avgs = [r["avg"] for r in rows_sorted][::-1]
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.26, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(display_nations(nations), avgs, color=COLORS["bar2"], height=0.5)
+    for bar, val in zip(bars, avgs):
+        ax.text(val + 0.5, bar.get_y() + bar.get_height() / 2,
+                f"{val:.1f}", va="center", fontsize=12,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Media presenze in nazionale (senior A)", fontsize=14)
+    ax.set_xlim(0, max(avgs) * 1.12)
+    add_nation_logos(ax, nations, size_px=18)
+
+    add_title(fig, "Esperienza media in nazionale",
+              "Media caps senior A — TOP 25 rose")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "01_caps_avg_top25")
+
+
+def chart_national_caps_avg_bottom():
+    """Bar horizontal: media caps senior per nazionale (BOTTOM 25 — le rose
+    meno esperte in nazionale)."""
+    rows = json.load(open("data/wc2026_national_caps.json"))
+    # ASC sui pct → le 25 più basse. Inverto per ax.barh bottom-up
+    # (la più bassa in alto, la "meno peggio" in fondo).
+    rows_sorted = sorted(rows, key=lambda r: r["avg"])[:25]
+    rows_sorted = rows_sorted[::-1]
+    nations = [r["nation"] for r in rows_sorted]
+    avgs = [r["avg"] for r in rows_sorted]
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.26, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(display_nations(nations), avgs, color=COLORS["bar5"], height=0.5)
+    for bar, val in zip(bars, avgs):
+        ax.text(val + 0.5, bar.get_y() + bar.get_height() / 2,
+                f"{val:.1f}", va="center", fontsize=12,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Media presenze in nazionale (senior A)", fontsize=14)
+    ax.set_xlim(0, max(avgs) * 1.12)
+    add_nation_logos(ax, nations, size_px=18)
+
+    add_title(fig, "Rose meno esperte in nazionale",
+              "Media caps senior A — le 25 PIÙ BASSE")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "01b_caps_avg_bottom25")
+
+
+def chart_top_clubs():
+    """Bar horizontal: top 20 club per giocatori al Mondiale."""
+    data = json.load(open("data/wc2026_analysis.json"))
+    top = data["top_clubs"][:20][::-1]
+    clubs = [c[0] for c in top]
+    cnts = [c[1] for c in top]
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.30, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(clubs, cnts, color=COLORS["bar1"], height=0.5)
+    for bar, val in zip(bars, cnts):
+        ax.text(val + 0.15, bar.get_y() + bar.get_height() / 2,
+                str(val), va="center", fontsize=12,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Giocatori al Mondiale 2026", fontsize=14)
+    ax.set_xlim(0, max(cnts) + 2)
+    # pt69: loghi club spostati molto più a sinistra (col label dei club)
+    # con dimensione fissa uniforme — niente più sovrapposizione.
+    add_club_logos(ax, clubs, size_px=22, xpad_points=-180)
+
+    add_title(fig, "Club che esportano più giocatori al Mondiale",
+              "TOP 20 club per numero di convocati WC2026")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "02_top_clubs")
+
+
+def chart_top_leagues():
+    """Bar horizontal: top 15 campionati di militanza."""
+    data = json.load(open("data/wc2026_analysis.json"))
+    top = data["top_leagues"][:15][::-1]
+    leagues = [c[0] for c in top]
+    cnts = [c[1] for c in top]
+    total = sum(c[1] for c in data["top_leagues"])
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.12, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(leagues, cnts, color=COLORS["bar3"], height=0.5)
+    for bar, val in zip(bars, cnts):
+        pct = 100 * val / total
+        ax.text(val + 1, bar.get_y() + bar.get_height() / 2,
+                f"{val}  ({pct:.1f}%)", va="center", fontsize=12,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Giocatori al Mondiale (per nazione del club)", fontsize=14)
+    ax.set_xlim(0, max(cnts) * 1.18)
+    add_code_logos(ax, leagues, size_px=28, xpad_points=-70)
+
+    # pt69: Big 5 box (ENG+GER+ESP+ITA+FRA) in un riquadro a destra,
+    # più in basso (al centro dell'asse), con valori grandi.
+    BIG5 = {"ENG", "GER", "ESP", "ITA", "FRA"}
+    big5_sum = sum(c for k, c in data["top_leagues"] if k in BIG5)
+    big5_pct = 100 * big5_sum / total
+    # Rectangle background (in figure-fraction)
+    box_l, box_b, box_w, box_h = 0.78, 0.32, 0.20, 0.32
+    ax_box = fig.add_axes([box_l, box_b, box_w, box_h], zorder=8)
+    ax_box.set_xlim(0, 1); ax_box.set_ylim(0, 1); ax_box.axis("off")
+    from matplotlib.patches import FancyBboxPatch
+    ax_box.add_patch(FancyBboxPatch(
+        (0.02, 0.02), 0.96, 0.96,
+        boxstyle="round,pad=0.02,rounding_size=0.06",
+        facecolor="#f0f9ff", edgecolor=COLORS["bar3"], linewidth=2.5, zorder=1))
+    ax_box.text(0.5, 0.94, "BIG 5",
+                ha="center", va="top", fontsize=20, fontweight="bold",
+                color=COLORS["bar3"], family="Avenir Next Condensed",
+                transform=ax_box.transAxes)
+    ax_box.text(0.5, 0.60, f"{big5_sum}",
+                ha="center", va="center", fontsize=72, fontweight="bold",
+                color=COLORS["bar3"], family="Avenir Next Condensed",
+                transform=ax_box.transAxes)
+    ax_box.text(0.5, 0.30, f"{big5_pct:.1f}% del totale",
+                ha="center", va="center", fontsize=20, fontweight="bold",
+                color=COLORS["primary"], family="Avenir Next Condensed",
+                transform=ax_box.transAxes)
+    ax_box.text(0.5, 0.12, "Premier · Bundesliga · LaLiga · Serie A · Ligue 1",
+                ha="center", va="center", fontsize=10, style="italic",
+                color=COLORS["muted"], family="Avenir Next Condensed",
+                transform=ax_box.transAxes)
+
+    add_title(fig, "Campionati di militanza",
+              "TOP 15 paesi del club da cui provengono i convocati WC2026")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "03_top_leagues")
+
+
+def chart_avg_age():
+    """Bar horizontal: età media per rosa, sortata."""
+    data = json.load(open("data/wc2026_analysis.json"))
+    pn = data["per_nation"]
+    rows = sorted(((n, v["avg_age"]) for n, v in pn.items() if v.get("avg_age")),
+                  key=lambda x: x[1], reverse=True)
+    nations = [r[0] for r in rows][::-1]
+    vals = [r[1] for r in rows][::-1]
+
+    # pt69: figsize più alto per le 48 nazionali — più aria tra le righe
+    fig, ax = setup_fig(figsize=(16, 14))
+    fig.subplots_adjust(left=0.20, right=0.95, top=0.91, bottom=0.06)
+    cmap = matplotlib.colormaps.get_cmap("RdYlGn_r")
+    norm_vals = [(v - min(vals)) / (max(vals) - min(vals)) for v in vals]
+    colors = [cmap(n) for n in norm_vals]
+    bars = ax.barh(display_nations(nations), vals, color=colors, height=0.55)
+    for bar, val in zip(bars, vals):
+        ax.text(val + 0.05, bar.get_y() + bar.get_height() / 2,
+                f"{val:.1f}", va="center", fontsize=12,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Età media rosa", fontsize=14)
+    ax.set_xlim(min(vals) - 0.5, max(vals) + 0.8)
+    add_nation_logos(ax, nations, size_px=22)
+
+    add_title(fig, "Età media delle 48 rose", "")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "04_avg_age")
+
+
+def chart_avg_height():
+    """Bar horizontal: altezza media per rosa."""
+    data = json.load(open("data/wc2026_analysis.json"))
+    pn = data["per_nation"]
+    rows = sorted(((n, v["avg_height"]) for n, v in pn.items() if v.get("avg_height")),
+                  key=lambda x: x[1], reverse=True)
+    nations = [r[0] for r in rows][::-1]
+    vals = [r[1] for r in rows][::-1]
+
+    # pt69: figsize più alto per le 48 nazionali
+    fig, ax = setup_fig(figsize=(16, 14))
+    fig.subplots_adjust(left=0.20, right=0.95, top=0.91, bottom=0.06)
+    bars = ax.barh(display_nations(nations), vals, color=COLORS["bar4"], height=0.55)
+    for bar, val in zip(bars, vals):
+        ax.text(val + 0.15, bar.get_y() + bar.get_height() / 2,
+                f"{val:.1f} cm", va="center", fontsize=12,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Altezza media rosa (cm)", fontsize=14)
+    ax.set_xlim(min(vals) - 1, max(vals) + 3)
+    add_nation_logos(ax, nations, size_px=22)
+
+    add_title(fig, "Altezza media delle 48 rose", "")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "05_avg_height")
+
+
+def chart_coaches_by_country():
+    """Bar horizontal: numero di allenatori per nazionalità."""
+    coaches = json.load(open("data/wc2026_coaches.json"))
+    c = Counter(v["country"] for v in coaches.values())
+    top = c.most_common(15)[::-1]
+    countries = [t[0] for t in top]
+    counts = [t[1] for t in top]
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.20, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(display_nations(countries), counts, color=COLORS["bar5"], height=0.5)
+    for bar, val in zip(bars, counts):
+        ax.text(val + 0.05, bar.get_y() + bar.get_height() / 2,
+                str(val), va="center", fontsize=13,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Numero di allenatori al WC2026", fontsize=14)
+    ax.set_xlim(0, max(counts) + 1)
+    add_nation_logos(ax, countries, size_px=24)
+
+    add_title(fig, "Allenatori per nazionalità",
+              "Quali paesi esportano più CT al Mondiale 2026")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "06_coaches_by_country")
+
+
+def chart_home_share():
+    """Bar horizontal: % giocatori che militano nel campionato di origine."""
+    data = json.load(open("data/wc2026_analysis.json"))
+    hs = data["home_share"]
+    rows = sorted(hs.items(), key=lambda x: x[1]["pct"], reverse=True)[:25]
+    rows = rows[::-1]
+    nations = [r[0] for r in rows]
+    vals = [r[1]["pct"] for r in rows]
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.26, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(display_nations(nations), vals, color=COLORS["accent"], height=0.5)
+    for bar, val in zip(bars, vals):
+        ax.text(val + 0.6, bar.get_y() + bar.get_height() / 2,
+                f"{val:.1f}%", va="center", fontsize=11,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("% convocati che militano nel campionato del proprio paese", fontsize=14)
+    ax.set_xlim(0, max(vals) * 1.10)
+    add_nation_logos(ax, nations, size_px=18)
+
+    add_title(fig, "Convocati che giocano in patria",
+              "% giocatori della rosa che militano nel campionato di origine — TOP 25")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "07_home_share")
+
+
+def chart_home_share_bottom():
+    """Bar horizontal: % MENO giocatori che militano nel campionato di
+    origine — bottom 25 (più 'esportatrici' di talenti)."""
+    data = json.load(open("data/wc2026_analysis.json"))
+    hs = data["home_share"]
+    # ASC sui pct → le più basse (alcune 0%). Prendo le 25 più basse
+    # in ordine crescente, poi inverto perché ax.barh disegna bottom-up.
+    rows = sorted(hs.items(), key=lambda x: x[1]["pct"])[:25]
+    rows = rows[::-1]  # nel chart la più bassa finisce IN ALTO
+    nations = [r[0] for r in rows]
+    vals = [r[1]["pct"] for r in rows]
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.26, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(display_nations(nations), vals, color=COLORS["bar5"], height=0.5)
+    # Label: se 0%, scrivo "0%" appena a destra di 0; sennò appena dopo la barra.
+    xmax = max(vals + [10])
+    for bar, val in zip(bars, vals):
+        ax.text(max(val, 0) + xmax * 0.012, bar.get_y() + bar.get_height() / 2,
+                f"{val:.1f}%", va="center", fontsize=11,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("% convocati che militano nel campionato del proprio paese", fontsize=14)
+    ax.set_xlim(0, xmax * 1.15)
+    add_nation_logos(ax, nations, size_px=18)
+
+    add_title(fig, "Le rose più 'esportatrici' di talenti",
+              "% giocatori della rosa che militano nel campionato di origine — le 25 PIÙ BASSE")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "07b_home_share_bottom")
+
+
+# pt71: nomi puliti per i club italiani — tolgo prefissi/suffissi societari
+# (AC, AS, FC, SSC, US, UC, ACF, CFC, Hellas, ...) che appesantiscono i ticks.
+CLUB_DISPLAY_IT = {
+    "AC Milan": "Milan",
+    "FC Internazionale Milano": "Inter",
+    "Atalanta Bergamo": "Atalanta",
+    "AS Roma": "Roma",
+    "Juventus FC": "Juventus",
+    "Bologna FC": "Bologna",
+    "US Sassuolo": "Sassuolo",
+    "SSC Napoli": "Napoli",
+    "Como": "Como",
+    "Venezia FC": "Venezia",
+    "Torino FC": "Torino",
+    "Parma": "Parma",
+    "Genoa CFC": "Genoa",
+    "US Cremonese": "Cremonese",
+    "Hellas Verona FC": "Verona",
+    "Frosinone": "Frosinone",
+    "UC Sampdoria": "Sampdoria",
+    "Cagliari": "Cagliari",
+    "ACF Fiorentina": "Fiorentina",
+    "Udinese": "Udinese",
+    "Pisa SC": "Pisa",
+}
+
+
+def chart_top_italian_clubs():
+    """pt71: bar horizontal — solo i club di Serie A che esportano giocatori
+    al Mondiale 2026. Conta gli iscritti FIFA con club_country == 'ITA'."""
+    fifa = json.load(open("data/wc2026_squads_fifa.json"))
+    counter: dict[str, int] = {}
+    for nation, v in fifa.items():
+        if not isinstance(v, dict): continue
+        for p in v.get("players", []):
+            if p.get("club_country") == "ITA":
+                c = p.get("club", "???")
+                counter[c] = counter.get(c, 0) + 1
+    pairs = sorted(counter.items(), key=lambda x: -x[1])
+    total = sum(n for _, n in pairs)
+    # bottom-up per matplotlib barh
+    pairs_plot = pairs[::-1]
+    clubs_raw = [c for c, _ in pairs_plot]
+    clubs_display = [CLUB_DISPLAY_IT.get(c, c) for c in clubs_raw]
+    cnts = [n for _, n in pairs_plot]
+
+    fig, ax = setup_fig(figsize=(16, 11))
+    fig.subplots_adjust(left=0.30, right=0.93, top=0.88, bottom=0.08)
+    bars = ax.barh(clubs_display, cnts, color=COLORS["bar1"], height=0.6)
+    for bar, val in zip(bars, cnts):
+        ax.text(val + 0.12, bar.get_y() + bar.get_height() / 2,
+                str(val), va="center", fontsize=13,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Giocatori al Mondiale 2026", fontsize=14)
+    ax.set_xlim(0, max(cnts) + 2)
+    # I loghi vanno cercati con i nomi RAW (CLUB_FILE_ALIAS mappa quelli).
+    # pt71: loghi spostati piu' a destra (-180 → -120) per stare piu' vicino
+    # al label del club.
+    add_club_logos(ax, clubs_raw, size_px=24, xpad_points=-120)
+
+    add_title(fig, "Club italiani al Mondiale",
+              f"{total} convocati da {len(pairs)} club di Serie A")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "10_italian_clubs")
+
+
+def chart_italian_players_by_nation():
+    """pt71: bar horizontal — in quali nazionali militano i giocatori che
+    giocano in Serie A. Misura quanto la Serie A è un 'campionato
+    multinazionale' al Mondiale 2026."""
+    fifa = json.load(open("data/wc2026_squads_fifa.json"))
+    by_nation: dict[str, int] = {}
+    total = 0
+    for nation, v in fifa.items():
+        if not isinstance(v, dict): continue
+        for p in v.get("players", []):
+            if p.get("club_country") == "ITA":
+                by_nation[nation] = by_nation.get(nation, 0) + 1
+                total += 1
+    pairs = sorted(by_nation.items(), key=lambda x: -x[1])
+    pairs_plot = pairs[::-1]
+    nations = [n for n, _ in pairs_plot]
+    cnts = [c for _, c in pairs_plot]
+
+    fig, ax = setup_fig(figsize=(16, 13))
+    fig.subplots_adjust(left=0.28, right=0.93, top=0.90, bottom=0.07)
+    bars = ax.barh(display_nations(nations), cnts, color=COLORS["bar2"], height=0.6)
+    for bar, val in zip(bars, cnts):
+        ax.text(val + 0.08, bar.get_y() + bar.get_height() / 2,
+                str(val), va="center", fontsize=13,
+                color=COLORS["primary"], fontweight="bold")
+    ax.set_xlabel("Giocatori in Serie A convocati con la propria nazionale", fontsize=14)
+    ax.set_xlim(0, max(cnts) + 1.5)
+    add_nation_logos(ax, nations, size_px=28)
+
+    add_title(fig, "Nazionali rifornite dalla Serie A",
+              f"{total} convocati 'italiani' distribuiti su {len(pairs)} nazionali (esclusa l'Italia, non qualificata)")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "11_italian_players_by_nation")
+
+
+def chart_records():
+    """Grafico 16:9 con 6 card statistiche: più vecchio/giovane,
+    più alto/basso, top caps, esordienti (0 caps)."""
+    import datetime as dt
+    fifa = json.load(open("data/wc2026_squads_fifa.json"))
+    stats_list = json.load(open("data/players_stats.json"))
+    stats_by_id = {str(s["tm_player_id"]): s for s in stats_list}
+    raw = json.load(open("data/wc2026_squads_raw.json"))
+    # pt69: lookup foto + ruolo dal players_all PID
+    all_pl = json.load(open("data/players_all.json"))
+    PID_BASE = Path("/Users/simone/Desktop/pid")
+    info_by_id = {}
+    for pl in all_pl:
+        tid = str(pl.get("tm_player_id") or "")
+        if not tid:
+            continue
+        photo_rel = pl.get("photo_local")
+        photo_path = (PID_BASE / "data" / photo_rel) if photo_rel else None
+        info_by_id[tid] = {
+            "photo": photo_path if (photo_path and photo_path.exists()) else None,
+            "position": pl.get("position_specific") or pl.get("position_general") or "",
+            "full_name": pl.get("full_name", ""),
+        }
+    # Lookup per nome (FIFA non ha tm_id direttamente)
+    info_by_name_lower: dict[str, dict] = {}
+    for tid, info in info_by_id.items():
+        nm = (info.get("full_name") or "").lower()
+        if nm:
+            info_by_name_lower[nm] = info
+    def fifa_info(p: dict, fallback_pos: str = "") -> dict:
+        # FIFA player has raw_names_blob; cerco match parziale per cognome
+        blob = (p.get("raw_names_blob") or "").lower()
+        for nm, info in info_by_name_lower.items():
+            if nm and (nm in blob or all(t in blob for t in nm.split()[:2])):
+                return info
+        return {"photo": None, "position": fallback_pos, "full_name": ""}
+
+    today = dt.date(2026, 6, 11)
+    def age_of(dob):
+        try:
+            return (today - dt.date.fromisoformat(dob)).days / 365.25
+        except Exception:
+            return None
+
+    all_pl = [(n, p) for n, v in fifa.items() for p in v["players"]]
+    tallest = max(all_pl, key=lambda np: np[1].get("height_cm", 0))
+    shortest = min((np for np in all_pl if np[1].get("height_cm")),
+                   key=lambda np: np[1]["height_cm"])
+    oldest = min(all_pl, key=lambda np: np[1].get("date_of_birth", "9999"))
+    youngest = max(all_pl, key=lambda np: np[1].get("date_of_birth", "0000"))
+
+    # pt69: override dati nazionali per giocatori con scrape TM incompleto
+    # (CR Ronaldo: TM raw ha 239 caps / 45 goal, ma la pagina TM mostra
+    # 226 caps / 143 goal nel "National team career" — il scraper sta
+    # leggendo solo la riga di una competizione filtrata).
+    RECORD_OVERRIDES = {
+        "8198": {"caps": 226, "goals": 143, "club": "Al-Nassr FC"},  # CR Ronaldo
+    }
+
+    # Top caps + top goal + (least caps) — include tm_id per recupero foto
+    top_caps = ("", "", 0, "", "")    # (nation, name, caps, club, tm_id)
+    top_goals = ("", "", 0, "", "")
+    least_caps = ("", "", 9999, "", "")
+    n_debutters = 0
+    for nation, v in raw.items():
+        if not isinstance(v, dict):
+            continue
+        for p in v.get("players", []):
+            tid = str(p.get("tm_player_id") or "")
+            s = stats_by_id.get(tid)
+            if not s:
+                continue
+            override = RECORD_OVERRIDES.get(tid)
+            for ent in s.get("national_career", []) or []:
+                if ent.get("category") != "A":
+                    continue
+                caps = override["caps"] if override else int(ent.get("caps", 0) or 0)
+                goals = override["goals"] if override else int(ent.get("goals", 0) or 0)
+                club = override["club"] if override else p.get("club", "—")
+                if caps > top_caps[2]:
+                    top_caps = (nation, p.get("name", "?"), caps, club, tid)
+                if goals > top_goals[2]:
+                    top_goals = (nation, p.get("name", "?"), goals, club, tid)
+                if caps == 0:
+                    n_debutters += 1
+                # least caps tra chi ha >=1 cap (no esordienti)
+                if 1 <= caps < least_caps[2]:
+                    least_caps = (nation, p.get("name", "?"), caps, club, tid)
+                break
+
+    fig = plt.figure(figsize=(16, 9), dpi=240, facecolor=COLORS["bg"])
+    add_title(fig, "Record del Mondiale 2026",
+              "I numeri estremi delle 48 rose ufficiali FIFA")
+    add_footer(fig)
+    add_logo(fig)
+
+    # 6 card in grid 2×3, area utile [0.05, 0.10, 0.90, 0.72]
+    # pt69: ruolo + foto per ogni card. La foto viene presa SEMPRE via
+    # tm_player_id (info_by_id) per evitare match falsi via raw_names_blob.
+    POS_LBL = {"GK": "Portiere", "DF": "Difensore", "MF": "Centrocampista", "FW": "Attaccante"}
+
+    # Mapping tm_id → player FIFA (per recuperare ruolo + raw_names_blob)
+    fifa_by_tm: dict[str, dict] = {}
+    for nation_name, v in raw.items():
+        if not isinstance(v, dict):
+            continue
+        for wp in v.get("players", []):
+            tid = str(wp.get("tm_player_id") or "")
+            if not tid:
+                continue
+            # Match con FIFA player per stesso nome
+            wname = (wp.get("name") or "").lower()
+            for fp in fifa.get(nation_name, {}).get("players", []):
+                blob = (fp.get("raw_names_blob") or "").lower()
+                if wname and (wname in blob or any(t in blob for t in wname.split())):
+                    fifa_by_tm[tid] = fp
+                    break
+
+    def card_for(label, value, player, nation, color):
+        pos_short = (player.get("position") or "").upper()
+        pos_full = POS_LBL.get(pos_short, pos_short)
+        info = fifa_info(player, pos_full)
+        # Nome leggibile: "Cognome Nome" estratto dal raw_names_blob
+        parts = (player.get("raw_names_blob") or "").split()
+        if len(parts) >= 2:
+            # primi 2 token sono "COGNOME Nome" → metto "Nome Cognome"
+            nice_name = f"{parts[1].title()} {parts[0].title()}"
+        else:
+            nice_name = player.get("name_on_shirt", "?")
+        return {
+            "label": label, "value": value, "name": nice_name,
+            "subtitle": f"{nation} · {pos_full}" if pos_full else nation,
+            "color": color, "nation": nation,
+            "photo": info.get("photo"),
+        }
+
+    def caps_card(label, info_tuple, color):
+        nation, _, val, club, tm_id = info_tuple
+        # Foto e info dal PID via tm_id (sicuro, no name match)
+        pid_info = info_by_id.get(tm_id, {})
+        nice_name = pid_info.get("full_name") or "?"
+        # Ruolo: prima da FIFA player matchato, altrimenti da PID
+        fp = fifa_by_tm.get(tm_id, {})
+        pos_short = (fp.get("position") or "").upper()
+        pos_full = POS_LBL.get(pos_short, pos_short) or pid_info.get("position", "")
+        return {
+            "label": label, "value": f"{val}", "name": nice_name,
+            "subtitle": f"{nation} · {club} · {pos_full}" if pos_full else f"{nation} · {club}",
+            "color": color, "nation": nation,
+            "photo": pid_info.get("photo"),
+        }
+
+    cards = [
+        card_for("PIÙ VECCHIO", f"{age_of(oldest[1]['date_of_birth']):.1f} anni",
+                 oldest[1], oldest[0], COLORS["bar5"]),
+        card_for("PIÙ GIOVANE", f"{age_of(youngest[1]['date_of_birth']):.1f} anni",
+                 youngest[1], youngest[0], COLORS["bar2"]),
+        card_for("PIÙ ALTO", f"{tallest[1].get('height_cm','?')} cm",
+                 tallest[1], tallest[0], COLORS["bar4"]),
+        card_for("PIÙ BASSO", f"{shortest[1].get('height_cm','?')} cm",
+                 shortest[1], shortest[0], COLORS["bar3"]),
+        caps_card("MASSIMO CAPS", top_caps, COLORS["bar1"]),
+        caps_card("MASSIMO GOAL NAZIONALE", top_goals, COLORS["accent"]),
+    ]
+    # Sostituisco la riga "Esordienti" col card di MENO PRESENZE (più utile)
+    if least_caps[2] < 9999:
+        cards.append(caps_card("MENO PRESENZE", least_caps, COLORS["bar3"]))
+
+    # Grid 2 righe × 4 colonne (8 slot, 7 card + 1 vuoto)
+    cols, rows = 4, 2
+    pad_x, pad_y = 0.025, 0.03
+    grid_left, grid_bottom = 0.03, 0.08
+    grid_w, grid_h = 0.94, 0.74
+    cell_w = (grid_w - pad_x * (cols - 1)) / cols
+    cell_h = (grid_h - pad_y * (rows - 1)) / rows
+
+    for i, c in enumerate(cards):
+        row = i // cols
+        col = i % cols
+        x = grid_left + col * (cell_w + pad_x)
+        y = grid_bottom + (rows - 1 - row) * (cell_h + pad_y)
+        ax = fig.add_axes([x, y, cell_w, cell_h])
+        ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+        ax.axis("off")
+        # Sfondo card
+        ax.add_patch(Rectangle((0, 0), 1, 1, facecolor="#f8fafc",
+                               edgecolor=COLORS["grid"], linewidth=1, zorder=1))
+        # Label top
+        ax.text(0.04, 0.88, c["label"], fontsize=14, fontweight="bold",
+                color=COLORS["muted"], family="Avenir Next Condensed",
+                transform=ax.transAxes)
+        # Logo nazione in alto a destra
+        lp = nation_logo_path(c["nation"])
+        if lp and lp.exists():
+            from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+            img = _safe_imread(lp)
+            if img is not None:
+                oi = OffsetImage(img, zoom=44 / max(img.shape[0], img.shape[1]))
+                ab = AnnotationBbox(oi, (0.93, 0.85), xycoords=ax.transAxes,
+                                    frameon=False, box_alignment=(0.5, 0.5))
+                ax.add_artist(ab)
+        # pt69: foto giocatore a destra (più grande del logo nazione)
+        photo = c.get("photo")
+        if photo:
+            from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+            pimg = _safe_imread(photo)
+            if pimg is not None:
+                zoom = 110 / max(pimg.shape[0], pimg.shape[1])
+                oi = OffsetImage(pimg, zoom=zoom)
+                ab = AnnotationBbox(oi, (0.86, 0.45), xycoords=ax.transAxes,
+                                    frameon=False, box_alignment=(0.5, 0.5))
+                ax.add_artist(ab)
+        # Valore grande
+        ax.text(0.04, 0.55, c["value"], fontsize=44, fontweight="bold",
+                color=c["color"], family="Avenir Next Condensed",
+                transform=ax.transAxes, va="center")
+        # Nome giocatore
+        ax.text(0.04, 0.28, c["name"], fontsize=18, fontweight="bold",
+                color=COLORS["primary"], family="Avenir Next Condensed",
+                transform=ax.transAxes)
+        # Subtitle (nazione · club · ruolo)
+        ax.text(0.04, 0.14, c["subtitle"], fontsize=11,
+                color=COLORS["muted"], family="Avenir Next Condensed",
+                transform=ax.transAxes, style="italic")
+
+    # In basso al centro: conteggio esordienti totali (piccolo footer info)
+    fig.text(0.5, 0.05, f"Esordienti al Mondiale (0 caps senior): {n_debutters} giocatori",
+             ha="center", va="bottom", fontsize=12, fontweight="bold",
+             color=COLORS["muted"], family="Avenir Next Condensed")
+
+    savefig(fig, "09_records")
+
+
+def chart_scatter_age_caps():
+    """Scatter: età media (X) vs media presenze nazionale (Y) — un punto
+    per nazionale, con logo nazione come marker."""
+    from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+
+    age_data = json.load(open("data/wc2026_analysis.json"))["per_nation"]
+    caps_data = {r["nation"]: r["avg"] for r in json.load(open("data/wc2026_national_caps.json"))}
+
+    points = []
+    for nation, v in age_data.items():
+        avg_age = v.get("avg_age")
+        caps = caps_data.get(nation)
+        if avg_age is None or caps is None:
+            continue
+        points.append((nation, avg_age, caps))
+
+    fig, ax = setup_fig()
+    fig.subplots_adjust(left=0.08, right=0.95, top=0.85, bottom=0.10)
+
+    xs = [p[1] for p in points]
+    ys = [p[2] for p in points]
+
+    # Limiti calcolati prima per posizionare le scritte negli angoli REALI
+    x_min, x_max = min(xs) - 0.5, max(xs) + 0.5
+    y_min, y_max = min(ys) - 5, max(ys) + 5
+
+    # pt69: bande colorate per età sull'asse X
+    #   X < 27   → verde (rosa giovane)
+    #   27–29    → giallo (intermedia)
+    #   X > 29   → rosso (rosa anziana)
+    ax.axvspan(x_min, 27, color="#bbf7d0", alpha=0.35, zorder=0)
+    ax.axvspan(27, 29, color="#fef9c3", alpha=0.45, zorder=0)
+    ax.axvspan(29, x_max, color="#fecaca", alpha=0.40, zorder=0)
+
+    # Linee medie X e Y
+    x_mean = sum(xs) / len(xs)
+    y_mean = sum(ys) / len(ys)
+    ax.axhline(y_mean, color=COLORS["muted"], linestyle="--", linewidth=0.8, zorder=1)
+
+    # Etichette quadranti POSIZIONATE AGLI ANGOLI REALI del chart
+    pad = 0.012
+    ax.text(pad, 1 - pad, "Giovani · esperte",
+            color=COLORS["primary"], fontsize=12, fontweight="bold",
+            ha="left", va="top", style="italic", transform=ax.transAxes,
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=3))
+    ax.text(1 - pad, 1 - pad, "Anziane · esperte",
+            color=COLORS["primary"], fontsize=12, fontweight="bold",
+            ha="right", va="top", style="italic", transform=ax.transAxes,
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=3))
+    ax.text(pad, pad, "Giovani · poco esperte",
+            color=COLORS["primary"], fontsize=12, fontweight="bold",
+            ha="left", va="bottom", style="italic", transform=ax.transAxes,
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=3))
+    ax.text(1 - pad, pad, "Anziane · poco esperte",
+            color=COLORS["primary"], fontsize=12, fontweight="bold",
+            ha="right", va="bottom", style="italic", transform=ax.transAxes,
+            bbox=dict(facecolor="white", edgecolor="none", alpha=0.7, pad=3))
+
+    # Punti = loghi delle nazioni
+    for nation, age, caps in points:
+        lp = nation_logo_path(nation)
+        if lp and lp.exists():
+            img = mpimg.imread(str(lp))
+            zoom = 32 / max(img.shape[0], img.shape[1])
+            ab = AnnotationBbox(OffsetImage(img, zoom=zoom),
+                                (age, caps), frameon=False, pad=0,
+                                box_alignment=(0.5, 0.5), zorder=5)
+            ax.add_artist(ab)
+        else:
+            ax.scatter([age], [caps], s=80, color=COLORS["bar2"], zorder=5)
+
+    ax.set_xlabel("Età media rosa", fontsize=14)
+    ax.set_ylabel("Media presenze in nazionale (senior A)", fontsize=14)
+    ax.set_xlim(x_min, x_max)
+    ax.set_ylim(y_min, y_max)
+    ax.grid(True, color=COLORS["grid"], linewidth=0.6, zorder=0)
+
+    add_title(fig, "Età media × Presenze in nazionale", "")
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "08_scatter_age_caps")
+
+
+def main():
+    print("Generazione grafici WC2026 (1920×1080, 16:9)")
+    print(f"Font: Avenir Next Condensed")
+    print(f"Logo: {LOGO_PATH or 'FALLBACK testo SC'}")
+    print()
+    chart_national_caps_avg()
+    chart_national_caps_avg_bottom()
+    chart_top_clubs()
+    chart_top_leagues()
+    chart_avg_age()
+    chart_avg_height()
+    chart_coaches_by_country()
+    chart_home_share()
+    chart_home_share_bottom()
+    chart_scatter_age_caps()
+    chart_records()
+    chart_top_italian_clubs()
+    chart_italian_players_by_nation()
+    print()
+    print("✓ Tutti i grafici salvati in charts/")
+
+
+if __name__ == "__main__":
+    main()

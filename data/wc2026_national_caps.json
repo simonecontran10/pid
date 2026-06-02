@@ -1,0 +1,1826 @@
+[
+  {
+    "nation": "Panama",
+    "team_id": "3577",
+    "n": 26,
+    "avg": 58.9,
+    "median": 54,
+    "max": {
+      "name": "Aníbal Godoy",
+      "caps": 160
+    },
+    "min": {
+      "name": "César Samudio",
+      "caps": 4
+    },
+    "total": 1532,
+    "top5": [
+      {
+        "name": "Aníbal Godoy",
+        "caps": 160
+      },
+      {
+        "name": "Alberto Quintero",
+        "caps": 139
+      },
+      {
+        "name": "Eric Davis",
+        "caps": 107
+      },
+      {
+        "name": "Yoel Bárcenas",
+        "caps": 104
+      },
+      {
+        "name": "Fidel Escobar",
+        "caps": 99
+      }
+    ]
+  },
+  {
+    "nation": "Qatar",
+    "team_id": "14162",
+    "n": 26,
+    "avg": 58.1,
+    "median": 50,
+    "max": {
+      "name": "Hassan Al-Haydos",
+      "caps": 170
+    },
+    "min": {
+      "name": "Tahsin Jamshid",
+      "caps": 0
+    },
+    "total": 1511,
+    "top5": [
+      {
+        "name": "Hassan Al-Haydos",
+        "caps": 170
+      },
+      {
+        "name": "Akram Afif",
+        "caps": 129
+      },
+      {
+        "name": "Abdulaziz Hatem",
+        "caps": 125
+      },
+      {
+        "name": "Almoez Ali",
+        "caps": 122
+      },
+      {
+        "name": "Boualem Khoukhi",
+        "caps": 121
+      }
+    ]
+  },
+  {
+    "nation": "Portugal",
+    "team_id": "3300",
+    "n": 27,
+    "avg": 55.3,
+    "median": 49,
+    "max": {
+      "name": "Cristiano Ronaldo",
+      "caps": 239
+    },
+    "min": {
+      "name": "Tomás Araújo",
+      "caps": 0
+    },
+    "total": 1494,
+    "top5": [
+      {
+        "name": "Cristiano Ronaldo",
+        "caps": 239
+      },
+      {
+        "name": "Bernardo Silva",
+        "caps": 115
+      },
+      {
+        "name": "João Cancelo",
+        "caps": 108
+      },
+      {
+        "name": "Rúben Neves",
+        "caps": 102
+      },
+      {
+        "name": "Bruno Fernandes",
+        "caps": 101
+      }
+    ]
+  },
+  {
+    "nation": "Switzerland",
+    "team_id": "3384",
+    "n": 26,
+    "avg": 52.7,
+    "median": 41,
+    "max": {
+      "name": "Granit Xhaka",
+      "caps": 157
+    },
+    "min": {
+      "name": "Marvin Keller",
+      "caps": 0
+    },
+    "total": 1369,
+    "top5": [
+      {
+        "name": "Granit Xhaka",
+        "caps": 157
+      },
+      {
+        "name": "Ricardo Rodriguez",
+        "caps": 150
+      },
+      {
+        "name": "Remo Freuler",
+        "caps": 106
+      },
+      {
+        "name": "Breel Embolo",
+        "caps": 92
+      },
+      {
+        "name": "Manuel Akanji",
+        "caps": 80
+      }
+    ]
+  },
+  {
+    "nation": "Austria",
+    "team_id": "3383",
+    "n": 26,
+    "avg": 52.5,
+    "median": 52,
+    "max": {
+      "name": "Marko Arnautović",
+      "caps": 137
+    },
+    "min": {
+      "name": "Paul Wanner",
+      "caps": 0
+    },
+    "total": 1366,
+    "top5": [
+      {
+        "name": "Marko Arnautović",
+        "caps": 137
+      },
+      {
+        "name": "David Alaba",
+        "caps": 122
+      },
+      {
+        "name": "Marcel Sabitzer",
+        "caps": 114
+      },
+      {
+        "name": "Michael Gregoritsch",
+        "caps": 91
+      },
+      {
+        "name": "Stefan Posch",
+        "caps": 83
+      }
+    ]
+  },
+  {
+    "nation": "Mexico",
+    "team_id": "6303",
+    "n": 26,
+    "avg": 49.7,
+    "median": 44,
+    "max": {
+      "name": "Guillermo Ochoa",
+      "caps": 154
+    },
+    "min": {
+      "name": "Álvaro Fidalgo",
+      "caps": 6
+    },
+    "total": 1292,
+    "top5": [
+      {
+        "name": "Guillermo Ochoa",
+        "caps": 154
+      },
+      {
+        "name": "Raúl Jiménez",
+        "caps": 124
+      },
+      {
+        "name": "Jesús Gallardo",
+        "caps": 121
+      },
+      {
+        "name": "Edson Álvarez",
+        "caps": 100
+      },
+      {
+        "name": "Orbelín Pineda",
+        "caps": 93
+      }
+    ]
+  },
+  {
+    "nation": "Argentina",
+    "team_id": "3437",
+    "n": 26,
+    "avg": 48.7,
+    "median": 42,
+    "max": {
+      "name": "Lionel Messi",
+      "caps": 204
+    },
+    "min": {
+      "name": "Nicolás González",
+      "caps": 0
+    },
+    "total": 1267,
+    "top5": [
+      {
+        "name": "Lionel Messi",
+        "caps": 204
+      },
+      {
+        "name": "Nicolás Otamendi",
+        "caps": 125
+      },
+      {
+        "name": "Lautaro Martínez",
+        "caps": 92
+      },
+      {
+        "name": "Rodrigo De Paul",
+        "caps": 85
+      },
+      {
+        "name": "Nicolás Tagliafico",
+        "caps": 77
+      }
+    ]
+  },
+  {
+    "nation": "Croatia",
+    "team_id": "3556",
+    "n": 26,
+    "avg": 47.8,
+    "median": 28,
+    "max": {
+      "name": "Luka Modrić",
+      "caps": 197
+    },
+    "min": {
+      "name": "Toni Fruk",
+      "caps": 0
+    },
+    "total": 1243,
+    "top5": [
+      {
+        "name": "Luka Modrić",
+        "caps": 197
+      },
+      {
+        "name": "Ivan Perišić",
+        "caps": 153
+      },
+      {
+        "name": "Andrej Kramarić",
+        "caps": 121
+      },
+      {
+        "name": "Mateo Kovačić",
+        "caps": 116
+      },
+      {
+        "name": "Mario Pašalić",
+        "caps": 91
+      }
+    ]
+  },
+  {
+    "nation": "Iran",
+    "team_id": "3582",
+    "n": 26,
+    "avg": 46.2,
+    "median": 41,
+    "max": {
+      "name": "Ehsan Hajsafi",
+      "caps": 157
+    },
+    "min": {
+      "name": "Dennis Eckert",
+      "caps": 0
+    },
+    "total": 1201,
+    "top5": [
+      {
+        "name": "Ehsan Hajsafi",
+        "caps": 157
+      },
+      {
+        "name": "Mehdi Taremi",
+        "caps": 103
+      },
+      {
+        "name": "Alireza Jahanbakhsh",
+        "caps": 101
+      },
+      {
+        "name": "Alireza Beiranvand",
+        "caps": 87
+      },
+      {
+        "name": "Saeid Ezatolahi",
+        "caps": 86
+      }
+    ]
+  },
+  {
+    "nation": "Belgium",
+    "team_id": "3382",
+    "n": 26,
+    "avg": 45.7,
+    "median": 35,
+    "max": {
+      "name": "Axel Witsel",
+      "caps": 137
+    },
+    "min": {
+      "name": "Matias Fernandez-Pardo",
+      "caps": 0
+    },
+    "total": 1189,
+    "top5": [
+      {
+        "name": "Axel Witsel",
+        "caps": 137
+      },
+      {
+        "name": "Romelu Lukaku",
+        "caps": 125
+      },
+      {
+        "name": "Kevin De Bruyne",
+        "caps": 123
+      },
+      {
+        "name": "Thibaut Courtois",
+        "caps": 111
+      },
+      {
+        "name": "Youri Tielemans",
+        "caps": 91
+      }
+    ]
+  },
+  {
+    "nation": "South Korea",
+    "team_id": "3589",
+    "n": 26,
+    "avg": 43.6,
+    "median": 30,
+    "max": {
+      "name": "Son Heung-min",
+      "caps": 155
+    },
+    "min": {
+      "name": "Cho Wi-je",
+      "caps": 0
+    },
+    "total": 1133,
+    "top5": [
+      {
+        "name": "Son Heung-min",
+        "caps": 155
+      },
+      {
+        "name": "Lee Jae-sung",
+        "caps": 107
+      },
+      {
+        "name": "Hwang Hee-chan",
+        "caps": 93
+      },
+      {
+        "name": "Kim Seung-gyu",
+        "caps": 88
+      },
+      {
+        "name": "Kim Min-jae",
+        "caps": 88
+      }
+    ]
+  },
+  {
+    "nation": "United States",
+    "team_id": "3505",
+    "n": 25,
+    "avg": 43.6,
+    "median": 44,
+    "max": {
+      "name": "Christian Pulisic",
+      "caps": 96
+    },
+    "min": {
+      "name": "Chris Brady",
+      "caps": 0
+    },
+    "total": 1090,
+    "top5": [
+      {
+        "name": "Christian Pulisic",
+        "caps": 96
+      },
+      {
+        "name": "Tim Ream",
+        "caps": 81
+      },
+      {
+        "name": "Weston McKennie",
+        "caps": 70
+      },
+      {
+        "name": "Tim Weah",
+        "caps": 70
+      },
+      {
+        "name": "Tyler Adams",
+        "caps": 67
+      }
+    ]
+  },
+  {
+    "nation": "Netherlands",
+    "team_id": "3379",
+    "n": 26,
+    "avg": 42.0,
+    "median": 34,
+    "max": {
+      "name": "Memphis Depay",
+      "caps": 129
+    },
+    "min": {
+      "name": "Crysencio Summerville",
+      "caps": 0
+    },
+    "total": 1092,
+    "top5": [
+      {
+        "name": "Memphis Depay",
+        "caps": 129
+      },
+      {
+        "name": "Virgil van Dijk",
+        "caps": 92
+      },
+      {
+        "name": "Nathan Aké",
+        "caps": 89
+      },
+      {
+        "name": "Donyell Malen",
+        "caps": 81
+      },
+      {
+        "name": "Denzel Dumfries",
+        "caps": 80
+      }
+    ]
+  },
+  {
+    "nation": "Uruguay",
+    "team_id": "3449",
+    "n": 26,
+    "avg": 40.9,
+    "median": 39,
+    "max": {
+      "name": "Fernando Muslera",
+      "caps": 132
+    },
+    "min": {
+      "name": "Juan Manuel Sanabria",
+      "caps": 0
+    },
+    "total": 1064,
+    "top5": [
+      {
+        "name": "Fernando Muslera",
+        "caps": 132
+      },
+      {
+        "name": "José María Giménez",
+        "caps": 96
+      },
+      {
+        "name": "Federico Valverde",
+        "caps": 82
+      },
+      {
+        "name": "Rodrigo Bentancur",
+        "caps": 81
+      },
+      {
+        "name": "Giorgian de Arrascaeta",
+        "caps": 60
+      }
+    ]
+  },
+  {
+    "nation": "Japan",
+    "team_id": "3435",
+    "n": 26,
+    "avg": 40.7,
+    "median": 37,
+    "max": {
+      "name": "Yūto Nagatomo",
+      "caps": 145
+    },
+    "min": {
+      "name": "Kento Shiogai",
+      "caps": 0
+    },
+    "total": 1057,
+    "top5": [
+      {
+        "name": "Yūto Nagatomo",
+        "caps": 145
+      },
+      {
+        "name": "Wataru Endo",
+        "caps": 81
+      },
+      {
+        "name": "Ritsu Dōan",
+        "caps": 71
+      },
+      {
+        "name": "Junya Itō",
+        "caps": 70
+      },
+      {
+        "name": "Takefusa Kubo",
+        "caps": 61
+      }
+    ]
+  },
+  {
+    "nation": "Germany",
+    "team_id": "3262",
+    "n": 26,
+    "avg": 40.7,
+    "median": 26,
+    "max": {
+      "name": "Manuel Neuer",
+      "caps": 141
+    },
+    "min": {
+      "name": "Lennart Karl",
+      "caps": 0
+    },
+    "total": 1059,
+    "top5": [
+      {
+        "name": "Manuel Neuer",
+        "caps": 141
+      },
+      {
+        "name": "Joshua Kimmich",
+        "caps": 121
+      },
+      {
+        "name": "Antonio Rüdiger",
+        "caps": 102
+      },
+      {
+        "name": "Leon Goretzka",
+        "caps": 92
+      },
+      {
+        "name": "Leroy Sané",
+        "caps": 80
+      }
+    ]
+  },
+  {
+    "nation": "Scotland",
+    "team_id": "3380",
+    "n": 26,
+    "avg": 40.1,
+    "median": 33,
+    "max": {
+      "name": "Andy Robertson",
+      "caps": 93
+    },
+    "min": {
+      "name": "Tyler Fletcher",
+      "caps": 0
+    },
+    "total": 1043,
+    "top5": [
+      {
+        "name": "Andy Robertson",
+        "caps": 93
+      },
+      {
+        "name": "Craig Gordon",
+        "caps": 87
+      },
+      {
+        "name": "John McGinn",
+        "caps": 87
+      },
+      {
+        "name": "Grant Hanley",
+        "caps": 74
+      },
+      {
+        "name": "Scott McTominay",
+        "caps": 69
+      }
+    ]
+  },
+  {
+    "nation": "Colombia",
+    "team_id": "3816",
+    "n": 26,
+    "avg": 39.5,
+    "median": 35,
+    "max": {
+      "name": "David Ospina",
+      "caps": 126
+    },
+    "min": {
+      "name": "Cucho Hernández",
+      "caps": 0
+    },
+    "total": 1026,
+    "top5": [
+      {
+        "name": "David Ospina",
+        "caps": 126
+      },
+      {
+        "name": "James Rodríguez",
+        "caps": 120
+      },
+      {
+        "name": "Davinson Sánchez",
+        "caps": 85
+      },
+      {
+        "name": "Luis Díaz",
+        "caps": 77
+      },
+      {
+        "name": "Santiago Arias",
+        "caps": 65
+      }
+    ]
+  },
+  {
+    "nation": "Norway",
+    "team_id": "3440",
+    "n": 26,
+    "avg": 39.4,
+    "median": 37,
+    "max": {
+      "name": "Alexander Sørloth",
+      "caps": 82
+    },
+    "min": {
+      "name": "Henrik Falchener",
+      "caps": 0
+    },
+    "total": 1025,
+    "top5": [
+      {
+        "name": "Alexander Sørloth",
+        "caps": 82
+      },
+      {
+        "name": "Sander Berge",
+        "caps": 76
+      },
+      {
+        "name": "Martin Ødegaard",
+        "caps": 75
+      },
+      {
+        "name": "Ørjan Nyland",
+        "caps": 74
+      },
+      {
+        "name": "Kristoffer Vassbakk Ajer",
+        "caps": 65
+      }
+    ]
+  },
+  {
+    "nation": "France",
+    "team_id": "3377",
+    "n": 26,
+    "avg": 39.2,
+    "median": 44,
+    "max": {
+      "name": "Kylian Mbappé",
+      "caps": 101
+    },
+    "min": {
+      "name": "Rayan Cherki",
+      "caps": 0
+    },
+    "total": 1018,
+    "top5": [
+      {
+        "name": "Kylian Mbappé",
+        "caps": 101
+      },
+      {
+        "name": "Lucas Digne",
+        "caps": 83
+      },
+      {
+        "name": "Adrien Rabiot",
+        "caps": 76
+      },
+      {
+        "name": "Aurélien Tchouaméni",
+        "caps": 72
+      },
+      {
+        "name": "Ousmane Dembélé",
+        "caps": 70
+      }
+    ]
+  },
+  {
+    "nation": "England",
+    "team_id": "3299",
+    "n": 26,
+    "avg": 39.2,
+    "median": 33,
+    "max": {
+      "name": "Harry Kane",
+      "caps": 121
+    },
+    "min": {
+      "name": "Jarell Quansah",
+      "caps": 0
+    },
+    "total": 1018,
+    "top5": [
+      {
+        "name": "Harry Kane",
+        "caps": 121
+      },
+      {
+        "name": "Jordan Pickford",
+        "caps": 109
+      },
+      {
+        "name": "Jordan Henderson",
+        "caps": 96
+      },
+      {
+        "name": "John Stones",
+        "caps": 95
+      },
+      {
+        "name": "Declan Rice",
+        "caps": 82
+      }
+    ]
+  },
+  {
+    "nation": "Brazil",
+    "team_id": "3439",
+    "n": 26,
+    "avg": 38.9,
+    "median": 34,
+    "max": {
+      "name": "Neymar",
+      "caps": 135
+    },
+    "min": {
+      "name": "Rayan",
+      "caps": 0
+    },
+    "total": 1012,
+    "top5": [
+      {
+        "name": "Neymar",
+        "caps": 135
+      },
+      {
+        "name": "Marquinhos",
+        "caps": 102
+      },
+      {
+        "name": "Casemiro",
+        "caps": 91
+      },
+      {
+        "name": "Alisson",
+        "caps": 77
+      },
+      {
+        "name": "Danilo",
+        "caps": 77
+      }
+    ]
+  },
+  {
+    "nation": "Uzbekistan",
+    "team_id": "3563",
+    "n": 30,
+    "avg": 37.0,
+    "median": 40,
+    "max": {
+      "name": "Eldor Shomurodov",
+      "caps": 92
+    },
+    "min": {
+      "name": "Ruslanbek Jiyanov",
+      "caps": 0
+    },
+    "total": 1110,
+    "top5": [
+      {
+        "name": "Eldor Shomurodov",
+        "caps": 92
+      },
+      {
+        "name": "Otabek Shukurov",
+        "caps": 89
+      },
+      {
+        "name": "Igor Sergeev",
+        "caps": 88
+      },
+      {
+        "name": "Odiljon Hamrobekov",
+        "caps": 85
+      },
+      {
+        "name": "Jaloliddin Masharipov",
+        "caps": 80
+      }
+    ]
+  },
+  {
+    "nation": "Czech Republic",
+    "team_id": "3445",
+    "n": 26,
+    "avg": 36.1,
+    "median": 39,
+    "max": {
+      "name": "Tomáš Souček",
+      "caps": 99
+    },
+    "min": {
+      "name": "Denis Višinský",
+      "caps": 0
+    },
+    "total": 939,
+    "top5": [
+      {
+        "name": "Tomáš Souček",
+        "caps": 99
+      },
+      {
+        "name": "Vladimír Darida",
+        "caps": 80
+      },
+      {
+        "name": "Patrik Schick",
+        "caps": 75
+      },
+      {
+        "name": "Vladimír Coufal",
+        "caps": 62
+      },
+      {
+        "name": "Tomáš Chorý",
+        "caps": 60
+      }
+    ]
+  },
+  {
+    "nation": "Canada",
+    "team_id": "3510",
+    "n": 26,
+    "avg": 36.0,
+    "median": 31,
+    "max": {
+      "name": "Jonathan Osorio",
+      "caps": 90
+    },
+    "min": {
+      "name": "Marcelo Flores",
+      "caps": 0
+    },
+    "total": 935,
+    "top5": [
+      {
+        "name": "Jonathan Osorio",
+        "caps": 90
+      },
+      {
+        "name": "Cyle Larin",
+        "caps": 88
+      },
+      {
+        "name": "Jonathan David",
+        "caps": 77
+      },
+      {
+        "name": "Richie Laryea",
+        "caps": 74
+      },
+      {
+        "name": "Tajon Buchanan",
+        "caps": 62
+      }
+    ]
+  },
+  {
+    "nation": "Senegal",
+    "team_id": "3499",
+    "n": 27,
+    "avg": 35.8,
+    "median": 30,
+    "max": {
+      "name": "Idrissa Gueye",
+      "caps": 130
+    },
+    "min": {
+      "name": "Ibrahim Mbaye",
+      "caps": 0
+    },
+    "total": 967,
+    "top5": [
+      {
+        "name": "Idrissa Gueye",
+        "caps": 130
+      },
+      {
+        "name": "Sadio Mané",
+        "caps": 125
+      },
+      {
+        "name": "Kalidou Koulibaly",
+        "caps": 102
+      },
+      {
+        "name": "Ismaïla Sarr",
+        "caps": 82
+      },
+      {
+        "name": "Krépin Diatta",
+        "caps": 62
+      }
+    ]
+  },
+  {
+    "nation": "Turkey",
+    "team_id": "3381",
+    "n": 35,
+    "avg": 35.5,
+    "median": 37,
+    "max": {
+      "name": "Hakan Çalhanoğlu",
+      "caps": 128
+    },
+    "min": {
+      "name": "Aral Şimşir",
+      "caps": 0
+    },
+    "total": 1242,
+    "top5": [
+      {
+        "name": "Hakan Çalhanoğlu",
+        "caps": 128
+      },
+      {
+        "name": "Kaan Ayhan",
+        "caps": 87
+      },
+      {
+        "name": "Zeki Çelik",
+        "caps": 82
+      },
+      {
+        "name": "Merih Demiral",
+        "caps": 79
+      },
+      {
+        "name": "Ozan Kabak",
+        "caps": 73
+      }
+    ]
+  },
+  {
+    "nation": "Spain",
+    "team_id": "3375",
+    "n": 25,
+    "avg": 35.4,
+    "median": 38,
+    "max": {
+      "name": "Unai Simón",
+      "caps": 64
+    },
+    "min": {
+      "name": "Marc Pubill",
+      "caps": 0
+    },
+    "total": 884,
+    "top5": [
+      {
+        "name": "Unai Simón",
+        "caps": 64
+      },
+      {
+        "name": "Rodri",
+        "caps": 62
+      },
+      {
+        "name": "Ferran Torres",
+        "caps": 62
+      },
+      {
+        "name": "Mikel Oyarzabal",
+        "caps": 61
+      },
+      {
+        "name": "Aymeric Laporte",
+        "caps": 57
+      }
+    ]
+  },
+  {
+    "nation": "Saudi Arabia",
+    "team_id": "3807",
+    "n": 26,
+    "avg": 35.0,
+    "median": 30,
+    "max": {
+      "name": "Salem Al-Dawsari",
+      "caps": 105
+    },
+    "min": {
+      "name": "Alaa Al-Hejji",
+      "caps": 1
+    },
+    "total": 910,
+    "top5": [
+      {
+        "name": "Salem Al-Dawsari",
+        "caps": 105
+      },
+      {
+        "name": "Mohamed Kanno",
+        "caps": 74
+      },
+      {
+        "name": "Firas Al-Buraikan",
+        "caps": 71
+      },
+      {
+        "name": "Mohammed Al-Owais",
+        "caps": 60
+      },
+      {
+        "name": "Hassan Al-Tambakti",
+        "caps": 54
+      }
+    ]
+  },
+  {
+    "nation": "Jordan",
+    "team_id": "15737",
+    "n": 26,
+    "avg": 34.4,
+    "median": 33,
+    "max": {
+      "name": "Musa Al-Taamari",
+      "caps": 76
+    },
+    "min": {
+      "name": "Ibrahim Sabra",
+      "caps": 0
+    },
+    "total": 894,
+    "top5": [
+      {
+        "name": "Musa Al-Taamari",
+        "caps": 76
+      },
+      {
+        "name": "Ihsan Haddad",
+        "caps": 75
+      },
+      {
+        "name": "Mahmoud Al-Mardi",
+        "caps": 70
+      },
+      {
+        "name": "Yazan Al-Arab",
+        "caps": 69
+      },
+      {
+        "name": "Yazeed Abulaila",
+        "caps": 63
+      }
+    ]
+  },
+  {
+    "nation": "Egypt",
+    "team_id": "3672",
+    "n": 26,
+    "avg": 33.2,
+    "median": 27,
+    "max": {
+      "name": "Mohamed Salah",
+      "caps": 120
+    },
+    "min": {
+      "name": "Hamza Abdel Karim",
+      "caps": 0
+    },
+    "total": 862,
+    "top5": [
+      {
+        "name": "Mohamed Salah",
+        "caps": 120
+      },
+      {
+        "name": "Mahmoud Trezeguet",
+        "caps": 97
+      },
+      {
+        "name": "Mohamed El Shenawy",
+        "caps": 76
+      },
+      {
+        "name": "Ahmed Sayed Zizo",
+        "caps": 63
+      },
+      {
+        "name": "Hamdi Fathi",
+        "caps": 62
+      }
+    ]
+  },
+  {
+    "nation": "Morocco",
+    "team_id": "3575",
+    "n": 25,
+    "avg": 32.8,
+    "median": 30,
+    "max": {
+      "name": "Achraf Hakimi",
+      "caps": 96
+    },
+    "min": {
+      "name": "Ayoube Amaimouni",
+      "caps": 0
+    },
+    "total": 820,
+    "top5": [
+      {
+        "name": "Achraf Hakimi",
+        "caps": 96
+      },
+      {
+        "name": "Yassine Bounou",
+        "caps": 89
+      },
+      {
+        "name": "Sofyan Amrabat",
+        "caps": 77
+      },
+      {
+        "name": "Ayoub El Kaabi",
+        "caps": 70
+      },
+      {
+        "name": "Nayef Aguerd",
+        "caps": 67
+      }
+    ]
+  },
+  {
+    "nation": "DR Congo",
+    "team_id": "3854",
+    "n": 26,
+    "avg": 32.7,
+    "median": 29,
+    "max": {
+      "name": "Chancel Mbemba",
+      "caps": 105
+    },
+    "min": {
+      "name": "Matthieu Epolo",
+      "caps": 0
+    },
+    "total": 851,
+    "top5": [
+      {
+        "name": "Chancel Mbemba",
+        "caps": 105
+      },
+      {
+        "name": "Cédric Bakambu",
+        "caps": 74
+      },
+      {
+        "name": "Meschak Elia",
+        "caps": 65
+      },
+      {
+        "name": "Samuel Moutoussamy",
+        "caps": 56
+      },
+      {
+        "name": "Nathanaël Mbuku",
+        "caps": 49
+      }
+    ]
+  },
+  {
+    "nation": "Iraq",
+    "team_id": "3560",
+    "n": 26,
+    "avg": 32.3,
+    "median": 28,
+    "max": {
+      "name": "Jalal Hassan",
+      "caps": 96
+    },
+    "min": {
+      "name": "Ahmed Qasem",
+      "caps": 0
+    },
+    "total": 841,
+    "top5": [
+      {
+        "name": "Jalal Hassan",
+        "caps": 96
+      },
+      {
+        "name": "Aymen Hussein",
+        "caps": 89
+      },
+      {
+        "name": "Ibrahim Bayesh",
+        "caps": 72
+      },
+      {
+        "name": "Mohanad Ali",
+        "caps": 69
+      },
+      {
+        "name": "Rebin Sulaka",
+        "caps": 52
+      }
+    ]
+  },
+  {
+    "nation": "Cape Verde",
+    "team_id": "4311",
+    "n": 26,
+    "avg": 32.2,
+    "median": 31,
+    "max": {
+      "name": "Ryan Mendes",
+      "caps": 95
+    },
+    "min": {
+      "name": "CJ dos Santos",
+      "caps": 0
+    },
+    "total": 838,
+    "top5": [
+      {
+        "name": "Ryan Mendes",
+        "caps": 95
+      },
+      {
+        "name": "Vozinha",
+        "caps": 88
+      },
+      {
+        "name": "Stopira",
+        "caps": 60
+      },
+      {
+        "name": "Garry Rodrigues",
+        "caps": 60
+      },
+      {
+        "name": "Jamiro Monteiro",
+        "caps": 53
+      }
+    ]
+  },
+  {
+    "nation": "Ecuador",
+    "team_id": "5750",
+    "n": 26,
+    "avg": 32.2,
+    "median": 31,
+    "max": {
+      "name": "Enner Valencia",
+      "caps": 101
+    },
+    "min": {
+      "name": "Jeremy Arévalo",
+      "caps": 0
+    },
+    "total": 837,
+    "top5": [
+      {
+        "name": "Enner Valencia",
+        "caps": 101
+      },
+      {
+        "name": "Alan Franco",
+        "caps": 64
+      },
+      {
+        "name": "Pervis Estupiñán",
+        "caps": 61
+      },
+      {
+        "name": "Moisés Caicedo",
+        "caps": 60
+      },
+      {
+        "name": "Gonzalo Plata",
+        "caps": 60
+      }
+    ]
+  },
+  {
+    "nation": "New Zealand",
+    "team_id": "9171",
+    "n": 26,
+    "avg": 32.1,
+    "median": 27,
+    "max": {
+      "name": "Chris Wood",
+      "caps": 89
+    },
+    "min": {
+      "name": "Lachlan Bayliss",
+      "caps": 2
+    },
+    "total": 835,
+    "top5": [
+      {
+        "name": "Chris Wood",
+        "caps": 89
+      },
+      {
+        "name": "Kosta Barbarouses",
+        "caps": 74
+      },
+      {
+        "name": "Michael Boxall",
+        "caps": 61
+      },
+      {
+        "name": "Tommy Smith",
+        "caps": 56
+      },
+      {
+        "name": "Tim Payne",
+        "caps": 50
+      }
+    ]
+  },
+  {
+    "nation": "Algeria",
+    "team_id": "3614",
+    "n": 27,
+    "avg": 29.7,
+    "median": 23,
+    "max": {
+      "name": "Aïssa Mandi",
+      "caps": 116
+    },
+    "min": {
+      "name": "Yacine Titraoui",
+      "caps": 0
+    },
+    "total": 802,
+    "top5": [
+      {
+        "name": "Aïssa Mandi",
+        "caps": 116
+      },
+      {
+        "name": "Riyad Mahrez",
+        "caps": 113
+      },
+      {
+        "name": "Ramy Bensebaini",
+        "caps": 81
+      },
+      {
+        "name": "Nabil Bentaleb",
+        "caps": 58
+      },
+      {
+        "name": "Ramiz Zerrouki",
+        "caps": 51
+      }
+    ]
+  },
+  {
+    "nation": "Bosnia and Herzegovina",
+    "team_id": "3446",
+    "n": 27,
+    "avg": 29.3,
+    "median": 23,
+    "max": {
+      "name": "Edin Džeko",
+      "caps": 149
+    },
+    "min": {
+      "name": "Ermin Mahmić",
+      "caps": 0
+    },
+    "total": 791,
+    "top5": [
+      {
+        "name": "Edin Džeko",
+        "caps": 149
+      },
+      {
+        "name": "Sead Kolašinac",
+        "caps": 73
+      },
+      {
+        "name": "Ermedin Demirović",
+        "caps": 54
+      },
+      {
+        "name": "Dennis Hadžikadunić",
+        "caps": 47
+      },
+      {
+        "name": "Amir Hadžiahmetović",
+        "caps": 45
+      }
+    ]
+  },
+  {
+    "nation": "Australia",
+    "team_id": "3433",
+    "n": 26,
+    "avg": 28.9,
+    "median": 18,
+    "max": {
+      "name": "Mathew Ryan",
+      "caps": 104
+    },
+    "min": {
+      "name": "Tete Yengi",
+      "caps": 0
+    },
+    "total": 752,
+    "top5": [
+      {
+        "name": "Mathew Ryan",
+        "caps": 104
+      },
+      {
+        "name": "Jackson Irvine",
+        "caps": 86
+      },
+      {
+        "name": "Aziz Behich",
+        "caps": 84
+      },
+      {
+        "name": "Mathew Leckie",
+        "caps": 80
+      },
+      {
+        "name": "Miloš Degenek",
+        "caps": 60
+      }
+    ]
+  },
+  {
+    "nation": "Paraguay",
+    "team_id": "3581",
+    "n": 26,
+    "avg": 28.5,
+    "median": 28,
+    "max": {
+      "name": "Gustavo Gómez",
+      "caps": 92
+    },
+    "min": {
+      "name": "Gustavo Caballero",
+      "caps": 0
+    },
+    "total": 740,
+    "top5": [
+      {
+        "name": "Gustavo Gómez",
+        "caps": 92
+      },
+      {
+        "name": "Miguel Almirón",
+        "caps": 79
+      },
+      {
+        "name": "Júnior Alonso",
+        "caps": 74
+      },
+      {
+        "name": "Antonio Sanabria",
+        "caps": 52
+      },
+      {
+        "name": "Fabián Balbuena",
+        "caps": 46
+      }
+    ]
+  },
+  {
+    "nation": "Ivory Coast",
+    "team_id": "3591",
+    "n": 26,
+    "avg": 28.0,
+    "median": 28,
+    "max": {
+      "name": "Franck Kessié",
+      "caps": 102
+    },
+    "min": {
+      "name": "Ange-Yoan Bonny",
+      "caps": 0
+    },
+    "total": 728,
+    "top5": [
+      {
+        "name": "Franck Kessié",
+        "caps": 102
+      },
+      {
+        "name": "Jean Michaël Seri",
+        "caps": 63
+      },
+      {
+        "name": "Ibrahim Sangaré",
+        "caps": 56
+      },
+      {
+        "name": "Ghislain Konan",
+        "caps": 52
+      },
+      {
+        "name": "Nicolas Pépé",
+        "caps": 52
+      }
+    ]
+  },
+  {
+    "nation": "Curaçao",
+    "team_id": "32364",
+    "n": 26,
+    "avg": 25.8,
+    "median": 26,
+    "max": {
+      "name": "Leandro Bacuna",
+      "caps": 71
+    },
+    "min": {
+      "name": "Tahith Chong",
+      "caps": 0
+    },
+    "total": 670,
+    "top5": [
+      {
+        "name": "Leandro Bacuna",
+        "caps": 71
+      },
+      {
+        "name": "Eloy Room",
+        "caps": 66
+      },
+      {
+        "name": "Juriën Gaari",
+        "caps": 57
+      },
+      {
+        "name": "Juninho Bacuna",
+        "caps": 57
+      },
+      {
+        "name": "Sherel Floranus",
+        "caps": 43
+      }
+    ]
+  },
+  {
+    "nation": "Sweden",
+    "team_id": "3557",
+    "n": 26,
+    "avg": 25.2,
+    "median": 21,
+    "max": {
+      "name": "Victor Lindelöf",
+      "caps": 85
+    },
+    "min": {
+      "name": "Elliot Stroud",
+      "caps": 0
+    },
+    "total": 656,
+    "top5": [
+      {
+        "name": "Victor Lindelöf",
+        "caps": 85
+      },
+      {
+        "name": "Alexander Isak",
+        "caps": 74
+      },
+      {
+        "name": "Mattias Svanberg",
+        "caps": 55
+      },
+      {
+        "name": "Viktor Gyökeres",
+        "caps": 42
+      },
+      {
+        "name": "Jesper Karlström",
+        "caps": 39
+      }
+    ]
+  },
+  {
+    "nation": "Tunisia",
+    "team_id": "3670",
+    "n": 26,
+    "avg": 22.9,
+    "median": 17,
+    "max": {
+      "name": "Ellyes Skhiri",
+      "caps": 81
+    },
+    "min": {
+      "name": "Khalil Ayari",
+      "caps": 0
+    },
+    "total": 596,
+    "top5": [
+      {
+        "name": "Ellyes Skhiri",
+        "caps": 81
+      },
+      {
+        "name": "Montassar Talbi",
+        "caps": 64
+      },
+      {
+        "name": "Hannibal Mejbri",
+        "caps": 56
+      },
+      {
+        "name": "Dylan Bronn",
+        "caps": 52
+      },
+      {
+        "name": "Ali Abdi",
+        "caps": 46
+      }
+    ]
+  },
+  {
+    "nation": "Haiti",
+    "team_id": "14161",
+    "n": 26,
+    "avg": 22.8,
+    "median": 15,
+    "max": {
+      "name": "Johny Placide",
+      "caps": 75
+    },
+    "min": {
+      "name": "Lenny Joseph",
+      "caps": 0
+    },
+    "total": 594,
+    "top5": [
+      {
+        "name": "Johny Placide",
+        "caps": 75
+      },
+      {
+        "name": "Duckens Nazon",
+        "caps": 71
+      },
+      {
+        "name": "Ricardo Adé",
+        "caps": 57
+      },
+      {
+        "name": "Carlens Arcus",
+        "caps": 51
+      },
+      {
+        "name": "Frantzdy Pierrot",
+        "caps": 49
+      }
+    ]
+  },
+  {
+    "nation": "Ghana",
+    "team_id": "3441",
+    "n": 28,
+    "avg": 20.9,
+    "median": 11,
+    "max": {
+      "name": "Jordan Ayew",
+      "caps": 117
+    },
+    "min": {
+      "name": "Augustine Boakye",
+      "caps": 0
+    },
+    "total": 585,
+    "top5": [
+      {
+        "name": "Jordan Ayew",
+        "caps": 117
+      },
+      {
+        "name": "Thomas Partey",
+        "caps": 56
+      },
+      {
+        "name": "Abdul Rahman Baba",
+        "caps": 50
+      },
+      {
+        "name": "Gideon Mensah",
+        "caps": 39
+      },
+      {
+        "name": "Alexander Djiku",
+        "caps": 38
+      }
+    ]
+  },
+  {
+    "nation": "South Africa",
+    "team_id": "3806",
+    "n": 26,
+    "avg": 18.7,
+    "median": 13,
+    "max": {
+      "name": "Ronwen Williams",
+      "caps": 62
+    },
+    "min": {
+      "name": "Olwethu Makhanya",
+      "caps": 1
+    },
+    "total": 487,
+    "top5": [
+      {
+        "name": "Ronwen Williams",
+        "caps": 62
+      },
+      {
+        "name": "Themba Zwane",
+        "caps": 54
+      },
+      {
+        "name": "Teboho Mokoena",
+        "caps": 51
+      },
+      {
+        "name": "Aubrey Modiba",
+        "caps": 48
+      },
+      {
+        "name": "Lyle Foster",
+        "caps": 34
+      }
+    ]
+  }
+]

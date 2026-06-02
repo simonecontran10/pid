@@ -1,0 +1,242 @@
+{
+  "Algeria": {
+    "name": "Vladimir Petkovic",
+    "name_blob": "PETKOVIC Vladimir Vladimir PETKOVIĆ",
+    "country": "Switzerland"
+  },
+  "Argentina": {
+    "name": "Lionel Scaloni",
+    "name_blob": "SCALONI Lionel Lionel Sebastián SCALONI",
+    "country": "Argentina"
+  },
+  "Australia": {
+    "name": "Tony Popovic",
+    "name_blob": "POPOVIC Tony Tony POPOVIC",
+    "country": "Australia"
+  },
+  "Austria": {
+    "name": "Ralf Rangnick",
+    "name_blob": "RANGNICK Ralf Ralf Dietrich RANGNICK",
+    "country": "Germany"
+  },
+  "Belgium": {
+    "name": "Rudi Garcia",
+    "name_blob": "GARCIA Rudi Rudi José GARCIA",
+    "country": "France"
+  },
+  "Bosnia And Herzegovina": {
+    "name": "Sergej Barbarez",
+    "name_blob": "BARBAREZ Sergej Sergej BARBAREZ",
+    "country": "Bosnia And Herzegovina"
+  },
+  "Brazil": {
+    "name": "Carlo Ancelotti",
+    "name_blob": "ANCELOTTI Carlo Carlo ANCELOTTI",
+    "country": "Italy"
+  },
+  "Cape Verde": {
+    "name": "Pedro Bubista",
+    "name_blob": "BUBISTA Pedro LEITÃO BRITO",
+    "country": "Cabo Verde"
+  },
+  "Canada": {
+    "name": "Jesse Marsch",
+    "name_blob": "MARSCH Jesse Jesse Alan MARSCH",
+    "country": "USA"
+  },
+  "Colombia": {
+    "name": "Nestor Lorenzo",
+    "name_blob": "LORENZO Nestor Nestor Gabriel LORENZO",
+    "country": "Argentina"
+  },
+  "Congo DR": {
+    "name": "Sebastien Desabre",
+    "name_blob": "DESABRE Sebastien Sebastien Serge Louis DESABRE",
+    "country": "France"
+  },
+  "Côte D'Ivoire": {
+    "name": "Emerse Fae",
+    "name_blob": "FAE Emerse Emerse FAE",
+    "country": "Côte D'Ivoire"
+  },
+  "Croatia": {
+    "name": "Zlatko Dalic",
+    "name_blob": "DALIC Zlatko Zlatko DALIĆ",
+    "country": "Croatia"
+  },
+  "Curaçao": {
+    "name": "Dick Advocaat",
+    "name_blob": "ADVOCAAT Dick Dirk Nicolaas ADVOCAAT",
+    "country": "Netherlands"
+  },
+  "Czechia": {
+    "name": "Miroslav Koubek",
+    "name_blob": "KOUBEK Miroslav Miroslav KOUBEK",
+    "country": "Czech Republic"
+  },
+  "Ecuador": {
+    "name": "Sebastian Beccacece",
+    "name_blob": "BECCACECE Sebastian Sebastián Andrés BECCACECE",
+    "country": "Argentina"
+  },
+  "Egypt": {
+    "name": "HASSAN Hossam",
+    "name_blob": "HOSSAM HASSAN Hossam Hassan Hassanein HASSAN",
+    "country": "Egypt"
+  },
+  "England": {
+    "name": "Thomas Tuchel",
+    "name_blob": "TUCHEL Thomas Thomas TUCHEL",
+    "country": "Germany"
+  },
+  "France": {
+    "name": "Didier Deschamps",
+    "name_blob": "DESCHAMPS Didier Didier Claude DESCHAMPS",
+    "country": "France"
+  },
+  "Germany": {
+    "name": "Julian Nagelsmann",
+    "name_blob": "NAGELSMANN Julian Julian NAGELSMANN",
+    "country": "Germany"
+  },
+  "Ghana": {
+    "name": "QUEIROZ Carlos",
+    "name_blob": "CARLOS QUEIROZ Carlos Manuel BRITO LEAL DE QUEIROZ",
+    "country": "Portugal"
+  },
+  "Haiti": {
+    "name": "Sebastien Migne",
+    "name_blob": "MIGNE Sebastien Sébastien Bernard Henri C MIGNÉ",
+    "country": "France"
+  },
+  "IR Iran": {
+    "name": "Amir Ghalehnoy",
+    "name_blob": "GHALEHNOY Amir Ardeshir GHALEHNOY",
+    "country": "IR Iran"
+  },
+  "Iraq": {
+    "name": "Graham Arnold",
+    "name_blob": "ARNOLD Graham Graham James ARNOLD",
+    "country": "Australia"
+  },
+  "Japan": {
+    "name": "Hajime Moriyasu",
+    "name_blob": "MORIYASU Hajime Hajime MORIYASU",
+    "country": "Japan"
+  },
+  "Jordan": {
+    "name": "Jamal Sellami",
+    "name_blob": "SELLAMI Jamal Jamal SELLAMI",
+    "country": "Morocco"
+  },
+  "Korea Republic": {
+    "name": "Myungbo Hong",
+    "name_blob": "HONG Myungbo Myung Bo HONG",
+    "country": "Korea Republic"
+  },
+  "Mexico": {
+    "name": "Javier Aguirre",
+    "name_blob": "AGUIRRE Javier Javier AGUIRRE ONAINDIA",
+    "country": "Mexico"
+  },
+  "Morocco": {
+    "name": "Mohamed Ouahbi",
+    "name_blob": "OUAHBI Mohamed Mohamed OUAHBI",
+    "country": "Morocco"
+  },
+  "Netherlands": {
+    "name": "Ronald Koeman",
+    "name_blob": "KOEMAN Ronald Ronald KOEMAN",
+    "country": "Netherlands"
+  },
+  "New Zealand": {
+    "name": "Darren Bazeley",
+    "name_blob": "BAZELEY Darren Darren Shaun BAZELEY",
+    "country": "New Zealand"
+  },
+  "Norway": {
+    "name": "Stale Solbakken",
+    "name_blob": "SOLBAKKEN Stale Ståle SOLBAKKEN",
+    "country": "Norway"
+  },
+  "Panama": {
+    "name": "Thomas Christiansen",
+    "name_blob": "CHRISTIANSEN Thomas Thomas CHRISTIANSEN TARIN",
+    "country": "Spain"
+  },
+  "Paraguay": {
+    "name": "Gustavo Alfaro",
+    "name_blob": "ALFARO Gustavo Gustavo Julio ALFARO",
+    "country": "Argentina"
+  },
+  "Portugal": {
+    "name": "Roberto Martinez",
+    "name_blob": "MARTINEZ Roberto Roberto MARTÍNEZ MONTOLIU",
+    "country": "Spain"
+  },
+  "Qatar": {
+    "name": "Julen Lopetegui",
+    "name_blob": "LOPETEGUI Julen Julian LOPETEGUI ARGOTE",
+    "country": "Spain"
+  },
+  "Saudi Arabia": {
+    "name": "Georgios Donis",
+    "name_blob": "DONIS Georgios Georgios DONIS",
+    "country": "Greece"
+  },
+  "Scotland": {
+    "name": "Steve Clarke",
+    "name_blob": "CLARKE Steve Stephen CLARKE",
+    "country": "Scotland"
+  },
+  "Senegal": {
+    "name": "Pape Thiaw",
+    "name_blob": "THIAW Pape Pape Bouna THIAW",
+    "country": "Senegal"
+  },
+  "South Africa": {
+    "name": "Hugo Broos",
+    "name_blob": "BROOS Hugo Hugo Henri BROOS",
+    "country": "Belgium"
+  },
+  "Spain": {
+    "name": "LA De",
+    "name_blob": "DE LA FUENTE Luis Luis DE LA FUENTE CASTILLO",
+    "country": "Spain"
+  },
+  "Sweden": {
+    "name": "Graham Potter",
+    "name_blob": "POTTER Graham Graham Stephen POTTER",
+    "country": "England"
+  },
+  "Switzerland": {
+    "name": "Murat Yakin",
+    "name_blob": "YAKIN Murat Murat YAKIN",
+    "country": "Switzerland"
+  },
+  "Tunisia": {
+    "name": "Sabri Lamouchi",
+    "name_blob": "LAMOUCHI Sabri Sabri LAMOUCHI",
+    "country": "France"
+  },
+  "Turkey": {
+    "name": "Vincenzo Montella",
+    "name_blob": "MONTELLA Vincenzo Vincenzo MONTELLA",
+    "country": "Italy"
+  },
+  "Uruguay": {
+    "name": "Marcelo Bielsa",
+    "name_blob": "BIELSA Marcelo Marcelo Alberto BIELSA",
+    "country": "Argentina"
+  },
+  "United States": {
+    "name": "Mauricio Pochettino",
+    "name_blob": "POCHETTINO Mauricio Mauricio Roberto POCHETTINO TROSSERO",
+    "country": "Argentina"
+  },
+  "Uzbekistan": {
+    "name": "Fabio Cannavaro",
+    "name_blob": "CANNAVARO Fabio Fabio CANNAVARO",
+    "country": "Italy"
+  }
+}
