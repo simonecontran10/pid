@@ -487,12 +487,34 @@ function totalGoals2025(pid) {
 }
 
 // ============ FILTERING ============
+// 2026-06-08: filtro club ora rispetta filter-league. Se l'utente seleziona
+// "Primavera 1", il dropdown club mostra solo i club di IJ1 (Fiorentina
+// Primavera, Inter Primavera ecc). Conserva il club selezionato se ancora
+// valido nella lega corrente, altrimenti lo resetta.
 function populateClubFilter() {
   const sel = document.getElementById("filter-club");
-  const opts = [...state.clubs]
+  if (!sel) return;
+  const leagueFilter = state.filters.league || "";
+  let clubs = [...state.clubs];
+  if (leagueFilter === "OTHER") {
+    // "OTHER" = club senza lega riconosciuta (vedi applyFilters).
+    const KNOWN_LEAGUES = new Set(["IT1", "IT2", "IT3A", "IT3B", "IT3C", "IJ1", "PL1", "PL2"]);
+    clubs = clubs.filter(c => !KNOWN_LEAGUES.has(c.league_id));
+  } else if (leagueFilter) {
+    clubs = clubs.filter(c => c.league_id === leagueFilter);
+  }
+  const opts = clubs
     .sort((a,b) => (a.name||"").localeCompare(b.name||""))
     .map(c => `<option value="${c.tm_club_id}">${escapeHtml(prettyClubName(c.name))}</option>`);
   sel.innerHTML = `<option value="">${t("filter_all_clubs")}</option>${opts.join("")}`;
+  // Se il club correntemente selezionato non e' piu' nella lista, resetta.
+  const currentClubValid = state.filters.club && clubs.some(c => String(c.tm_club_id) === String(state.filters.club));
+  if (currentClubValid) {
+    sel.value = state.filters.club;
+  } else {
+    state.filters.club = "";
+    sel.value = "";
+  }
 }
 
 function applyFilters() {
@@ -7108,7 +7130,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".nav-item").forEach(b => b.addEventListener("click", () => setActiveTab(b.dataset.route)));
     setActiveTab("home");
     updateFavoritesBadge();
-    document.getElementById("filter-league").addEventListener("change", e => { state.filters.league = e.target.value; applyFilters(); });
+    document.getElementById("filter-league").addEventListener("change", e => {
+      state.filters.league = e.target.value;
+      // 2026-06-08: ripopola il dropdown club con solo i club della lega
+      // selezionata (concatena lega+club). Se il club selezionato non e' in
+      // quella lega, viene resettato dentro populateClubFilter.
+      populateClubFilter();
+      applyFilters();
+    });
     document.getElementById("filter-club").addEventListener("change", e => {
       state.filters.club = e.target.value;
       // Auto-allinea la lega: se il club appartiene ad una lega diversa da quella selezionata,
