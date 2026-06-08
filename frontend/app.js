@@ -504,7 +504,7 @@ function populateClubFilter() {
     clubs = clubs.filter(c => c.league_id === leagueFilter);
   }
   const opts = clubs
-    .sort((a,b) => (a.name||"").localeCompare(b.name||""))
+    .sort((a,b) => prettyClubName(a.name||"").localeCompare(prettyClubName(b.name||"")))
     .map(c => `<option value="${c.tm_club_id}">${escapeHtml(prettyClubName(c.name))}</option>`);
   sel.innerHTML = `<option value="">${t("filter_all_clubs")}</option>${opts.join("")}`;
   // Se il club correntemente selezionato non e' piu' nella lista, resetta.
@@ -3602,7 +3602,19 @@ function renderGridsPanel() {
           </select>
           <select id="grids-filter-club" class="filter-select flex-1 min-w-[100px]" style="font-size: 11px; padding: 4px 6px;">
             <option value="">${t("filter_all_clubs")}</option>
-            ${[...state.clubs].sort((a,b)=>(a.name||"").localeCompare(b.name||"")).map(c => `<option value="${c.tm_club_id}" ${String(state.grids.filterClub)===String(c.tm_club_id)?"selected":""}>${escapeHtml(prettyClubName(c.name))}</option>`).join("")}
+            ${(() => {
+              // 2026-06-08: filtra club per filterLeague (concatena con lega).
+              // Ordina per prettyClubName (il display name), non per c.name
+              // raw — altrimenti "AC Milan" finisce sotto "A" anche se viene
+              // mostrato come "Milan" (disordine apparente nel dropdown).
+              const lg = state.grids.filterLeague || "";
+              const KNOWN = new Set(["IT1","IT2","IT3A","IT3B","IT3C","IJ1","PL1","PL2"]);
+              let clubs = [...state.clubs];
+              if (lg === "OTHER") clubs = clubs.filter(c => !KNOWN.has(c.league_id));
+              else if (lg) clubs = clubs.filter(c => c.league_id === lg);
+              clubs.sort((a,b) => prettyClubName(a.name||"").localeCompare(prettyClubName(b.name||"")));
+              return clubs.map(c => `<option value="${c.tm_club_id}" ${String(state.grids.filterClub)===String(c.tm_club_id)?"selected":""}>${escapeHtml(prettyClubName(c.name))}</option>`).join("");
+            })()}
           </select>
         </div>
         <div class="flex gap-1 mb-1.5">
@@ -4031,6 +4043,15 @@ async function _gridsExportPptx(buttonEl) {
   });
   document.getElementById("grids-filter-league")?.addEventListener("change", e => {
     state.grids.filterLeague = e.target.value;
+    // 2026-06-08: se il club correntemente selezionato non e' nella nuova
+    // lega, resetta. Evita filtri "lega X + club lega Y" che danno 0 risultati.
+    if (state.grids.filterClub) {
+      const club = state.clubs.find(c => String(c.tm_club_id) === String(state.grids.filterClub));
+      const newLg = state.grids.filterLeague;
+      if (club && newLg && newLg !== "OTHER" && club.league_id !== newLg) {
+        state.grids.filterClub = "";
+      }
+    }
     renderGridsPanel();
   });
   document.getElementById("grids-filter-role-specific")?.addEventListener("change", e => {
