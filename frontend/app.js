@@ -755,7 +755,27 @@ function renderClubs() {
     (ij1.length ? sectionHtml(t("league_ij1"), ij1Logo, ij1, "rgba(192,132,252,0.08)") : "") +
     (pl1.length ? sectionHtml(t("league_pl1"), pl1Logo, pl1, "rgba(239,68,68,0.08)") : "") +
     (pl2.length ? sectionHtml(t("league_pl2"), pl2Logo, pl2, "rgba(96,165,250,0.08)") : "") +
-    (others.length ? sectionHtml(t("league_other"), null, others, "rgba(255,255,255,0.06)") : "");
+    // 2026-06-08: raggruppa "Altre squadre" per league_id (era un mega-blocco
+    // di 437 club mischiati). Ordina i gruppi per numero di club desc.
+    (() => {
+      if (!others.length) return "";
+      const groups = new Map();
+      for (const c of others) {
+        const key = c.league_id || "UNKNOWN";
+        if (!groups.has(key)) groups.set(key, { name: c.league_name || key, clubs: [] });
+        groups.get(key).clubs.push(c);
+      }
+      const sorted = [...groups.entries()].sort((a, b) => {
+        const dn = b[1].clubs.length - a[1].clubs.length;
+        if (dn !== 0) return dn;
+        return (a[1].name || "").localeCompare(b[1].name || "");
+      });
+      return sorted.map(([lid, g]) => {
+        const logo = _photoUrl(`photos/competitions/${lid}.png`);
+        const sorted_clubs = sortClubs(g.clubs);
+        return sectionHtml(g.name, logo, sorted_clubs, "rgba(255,255,255,0.04)");
+      }).join("");
+    })();
 
   // Aggiorna contatore "leghe" nella stats bar
   const leaguesCount = [it1, it2, it3a, it3b, it3c, ij1, pl1, pl2].filter(arr => arr.length).length;
