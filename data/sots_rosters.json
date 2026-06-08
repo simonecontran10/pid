@@ -65988,5 +65988,657 @@
         "name_link": "Luigi Calabrese"
       }
     ]
+  },
+  "701": {
+    "club_name": "Queens Park Rangers",
+    "tm_club_id": 1039,
+    "league_id": "FIWC",
+    "persons": [
+      {
+        "sots_id": 27129144,
+        "slug": "nicolas-madsen",
+        "name_link": "Nicolas Madsen"
+      },
+      {
+        "sots_id": 18089606,
+        "slug": "ilias-chair",
+        "name_link": "Ilias Chair"
+      },
+      {
+        "sots_id": 29243820,
+        "slug": "ronnie-edwards",
+        "name_link": "Ronnie Edwards"
+      },
+      {
+        "sots_id": 28100270,
+        "slug": "jimmy-dunne",
+        "name_link": "Jimmy Dunne"
+      },
+      {
+        "sots_id": 85068996,
+        "slug": "paul-nardi",
+        "name_link": "Paul Nardi"
+      },
+      {
+        "sots_id": 29186220,
+        "slug": "rumarn-burrell",
+        "name_link": "Rumarn Burrell"
+      },
+      {
+        "sots_id": 28014634,
+        "slug": "steve-cook",
+        "name_link": "Steve Cook"
+      },
+      {
+        "sots_id": 2000108166,
+        "slug": "richard-kone",
+        "name_link": "Richard Koné"
+      },
+      {
+        "sots_id": 29228252,
+        "slug": "kwame-poku",
+        "name_link": "Kwame Poku"
+      },
+      {
+        "sots_id": 45109986,
+        "slug": "koki-saito",
+        "name_link": "Koki Saito"
+      },
+      {
+        "sots_id": 49054406,
+        "slug": "jonathan-varane",
+        "name_link": "Jonathan Varane"
+      },
+      {
+        "sots_id": 2000016607,
+        "slug": "harvey-vale",
+        "name_link": "Harvey Vale"
+      },
+      {
+        "sots_id": 28097983,
+        "slug": "jake-clarke-salter",
+        "name_link": "Jake Clarke-Salter"
+      },
+      {
+        "sots_id": 29193986,
+        "slug": "rhys-norrington-davies",
+        "name_link": "Rhys Norrington-Davies"
+      },
+      {
+        "sots_id": 2000024506,
+        "slug": "amadou-mbengue",
+        "name_link": "Amadou Mbengue"
+      },
+      {
+        "sots_id": 28067790,
+        "slug": "isaac-hayden",
+        "name_link": "Isaac Hayden"
+      },
+      {
+        "sots_id": 61093336,
+        "slug": "kader-dembele",
+        "name_link": "Kader Dembélé"
+      },
+      {
+        "sots_id": 52079995,
+        "slug": "paul-smyth",
+        "name_link": "Paul Smyth"
+      },
+      {
+        "sots_id": 2000218798,
+        "slug": "esquerdinha",
+        "name_link": "Esquerdinha"
+      },
+      {
+        "sots_id": 2000222070,
+        "slug": "kieran-morgan",
+        "name_link": "Kieran Morgan"
+      },
+      {
+        "sots_id": 2000138737,
+        "slug": "rayan-kolli",
+        "name_link": "Rayan Kolli"
+      },
+      {
+        "sots_id": 5119981,
+        "slug": "ben-hamer",
+        "name_link": "Ben Hamer"
+      },
+      {
+        "sots_id": 2000089797,
+        "slug": "daniel-bennie",
+        "name_link": "Daniel Bennie"
+      },
+      {
+        "sots_id": 2000343484,
+        "slug": "tylon-smith",
+        "name_link": "Tylon Smith"
+      },
+      {
+        "sots_id": 29217723,
+        "slug": "joe-walsh",
+        "name_link": "Joe Walsh"
+      },
+      {
+        "sots_id": 49060914,
+        "slug": "ziyad-larkeche",
+        "name_link": "Ziyad Larkeche"
+      },
+      {
+        "sots_id": 2000131091,
+        "slug": "justin-obikwu",
+        "name_link": "Justin Obikwu"
+      },
+      {
+        "sots_id": 2000169743,
+        "slug": "isak-alemayehu",
+        "name_link": "Isak Alemayehu"
+      },
+      {
+        "sots_id": 2000090224,
+        "slug": "kealey-adamson",
+        "name_link": "Kealey Adamson"
+      },
+      {
+        "sots_id": 2000248324,
+        "slug": "jaylan-pearman",
+        "name_link": "Jaylan Pearman"
+      },
+      {
+        "sots_id": 28115785,
+        "slug": "elijah-dixon-bonner",
+        "name_link": "Elijah Dixon-Bonner"
+      },
+      {
+        "sots_id": 2000215020,
+        "slug": "cian-dillon",
+        "name_link": "Cian Dillon"
+      },
+      {
+        "sots_id": 2000326202,
+        "slug": "christian-pullella",
+        "name_link": "Christian Pullella"
+      },
+      {
+        "sots_id": 2000100076,
+        "slug": "rocco-friel",
+        "name_link": "Rocco Friel"
+      },
+      {
+        "sots_id": 2000081255,
+        "slug": "matteo-salamon",
+        "name_link": "Matteo Salamon"
+      },
+      {
+        "sots_id": 2000222683,
+        "slug": "alfie-tuck",
+        "name_link": "Alfie Tuck"
+      },
+      {
+        "sots_id": 2000511767,
+        "slug": "charlie-street",
+        "name_link": "Charlie Street"
+      },
+      {
+        "sots_id": 2000453540,
+        "slug": "ashley-trujillo",
+        "name_link": "Ashley Trujillo"
+      },
+      {
+        "sots_id": 2000222678,
+        "slug": "jake-leahy",
+        "name_link": "Jake Leahy"
+      },
+      {
+        "sots_id": 2000198724,
+        "slug": "jack-mcdowell",
+        "name_link": "Jack McDowell"
+      },
+      {
+        "sots_id": 2000222682,
+        "slug": "noah-mccann",
+        "name_link": "Noah McCann"
+      },
+      {
+        "sots_id": 2000308767,
+        "slug": "jake-coomes",
+        "name_link": "Jake Coomes"
+      },
+      {
+        "sots_id": 2000408758,
+        "slug": "ridwan-hassan",
+        "name_link": "Ridwan Hassan"
+      },
+      {
+        "sots_id": 2000493287,
+        "slug": "kobe-agbude",
+        "name_link": "Kobe Agbude"
+      },
+      {
+        "sots_id": 2000511945,
+        "slug": "joel-halliday",
+        "name_link": "Joel Halliday"
+      },
+      {
+        "sots_id": 2000223878,
+        "slug": "alex-wilkie",
+        "name_link": "Alex Wilkie"
+      },
+      {
+        "sots_id": 2000298712,
+        "slug": "charlie-warren",
+        "name_link": "Charlie Warren"
+      },
+      {
+        "sots_id": 2000293566,
+        "slug": "kaleb-dyke",
+        "name_link": "Kaleb Dyke"
+      },
+      {
+        "sots_id": 2000408753,
+        "slug": "philip-sanyaolu",
+        "name_link": "Philip Sanyaolu"
+      },
+      {
+        "sots_id": 2000444838,
+        "slug": "archie-obrien",
+        "name_link": "Archie O'Brien"
+      },
+      {
+        "sots_id": 2000210579,
+        "slug": "rohan-vaughan",
+        "name_link": "Rohan Vaughan"
+      },
+      {
+        "sots_id": 2000511771,
+        "slug": "james-mcavoy",
+        "name_link": "James McAvoy"
+      },
+      {
+        "sots_id": 2000408757,
+        "slug": "mason-skeete",
+        "name_link": "Mason Skeete"
+      },
+      {
+        "sots_id": 2000511770,
+        "slug": "giovanni-ikoroha",
+        "name_link": "Giovanni Ikoroha"
+      },
+      {
+        "sots_id": 2000408756,
+        "slug": "teddy-tarbotton",
+        "name_link": "Teddy Tarbotton"
+      },
+      {
+        "sots_id": 2000511769,
+        "slug": "kalen-brunson",
+        "name_link": "Kalen Brunson"
+      },
+      {
+        "sots_id": 2000408755,
+        "slug": "enis-neziri",
+        "name_link": "Enis Neziri"
+      },
+      {
+        "sots_id": 2000511768,
+        "slug": "harvey-boddy",
+        "name_link": "Harvey Boddy"
+      },
+      {
+        "sots_id": 2000408754,
+        "slug": "gabriel-cuthbert",
+        "name_link": "Gabriel Cuthbert"
+      },
+      {
+        "sots_id": 2000511766,
+        "slug": "shaquille-sandiford",
+        "name_link": "Shaquille Sandiford"
+      },
+      {
+        "sots_id": 2000511765,
+        "slug": "nkhai-majesty",
+        "name_link": "Nkhai Majesty"
+      },
+      {
+        "sots_id": 2000511764,
+        "slug": "kasey-taylor",
+        "name_link": "Kasey Taylor"
+      },
+      {
+        "sots_id": 2000511778,
+        "slug": "joshua-wright",
+        "name_link": "Joshua Wright"
+      },
+      {
+        "sots_id": 2000511763,
+        "slug": "alfie-fittall",
+        "name_link": "Alfie Fittall"
+      },
+      {
+        "sots_id": 2000511772,
+        "slug": "kyreece-moore",
+        "name_link": "Kyreece Moore"
+      },
+      {
+        "sots_id": 2000511776,
+        "slug": "gabriel-oluwabusola",
+        "name_link": "Gabriel Oluwabusola"
+      },
+      {
+        "sots_id": 2000408762,
+        "slug": "cory-adjetey-brew",
+        "name_link": "Cory Adjetey-Brew"
+      },
+      {
+        "sots_id": 2000511775,
+        "slug": "kemuel-edouard-marrison",
+        "name_link": "Kemuel Edouard-Marrison"
+      },
+      {
+        "sots_id": 2000408761,
+        "slug": "isaiah-balogun",
+        "name_link": "Isaiah Balogun"
+      },
+      {
+        "sots_id": 2000511774,
+        "slug": "tom-wiles",
+        "name_link": "Tom Wiles"
+      },
+      {
+        "sots_id": 2000408760,
+        "slug": "fraser-neill",
+        "name_link": "Fraser Neill"
+      },
+      {
+        "sots_id": 2000511773,
+        "slug": "leon-scarlett",
+        "name_link": "Leon Scarlett"
+      },
+      {
+        "sots_id": 2000408759,
+        "slug": "rico-kennedy",
+        "name_link": "Rico Kennedy"
+      },
+      {
+        "sots_id": 29218345,
+        "slug": "murphy-cooper",
+        "name_link": "Murphy Cooper"
+      },
+      {
+        "sots_id": 2000294521,
+        "slug": "timothy-akindileni",
+        "name_link": "Timothy Akindileni"
+      },
+      {
+        "sots_id": 61094579,
+        "slug": "liam-morrison",
+        "name_link": "Liam Morrison"
+      },
+      {
+        "sots_id": 2000308768,
+        "slug": "jaiden-putman",
+        "name_link": "Jaiden Putman"
+      },
+      {
+        "sots_id": 83228738,
+        "slug": "hevertton",
+        "name_link": "Hevertton"
+      },
+      {
+        "sots_id": 28101021,
+        "slug": "sam-field",
+        "name_link": "Sam Field"
+      },
+      {
+        "sots_id": 2000308764,
+        "slug": "emmerson-sutton",
+        "name_link": "Emmerson Sutton"
+      },
+      {
+        "sots_id": 62189940,
+        "slug": "zan-celar",
+        "name_link": "Žan Celar"
+      },
+      {
+        "sots_id": 225123,
+        "slug": "alfie-lloyd",
+        "name_link": "Alfie Lloyd"
+      },
+      {
+        "sots_id": 13148005,
+        "slug": "andrew-sparkes",
+        "name_link": "Andrew Sparkes"
+      },
+      {
+        "sots_id": 914377,
+        "slug": "julien-stephan",
+        "name_link": "Julien Stéphan"
+      },
+      {
+        "sots_id": 28023804,
+        "slug": "aaron-harris",
+        "name_link": "Aaron Harris"
+      },
+      {
+        "sots_id": 49062696,
+        "slug": "rudy-cuni",
+        "name_link": "Rudy Cuni"
+      },
+      {
+        "sots_id": 4001595,
+        "slug": "kevin-betsy",
+        "name_link": "Kevin Betsy"
+      },
+      {
+        "sots_id": 29244729,
+        "slug": "saul-hemingway",
+        "name_link": "Saul Hemingway"
+      },
+      {
+        "sots_id": 2003529,
+        "slug": "steve-bould",
+        "name_link": "Steve Bould"
+      },
+      {
+        "sots_id": 2000419221,
+        "slug": "alex-carroll",
+        "name_link": "Alex Carroll"
+      },
+      {
+        "sots_id": 2000009105,
+        "slug": "matt-horton",
+        "name_link": "Matt Horton"
+      },
+      {
+        "sots_id": 29217512,
+        "slug": "alexandros-stefanakis",
+        "name_link": "Alexandros Stefanakis"
+      },
+      {
+        "sots_id": 2000419234,
+        "slug": "doug-bruce",
+        "name_link": "Doug Bruce"
+      },
+      {
+        "sots_id": 28085761,
+        "slug": "paul-hamilton",
+        "name_link": "Paul Hamilton"
+      },
+      {
+        "sots_id": 5003712,
+        "slug": "lee-hoos",
+        "name_link": "Lee Hoos"
+      },
+      {
+        "sots_id": 2015569,
+        "slug": "scott-marshall",
+        "name_link": "Scott Marshall"
+      },
+      {
+        "sots_id": 29114907,
+        "slug": "daryl-martin",
+        "name_link": "Daryl Martin"
+      },
+      {
+        "sots_id": 29139065,
+        "slug": "lyndon-simmonds",
+        "name_link": "Lyndon Simmonds"
+      },
+      {
+        "sots_id": 2000280334,
+        "slug": "ben-williams",
+        "name_link": "Ben Williams"
+      },
+      {
+        "sots_id": 29146853,
+        "slug": "anthony-hayes",
+        "name_link": "Anthony Hayes"
+      },
+      {
+        "sots_id": 2000419236,
+        "slug": "tom-charles",
+        "name_link": "Tom Charles"
+      },
+      {
+        "sots_id": 2000419239,
+        "slug": "michael-main",
+        "name_link": "Michael Main"
+      },
+      {
+        "sots_id": 2000419228,
+        "slug": "sean-mcnamara",
+        "name_link": "Seán McNamara"
+      },
+      {
+        "sots_id": 29173734,
+        "slug": "andrew-belk",
+        "name_link": "Andrew Belk"
+      },
+      {
+        "sots_id": 2000147204,
+        "slug": "richard-gordon",
+        "name_link": "Richard Gordon"
+      },
+      {
+        "sots_id": 2004543,
+        "slug": "andrew-impey",
+        "name_link": "Andrew Impey"
+      },
+      {
+        "sots_id": 2000147206,
+        "slug": "george-ford",
+        "name_link": "George Ford"
+      },
+      {
+        "sots_id": 876548,
+        "slug": "alou-diarra",
+        "name_link": "Alou Diarra"
+      },
+      {
+        "sots_id": 2000419226,
+        "slug": "dom-corrigan",
+        "name_link": "Dom Corrigan"
+      },
+      {
+        "sots_id": 2011476,
+        "slug": "ademola-bankole",
+        "name_link": "Ademola Bankole"
+      },
+      {
+        "sots_id": 8607997,
+        "slug": "jon-de-souza",
+        "name_link": "Jon De Souza"
+      },
+      {
+        "sots_id": 29165288,
+        "slug": "ruben-gnanalingam",
+        "name_link": "Ruben Gnanalingam"
+      },
+      {
+        "sots_id": 2000419222,
+        "slug": "isaac-watts",
+        "name_link": "Isaac Watts"
+      },
+      {
+        "sots_id": 29173729,
+        "slug": "ross-bennett",
+        "name_link": "Ross Bennett"
+      },
+      {
+        "sots_id": 2000419240,
+        "slug": "daniel-colman",
+        "name_link": "Daniel Colman"
+      },
+      {
+        "sots_id": 2000066397,
+        "slug": "marie-grant",
+        "name_link": "Marie Grant"
+      },
+      {
+        "sots_id": 29224286,
+        "slug": "sean-carmody",
+        "name_link": "Sean Carmody"
+      },
+      {
+        "sots_id": 28100705,
+        "slug": "david-galea",
+        "name_link": "David Galea"
+      },
+      {
+        "sots_id": 2000066395,
+        "slug": "toby-ramsbottom",
+        "name_link": "Toby Ramsbottom"
+      },
+      {
+        "sots_id": 2000247168,
+        "slug": "jack-hadley",
+        "name_link": "Jack Hadley"
+      },
+      {
+        "sots_id": 29176868,
+        "slug": "john-moore",
+        "name_link": "John Moore"
+      },
+      {
+        "sots_id": 2000503142,
+        "slug": "christian-nourry",
+        "name_link": "Christian Nourry"
+      },
+      {
+        "sots_id": 28036752,
+        "slug": "amit-bhatia",
+        "name_link": "Amit Bhatia"
+      },
+      {
+        "sots_id": 2000276018,
+        "slug": "richard-reilly",
+        "name_link": "Richard Reilly"
+      },
+      {
+        "sots_id": 2000138719,
+        "slug": "liban-mude",
+        "name_link": "Liban Mude"
+      },
+      {
+        "sots_id": 2000209920,
+        "slug": "liam-tindell",
+        "name_link": "Liam Tindell"
+      },
+      {
+        "sots_id": 2000209758,
+        "slug": "dashun-cooper",
+        "name_link": "Dashun Cooper"
+      },
+      {
+        "sots_id": 2000066392,
+        "slug": "max-squires",
+        "name_link": "Max Squires"
+      },
+      {
+        "sots_id": 2000016238,
+        "slug": "aaron-nesbeth",
+        "name_link": "Aaron Nesbeth"
+      }
+    ]
   }
 }

@@ -6945,5 +6945,16 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 1039,
+    "name": "Queens Park Rangers",
+    "slug": "queens-park-rangers",
+    "league_id": "FIWC",
+    "league_name": "FIWC",
+    "club_url": "https://www.transfermarkt.com/queens-park-rangers/startseite/verein/1039/saison_id/2025",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1039.png",
+    "sortitoutsi_team_id": 701,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/701.png"
   }
 ]
