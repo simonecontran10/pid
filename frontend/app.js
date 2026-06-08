@@ -700,11 +700,16 @@ function renderClubs() {
   const renderClubCard = (c) => {
     const logo = clubLogo(c);
     const nPlayers = state.players.filter(p => p.current_club_id === c.tm_club_id || p.roster_club_id === c.tm_club_id).length;
+    const initial = (c.name || "?")[0];
+    // 2026-06-08: aggiunto onerror fallback al letter-placeholder. Il CDN
+    // SortItOutSi /uploads/team/<id>.png ora ritorna un GIF placeholder
+    // 43-byte invece del vero logo per molti club → img broken nel browser,
+    // senza fallback restava un rettangolo bianco vuoto.
     return `
       <button class="player-card rounded-lg flex flex-col items-center justify-center text-center gap-1 p-2" data-cid="${c.tm_club_id}" style="background: var(--surface); border: 0.5px solid var(--border);">
         ${logo
-          ? `<img src="${logo}" alt="${escapeHtml(prettyClubName(c.name))}" class="w-10 h-10 object-contain flex-shrink-0" loading="lazy"/>`
-          : `<div class="w-10 h-10 rounded flex items-center justify-center font-bold text-base flex-shrink-0" style="background: var(--accent-bg); color: var(--accent);">${(c.name||"?")[0]}</div>`
+          ? `<img src="${logo}" alt="${escapeHtml(prettyClubName(c.name))}" class="w-10 h-10 object-contain flex-shrink-0" loading="lazy" onerror="this.outerHTML='<div class=&quot;w-10 h-10 rounded flex items-center justify-center font-bold text-base flex-shrink-0&quot; style=&quot;background: var(--accent-bg); color: var(--accent);&quot;>${initial.replace(/[<>&\"']/g,'')}</div>'"/>`
+          : `<div class="w-10 h-10 rounded flex items-center justify-center font-bold text-base flex-shrink-0" style="background: var(--accent-bg); color: var(--accent);">${initial}</div>`
         }
         <div class="flex flex-col items-center justify-center min-w-0 w-full">
           <div class="text-[10px] font-semibold leading-tight truncate w-full" style="color: var(--text-1);">${escapeHtml(prettyClubName(c.name))}</div>
