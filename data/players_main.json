@@ -134994,5 +134994,610 @@
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/517376.jpg"
+  },
+  {
+    "tm_player_id": 818892,
+    "full_name": "Nicola Bagnolini",
+    "name_arabic": null,
+    "date_of_birth": "2004-03-14",
+    "age": 22,
+    "height_cm": 194,
+    "foot": "right",
+    "position_general": "Goalkeeper",
+    "position_specific": null,
+    "position_others": [],
+    "place_of_birth": "Cesena",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 1,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/818892-1673251900.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/818892",
+    "fetched_at": "2026-06-08T16:17:07Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 353609,
+    "full_name": "Titas Krapikas",
+    "name_arabic": null,
+    "date_of_birth": "1999-01-03",
+    "age": 27,
+    "height_cm": 194,
+    "foot": "right",
+    "position_general": "Goalkeeper",
+    "position_specific": null,
+    "position_others": [],
+    "place_of_birth": "Kedainiai",
+    "citizenships": [
+      "Lithuania"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 12,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/353609-1602506302.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/353609",
+    "fetched_at": "2026-06-08T16:17:11Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 932733,
+    "full_name": "Leonardo Baroncelli",
+    "name_arabic": null,
+    "date_of_birth": "2005-08-13",
+    "age": 20,
+    "height_cm": 190,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [],
+    "place_of_birth": "Firenze",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 4,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/932733-1724147453.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/932733",
+    "fetched_at": "2026-06-08T16:17:15Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 932763,
+    "full_name": "Alessandro Di Bitonto",
+    "name_arabic": null,
+    "date_of_birth": "2005-10-08",
+    "age": 20,
+    "height_cm": 190,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [],
+    "place_of_birth": "Modena",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 5,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/932763-1760165623.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/932763",
+    "fetched_at": "2026-06-08T16:17:19Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 56682,
+    "full_name": "Andrea Signorini",
+    "name_arabic": null,
+    "date_of_birth": "1990-01-31",
+    "age": 36,
+    "height_cm": 187,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [],
+    "place_of_birth": "Genova",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 15,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/56682-1697717975.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/56682",
+    "fetched_at": "2026-06-08T16:17:23Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 281633,
+    "full_name": "Alberto Tentardini",
+    "name_arabic": null,
+    "date_of_birth": "1996-10-21",
+    "age": 29,
+    "height_cm": 176,
+    "foot": "left",
+    "position_general": "Defender",
+    "position_specific": "Left-Back",
+    "position_others": [
+      "Left Midfield"
+    ],
+    "place_of_birth": "Como",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 3,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/281633-1543916354.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/281633",
+    "fetched_at": "2026-06-08T16:17:27Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 171399,
+    "full_name": "Nicola Murru",
+    "name_arabic": null,
+    "date_of_birth": "1994-12-16",
+    "age": 31,
+    "height_cm": 180,
+    "foot": "left",
+    "position_general": "Defender",
+    "position_specific": "Left-Back",
+    "position_others": [
+      "Centre-Back",
+      "Left Midfield"
+    ],
+    "place_of_birth": "Cagliari",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 29,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/171399-1595940543.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/171399",
+    "fetched_at": "2026-06-08T16:17:32Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 56618,
+    "full_name": "Matteo Bruscagin",
+    "name_arabic": null,
+    "date_of_birth": "1989-08-03",
+    "age": 36,
+    "height_cm": 184,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Centre-Back"
+    ],
+    "place_of_birth": "Milano",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 23,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/56618-1666352976.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/56618",
+    "fetched_at": "2026-06-08T16:17:36Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 816897,
+    "full_name": "Lorenzo Podda",
+    "name_arabic": null,
+    "date_of_birth": "2003-04-09",
+    "age": 23,
+    "height_cm": 178,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Right Midfield"
+    ],
+    "place_of_birth": "Alessandria",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 27,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/816897-1650458627.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/816897",
+    "fetched_at": "2026-06-08T16:17:40Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 711352,
+    "full_name": "Francesco Zallu",
+    "name_arabic": null,
+    "date_of_birth": "2003-04-29",
+    "age": 23,
+    "height_cm": 186,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [],
+    "place_of_birth": "Sassari",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 34,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/711352-1654776915.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/711352",
+    "fetched_at": "2026-06-08T16:17:43Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 197744,
+    "full_name": "Nicolò Fazzi",
+    "name_arabic": null,
+    "date_of_birth": "1995-03-02",
+    "age": 31,
+    "height_cm": 183,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Right Midfield",
+      "Left-Back"
+    ],
+    "place_of_birth": "Barga",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 17,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/197744-1665610822.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/197744",
+    "fetched_at": "2026-06-08T16:17:48Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 62718,
+    "full_name": "Federico Carraro",
+    "name_arabic": null,
+    "date_of_birth": "1992-06-23",
+    "age": 33,
+    "height_cm": 177,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Defensive Midfield",
+    "position_others": [
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Padova",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 21,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/62718-1754646448.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/62718",
+    "fetched_at": "2026-06-08T16:17:52Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 924901,
+    "full_name": "Halid Djankpata",
+    "name_arabic": null,
+    "date_of_birth": "2005-04-13",
+    "age": 21,
+    "height_cm": 185,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Right Midfield"
+    ],
+    "place_of_birth": "Lomé",
+    "citizenships": [
+      "Togo",
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 82,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/924901-1707405947.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/924901",
+    "fetched_at": "2026-06-08T16:17:56Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 123258,
+    "full_name": "Ivan Varone",
+    "name_arabic": null,
+    "date_of_birth": "1992-10-11",
+    "age": 33,
+    "height_cm": 184,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [],
+    "place_of_birth": "Napoli",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 6,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/123258-1518698089.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/123258",
+    "fetched_at": "2026-06-08T16:18:00Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 256118,
+    "full_name": "Saber Hraiech",
+    "name_arabic": null,
+    "date_of_birth": "1995-07-30",
+    "age": 30,
+    "height_cm": 180,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Mazara del Vallo",
+    "citizenships": [
+      "Italy",
+      "Tunisia"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 44,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/256118-1604827087.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/256118",
+    "fetched_at": "2026-06-08T16:18:04Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 62750,
+    "full_name": "Giacomo Rosaia",
+    "name_arabic": null,
+    "date_of_birth": "1993-03-26",
+    "age": 33,
+    "height_cm": 180,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Defensive Midfield"
+    ],
+    "place_of_birth": "Massa",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 8,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/62750-1697717926.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/62750",
+    "fetched_at": "2026-06-08T16:18:08Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 819083,
+    "full_name": "Gabriele Costa",
+    "name_arabic": null,
+    "date_of_birth": "2004-12-10",
+    "age": 21,
+    "height_cm": 183,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Lavagna",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 40,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/819083-1665993962.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/819083",
+    "fetched_at": "2026-06-08T16:18:12Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 1297382,
+    "full_name": "Valerio Conti",
+    "name_arabic": null,
+    "date_of_birth": "2006-04-16",
+    "age": 20,
+    "height_cm": 178,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [],
+    "place_of_birth": "Roma",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 78,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1297382-1741627724.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1297382",
+    "fetched_at": "2026-06-08T16:18:16Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 402114,
+    "full_name": "Alessio Di Massimo",
+    "name_arabic": null,
+    "date_of_birth": "1996-05-07",
+    "age": 30,
+    "height_cm": 180,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Second Striker"
+    ],
+    "place_of_birth": "Sant'Omero",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 10,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/402114-1697716984.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/402114",
+    "fetched_at": "2026-06-08T16:18:20Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 1249656,
+    "full_name": "Amoako Minta",
+    "name_arabic": null,
+    "date_of_birth": "2005-10-26",
+    "age": 20,
+    "height_cm": 178,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Centre-Forward"
+    ],
+    "place_of_birth": null,
+    "citizenships": [
+      "Ghana"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 77,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1249656-1751738727.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1249656",
+    "fetched_at": "2026-06-08T16:18:25Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 386577,
+    "full_name": "Federico Mastropietro",
+    "name_arabic": null,
+    "date_of_birth": "1999-01-23",
+    "age": 27,
+    "height_cm": 176,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Second Striker",
+    "position_others": [
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Taranto",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 11,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/386577-1560051347.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/386577",
+    "fetched_at": "2026-06-08T16:18:29Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 930944,
+    "full_name": "Tommaso Ghirardello",
+    "name_arabic": null,
+    "date_of_birth": "2005-10-19",
+    "age": 20,
+    "height_cm": 188,
+    "foot": "both",
+    "position_general": "Attack",
+    "position_specific": "Centre-Forward",
+    "position_others": [],
+    "place_of_birth": "Rovigo",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 73,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/930944-1751982244.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/930944",
+    "fetched_at": "2026-06-08T16:18:33Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
+  },
+  {
+    "tm_player_id": 134983,
+    "full_name": "Andrea La Mantia",
+    "name_arabic": null,
+    "date_of_birth": "1991-05-06",
+    "age": 35,
+    "height_cm": 190,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Centre-Forward",
+    "position_others": [],
+    "place_of_birth": "Marino",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 4326,
+    "current_club_name": "AS Gubbio",
+    "shirt_number": 19,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/134983-1601300478.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/134983",
+    "fetched_at": "2026-06-08T16:18:37Z",
+    "roster_club_id": 4326,
+    "roster_club_name": "AS Gubbio 1910"
   }
 ]
