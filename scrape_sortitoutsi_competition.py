@@ -91,7 +91,15 @@ def _norm(s: str) -> str:
     # Rimuovi tokens generici (a, c, f, s, u — sigle dei prefissi tipo "AC", "FC", "SSC")
     # e parole generiche tipo "calcio", "club", "1913" già rimosse dalla regex sopra (i numeri).
     # Inoltre rimuovi parole come "milan", "milano" sono troppo specifiche, le lasciamo.
-    DROP_TOKENS = {"ac", "fc", "ssc", "ss", "us", "uc", "acf", "afc"}
+    # 2026-06-08: estesi i drop tokens per disambiguare "Club Atlético", "AS Monaco",
+    # "CD Tenerife", "Levante UD" ecc. — questi non sono parte del nome distintivo.
+    DROP_TOKENS = {
+        "ac", "fc", "ssc", "ss", "us", "uc", "acf", "afc",
+        "club", "cf", "cd", "ud", "sc", "sd", "rcd", "rc",
+        "as", "asd", "ec", "sv", "sk", "fk", "nk", "hnk", "ofk",
+        "ks", "gks", "vfb", "vfl", "tsg", "tsv", "kks",
+        "calcio", "football",
+    }
     tokens = [t for t in s.split() if t not in DROP_TOKENS and len(t) > 1]
     return " ".join(tokens)
 
@@ -119,7 +127,7 @@ SOTS_TO_TM_ALIAS = {
     "reggiana 1919": "AC Reggiana 1919",
     "cesena": "Cesena FC",
     "empoli": "FC Empoli",
-    "sudtirol": "FC Sudtirol",  # SortItOutSi normalizza Südtirol -> Sudtirol
+    "sudtirol": "FC Sudtirol",
     "modena 2018": "Modena FC",
     "palermo": "Palermo FC",
     "juve stabia": "SS Juve Stabia",
@@ -128,6 +136,106 @@ SOTS_TO_TM_ALIAS = {
     "avellino 1912": "US Avellino 1912",
     "catanzaro 1929": "US Catanzaro",
     "venezia": "Venezia FC",
+    # 2026-06-08: ES1 (LaLiga) — SOTS usa puntini, alcuni nomi accademici
+    "barcelona": "FC Barcelona",
+    "espanyol de barcelona": "RCD Espanyol Barcelona",
+    "celta de vigo": "Celta de Vigo",
+    "atletico de madrid": "Atlético de Madrid",
+    "atletico osasuna": "CA Osasuna",
+    "athletic club": "Athletic Bilbao",
+    "athletic": "Athletic Bilbao",
+    "getafe": "Getafe CF",
+    "elche": "Elche CF",
+    "celta de vigo": "Celta de Vigo",
+    "celta vigo": "Celta de Vigo",
+    "1 heidenheim 1846": "1. FC Heidenheim 1846",
+    "heidenheim 1846": "1. FC Heidenheim 1846",
+    "1 koln": "1. FC Köln",
+    "sport freiburg": "SC Freiburg",
+    "sport club freiburg": "SC Freiburg",
+    "deportivo alaves": "Deportivo Alavés",
+    "elche": "Elche CF",
+    "getafe": "Getafe CF",
+    "girona": "Girona FC",
+    "levante": "Levante UD",
+    "mallorca": "RCD Mallorca",
+    "rayo vallecano de madrid": "Rayo Vallecano",
+    "real betis balompie": "Real Betis Balompié",
+    "real madrid": "Real Madrid",
+    "real sociedad de futbol": "Real Sociedad",
+    "sevilla": "Sevilla FC",
+    "valencia": "Valencia CF",
+    "villarreal": "Villarreal CF",
+    "oviedo": "Real Oviedo",
+    # GB1 (Premier League) — SOTS usa nomi brevi
+    "arsenal": "Arsenal FC",
+    "aston villa": "Aston Villa",
+    "bournemouth": "AFC Bournemouth",
+    "brentford": "Brentford FC",
+    "brighton hove albion": "Brighton & Hove Albion",
+    "burnley": "Burnley FC",
+    "chelsea": "Chelsea FC",
+    "crystal palace": "Crystal Palace",
+    "everton": "Everton FC",
+    "fulham": "Fulham FC",
+    "leeds united": "Leeds United",
+    "liverpool": "Liverpool FC",
+    "manchester city": "Manchester City",
+    "manchester united": "Manchester United",
+    "newcastle united": "Newcastle United",
+    "nottingham forest": "Nottingham Forest",
+    "sunderland": "Sunderland AFC",
+    "tottenham hotspur": "Tottenham Hotspur",
+    "west ham united": "West Ham United",
+    "wolverhampton wanderers": "Wolverhampton Wanderers",
+    "west bromwich albion": "West Bromwich Albion",
+    # L1 (Bundesliga)
+    "bayern munchen": "Bayern Munich",
+    "borussia dortmund": "Borussia Dortmund",
+    "bayer leverkusen": "Bayer 04 Leverkusen",
+    "rb leipzig": "RB Leipzig",
+    "eintracht frankfurt": "Eintracht Frankfurt",
+    "borussia monchengladbach": "Borussia Mönchengladbach",
+    "vfb stuttgart": "VfB Stuttgart",
+    "vfl wolfsburg": "VfL Wolfsburg",
+    "werder bremen": "SV Werder Bremen",
+    "hoffenheim": "TSG 1899 Hoffenheim",
+    "augsburg": "FC Augsburg",
+    "freiburg": "SC Freiburg",
+    "mainz": "1.FSV Mainz 05",
+    "union berlin": "1.FC Union Berlin",
+    "heidenheim 1846": "1. FC Heidenheim 1846",
+    "koln": "1. FC Köln",
+    "1 koln": "1. FC Köln",
+    "1 heidenheim 1846": "1. FC Heidenheim 1846",
+    "hamburger sv": "Hamburger SV",
+    "st pauli": "FC St. Pauli",
+    # FR1 (Ligue 1)
+    "paris saint germain": "Paris Saint-Germain",
+    "olympique marseille": "Olympique Marseille",
+    "olympique lyonnais": "Olympique Lyon",
+    "lille": "LOSC Lille",
+    "monaco": "AS Monaco",
+    "rennes": "Stade Rennais FC",
+    "nantes": "FC Nantes",
+    "lens": "RC Lens",
+    "nice": "OGC Nice",
+    "lyon": "Olympique Lyon",
+    "marseille": "Olympique Marseille",
+    "auxerre": "AJ Auxerre",
+    "angers": "Angers SCO",
+    "paris fc": "Paris FC",
+    "le havre": "Le Havre AC",
+    "reims": "Stade de Reims",
+    "montpellier": "Montpellier Hérault SC",
+    "clermont foot 63": "Clermont Foot 63",
+    "en avant guingamp": "En Avant Guingamp",
+    "amiens": "Amiens SC",
+    "le mans": "Le Mans FC",
+    "montpellier herault": "Montpellier Hérault SC",
+    "rodez aveyron": "Rodez Aveyron Football",
+    "stade de reims": "Stade de Reims",
+    "boulogne": "US Boulogne CO",
 }
 
 
@@ -187,12 +295,20 @@ def main() -> None:
                     if c["name"] == tm_target:
                         ours = c
                         break
-            # Poi fallback su match per nome normalizzato
+            # 2026-06-08: match esatto prima (evita falsi positivi tipo
+            # "barcelona" in "barcelona atletic"). In/contains solo se nessun
+            # match esatto.
             if not ours:
-                for our_norm, c in by_norm_name.items():
-                    if name_n == our_norm or name_n in our_norm or our_norm in name_n:
-                        ours = c
-                        break
+                # 1) Match esatto
+                if name_n in by_norm_name:
+                    ours = by_norm_name[name_n]
+                # 2) Fallback contains, ma SOLO se solo un candidato matcha
+                # (riduce ambiguità)
+                else:
+                    candidates = [c for our_norm, c in by_norm_name.items()
+                                  if (name_n in our_norm or our_norm in name_n)]
+                    if len(candidates) == 1:
+                        ours = candidates[0]
             if not ours:
                 print(f"  [no-match] sots {t['sots_team_id']:>10}  {t['name']!r}")
                 continue

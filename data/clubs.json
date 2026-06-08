@@ -1094,8 +1094,8 @@
     "league_id": "IT3C",
     "league_name": "Serie C - Girone C",
     "club_url": "https://www.transfermarkt.com/atalanta-u23/startseite/verein/41110/saison_id/2025",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1106,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1106.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/41110.png"
   },
   {
@@ -1117,8 +1117,8 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/331",
     "slug": "ca-osasuna",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1685,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1685.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -1243,8 +1243,8 @@
     "league_id": "IT3A",
     "club_url": "https://www.transfermarkt.com/asd-alcione-milano/startseite/verein/52687/saison_id/2025",
     "league_name": "Serie C - Girone A",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 43106513,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/43106513.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/52687.png"
   },
   {
@@ -2201,8 +2201,8 @@
     "league_name": "Bundesliga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/27",
     "slug": "fc-bayern-munchen",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 915,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/915.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -2249,8 +2249,8 @@
     "league_name": "Bundesliga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/35",
     "slug": "fc-st-pauli",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 946,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/946.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -2357,8 +2357,8 @@
     "league_name": "Bundesliga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/60",
     "slug": "sc-freiburg",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 944,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/944.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -2513,8 +2513,8 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/131",
     "slug": "fc-barcelona",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1708,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1708.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -3809,8 +3809,8 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/621",
     "slug": "athletic-bilbao",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1664,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1664.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -4001,8 +4001,8 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/714",
     "slug": "espanyol-barcelona",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1725,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1725.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
@@ -6929,8 +6929,8 @@
     "league_name": "Championship",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/1020",
     "slug": "fc-portsmouth",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 699,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/699.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },
