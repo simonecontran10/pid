@@ -3129,6 +3129,25 @@ const _CLUB_DISPLAY_MAP = {
   "Milan Futuro": "Milan Futuro",
 };
 
+// 2026-06-08: prefissi standard rimossi automaticamente dall'inizio del nome
+// club. Coprono ~90% dei casi reali (AC Milan→Milan, AS Roma→Roma, FC Barcelona
+// →Barcelona, RC Lens→Lens, OGC Nice→Nice ecc). Override esatti in
+// _CLUB_DISPLAY_MAP hanno precedenza per i casi che non seguono la regex
+// (es. "Inter Milan"→"Inter", "Hellas Verona"→"Verona").
+const _CLUB_PREFIX_RX = new RegExp(
+  "^(?:" + [
+    "AC", "ACF", "AD", "AE", "AEK", "AEL", "AFC", "AS", "A\\.S\\.",
+    "BFC", "BSC", "CA", "CD", "CF", "CR", "CS", "DSC", "DSV",
+    "EC", "ES", "FC", "F\\.C\\.", "FCSB", "FK", "GA", "GKS", "HNK",
+    "IFK", "KAA", "KAS", "KFC", "KKS", "KMSK", "KRC", "KSC", "KSP",
+    "KSV", "KV", "MKE", "MSV", "NEC", "NK", "OFK", "OGC", "OH", "OL",
+    "PEC", "RC", "RKC", "RSC", "SC", "SCO", "SE", "SK", "SS", "SSD",
+    "SV", "TSV", "UC", "US", "USD", "VfB", "VfL",
+    "1\\.FC", "1\\.FSV", "1\\.FCK"
+  ].join("|") + ")\\s+",
+  "i"
+);
+
 function prettyClubName(name) {
   if (!name) return name;
   // Workaround bug TM: i giocatori in trasferimento vengono scrappati con
@@ -3136,7 +3155,13 @@ function prettyClubName(name) {
   // pseudo-club fittizi). Mostra "—" finché non viene rifatto lo scraping.
   if (name === "Winter signing" || name === "New arrival" || name === "Returnee") return "—";
   if (name === "Free agent") return (typeof currentLang !== "undefined" && currentLang === "it") ? "Svincolato" : "Free agent";
-  return _CLUB_DISPLAY_MAP[name] || name;
+  // 1. Override esatto in mappa (priorità — gestisce casi come "Inter Milan"→"Inter")
+  if (_CLUB_DISPLAY_MAP[name]) return _CLUB_DISPLAY_MAP[name];
+  // 2. Strip prefisso noto via regex (AC Milan → Milan, AS Roma → Roma, ...)
+  const stripped = name.replace(_CLUB_PREFIX_RX, "").trim();
+  // Se lo strip ha lasciato qualcosa di non vuoto, usa quello.
+  if (stripped && stripped !== name) return stripped;
+  return name;
 }
 
 const FORMATIONS = {
