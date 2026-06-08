@@ -52,8 +52,27 @@ COMPETITIONS = {
         "name": "Polish I Liga",
         "url": "https://sortitoutsi.net/football-manager-2026/competition/129559/polish-first-division",
     },
-
-
+    # 2026-06-08: leghe Big 5 + Primavera 1 (Italia U19)
+    "ES1": {
+        "name": "Spanish First Division",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/67/spanish-first-division",
+    },
+    "GB1": {
+        "name": "English Premier League",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/12/english-premier-division",
+    },
+    "L1": {
+        "name": "German Bundesliga",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/22/bundesliga",
+    },
+    "FR1": {
+        "name": "French Ligue 1",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/17/ligue-1",
+    },
+    "IJ1": {
+        "name": "Italian Primavera 1",
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/130020/campionato-primavera-1",
+    },
 }
 
 HEADERS = {
