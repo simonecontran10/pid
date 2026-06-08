@@ -2515,7 +2515,7 @@
     "slug": "fc-barcelona",
     "sortitoutsi_team_id": 1708,
     "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1708.png",
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_logo_local": "photos/clubs_sots/131.png",
     "logo_url": null
   },
   {
@@ -3811,7 +3811,7 @@
     "slug": "athletic-bilbao",
     "sortitoutsi_team_id": 1664,
     "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1664.png",
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_logo_local": "photos/clubs_sots/621.png",
     "logo_url": null
   },
   {
@@ -4587,8 +4587,8 @@
     "name": "Watford FC",
     "league_id": "GB2",
     "league_name": "Championship",
-    "club_url": "https://www.transfermarkt.com/club/startseite/verein/1010",
-    "slug": "fc-watford",
+    "club_url": "https://www.transfermarkt.com/watford-fc/startseite/verein/1010/saison_id/2025",
+    "slug": "watford-fc",
     "sortitoutsi_team_id": 732,
     "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/732.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1010.png",

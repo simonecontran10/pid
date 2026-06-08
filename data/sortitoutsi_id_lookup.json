@@ -20653,5 +20653,26 @@
     "match_score": 1.0,
     "matched_via": "cross_club_dob_confirmed",
     "face_local": "photos/players_sots_lookup/225123.png"
+  },
+  "906160": {
+    "sots_id": 2000139890,
+    "name": "Saba Goglichidze",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000139890.png"
+  },
+  "648032": {
+    "sots_id": 2000145982,
+    "name": "James Abankwah",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000145982.png"
+  },
+  "668950": {
+    "sots_id": 27164375,
+    "name": "Luca Kjerrumgaard",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/27164375.png"
   }
 }

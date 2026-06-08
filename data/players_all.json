@@ -104013,7 +104013,7 @@
     "full_name": "Edo Kayembe",
     "name_arabic": "Edo Kayembe Kayembe",
     "date_of_birth": "1998-06-03",
-    "age": 27,
+    "age": 28,
     "height_cm": 183,
     "foot": "left",
     "position_general": "Midfield",
@@ -104032,14 +104032,9 @@
     "shirt_number": 39,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/486477-1724774156.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/486477",
-    "fetched_at": "2026-06-01T08:19:48Z",
+    "fetched_at": "2026-06-08T20:55:16Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford",
-    "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/486477.jpg"
+    "roster_club_name": "Watford FC"
   },
   {
     "tm_player_id": 380744,
@@ -104062,14 +104057,9 @@
     "shirt_number": 1,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/380744-1779430706.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/380744",
-    "fetched_at": "2026-06-01T08:19:55Z",
+    "fetched_at": "2026-06-08T20:54:03Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford",
-    "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/380744.jpg"
+    "roster_club_name": "Watford FC"
   },
   {
     "tm_player_id": 645589,
@@ -115065,14 +115055,9 @@
     "shirt_number": 66,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/956920-1739808530.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/956920",
-    "fetched_at": "2026-06-01T08:51:49Z",
+    "fetched_at": "2026-06-08T20:55:47Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford",
-    "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/956920.jpg"
+    "roster_club_name": "Watford FC"
   },
   {
     "tm_player_id": 68290,
@@ -136648,5 +136633,735 @@
     "fetched_at": "2026-06-08T18:27:30Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers"
+  },
+  {
+    "tm_player_id": 342050,
+    "full_name": "Nathan Baxter",
+    "name_arabic": "Nathan Joseph Baxter",
+    "date_of_birth": "1998-11-08",
+    "age": 27,
+    "height_cm": 193,
+    "foot": "right",
+    "position_general": "Goalkeeper",
+    "position_specific": null,
+    "position_others": [],
+    "place_of_birth": "London",
+    "citizenships": [
+      "England"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 12,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/342050-1642684021.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/342050",
+    "fetched_at": "2026-06-08T20:54:07Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 1088834,
+    "full_name": "Gabriel Ortelli",
+    "name_arabic": "Γαβριήλ Τζόρτζ Ορτέλλι",
+    "date_of_birth": "2006-06-19",
+    "age": 19,
+    "height_cm": 188,
+    "foot": "right",
+    "position_general": "Goalkeeper",
+    "position_specific": null,
+    "position_others": [],
+    "place_of_birth": "London",
+    "citizenships": [
+      "Cyprus",
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": null,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1088834-1757440539.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1088834",
+    "fetched_at": "2026-06-08T20:54:11Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 795831,
+    "full_name": "Alfie Marriott",
+    "name_arabic": "Alfie Simon Rodney Marriott",
+    "date_of_birth": "2004-03-26",
+    "age": 22,
+    "height_cm": 187,
+    "foot": "right",
+    "position_general": "Goalkeeper",
+    "position_specific": null,
+    "position_others": [],
+    "place_of_birth": "Watford",
+    "citizenships": [
+      "England"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 41,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/795831-1730035241.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/795831",
+    "fetched_at": "2026-06-08T20:54:15Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 906160,
+    "full_name": "Saba Goglichidze",
+    "name_arabic": "საბა გოგლიჩიძე",
+    "date_of_birth": "2004-06-25",
+    "age": 21,
+    "height_cm": 192,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Right-Back"
+    ],
+    "place_of_birth": "Kutaisi",
+    "citizenships": [
+      "Georgia"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 3,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/906160-1732017345.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/906160",
+    "fetched_at": "2026-06-08T20:54:19Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": 2000139890,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000139890.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000139890/saba-goglichidze",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000139890.png"
+  },
+  {
+    "tm_player_id": 855014,
+    "full_name": "Kévin Keben",
+    "name_arabic": "Kévin Keben Biakolo",
+    "date_of_birth": "2004-01-26",
+    "age": 22,
+    "height_cm": 187,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Right-Back"
+    ],
+    "place_of_birth": "Bertoua",
+    "citizenships": [
+      "Cameroon",
+      "France"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 4,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/855014-1676656253.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/855014",
+    "fetched_at": "2026-06-08T20:54:23Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 648032,
+    "full_name": "James Abankwah",
+    "name_arabic": "James Bright Adusei Abankwah",
+    "date_of_birth": "2004-01-16",
+    "age": 22,
+    "height_cm": 188,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Right-Back"
+    ],
+    "place_of_birth": "Waterford",
+    "citizenships": [
+      "Ireland",
+      "Ghana"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 25,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/648032-1730125344.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/648032",
+    "fetched_at": "2026-06-08T20:54:27Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": 2000145982,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000145982.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000145982/james-abankwah",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000145982.png"
+  },
+  {
+    "tm_player_id": 624948,
+    "full_name": "Mattie Pollock",
+    "name_arabic": "Matthew William Pollock",
+    "date_of_birth": "2001-09-28",
+    "age": 24,
+    "height_cm": 190,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [],
+    "place_of_birth": "Redhill",
+    "citizenships": [
+      "England"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 6,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/624948-1724773799.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/624948",
+    "fetched_at": "2026-06-08T20:54:31Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 1049020,
+    "full_name": "Stephen Mfuni",
+    "name_arabic": "Stephen-Nevin Mutanda Mfuni",
+    "date_of_birth": "2008-02-12",
+    "age": 18,
+    "height_cm": 193,
+    "foot": "left",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Left-Back"
+    ],
+    "place_of_birth": "Wigan",
+    "citizenships": [
+      "England",
+      "DR Congo"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 21,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1049020-1729774935.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1049020",
+    "fetched_at": "2026-06-08T20:54:36Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 649023,
+    "full_name": "Formose Mendy",
+    "name_arabic": null,
+    "date_of_birth": "2001-01-02",
+    "age": 25,
+    "height_cm": 191,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Right-Back"
+    ],
+    "place_of_birth": "Dakar",
+    "citizenships": [
+      "Senegal",
+      "Guinea-Bissau"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 27,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/649023-1656082248.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/649023",
+    "fetched_at": "2026-06-08T20:54:39Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 340310,
+    "full_name": "Marc Bola",
+    "name_arabic": "Marc Joel Bola",
+    "date_of_birth": "1997-12-09",
+    "age": 28,
+    "height_cm": 185,
+    "foot": "left",
+    "position_general": "Defender",
+    "position_specific": "Left-Back",
+    "position_others": [
+      "Left Midfield",
+      "Centre-Back"
+    ],
+    "place_of_birth": "London",
+    "citizenships": [
+      "England",
+      "DR Congo"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 16,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/340310-1730125191.JPG?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/340310",
+    "fetched_at": "2026-06-08T20:54:43Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 503795,
+    "full_name": "Jeremy Ngakia",
+    "name_arabic": "Jeremy Mpobi Ngakia",
+    "date_of_birth": "2000-09-07",
+    "age": 25,
+    "height_cm": 184,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Right Midfield",
+      "Left-Back"
+    ],
+    "place_of_birth": "London",
+    "citizenships": [
+      "DR Congo",
+      "England"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 2,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/503795-1741274481.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/503795",
+    "fetched_at": "2026-06-08T20:54:47Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 532858,
+    "full_name": "Jérémy Petris",
+    "name_arabic": "Jérémy Arnaud Petris",
+    "date_of_birth": "1998-01-28",
+    "age": 28,
+    "height_cm": 183,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Right Midfield",
+      "Right Winger"
+    ],
+    "place_of_birth": "Bagnolet",
+    "citizenships": [
+      "Martinique",
+      "France"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 29,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/532858-1688876742.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/532858",
+    "fetched_at": "2026-06-08T20:54:51Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 538994,
+    "full_name": "Pierre Ekwah",
+    "name_arabic": "Pierre-Emmanuel Modi Ekwah Elimby",
+    "date_of_birth": "2002-01-15",
+    "age": 24,
+    "height_cm": 189,
+    "foot": "left",
+    "position_general": "Midfield",
+    "position_specific": "Defensive Midfield",
+    "position_others": [
+      "Central Midfield",
+      "Centre-Back"
+    ],
+    "place_of_birth": "Massy",
+    "citizenships": [
+      "France",
+      "Cameroon"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 17,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/538994-1727722378.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/538994",
+    "fetched_at": "2026-06-08T20:54:55Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 661253,
+    "full_name": "Hector Kyprianou",
+    "name_arabic": "Έκτορας Μάθιου Κυπριανού , Hector Matthew Kyprianou",
+    "date_of_birth": "2001-05-27",
+    "age": 25,
+    "height_cm": 189,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Defensive Midfield",
+    "position_others": [
+      "Central Midfield",
+      "Centre-Back"
+    ],
+    "place_of_birth": "London",
+    "citizenships": [
+      "Cyprus",
+      "England"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 5,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/661253-1694292102.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/661253",
+    "fetched_at": "2026-06-08T20:54:59Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 111051,
+    "full_name": "Nampalys Mendy",
+    "name_arabic": null,
+    "date_of_birth": "1992-06-23",
+    "age": 33,
+    "height_cm": 168,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Defensive Midfield",
+    "position_others": [
+      "Central Midfield"
+    ],
+    "place_of_birth": "La Seyne-sur-Mer",
+    "citizenships": [
+      "Senegal",
+      "France"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 23,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/111051-1756666510.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/111051",
+    "fetched_at": "2026-06-08T20:55:03Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 635336,
+    "full_name": "Imrân Louza",
+    "name_arabic": "عمران لوزا",
+    "date_of_birth": "1999-05-01",
+    "age": 27,
+    "height_cm": 178,
+    "foot": "left",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Defensive Midfield",
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Nantes",
+    "citizenships": [
+      "Morocco",
+      "France"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 10,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/635336-1724774262.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/635336",
+    "fetched_at": "2026-06-08T20:55:07Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 562049,
+    "full_name": "Edoardo Bove",
+    "name_arabic": null,
+    "date_of_birth": "2002-05-16",
+    "age": 24,
+    "height_cm": 181,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Attacking Midfield",
+      "Defensive Midfield"
+    ],
+    "place_of_birth": "Roma",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 15,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/562049-1725532201.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/562049",
+    "fetched_at": "2026-06-08T20:55:12Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 652803,
+    "full_name": "Pierre Dwomoh",
+    "name_arabic": "Pierre Junior Dwomoh",
+    "date_of_birth": "2004-06-21",
+    "age": 21,
+    "height_cm": 188,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Central Midfield",
+    "position_others": [
+      "Defensive Midfield",
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Gent",
+    "citizenships": [
+      "Belgium",
+      "Ghana"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 14,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/652803-1709884161.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/652803",
+    "fetched_at": "2026-06-08T20:55:21Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 412616,
+    "full_name": "Giorgi Chakvetadze",
+    "name_arabic": "გიორგი ჩაკვეტაძე",
+    "date_of_birth": "1999-08-29",
+    "age": 26,
+    "height_cm": 183,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Attacking Midfield",
+    "position_others": [
+      "Left Winger",
+      "Central Midfield"
+    ],
+    "place_of_birth": "Tiflis",
+    "citizenships": [
+      "Georgia"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 8,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/412616-1716542553.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/412616",
+    "fetched_at": "2026-06-08T20:55:25Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 711247,
+    "full_name": "Kwadwo Baah",
+    "name_arabic": "Kwadwo Kyeremeh Baah",
+    "date_of_birth": "2003-01-27",
+    "age": 23,
+    "height_cm": 182,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Right Winger",
+      "Centre-Forward"
+    ],
+    "place_of_birth": "Stuttgart",
+    "citizenships": [
+      "Germany",
+      "England"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 34,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/711247-1738612544.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/711247",
+    "fetched_at": "2026-06-08T20:55:31Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 741229,
+    "full_name": "Rocco Vata",
+    "name_arabic": null,
+    "date_of_birth": "2005-04-18",
+    "age": 21,
+    "height_cm": 184,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Left Winger",
+    "position_others": [
+      "Left Midfield",
+      "Centre-Forward"
+    ],
+    "place_of_birth": "Glasgow",
+    "citizenships": [
+      "Ireland",
+      "Albania"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 11,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/741229-1692197943.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/741229",
+    "fetched_at": "2026-06-08T20:55:37Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 1081219,
+    "full_name": "Othmane Maamma",
+    "name_arabic": "عثمان ماعمة",
+    "date_of_birth": "2005-10-06",
+    "age": 20,
+    "height_cm": 182,
+    "foot": "both",
+    "position_general": "Attack",
+    "position_specific": "Right Winger",
+    "position_others": [
+      "Left Winger"
+    ],
+    "place_of_birth": "Alès",
+    "citizenships": [
+      "Morocco",
+      "France"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 42,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1081219-1726265183.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1081219",
+    "fetched_at": "2026-06-08T20:55:41Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 157368,
+    "full_name": "Tom Ince",
+    "name_arabic": "Thomas Paul Ince",
+    "date_of_birth": "1992-01-30",
+    "age": 34,
+    "height_cm": 178,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Right Winger",
+    "position_others": [
+      "Left Winger",
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Stockport",
+    "citizenships": [
+      "England",
+      "Barbados"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 7,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/157368-1724938916.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/157368",
+    "fetched_at": "2026-06-08T20:55:53Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 668950,
+    "full_name": "Luca Kjerrumgaard",
+    "name_arabic": "Luca Tange Kjerrumgaard",
+    "date_of_birth": "2003-02-09",
+    "age": 23,
+    "height_cm": 196,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Centre-Forward",
+    "position_others": [],
+    "place_of_birth": "Odense",
+    "citizenships": [
+      "Denmark"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 9,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/668950-1737536587.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/668950",
+    "fetched_at": "2026-06-08T20:55:57Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": 27164375,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_27164375.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/27164375/luca-kjerrumgaard",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/27164375.png"
+  },
+  {
+    "tm_player_id": 1101539,
+    "full_name": "Mamadou Doumbia",
+    "name_arabic": null,
+    "date_of_birth": "2006-02-18",
+    "age": 20,
+    "height_cm": 192,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Centre-Forward",
+    "position_others": [],
+    "place_of_birth": null,
+    "citizenships": [
+      "Mali"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 20,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1101539-1727450957.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1101539",
+    "fetched_at": "2026-06-08T20:56:04Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
+  },
+  {
+    "tm_player_id": 1014243,
+    "full_name": "Vivaldo Semedo",
+    "name_arabic": "Vivaldo Leandro Semedo Moura Sousa",
+    "date_of_birth": "2005-01-28",
+    "age": 21,
+    "height_cm": 194,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Centre-Forward",
+    "position_others": [],
+    "place_of_birth": "Luanda",
+    "citizenships": [
+      "Portugal",
+      "Angola"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1010,
+    "current_club_name": "Watford",
+    "shirt_number": 18,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1014243-1707472213.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1014243",
+    "fetched_at": "2026-06-08T20:56:09Z",
+    "roster_club_id": 1010,
+    "roster_club_name": "Watford FC"
   }
 ]
