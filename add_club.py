@@ -153,16 +153,37 @@ def main() -> int:
         print(f"[error] impossibile leggere pagina club: {type(e).__name__}: {e}")
         return 1
 
-    league_id = args.league or detected_league or "OTHER"
+    # Preserve esistente: se il club c'è già in clubs.json, e l'utente non
+    # ha passato --league esplicitamente, NON sovrascriviamo league_id /
+    # name perché potrebbero essere stati settati manualmente (es. Gubbio
+    # già classificato in "IT3B" Serie C Girone B). Altrimenti il club
+    # "spariva" dalla griglia originale dopo un re-import.
+    clubs_existing = _load(CLUBS_FILE, [])
+    existing_club = next((c for c in clubs_existing if c.get("tm_club_id") == cid), None)
+
+    if args.league:
+        league_id = args.league
+        league_src = "override"
+    elif existing_club and existing_club.get("league_id"):
+        league_id = existing_club["league_id"]
+        league_src = "preserved"
+    else:
+        league_id = detected_league or "OTHER"
+        league_src = "auto"
+
+    # Nome: preservalo se esiste (potrebbe essere stato pulito a mano).
+    if existing_club and existing_club.get("name"):
+        club_name = existing_club["name"]
+
     print(f"  nome: {club_name}")
-    print(f"  lega: {league_id}{'  (auto)' if not args.league else '  (override)'}")
+    print(f"  lega: {league_id}  ({league_src})")
 
     club_record = {
         "tm_club_id": cid,
         "name": club_name,
         "slug": slug,
         "league_id": league_id,
-        "league_name": league_id,
+        "league_name": (existing_club or {}).get("league_name") or league_id,
         "club_url": f"https://www.transfermarkt.com/{slug}/startseite/verein/{cid}/saison_id/2025",
         "sortitoutsi_logo_local": f"photos/clubs_sots/{cid}.png",
     }
@@ -178,6 +199,17 @@ def main() -> int:
         return 1
     pids = [p["tm_player_id"] for p in roster]
     print(f"  rosa: {len(pids)} giocatori")
+    # Guardia: se la rosa è vuota, TM ha probabilmente bloccato la pagina
+    # /kader/ (capita su IP server: Vercel, GitHub Actions). Non salviamo
+    # il club_record nuovo perché finirebbe in clubs.json senza giocatori,
+    # apparendo come "operazione conclusa" nell'UI Admin ma in realtà
+    # vuoto. Meglio fallire esplicitamente e suggerire run locale.
+    if not pids and existing_club is None:
+        print()
+        print("[error] rosa VUOTA — probabilmente TM ha bloccato la richiesta")
+        print("        /kader/ (IP server bloccato). Esegui add_club.py")
+        print("        localmente dal Mac per aggirare il blocco.")
+        return 1
 
     # === Step 3: update clubs.json (upsert) ===
     clubs = _load(CLUBS_FILE, [])

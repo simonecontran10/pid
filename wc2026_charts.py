@@ -359,7 +359,18 @@ def add_nation_logos(ax: plt.Axes, nations: list[str], xpos_data: float | None =
         ax.add_artist(ab)
 
 
-def add_footer(fig: plt.Figure, source: str = "Fonte: FIFA"):
+# pt71: i18n framework — switch tramite variabile globale CHART_LANG ("it"|"en").
+# T(it, en) ritorna la stringa giusta. savefig() usa cartella diversa per ogni
+# lingua. main() esegue il pipeline 2 volte (charts/ e charts_en/).
+CHART_LANG = "it"
+
+def T(it_text: str, en_text: str) -> str:
+    return it_text if CHART_LANG == "it" else en_text
+
+
+def add_footer(fig: plt.Figure, source: str | None = None):
+    if source is None:
+        source = T("Fonte: FIFA", "Source: FIFA")
     fig.text(0.04, 0.04, source, ha="left", va="bottom",
              fontsize=11, color=COLORS["muted"], style="italic")
 
@@ -373,7 +384,7 @@ def add_title(fig: plt.Figure, title: str, subtitle: str = ""):
 
 
 def savefig(fig: plt.Figure, name: str) -> None:
-    out = Path("charts")
+    out = Path("charts") if CHART_LANG == "it" else Path("charts_en")
     out.mkdir(exist_ok=True)
     fpath = out / f"{name}.png"
     fig.savefig(fpath, dpi=240, bbox_inches=None,
@@ -397,12 +408,15 @@ def chart_national_caps_avg():
         ax.text(val + 0.5, bar.get_y() + bar.get_height() / 2,
                 f"{val:.1f}", va="center", fontsize=12,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Media presenze in nazionale (senior A)", fontsize=14)
+    ax.set_xlabel(T("Media presenze in nazionale (senior A)",
+                    "Average senior A national-team caps"), fontsize=14)
     ax.set_xlim(0, max(avgs) * 1.12)
     add_nation_logos(ax, nations, size_px=18)
 
-    add_title(fig, "Esperienza media in nazionale",
-              "Media caps senior A — TOP 25 rose")
+    add_title(fig, T("Esperienza media in nazionale",
+                     "Average national-team experience"),
+              T("Media caps senior A — TOP 25 rose",
+                "Average senior A caps — TOP 25 squads"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "01_caps_avg_top25")
@@ -426,12 +440,15 @@ def chart_national_caps_avg_bottom():
         ax.text(val + 0.5, bar.get_y() + bar.get_height() / 2,
                 f"{val:.1f}", va="center", fontsize=12,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Media presenze in nazionale (senior A)", fontsize=14)
+    ax.set_xlabel(T("Media presenze in nazionale (senior A)",
+                    "Average senior A national-team caps"), fontsize=14)
     ax.set_xlim(0, max(avgs) * 1.12)
     add_nation_logos(ax, nations, size_px=18)
 
-    add_title(fig, "Rose meno esperte in nazionale",
-              "Media caps senior A — le 25 PIÙ BASSE")
+    add_title(fig, T("Rose meno esperte in nazionale",
+                     "Least experienced squads"),
+              T("Media caps senior A — le 25 PIÙ BASSE",
+                "Average senior A caps — BOTTOM 25"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "01b_caps_avg_bottom25")
@@ -451,14 +468,17 @@ def chart_top_clubs():
         ax.text(val + 0.15, bar.get_y() + bar.get_height() / 2,
                 str(val), va="center", fontsize=12,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Giocatori al Mondiale 2026", fontsize=14)
+    ax.set_xlabel(T("Giocatori al Mondiale 2026",
+                    "Players at World Cup 2026"), fontsize=14)
     ax.set_xlim(0, max(cnts) + 2)
     # pt69: loghi club spostati molto più a sinistra (col label dei club)
     # con dimensione fissa uniforme — niente più sovrapposizione.
     add_club_logos(ax, clubs, size_px=22, xpad_points=-180)
 
-    add_title(fig, "Club che esportano più giocatori al Mondiale",
-              "TOP 20 club per numero di convocati WC2026")
+    add_title(fig, T("Club che esportano più giocatori al Mondiale",
+                     "Clubs sending the most players to the World Cup"),
+              T("TOP 20 club per numero di convocati WC2026",
+                "TOP 20 clubs by WC2026 call-ups"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "02_top_clubs")
@@ -480,7 +500,8 @@ def chart_top_leagues():
         ax.text(val + 1, bar.get_y() + bar.get_height() / 2,
                 f"{val}  ({pct:.1f}%)", va="center", fontsize=12,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Giocatori al Mondiale (per nazione del club)", fontsize=14)
+    ax.set_xlabel(T("Giocatori al Mondiale (per nazione del club)",
+                    "Players at the World Cup (by club country)"), fontsize=14)
     ax.set_xlim(0, max(cnts) * 1.18)
     add_code_logos(ax, leagues, size_px=28, xpad_points=-70)
 
@@ -506,7 +527,8 @@ def chart_top_leagues():
                 ha="center", va="center", fontsize=72, fontweight="bold",
                 color=COLORS["bar3"], family="Avenir Next Condensed",
                 transform=ax_box.transAxes)
-    ax_box.text(0.5, 0.30, f"{big5_pct:.1f}% del totale",
+    ax_box.text(0.5, 0.30, T(f"{big5_pct:.1f}% del totale",
+                              f"{big5_pct:.1f}% of total"),
                 ha="center", va="center", fontsize=20, fontweight="bold",
                 color=COLORS["primary"], family="Avenir Next Condensed",
                 transform=ax_box.transAxes)
@@ -515,8 +537,9 @@ def chart_top_leagues():
                 color=COLORS["muted"], family="Avenir Next Condensed",
                 transform=ax_box.transAxes)
 
-    add_title(fig, "Campionati di militanza",
-              "TOP 15 paesi del club da cui provengono i convocati WC2026")
+    add_title(fig, T("Campionati di militanza", "Leagues of origin"),
+              T("TOP 15 paesi del club da cui provengono i convocati WC2026",
+                "TOP 15 club countries supplying WC2026 players"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "03_top_leagues")
@@ -532,21 +555,24 @@ def chart_avg_age():
     vals = [r[1] for r in rows][::-1]
 
     # pt69: figsize più alto per le 48 nazionali — più aria tra le righe
-    fig, ax = setup_fig(figsize=(16, 14))
-    fig.subplots_adjust(left=0.20, right=0.95, top=0.91, bottom=0.06)
+    # pt71: 16:9 con 48 barre — height piccola, font piccolo, loghi piccoli.
+    fig, ax = setup_fig(figsize=(16, 9))
+    fig.subplots_adjust(left=0.18, right=0.96, top=0.86, bottom=0.08)
     cmap = matplotlib.colormaps.get_cmap("RdYlGn_r")
     norm_vals = [(v - min(vals)) / (max(vals) - min(vals)) for v in vals]
     colors = [cmap(n) for n in norm_vals]
-    bars = ax.barh(display_nations(nations), vals, color=colors, height=0.55)
+    bars = ax.barh(display_nations(nations), vals, color=colors, height=0.78)
     for bar, val in zip(bars, vals):
         ax.text(val + 0.05, bar.get_y() + bar.get_height() / 2,
-                f"{val:.1f}", va="center", fontsize=12,
+                f"{val:.1f}", va="center", fontsize=7.5,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Età media rosa", fontsize=14)
+    ax.set_xlabel(T("Età media rosa", "Squad average age"), fontsize=13)
     ax.set_xlim(min(vals) - 0.5, max(vals) + 0.8)
-    add_nation_logos(ax, nations, size_px=22)
+    ax.tick_params(axis="y", labelsize=7)
+    add_nation_logos(ax, nations, size_px=11)
 
-    add_title(fig, "Età media delle 48 rose", "")
+    add_title(fig, T("Età media delle 48 rose",
+                     "Average age of the 48 squads"), "")
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "04_avg_age")
@@ -562,18 +588,21 @@ def chart_avg_height():
     vals = [r[1] for r in rows][::-1]
 
     # pt69: figsize più alto per le 48 nazionali
-    fig, ax = setup_fig(figsize=(16, 14))
-    fig.subplots_adjust(left=0.20, right=0.95, top=0.91, bottom=0.06)
-    bars = ax.barh(display_nations(nations), vals, color=COLORS["bar4"], height=0.55)
+    fig, ax = setup_fig(figsize=(16, 9))
+    fig.subplots_adjust(left=0.18, right=0.96, top=0.86, bottom=0.08)
+    bars = ax.barh(display_nations(nations), vals, color=COLORS["bar4"], height=0.78)
     for bar, val in zip(bars, vals):
         ax.text(val + 0.15, bar.get_y() + bar.get_height() / 2,
-                f"{val:.1f} cm", va="center", fontsize=12,
+                f"{val:.1f} cm", va="center", fontsize=7.5,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Altezza media rosa (cm)", fontsize=14)
+    ax.set_xlabel(T("Altezza media rosa (cm)",
+                    "Squad average height (cm)"), fontsize=13)
     ax.set_xlim(min(vals) - 1, max(vals) + 3)
-    add_nation_logos(ax, nations, size_px=22)
+    ax.tick_params(axis="y", labelsize=7)
+    add_nation_logos(ax, nations, size_px=11)
 
-    add_title(fig, "Altezza media delle 48 rose", "")
+    add_title(fig, T("Altezza media delle 48 rose",
+                     "Average height of the 48 squads"), "")
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "05_avg_height")
@@ -594,12 +623,15 @@ def chart_coaches_by_country():
         ax.text(val + 0.05, bar.get_y() + bar.get_height() / 2,
                 str(val), va="center", fontsize=13,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Numero di allenatori al WC2026", fontsize=14)
+    ax.set_xlabel(T("Numero di allenatori al WC2026",
+                    "Number of head coaches at WC2026"), fontsize=14)
     ax.set_xlim(0, max(counts) + 1)
     add_nation_logos(ax, countries, size_px=24)
 
-    add_title(fig, "Allenatori per nazionalità",
-              "Quali paesi esportano più CT al Mondiale 2026")
+    add_title(fig, T("Allenatori per nazionalità",
+                     "Head coaches by nationality"),
+              T("Quali paesi esportano più CT al Mondiale 2026",
+                "Which countries supply the most managers at WC2026"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "06_coaches_by_country")
@@ -621,12 +653,15 @@ def chart_home_share():
         ax.text(val + 0.6, bar.get_y() + bar.get_height() / 2,
                 f"{val:.1f}%", va="center", fontsize=11,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("% convocati che militano nel campionato del proprio paese", fontsize=14)
+    ax.set_xlabel(T("% convocati che militano nel campionato del proprio paese",
+                    "% of squad playing in their own country's league"), fontsize=14)
     ax.set_xlim(0, max(vals) * 1.10)
     add_nation_logos(ax, nations, size_px=18)
 
-    add_title(fig, "Convocati che giocano in patria",
-              "% giocatori della rosa che militano nel campionato di origine — TOP 25")
+    add_title(fig, T("Convocati che giocano in patria",
+                     "Players playing in their home country"),
+              T("% giocatori della rosa che militano nel campionato di origine — TOP 25",
+                "% of squad playing in their own country's league — TOP 25"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "07_home_share")
@@ -653,12 +688,15 @@ def chart_home_share_bottom():
         ax.text(max(val, 0) + xmax * 0.012, bar.get_y() + bar.get_height() / 2,
                 f"{val:.1f}%", va="center", fontsize=11,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("% convocati che militano nel campionato del proprio paese", fontsize=14)
+    ax.set_xlabel(T("% convocati che militano nel campionato del proprio paese",
+                    "% of squad playing in their own country's league"), fontsize=14)
     ax.set_xlim(0, xmax * 1.15)
     add_nation_logos(ax, nations, size_px=18)
 
-    add_title(fig, "Le rose più 'esportatrici' di talenti",
-              "% giocatori della rosa che militano nel campionato di origine — le 25 PIÙ BASSE")
+    add_title(fig, T("Le rose più 'esportatrici' di talenti",
+                     "The most talent-exporting squads"),
+              T("% giocatori della rosa che militano nel campionato di origine — le 25 PIÙ BASSE",
+                "% of squad playing in their own country's league — BOTTOM 25"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "07b_home_share_bottom")
@@ -710,25 +748,272 @@ def chart_top_italian_clubs():
     clubs_display = [CLUB_DISPLAY_IT.get(c, c) for c in clubs_raw]
     cnts = [n for _, n in pairs_plot]
 
-    fig, ax = setup_fig(figsize=(16, 11))
-    fig.subplots_adjust(left=0.30, right=0.93, top=0.88, bottom=0.08)
-    bars = ax.barh(clubs_display, cnts, color=COLORS["bar1"], height=0.6)
+    # pt71: figsize 16:9 con 21 barre — riduco height e font per stare in formato.
+    fig, ax = setup_fig(figsize=(16, 9))
+    fig.subplots_adjust(left=0.26, right=0.93, top=0.84, bottom=0.10)
+    bars = ax.barh(clubs_display, cnts, color=COLORS["bar1"], height=0.65)
     for bar, val in zip(bars, cnts):
         ax.text(val + 0.12, bar.get_y() + bar.get_height() / 2,
-                str(val), va="center", fontsize=13,
+                str(val), va="center", fontsize=11,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Giocatori al Mondiale 2026", fontsize=14)
+    ax.set_xlabel(T("Giocatori al Mondiale 2026",
+                    "Players at World Cup 2026"), fontsize=13)
     ax.set_xlim(0, max(cnts) + 2)
-    # I loghi vanno cercati con i nomi RAW (CLUB_FILE_ALIAS mappa quelli).
-    # pt71: loghi spostati piu' a destra (-180 → -120) per stare piu' vicino
-    # al label del club.
-    add_club_logos(ax, clubs_raw, size_px=24, xpad_points=-120)
+    ax.tick_params(axis="y", labelsize=10)
+    add_club_logos(ax, clubs_raw, size_px=18, xpad_points=-110)
 
-    add_title(fig, "Club italiani al Mondiale",
-              f"{total} convocati da {len(pairs)} club di Serie A")
+    add_title(fig, T("Club italiani al Mondiale",
+                     "Italian clubs at the World Cup"),
+              T(f"{total} convocati da {len(pairs)} club di Serie A",
+                f"{total} call-ups from {len(pairs)} Serie A clubs"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "10_italian_clubs")
+
+
+# pt71: nomi club tier-1 e tier-2 2025-26 esattamente come appaiono nel PDF
+# FIFA. Tutto il resto del paese va in tier3+ (League One, Serie C, ecc.).
+BIG5_TOP_DIV = {
+    "ENG": {
+        "tier1_name": "Premier League",
+        "tier2_name": "EFL Championship",
+        "tier3_name": "League One / League Two / Non-League",
+        "tier1": {
+            "Arsenal FC", "Aston Villa FC", "AFC Bournemouth", "Brentford FC",
+            "Brighton & Hove Albion FC", "Burnley FC", "Chelsea FC",
+            "Crystal Palace FC", "Everton FC", "Fulham FC", "Leeds United FC",
+            "Liverpool FC", "Manchester City FC", "Manchester United FC",
+            "Newcastle United FC", "Nottingham Forest FC", "Sunderland AFC",
+            "Tottenham Hotspur FC", "West Ham United FC",
+            "Wolverhampton Wanderers FC",
+        },
+        "tier2": {  # EFL Championship 2025-26 (24)
+            "Birmingham City FC", "Blackburn Rovers FC", "Bristol City FC",
+            "Charlton Athletic FC", "Coventry City FC", "Derby County FC",
+            "Hull City FC", "Ipswich Town FC", "Leicester City FC",
+            "Middlesbrough FC", "Millwall FC", "Norwich City FC",
+            "Oxford United FC", "Portsmouth FC", "Preston North End FC",
+            "Queens Park Rangers FC", "Sheffield United FC", "Sheffield Wednesday FC",
+            "Southampton FC", "Stoke City FC", "Swansea City FC", "Watford FC",
+            "West Bromwich Albion FC", "Wrexham AFC", "She eld United FC",
+        },
+    },
+    "GER": {
+        "tier1_name": "Bundesliga",
+        "tier2_name": "2. Bundesliga",
+        "tier3_name": "3. Liga / Regionalliga",
+        "tier1": {
+            "1. FSV Mainz 05", "1. FC Union Berlin", "Bayer Leverkusen",
+            "FC Bayern München", "Borussia Dortmund",
+            "Borussia Mönchengladbach", "Eintracht Frankfurt", "FC Augsburg",
+            "SC Freiburg", "1. FC Heidenheim 1846", "TSG Hoffenheim",
+            "RB Leipzig", "FC St. Pauli", "VfB Stuttgart", "VfL Wolfsburg",
+            "SV Werder Bremen", "Hamburger SV", "1. FC Köln",
+        },
+        "tier2": {  # 2. Bundesliga 2025-26 (18)
+            "FC Schalke 04", "Hannover 96", "Hertha BSC", "Holstein Kiel",
+            "Karlsruher SC", "Fortuna Düsseldorf", "1. FC Nürnberg",
+            "SV Darmstadt 98", "SC Paderborn 07", "SV Elversberg",
+            "1. FC Magdeburg", "FC Kaiserslautern", "Eintracht Braunschweig",
+            "Preußen Münster", "SpVgg Greuther Fürth", "Arminia Bielefeld",
+            "Dynamo Dresden", "VfL Bochum",
+        },
+    },
+    "ESP": {
+        "tier1_name": "La Liga",
+        "tier2_name": "La Liga 2 (Segunda)",
+        "tier3_name": "Primera RFEF / Segunda RFEF",
+        "tier1": {
+            "Athletic Club", "Atlético De Madrid", "FC Barcelona",
+            "RC Celta Vigo", "Elche CF", "RCD Espanyol", "Getafe CF",
+            "Girona FC", "Levante UD", "RCD Mallorca", "CA Osasuna",
+            "Real Betis", "Real Madrid C. F.", "Real Oviedo",
+            "Real Sociedad", "Sevilla FC", "Rayo Vallecano",
+            "Valencia CF", "Villarreal CF", "Deportivo Alavés",
+        },
+        "tier2": {  # La Liga 2 (Segunda) 2025-26 (22)
+            "Almería CF", "UD Almería", "Burgos CF", "Cádiz CF",
+            "CD Castellón", "Córdoba CF", "Cultural Leonesa",
+            "Deportivo La Coruña", "FC Andorra", "Granada CF",
+            "Albacete Balompié", "Las Palmas", "UD Las Palmas",
+            "CD Leganés", "Málaga CF", "CD Mirandés", "CA Pamplonista",
+            "Racing Santander", "Real Sporting", "Real Valladolid",
+            "Real Zaragoza", "SD Eibar", "Sociedad Deportiva Huesca",
+            "CD Tenerife",
+        },
+    },
+    "ITA": {
+        "tier1_name": "Serie A",
+        "tier2_name": "Serie B",
+        "tier3_name": "Serie C / Lega Pro",
+        "tier1": {
+            "Atalanta Bergamo", "Bologna FC", "Cagliari", "Como",
+            "ACF Fiorentina", "Genoa CFC", "Hellas Verona FC",
+            "FC Internazionale Milano", "Juventus FC", "US Lecce", "AC Milan",
+            "SSC Napoli", "Parma", "Pisa SC", "AS Roma", "US Sassuolo",
+            "Torino FC", "Udinese", "US Cremonese",
+        },
+        "tier2": {  # Serie B 2025-26 (20)
+            "Avellino Calcio", "Bari", "SS Bari", "Brescia Calcio",
+            "Carrarese Calcio", "Castrum Catania", "Catanzaro",
+            "Cesena", "AC Cesena", "Empoli FC", "Frosinone",
+            "Juve Stabia", "Mantova", "Modena FC", "Monza",
+            "AC Monza", "Padova", "Palermo FC", "Pescara", "Reggiana",
+            "AC Reggiana 1919", "AC Reggiana", "SPAL", "Salernitana",
+            "US Salernitana 1919", "UC Sampdoria", "Spezia", "Spezia Calcio",
+            "Sudtirol", "FC Südtirol", "Ternana Calcio", "Venezia FC",
+        },
+    },
+    "FRA": {
+        "tier1_name": "Ligue 1",
+        "tier2_name": "Ligue 2",
+        "tier3_name": "National 1 / National 2",
+        "tier1": {
+            "Angers SCO", "AJ Auxerre", "AS Monaco", "Stade Brestois 29",
+            "Le Havre AC", "RC Lens", "Lille OSC", "OGC Nice",
+            "Olympique Lyonnais", "Olympique Marseille", "FC Lorient",
+            "FC Metz", "FC Nantes", "Paris Saint-Germain", "Paris FC",
+            "Stade Rennais FC", "Stade Reims", "RC Strasbourg",
+            "Toulouse FC",
+        },
+        "tier2": {  # Ligue 2 2025-26 (18)
+            "Amiens SC", "EA Guingamp", "ESTAC Troyes", "Stade Lavallois",
+            "Pau FC", "Grenoble Foot 38", "AC Ajaccio", "Clermont Foot",
+            "Stade de Reims", "AS Saint-Etienne", "Montpellier HSC",
+            "SC Bastia", "Le Mans FC", "USL Dunkerque", "Rodez AF",
+            "Annecy FC", "Red Star FC", "Boulogne sur Mer",
+        },
+    },
+}
+
+
+def chart_big5_split():
+    """pt71: stacked horizontal bar — Big 5 paesi suddivisi per top division
+    vs serie inferiori. Ordine per totale decrescente."""
+    fifa = json.load(open("data/wc2026_squads_fifa.json"))
+    from collections import Counter
+    rows = []
+    for cc, cfg in BIG5_TOP_DIV.items():
+        tier1 = 0
+        tier2 = 0
+        tier3 = 0
+        for nat, v in fifa.items():
+            if not isinstance(v, dict): continue
+            for p in v.get("players", []):
+                if p.get("club_country") == cc:
+                    club = p.get("club", "")
+                    if club in cfg["tier1"]:
+                        tier1 += 1
+                    elif club in cfg.get("tier2", set()):
+                        tier2 += 1
+                    else:
+                        tier3 += 1
+        rows.append({
+            "code": cc, "country_name": {
+                "ENG": "Inghilterra", "GER": "Germania", "ESP": "Spagna",
+                "ITA": "Italia", "FRA": "Francia",
+            }[cc],
+            "tier1_name": cfg["tier1_name"], "tier2_name": cfg["tier2_name"],
+            "tier3_name": cfg.get("tier3_name", "Lower"),
+            "tier1": tier1, "tier2": tier2, "tier3": tier3,
+            "total": tier1 + tier2 + tier3,
+        })
+    rows.sort(key=lambda r: -r["total"])
+
+    # Bottom-up per matplotlib barh
+    rows_plot = rows[::-1]
+    labels = [r["country_name"] for r in rows_plot]
+
+    fig, ax = setup_fig(figsize=(16, 9))
+    fig.subplots_adjust(left=0.10, right=0.93, top=0.83, bottom=0.18)
+
+    y = list(range(len(rows_plot)))
+    # pt71: 3 segmenti per nazione — tier1 (top div), tier2 (2nd div), tier3 (altre)
+    color_t1 = COLORS["bar3"]      # blu/viola intenso
+    color_t2 = "#64748b"           # grigio medio (2nd div)
+    color_t3 = "#cbd5e1"           # grigio chiaro (lower)
+    tier1s = [r["tier1"] for r in rows_plot]
+    tier2s = [r["tier2"] for r in rows_plot]
+    tier3s = [r["tier3"] for r in rows_plot]
+    ax.barh(y, tier1s, color=color_t1, height=0.62)
+    ax.barh(y, tier2s, left=tier1s, color=color_t2, height=0.62)
+    ax.barh(y, tier3s, left=[a+b for a,b in zip(tier1s, tier2s)],
+            color=color_t3, height=0.62)
+
+    # Per ogni nazione, etichetta DENTRO ogni segmento se grande,
+    # SOTTO il bar in stile didascalia se piccolo.
+    for i, r in enumerate(rows_plot):
+        offset = 0
+        # tier1
+        if r["tier1"] >= 8:
+            ax.text(r["tier1"]/2, i, f"{r['tier1']}",
+                    ha="center", va="center", fontsize=14, fontweight="bold",
+                    color="white")
+        # tier2
+        if r["tier2"] >= 8:
+            ax.text(r["tier1"] + r["tier2"]/2, i, f"{r['tier2']}",
+                    ha="center", va="center", fontsize=13, fontweight="bold",
+                    color="white")
+        elif r["tier2"] > 0:
+            ax.text(r["tier1"] + r["tier2"]/2, i, f"{r['tier2']}",
+                    ha="center", va="center", fontsize=10, fontweight="bold",
+                    color="white")
+        # tier3
+        if r["tier3"] >= 8:
+            ax.text(r["tier1"]+r["tier2"] + r["tier3"]/2, i, f"{r['tier3']}",
+                    ha="center", va="center", fontsize=13, fontweight="bold",
+                    color=COLORS["primary"])
+        elif r["tier3"] > 0:
+            ax.text(r["tier1"]+r["tier2"] + r["tier3"]/2, i, f"{r['tier3']}",
+                    ha="center", va="center", fontsize=10, fontweight="bold",
+                    color=COLORS["primary"])
+        # Totale + nomi delle leghe come didascalia subito sotto il nome paese
+        ax.text(r["total"] + 3, i, T(f"Totale: {r['total']}",
+                                      f"Total: {r['total']}"),
+                va="center", fontsize=13, fontweight="bold",
+                color=COLORS["primary"])
+
+    EN_NAT = {"Inghilterra":"England", "Germania":"Germany", "Spagna":"Spain",
+              "Italia":"Italy", "Francia":"France"}
+    labels_disp = [EN_NAT.get(l, l) if CHART_LANG=="en" else l for l in labels]
+    ax.set_yticks(y)
+    ax.set_yticklabels(labels_disp, fontsize=15, fontweight="bold")
+    ax.set_xlabel(T("Giocatori al Mondiale 2026",
+                    "Players at World Cup 2026"), fontsize=14)
+    ax.set_xlim(0, max(r["total"] for r in rows) * 1.18)
+
+    # Per ogni nazione, didascalia "Tier1 · Tier2 · Tier3" sotto il bar
+    for i, r in enumerate(rows_plot):
+        caption = f"{r['tier1_name']} · {r['tier2_name']} · {r['tier3_name']}"
+        ax.text(0, i - 0.42, caption, ha="left", va="top", fontsize=8.5,
+                color=COLORS["muted"], style="italic",
+                family="Avenir Next Condensed")
+
+    from matplotlib.patches import Patch
+    legend_handles = [
+        Patch(facecolor=color_t1, label=T("Lega principale (top division)",
+                                           "Top division")),
+        Patch(facecolor=color_t2, label=T("Seconda divisione",
+                                           "Second division")),
+        Patch(facecolor=color_t3, label=T("Serie inferiori (3a divisione e oltre)",
+                                           "Lower divisions (3rd tier and below)")),
+    ]
+    ax.legend(handles=legend_handles, loc="lower right", fontsize=11,
+              frameon=True, facecolor="white", edgecolor=COLORS["muted"])
+
+    add_title(fig, T("Big 5 — top division vs serie inferiori",
+                     "Big 5 — top tier vs lower divisions"),
+              T("Giocatori WC2026 per livello del campionato, all'interno di ciascun Big 5",
+                "WC2026 players by tier of league, within each Big 5 country"))
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "12_big5_split")
+
+    print("  → Riepilogo:")
+    for r in rows:
+        print(f"     {r['country_name']:<12s} {r['tier1_name']:<14s} {r['tier1']:>3d}"
+              f"  + {r['tier2_name']:<22s} {r['tier2']:>3d}"
+              f"  + altre {r['tier3']:>3d}  = {r['total']:>3d}")
 
 
 def chart_italian_players_by_nation():
@@ -749,22 +1034,404 @@ def chart_italian_players_by_nation():
     nations = [n for n, _ in pairs_plot]
     cnts = [c for _, c in pairs_plot]
 
-    fig, ax = setup_fig(figsize=(16, 13))
-    fig.subplots_adjust(left=0.28, right=0.93, top=0.90, bottom=0.07)
-    bars = ax.barh(display_nations(nations), cnts, color=COLORS["bar2"], height=0.6)
+    # pt71: figsize 16:9 con 29 barre — height piccolo, font piccolo.
+    fig, ax = setup_fig(figsize=(16, 9))
+    fig.subplots_adjust(left=0.22, right=0.93, top=0.85, bottom=0.10)
+    bars = ax.barh(display_nations(nations), cnts, color=COLORS["bar2"], height=0.65)
     for bar, val in zip(bars, cnts):
-        ax.text(val + 0.08, bar.get_y() + bar.get_height() / 2,
-                str(val), va="center", fontsize=13,
+        ax.text(val + 0.05, bar.get_y() + bar.get_height() / 2,
+                str(val), va="center", fontsize=10,
                 color=COLORS["primary"], fontweight="bold")
-    ax.set_xlabel("Giocatori in Serie A convocati con la propria nazionale", fontsize=14)
+    ax.set_xlabel(T("Giocatori in Serie A convocati con la propria nazionale",
+                    "Serie A players called up with their national team"),
+                  fontsize=13)
     ax.set_xlim(0, max(cnts) + 1.5)
-    add_nation_logos(ax, nations, size_px=28)
+    ax.tick_params(axis="y", labelsize=9)
+    add_nation_logos(ax, nations, size_px=18)
 
-    add_title(fig, "Nazionali rifornite dalla Serie A",
-              f"{total} convocati 'italiani' distribuiti su {len(pairs)} nazionali (esclusa l'Italia, non qualificata)")
+    add_title(fig, T("Nazionali rifornite dalla Serie A",
+                     "National teams supplied by Serie A"),
+              T(f"{total} convocati 'italiani' distribuiti su {len(pairs)} nazionali (esclusa l'Italia, non qualificata)",
+                f"{total} 'Italian-based' players across {len(pairs)} national teams (Italy did not qualify)"))
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "11_italian_players_by_nation")
+
+
+# =========================================================
+# pt71: chart 13/14/15/16 — focus età (giovani/vecchi/distribuzione)
+# e infografica riassuntiva FIFA-style.
+# =========================================================
+def _build_player_records():
+    """Carica i 1248 player FIFA arricchiti con foto, posizione, età
+    (calcolata al kickoff WC2026 = 11 giugno 2026). Usato dai chart 13/14/15."""
+    import datetime as dt
+    fifa = json.load(open("data/wc2026_squads_fifa.json"))
+    all_pl = json.load(open("data/players_all.json"))
+    raw = json.load(open("data/wc2026_squads_raw.json"))
+    PID_BASE = Path("/Users/simone/Desktop/pid")
+
+    info_by_id = {}
+    for pl in all_pl:
+        tid = str(pl.get("tm_player_id") or "")
+        if not tid: continue
+        photo_rel = pl.get("photo_local")
+        photo_path = (PID_BASE / "data" / photo_rel) if photo_rel else None
+        info_by_id[tid] = {
+            "photo": photo_path if (photo_path and photo_path.exists()) else None,
+            "full_name": pl.get("full_name", ""),
+        }
+    info_by_name = {info["full_name"].lower(): info
+                    for info in info_by_id.values() if info.get("full_name")}
+
+    # mapping raw nation → fifa nation (alcuni differ)
+    NATION_INV = {
+        "Bosnia And Herzegovina": "Bosnia and Herzegovina",
+        "Korea Republic": "South Korea", "Congo DR": "DR Congo",
+        "Côte D'Ivoire": "Ivory Coast", "Czechia": "Czech Republic",
+        "IR Iran": "Iran",
+    }
+
+    # Raw lookup per dob → tm_player_id (per recuperare foto se serve)
+    raw_dob_by_nation = {}
+    for nat, v in raw.items():
+        raw_dob_by_nation[nat] = {p["dob"]: p for p in v.get("players", [])
+                                  if p.get("dob")}
+
+    today = dt.date(2026, 6, 11)
+    out = []
+    for nat, v in fifa.items():
+        if not isinstance(v, dict): continue
+        nat_raw = NATION_INV.get(nat, nat)
+        for p in v.get("players", []):
+            dob = p.get("date_of_birth", "")
+            try:
+                age = (today - dt.date.fromisoformat(dob)).days / 365.25
+            except Exception:
+                age = None
+            # nome leggibile
+            short = p.get("short_name", "")
+            blob = (p.get("raw_names_blob") or "").lower()
+            # Pretty name: "Cristiano Ronaldo" se ricavabile da raw_names_blob
+            # altrimenti short
+            pretty = short.title() if short.isupper() else short
+            # match per foto: per dob nel raw → tm_id → info_by_id
+            photo = None
+            rp = raw_dob_by_nation.get(nat_raw, {}).get(dob)
+            if rp:
+                tid = str(rp.get("tm_player_id") or "")
+                if tid in info_by_id:
+                    photo = info_by_id[tid].get("photo")
+                # nome migliore se disponibile
+                if rp.get("name") and len(rp.get("name","")) > len(pretty):
+                    pretty = rp["name"]
+            # fallback foto da info_by_name
+            if photo is None:
+                for nm, info in info_by_name.items():
+                    if nm and nm in blob:
+                        photo = info.get("photo")
+                        break
+            out.append({
+                "nation": nat, "name": pretty, "short": short, "dob": dob,
+                "age": age, "club": p.get("club",""), "position": p.get("position",""),
+                "height": p.get("height_cm", 0), "photo": photo,
+            })
+    return out
+
+
+def _pretty_player_name(rec: dict) -> str:
+    """Restituisce 'Cristiano Ronaldo' invece di 'RONALDO CRISTIANO' o
+    cognome+nome FIFA. Preferisce il nome 'normalizzato' dal raw_names_blob
+    (full name) o dal raw match (rec['name'])."""
+    nm = rec.get("name", "")
+    if not nm: return ""
+    # se è tutto maiuscolo (formato FIFA "RONALDO Cristiano") lo title-case
+    if nm.isupper():
+        return nm.title()
+    return nm
+
+
+def _draw_player_card_v2(ax, rec, x, y, w, h):
+    """pt71 v2: card pulita con foto cerchio CLIPPED proper, età sopra,
+    nome e club a destra della foto. Layout migliore."""
+    from matplotlib.patches import Circle, FancyBboxPatch
+    # Sfondo card con bordo morbido
+    bg = FancyBboxPatch((x, y), w, h,
+                        boxstyle="round,pad=0.001,rounding_size=0.008",
+                        facecolor="#f8fafc", edgecolor=COLORS["muted"],
+                        linewidth=1.2, zorder=1)
+    ax.add_patch(bg)
+
+    # Foto cerchio centrato verticalmente nella metà sinistra
+    photo_d = h * 0.72
+    photo_cx = x + photo_d/2 + h * 0.10
+    photo_cy = y + h/2
+    r_photo = photo_d/2
+
+    img = _safe_imread(rec["photo"]) if rec.get("photo") else None
+    if img is not None:
+        # Clip rotondo via Circle + set_clip_path
+        clip_circ = Circle((photo_cx, photo_cy), r_photo, transform=ax.transData)
+        # extent: rettangolo che contiene il cerchio
+        artist = ax.imshow(img, extent=[photo_cx-r_photo, photo_cx+r_photo,
+                                         photo_cy-r_photo, photo_cy+r_photo],
+                           aspect="auto", zorder=2)
+        artist.set_clip_path(clip_circ)
+        # Bordo cerchio sopra
+        ax.add_patch(Circle((photo_cx, photo_cy), r_photo,
+                            facecolor="none", edgecolor=COLORS["primary"],
+                            linewidth=2.0, zorder=3))
+    else:
+        # Placeholder grigio rotondo
+        ax.add_patch(Circle((photo_cx, photo_cy), r_photo,
+                            facecolor="#cbd5e1", edgecolor=COLORS["muted"],
+                            linewidth=1.5, zorder=2))
+        ax.text(photo_cx, photo_cy, "?", ha="center", va="center",
+                fontsize=18, color=COLORS["muted"], fontweight="bold",
+                zorder=3)
+
+    # Zona testo a destra della foto
+    text_x = photo_cx + r_photo + h * 0.12
+
+    # Età (grande, sopra)
+    age_v = rec.get("age")
+    age_txt = f"{age_v:.1f}" if age_v is not None else "—"
+    ax.text(x + w - h*0.10, y + h*0.74, age_txt,
+            ha="right", va="center", fontsize=22, fontweight="bold",
+            color=COLORS["bar3"], family="Avenir Next Condensed", zorder=4)
+    ax.text(x + w - h*0.10, y + h*0.50, T("anni", "yrs"),
+            ha="right", va="center", fontsize=9,
+            color=COLORS["muted"], family="Avenir Next Condensed", zorder=4)
+
+    # Nome pulito
+    nm = _pretty_player_name(rec)[:24]
+    ax.text(text_x, y + h*0.65, nm,
+            ha="left", va="center", fontsize=11.5, fontweight="bold",
+            color=COLORS["primary"], family="Avenir Next Condensed", zorder=4)
+    # Club
+    club = rec.get("club","")[:26]
+    ax.text(text_x, y + h*0.42, club,
+            ha="left", va="center", fontsize=9.5,
+            color=COLORS["primary"], family="Avenir Next Condensed", zorder=4)
+    # Nazione (più chiara, più piccola)
+    nat = rec.get("nation","")
+    ax.text(text_x, y + h*0.22, nat,
+            ha="left", va="center", fontsize=9, style="italic",
+            color=COLORS["muted"], family="Avenir Next Condensed", zorder=4)
+
+
+def _chart_age_extremes(top20: list, title: str, subtitle: str, slug: str):
+    """Layout 16:9 con 20 player in griglia 5×4 (card 16:9 ratio interna)."""
+    fig, ax = setup_fig(figsize=(16, 9))
+    ax.set_xlim(0, 1); ax.set_ylim(0, 1); ax.axis("off")
+    fig.subplots_adjust(left=0.025, right=0.975, top=0.85, bottom=0.06)
+
+    cols, rows = 5, 4
+    _L, _R, _T2, _B = 0.02, 0.98, 0.81, 0.07
+    pad_x = 0.012
+    pad_y = 0.018
+    card_w = (_R - _L - (cols-1) * pad_x) / cols
+    card_h = (_T2 - _B - (rows-1) * pad_y) / rows
+    for i, r in enumerate(top20):
+        col = i % cols
+        row = i // cols
+        x = _L + col * (card_w + pad_x)
+        y = _T2 - card_h - row * (card_h + pad_y)
+        _draw_player_card_v2(ax, r, x, y, card_w, card_h)
+
+    add_title(fig, title, subtitle)
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, slug)
+
+
+def chart_youngest_20():
+    recs = _build_player_records()
+    recs = [r for r in recs if r.get("age") is not None]
+    recs.sort(key=lambda r: r["age"])
+    _chart_age_extremes(
+        recs[:20],
+        T("I 20 giocatori più giovani al Mondiale 2026",
+          "The 20 youngest players at World Cup 2026"),
+        T("Età calcolata al 11 giugno 2026 (giorno d'apertura)",
+          "Age computed at June 11, 2026 (opening day)"),
+        "13_youngest_20",
+    )
+
+
+def chart_oldest_20():
+    recs = _build_player_records()
+    recs = [r for r in recs if r.get("age") is not None]
+    recs.sort(key=lambda r: -r["age"])
+    _chart_age_extremes(
+        recs[:20],
+        T("I 20 giocatori più vecchi al Mondiale 2026",
+          "The 20 oldest players at World Cup 2026"),
+        T("Età calcolata al 11 giugno 2026 (giorno d'apertura)",
+          "Age computed at June 11, 2026 (opening day)"),
+        "14_oldest_20",
+    )
+
+
+def chart_age_distribution():
+    """pt71: distribuzione per anni di età — istogramma con count + %."""
+    recs = _build_player_records()
+    ages = [int(r["age"]) for r in recs if r.get("age") is not None]
+    from collections import Counter
+    counts = Counter(ages)
+    total = sum(counts.values())
+    ks = sorted(counts.keys())
+    cs = [counts[k] for k in ks]
+
+    fig, ax = setup_fig(figsize=(16, 9))
+    fig.subplots_adjust(left=0.07, right=0.96, top=0.85, bottom=0.13)
+    bars = ax.bar(ks, cs, color=COLORS["bar3"], edgecolor="white", linewidth=0.5)
+    for bar, n, k in zip(bars, cs, ks):
+        pct = 100 * n / total
+        ax.text(bar.get_x() + bar.get_width()/2, n + max(cs)*0.018,
+                f"{n}", ha="center", va="bottom", fontsize=11,
+                color=COLORS["primary"], fontweight="bold")
+        ax.text(bar.get_x() + bar.get_width()/2, n + max(cs)*0.06,
+                f"{pct:.1f}%", ha="center", va="bottom", fontsize=9,
+                color=COLORS["muted"])
+    ax.set_xlabel(T("Età (anni)", "Age (years)"), fontsize=14)
+    ax.set_ylabel(T("Giocatori", "Players"), fontsize=14)
+    ax.set_xticks(ks)
+    ax.set_xticklabels([str(k) for k in ks], fontsize=11)
+    ax.set_ylim(0, max(cs) * 1.18)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+
+    # Indicatori statistici (media, mediana)
+    import statistics as st
+    raw_ages = [r["age"] for r in recs if r.get("age") is not None]
+    avg = sum(raw_ages) / len(raw_ages)
+    med = st.median(raw_ages)
+    ax.axvline(avg, color=COLORS["bar1"], linestyle="--", linewidth=1.5,
+               alpha=0.7, zorder=1)
+    ax.text(avg + 0.15, max(cs) * 1.10,
+            T(f"Media: {avg:.1f} anni", f"Average: {avg:.1f} years"),
+            fontsize=12, color=COLORS["bar1"], fontweight="bold")
+
+    add_title(fig, T("Distribuzione per età dei convocati",
+                     "Age distribution of the call-ups"),
+              T(f"{total} giocatori, range {min(ks)}–{max(ks)} anni · media {avg:.1f} · mediana {int(med)}",
+                f"{total} players, range {min(ks)}–{max(ks)} years · avg {avg:.1f} · median {int(med)}"))
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "15_age_distribution")
+
+
+def chart_fifa_summary_infographic():
+    """pt71: infografica FIFA-style con tutti i numeri chiave del Mondiale."""
+    import datetime as dt
+    from collections import Counter
+    fifa = json.load(open("data/wc2026_squads_fifa.json"))
+
+    # KPI base
+    all_p = [(n, p) for n, v in fifa.items() for p in v.get("players", []) if isinstance(v, dict)]
+    n_players = len(all_p)
+    n_nations = len([n for n, v in fifa.items() if isinstance(v, dict)])
+    clubs_set = {p.get("club") for _, p in all_p}
+    n_clubs = len(clubs_set)
+    leagues_set = {p.get("club_country") for _, p in all_p}
+    n_leagues = len(leagues_set)
+
+    today = dt.date(2026, 6, 11)
+    def age(dob):
+        try: return (today - dt.date.fromisoformat(dob)).days / 365.25
+        except: return None
+    ages = [age(p.get("date_of_birth","")) for _, p in all_p]
+    ages = [a for a in ages if a is not None]
+    avg_age = sum(ages)/len(ages)
+    youngest = min((p for _, p in all_p), key=lambda p: -age(p.get("date_of_birth","")) if age(p.get("date_of_birth","")) else 0)
+    # corretto
+    valid = [(n,p) for n,p in all_p if age(p.get("date_of_birth",""))]
+    youngest_np = max(valid, key=lambda np: np[1]["date_of_birth"])
+    oldest_np = min(valid, key=lambda np: np[1]["date_of_birth"])
+
+    heights = [p.get("height_cm",0) for _,p in all_p if p.get("height_cm")]
+    avg_h = sum(heights)/len(heights)
+    tallest_np = max(valid, key=lambda np: np[1].get("height_cm",0))
+    shortest_np = min((np for np in valid if np[1].get("height_cm")), key=lambda np: np[1]["height_cm"])
+
+    pos_count = Counter(p.get("position","?") for _,p in all_p)
+
+    # Big 5 share
+    BIG5 = {"ENG","ESP","GER","ITA","FRA"}
+    big5 = sum(1 for _,p in all_p if p.get("club_country") in BIG5)
+    big5_pct = 100*big5/n_players
+
+    # Pretty name helper
+    def pretty(p): return p.get("short_name","").title() if p.get("short_name","").isupper() else p.get("short_name","")
+
+    fig = plt.figure(figsize=(16, 9), dpi=240, facecolor="white")
+    fig.text(0.04, 0.94, T("WC 2026 in numeri", "WC 2026 by the numbers"),
+             ha="left", va="top",
+             fontsize=36, fontweight="bold", color=COLORS["primary"],
+             family="Avenir Next Condensed")
+    fig.text(0.04, 0.88, T("I dati ufficiali delle 48 rose iscritte alla Coppa del Mondo 2026",
+                            "Official data from the 48 squads at the 2026 World Cup"),
+             ha="left", va="top", fontsize=16, color=COLORS["muted"],
+             family="Avenir Next Condensed")
+
+    KPIs = [
+        (n_players, T("GIOCATORI","PLAYERS"), T("convocati ufficiali","official call-ups")),
+        (n_nations, T("NAZIONALI","NATIONAL TEAMS"), T("48 squadre × 26 giocatori","48 squads × 26 players")),
+        (n_clubs, "CLUB", T("rappresentati al Mondiale","represented at the World Cup")),
+        (n_leagues, T("PAESI","COUNTRIES"), T("del club di militanza","of the club of registration")),
+        (f"{avg_age:.1f}", T("ETÀ MEDIA","AVG AGE"), T("anni al kickoff (11/6/26)","years at kickoff (Jun 11, 2026)")),
+        (f"{avg_h:.0f}", T("ALTEZZA MEDIA","AVG HEIGHT"), T("centimetri","centimeters")),
+        (f"{big5}", "BIG 5", T(f"{big5_pct:.1f}% in Premier/Bundesliga/LaLiga/SerieA/Ligue1",
+                                f"{big5_pct:.1f}% in Premier/Bundesliga/LaLiga/Serie A/Ligue 1")),
+        (f"{pos_count.get('GK',0)}", T("PORTIERI","GOALKEEPERS"),
+            f"{pos_count.get('GK',0)*100/n_players:.1f}%"),
+        (f"{int(age(youngest_np[1]['date_of_birth']))}",
+            T("PIÙ GIOVANE","YOUNGEST"),
+            f"{pretty(youngest_np[1])} ({youngest_np[0]})"),
+        (f"{int(age(oldest_np[1]['date_of_birth']))}",
+            T("PIÙ VECCHIO","OLDEST"),
+            f"{pretty(oldest_np[1])} ({oldest_np[0]})"),
+        (f"{tallest_np[1].get('height_cm')} cm",
+            T("PIÙ ALTO","TALLEST"),
+            f"{pretty(tallest_np[1])} ({tallest_np[0]})"),
+        (f"{shortest_np[1].get('height_cm')} cm",
+            T("PIÙ BASSO","SHORTEST"),
+            f"{pretty(shortest_np[1])} ({shortest_np[0]})"),
+    ]
+    cols, rows_ = 4, 3
+    _L, _R, _T, _B = 0.04, 0.96, 0.78, 0.07
+    pad = 0.018
+    tile_w = (_R-_L - (cols-1)*pad) / cols
+    tile_h = (_T-_B - (rows_-1)*pad) / rows_
+    for i, (big, label, sub) in enumerate(KPIs):
+        col = i % cols
+        row = i // cols
+        x = _L + col * (tile_w + pad)
+        y = _T - tile_h - row * (tile_h + pad)
+        ax = fig.add_axes([x, y, tile_w, tile_h])
+        ax.set_xlim(0,1); ax.set_ylim(0,1); ax.axis("off")
+        from matplotlib.patches import FancyBboxPatch
+        ax.add_patch(FancyBboxPatch((0.01,0.02), 0.98, 0.96,
+                                     boxstyle="round,pad=0.01,rounding_size=0.04",
+                                     facecolor="#f8fafc",
+                                     edgecolor=COLORS["bar3"], linewidth=1.5))
+        # Big number
+        ax.text(0.5, 0.65, str(big),
+                ha="center", va="center", fontsize=42, fontweight="bold",
+                color=COLORS["bar3"], family="Avenir Next Condensed")
+        # Label
+        ax.text(0.5, 0.28, label,
+                ha="center", va="center", fontsize=15, fontweight="bold",
+                color=COLORS["primary"], family="Avenir Next Condensed")
+        # Subtitle
+        ax.text(0.5, 0.13, sub,
+                ha="center", va="center", fontsize=9.5,
+                color=COLORS["muted"], family="Avenir Next Condensed")
+
+    add_footer(fig)
+    add_logo(fig)
+    savefig(fig, "16_summary_infographic")
 
 
 def chart_records():
@@ -858,15 +1525,21 @@ def chart_records():
                 break
 
     fig = plt.figure(figsize=(16, 9), dpi=240, facecolor=COLORS["bg"])
-    add_title(fig, "Record del Mondiale 2026",
-              "I numeri estremi delle 48 rose ufficiali FIFA")
+    add_title(fig, T("Record del Mondiale 2026", "World Cup 2026 records"),
+              T("I numeri estremi delle 48 rose ufficiali FIFA",
+                "Extreme stats from the 48 official FIFA squads"))
     add_footer(fig)
     add_logo(fig)
 
     # 6 card in grid 2×3, area utile [0.05, 0.10, 0.90, 0.72]
     # pt69: ruolo + foto per ogni card. La foto viene presa SEMPRE via
     # tm_player_id (info_by_id) per evitare match falsi via raw_names_blob.
-    POS_LBL = {"GK": "Portiere", "DF": "Difensore", "MF": "Centrocampista", "FW": "Attaccante"}
+    POS_LBL = {
+        "GK": T("Portiere", "Goalkeeper"),
+        "DF": T("Difensore", "Defender"),
+        "MF": T("Centrocampista", "Midfielder"),
+        "FW": T("Attaccante", "Forward"),
+    }
 
     # Mapping tm_id → player FIFA (per recuperare ruolo + raw_names_blob)
     fifa_by_tm: dict[str, dict] = {}
@@ -920,20 +1593,26 @@ def chart_records():
         }
 
     cards = [
-        card_for("PIÙ VECCHIO", f"{age_of(oldest[1]['date_of_birth']):.1f} anni",
+        card_for(T("PIÙ VECCHIO","OLDEST"),
+                 T(f"{age_of(oldest[1]['date_of_birth']):.1f} anni",
+                   f"{age_of(oldest[1]['date_of_birth']):.1f} yrs"),
                  oldest[1], oldest[0], COLORS["bar5"]),
-        card_for("PIÙ GIOVANE", f"{age_of(youngest[1]['date_of_birth']):.1f} anni",
+        card_for(T("PIÙ GIOVANE","YOUNGEST"),
+                 T(f"{age_of(youngest[1]['date_of_birth']):.1f} anni",
+                   f"{age_of(youngest[1]['date_of_birth']):.1f} yrs"),
                  youngest[1], youngest[0], COLORS["bar2"]),
-        card_for("PIÙ ALTO", f"{tallest[1].get('height_cm','?')} cm",
+        card_for(T("PIÙ ALTO","TALLEST"), f"{tallest[1].get('height_cm','?')} cm",
                  tallest[1], tallest[0], COLORS["bar4"]),
-        card_for("PIÙ BASSO", f"{shortest[1].get('height_cm','?')} cm",
+        card_for(T("PIÙ BASSO","SHORTEST"), f"{shortest[1].get('height_cm','?')} cm",
                  shortest[1], shortest[0], COLORS["bar3"]),
-        caps_card("MASSIMO CAPS", top_caps, COLORS["bar1"]),
-        caps_card("MASSIMO GOAL NAZIONALE", top_goals, COLORS["accent"]),
+        caps_card(T("MASSIMO CAPS","MOST CAPS"), top_caps, COLORS["bar1"]),
+        caps_card(T("MASSIMO GOAL NAZIONALE","TOP INT'L SCORER"),
+                  top_goals, COLORS["accent"]),
     ]
     # Sostituisco la riga "Esordienti" col card di MENO PRESENZE (più utile)
     if least_caps[2] < 9999:
-        cards.append(caps_card("MENO PRESENZE", least_caps, COLORS["bar3"]))
+        cards.append(caps_card(T("MENO PRESENZE","FEWEST CAPS"),
+                                least_caps, COLORS["bar3"]))
 
     # Grid 2 righe × 4 colonne (8 slot, 7 card + 1 vuoto)
     cols, rows = 4, 2
@@ -1071,23 +1750,21 @@ def chart_scatter_age_caps():
         else:
             ax.scatter([age], [caps], s=80, color=COLORS["bar2"], zorder=5)
 
-    ax.set_xlabel("Età media rosa", fontsize=14)
-    ax.set_ylabel("Media presenze in nazionale (senior A)", fontsize=14)
+    ax.set_xlabel(T("Età media rosa", "Squad average age"), fontsize=14)
+    ax.set_ylabel(T("Media presenze in nazionale (senior A)",
+                    "Average senior A caps"), fontsize=14)
     ax.set_xlim(x_min, x_max)
     ax.set_ylim(y_min, y_max)
     ax.grid(True, color=COLORS["grid"], linewidth=0.6, zorder=0)
 
-    add_title(fig, "Età media × Presenze in nazionale", "")
+    add_title(fig, T("Età media × Presenze in nazionale",
+                     "Average age × National caps"), "")
     add_footer(fig)
     add_logo(fig)
     savefig(fig, "08_scatter_age_caps")
 
 
-def main():
-    print("Generazione grafici WC2026 (1920×1080, 16:9)")
-    print(f"Font: Avenir Next Condensed")
-    print(f"Logo: {LOGO_PATH or 'FALLBACK testo SC'}")
-    print()
+def _run_all_charts():
     chart_national_caps_avg()
     chart_national_caps_avg_bottom()
     chart_top_clubs()
@@ -1101,8 +1778,28 @@ def main():
     chart_records()
     chart_top_italian_clubs()
     chart_italian_players_by_nation()
+    chart_big5_split()
+    chart_youngest_20()
+    chart_oldest_20()
+    chart_age_distribution()
+    chart_fifa_summary_infographic()
+
+
+def main():
+    global CHART_LANG
+    print("Generazione grafici WC2026 (1920×1080, 16:9)")
+    print(f"Font: Avenir Next Condensed")
+    print(f"Logo: {LOGO_PATH or 'FALLBACK testo SC'}")
     print()
-    print("✓ Tutti i grafici salvati in charts/")
+    print("======== ITALIANO → charts/ ========")
+    CHART_LANG = "it"
+    _run_all_charts()
+    print()
+    print("======== ENGLISH → charts_en/ ========")
+    CHART_LANG = "en"
+    _run_all_charts()
+    print()
+    print("✓ Tutti i grafici salvati in charts/ (IT) e charts_en/ (EN)")
 
 
 if __name__ == "__main__":
