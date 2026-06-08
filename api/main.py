@@ -639,11 +639,16 @@ def admin_add_club(payload: dict = Body(...)):
         raise HTTPException(status_code=400, detail="Payload deve essere un oggetto JSON")
     url = str(payload.get("url", "")).strip()
     league = str(payload.get("league", "")).strip().upper()
+    # 2026-06-08: URL SortItOutSi opzionale → workflow GH associa automaticamente
+    # foto giocatori (sortitoutsi_person_id + face_*.png) nel singolo run.
+    sots_url = str(payload.get("sots_url", "")).strip()
 
     if not url:
         raise HTTPException(status_code=400, detail="Campo 'url' mancante")
     if not re.search(r"transfermarkt\.[a-z.]+.*verein/\d+", url):
         raise HTTPException(status_code=400, detail=f"URL TM non valido (deve contenere /verein/<id>/): {url[:120]}")
+    if sots_url and not re.search(r"sortitoutsi\.net.*/team/\d+", sots_url):
+        raise HTTPException(status_code=400, detail=f"URL SortItOutSi non valido (deve contenere /team/<id>/): {sots_url[:120]}")
 
     pat = _os.environ.get("GITHUB_PAT")
     if not pat:
@@ -684,6 +689,7 @@ def admin_add_club(payload: dict = Body(...)):
         "inputs": {
             "url": url,
             "league": league,
+            "sots_url": sots_url,
         },
     }).encode("utf-8")
     req = _urlreq.Request(

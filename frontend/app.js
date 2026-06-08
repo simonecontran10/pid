@@ -7296,6 +7296,13 @@ function renderAdminPanel() {
             <option value="FR1">Ligue 1 (FR1)</option>
             <option value="OTHER">Altro</option>
           </select>
+          <!-- 2026-06-08: URL SortItOutSi opzionale → associa automaticamente
+               foto giocatori (face_*.png) e logo club nel singolo run del
+               workflow. Senza, l'import e' TM-only (i player non avranno
+               foto SOTS finche' non runni manualmente find_more_sots_matches). -->
+          <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL SortItOutSi <span style="text-transform: none;">(opzionale — per foto giocatori + logo club)</span></label>
+          <input id="admin-add-club-sots-url" type="text" placeholder="https://sortitoutsi.net/football-manager-2026/team/&lt;id&gt;/&lt;slug&gt;"
+                 class="w-full text-xs px-2 py-1.5 rounded-md mb-2" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
           <button id="admin-add-club-btn" class="w-full px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">
             Importa club + rosa
           </button>
@@ -7715,6 +7722,7 @@ async function _adminAddClub() {
   const status = document.getElementById("admin-add-club-status");
   const urlInput = document.getElementById("admin-add-club-url");
   const leagueSelect = document.getElementById("admin-add-club-league");
+  const sotsUrlInput = document.getElementById("admin-add-club-sots-url");
   const btn = document.getElementById("admin-add-club-btn");
   if (!urlInput || !status) return;
 
@@ -7730,6 +7738,14 @@ async function _adminAddClub() {
     return;
   }
   const league = (leagueSelect?.value || "").trim();
+  // 2026-06-08: URL SortItOutSi opzionale per associare foto giocatori
+  // automaticamente nel workflow GH. Se vuoto, l'import e' TM-only.
+  const sotsUrl = (sotsUrlInput?.value || "").trim();
+  if (sotsUrl && !/sortitoutsi\.net.*\/team\/\d+/i.test(sotsUrl)) {
+    status.style.color = "#c00";
+    status.textContent = "URL SortItOutSi non valido. Esempio: https://sortitoutsi.net/football-manager-2026/team/732/watford";
+    return;
+  }
 
   if (btn) btn.disabled = true;
   status.style.color = "";
@@ -7739,7 +7755,7 @@ async function _adminAddClub() {
     const res = await fetch("/admin-add-club", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url, league }),
+      body: JSON.stringify({ url, league, sots_url: sotsUrl }),
     });
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
@@ -7754,6 +7770,7 @@ async function _adminAddClub() {
       '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi su GitHub</a>';
     urlInput.value = "";
     if (leagueSelect) leagueSelect.value = "";
+    if (sotsUrlInput) sotsUrlInput.value = "";
     // 2026-06-08: avvia il polling della progress bar (attende 5 sec prima
     // del primo poll, GitHub Actions impiega ~3-5 sec a registrare il run).
     setTimeout(() => _startAddClubProgressPolling(), 5000);
