@@ -44,13 +44,31 @@ def fetch_team_roster(team_id: int, slug: str, session: requests.Session):
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--only", type=int, default=None,
+                    help="Scrappa solo il club con questo tm_club_id (skip gli altri). "
+                         "Merge con sots_rosters.json esistente.")
+    args = ap.parse_args()
+
     clubs = json.loads(CLUBS_FILE.read_text(encoding="utf-8"))
     clubs_with_sots = [c for c in clubs if c.get("sortitoutsi_team_id")]
+    if args.only:
+        clubs_with_sots = [c for c in clubs_with_sots if c.get("tm_club_id") == args.only]
+        print(f"Club filtrato (--only {args.only}): {len(clubs_with_sots)}")
+        if not clubs_with_sots:
+            print(f"[error] tm_club_id={args.only} non trovato o senza sortitoutsi_team_id")
+            return
     print(f"Club con sortitoutsi_team_id: {len(clubs_with_sots)}/{len(clubs)}")
-    
-    rosters = {}
+
+    # pt73 rev65: in modalita' --only, MERGE con il file esistente invece di
+    # sovrascriverlo (altrimenti perderemmo tutti gli altri 436 club cached).
+    if args.only and OUT_FILE.exists():
+        rosters = json.loads(OUT_FILE.read_text(encoding="utf-8"))
+    else:
+        rosters = {}
     session = requests.Session()
-    
+
     for i, c in enumerate(clubs_with_sots, 1):
         sid = c["sortitoutsi_team_id"]
         # Costruisci slug dalla URL del logo o dal nome

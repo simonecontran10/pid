@@ -125,6 +125,9 @@ def main() -> int:
                     help="URL Transfermarkt del club (anche da env URL)")
     ap.add_argument("--league", default=os.environ.get("LEAGUE", ""),
                     help="Override league_id (default: estratto dalla pagina TM)")
+    ap.add_argument("--sots-url", default=os.environ.get("SOTS_URL", ""),
+                    help="URL SortItOutSi del team (estrae sortitoutsi_team_id). "
+                         "Es. https://sortitoutsi.net/football-manager-2026/team/732/watford")
     ap.add_argument("--skip-stats", action="store_true",
                     help="Scarica solo profili, non stats (piu' veloce)")
     args = ap.parse_args()
@@ -175,6 +178,20 @@ def main() -> int:
     if existing_club and existing_club.get("name"):
         club_name = existing_club["name"]
 
+    # SOTS team_id: estratto dall'URL passato (es. /team/732/watford → 732)
+    # oppure preservato se gia' in clubs.json.
+    sots_team_id = None
+    if args.sots_url:
+        m = re.search(r"/team/(\d+)", args.sots_url)
+        if m:
+            sots_team_id = int(m.group(1))
+            print(f"  sots_team_id: {sots_team_id}  (da URL)")
+        else:
+            print(f"  [warn] sots-url malformato (atteso /team/<id>/<slug>): {args.sots_url}")
+    if not sots_team_id and existing_club and existing_club.get("sortitoutsi_team_id"):
+        sots_team_id = existing_club["sortitoutsi_team_id"]
+        print(f"  sots_team_id: {sots_team_id}  (preservato)")
+
     print(f"  nome: {club_name}")
     print(f"  lega: {league_id}  ({league_src})")
 
@@ -187,6 +204,10 @@ def main() -> int:
         "club_url": f"https://www.transfermarkt.com/{slug}/startseite/verein/{cid}/saison_id/2025",
         "sortitoutsi_logo_local": f"photos/clubs_sots/{cid}.png",
     }
+    if sots_team_id:
+        club_record["sortitoutsi_team_id"] = sots_team_id
+        # logo SOTS via CDN — pattern noto
+        club_record["sortitoutsi_logo_url"] = f"https://sortitoutsi.b-cdn.net/uploads/team/{sots_team_id}.png"
 
     # === Step 2: scrape rosa ===
     print()

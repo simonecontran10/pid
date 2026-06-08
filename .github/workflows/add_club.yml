@@ -17,6 +17,11 @@ on:
         required: false
         type: string
         default: ""
+      sots_url:
+        description: "URL SortItOutSi del team (opzionale, es. https://sortitoutsi.net/football-manager-2026/team/732/watford). Usato per associare foto giocatori automaticamente."
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: add-club
@@ -62,6 +67,7 @@ jobs:
         env:
           URL: ${{ github.event.inputs.url }}
           LEAGUE: ${{ github.event.inputs.league }}
+          SOTS_URL: ${{ github.event.inputs.sots_url }}
         run: |
           python3 add_club.py
 
@@ -69,6 +75,20 @@ jobs:
       # nuovi giocatori ricevono in automatico sortitoutsi_person_id +
       # foto local (face_*.png). Senza questo dovevamo eseguire i 3 step
       # a mano dopo ogni add_club.
+
+      # Se sots_url e' stato fornito, refresh della rosa SOTS solo per
+      # quel club (--only <tm_club_id>): merge con sots_rosters.json
+      # esistente per non perdere gli altri 437 club cached.
+      - name: SOTS — refresh rosa cluster del nuovo club (se sots_url passato)
+        if: ${{ github.event.inputs.sots_url != '' }}
+        run: |
+          # Estraggo tm_club_id dall'URL TM (es. /verein/732/...)
+          URL="${{ github.event.inputs.url }}"
+          TM_ID=$(echo "$URL" | grep -oE '/verein/[0-9]+' | grep -oE '[0-9]+' | head -1)
+          if [ -n "$TM_ID" ]; then
+            python3 harvest_sots_rosters.py --only "$TM_ID" || true
+          fi
+
       - name: SOTS — match unmatched + DOB verify
         run: |
           python3 find_more_sots_matches.py || true
