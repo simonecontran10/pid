@@ -3248,6 +3248,46 @@ const FORMATIONS = {
     { id: "ST",  x: 50, y: 84, label: "ST" },
     { id: "LW",  x: 14, y: 80, label: "LW" },
   ],
+  // 2026-06-08: aggiunti 3 moduli su richiesta
+  "4-3-1-2": [
+    { id: "GK",  x: 50, y: 8,  label: "GK"  },
+    { id: "RB",  x: 88, y: 31, label: "RB"  },
+    { id: "RCB", x: 62, y: 25, label: "CB"  },
+    { id: "LCB", x: 38, y: 25, label: "CB"  },
+    { id: "LB",  x: 12, y: 31, label: "LB"  },
+    { id: "RCM", x: 76, y: 50, label: "CM"  },
+    { id: "DM",  x: 50, y: 44, label: "DM"  },
+    { id: "LCM", x: 24, y: 50, label: "CM"  },
+    { id: "CAM", x: 50, y: 68, label: "CAM" },
+    { id: "RST", x: 64, y: 84, label: "ST"  },
+    { id: "LST", x: 36, y: 84, label: "ST"  },
+  ],
+  "4-3-2-1": [
+    { id: "GK",  x: 50, y: 8,  label: "GK"  },
+    { id: "RB",  x: 88, y: 31, label: "RB"  },
+    { id: "RCB", x: 62, y: 25, label: "CB"  },
+    { id: "LCB", x: 38, y: 25, label: "CB"  },
+    { id: "LB",  x: 12, y: 31, label: "LB"  },
+    { id: "RCM", x: 72, y: 50, label: "CM"  },
+    { id: "CM",  x: 50, y: 46, label: "CM"  },
+    { id: "LCM", x: 28, y: 50, label: "CM"  },
+    { id: "RAM", x: 66, y: 70, label: "RAM" },
+    { id: "LAM", x: 34, y: 70, label: "LAM" },
+    { id: "ST",  x: 50, y: 86, label: "ST"  },
+  ],
+  "3-4-1-2": [
+    { id: "GK",  x: 50, y: 8,  label: "GK"  },
+    { id: "RCB", x: 70, y: 25, label: "CB"  },
+    { id: "CB",  x: 50, y: 23, label: "CB"  },
+    { id: "LCB", x: 30, y: 25, label: "CB"  },
+    { id: "RWB", x: 88, y: 45, label: "RWB" },
+    { id: "RCM", x: 64, y: 50, label: "CM"  },
+    { id: "LCM", x: 36, y: 50, label: "CM"  },
+    { id: "LWB", x: 12, y: 45, label: "LWB" },
+    { id: "CAM", x: 50, y: 68, label: "CAM" },
+    { id: "RST", x: 64, y: 84, label: "ST"  },
+    { id: "LST", x: 36, y: 84, label: "ST"  },
+  ],
 };
 
 state.grids = state.grids || {
@@ -3750,6 +3790,46 @@ const _PPTX_SLOT_MAP_BY_SYSTEM = {
     "RAM":  "RW1",
     "LAM":  "LW1",
     "ST":   "ST1",
+  },
+  // 2026-06-08: 3 nuovi moduli — mapping coerente coi template esistenti
+  "4-3-1-2": {
+    "GK":   "GK1",
+    "RB":   "RFB1",
+    "RCB":  "RCB1",
+    "LCB":  "LCB1",
+    "LB":   "LFB1",
+    "DM":   "CM1",     // mediano basso al centro
+    "RCM":  "RCM1",
+    "LCM":  "LCM1",
+    "CAM":  "ST1B",    // trequartista centrale → ST1B template
+    "RST":  "ST1",
+    "LST":  "ST1B",
+  },
+  "4-3-2-1": {
+    "GK":   "GK1",
+    "RB":   "RFB1",
+    "RCB":  "RCB1",
+    "LCB":  "LCB1",
+    "LB":   "LFB1",
+    "RCM":  "RCM1",
+    "CM":   "CM1",
+    "LCM":  "LCM1",
+    "RAM":  "RW1",     // trequartista dx → ala template
+    "LAM":  "LW1",
+    "ST":   "ST1",
+  },
+  "3-4-1-2": {
+    "GK":   "GK1",
+    "RCB":  "RCB1",
+    "CB":   "CB1",
+    "LCB":  "LCB1",
+    "RWB":  "RFB1",
+    "LWB":  "LFB1",
+    "RCM":  "RCM1",
+    "LCM":  "LCM1",
+    "CAM":  "ST1B",    // trequartista → ST1B
+    "RST":  "ST1",
+    "LST":  "ST1B",
   },
   "4-3-3": {
     "GK":   "GK1",
