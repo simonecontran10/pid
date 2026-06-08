@@ -230,9 +230,16 @@ def update_status() -> dict:
 
 
 @app.get("/clubs")
-def list_clubs(league: Optional[str] = Query(None, description="Filtra per league_id (SA1, SA2L)")) -> list[dict]:
-    if league:
-        return [c for c in store.clubs if c.get("league_id") == league]
+def list_clubs(
+    league: Optional[str] = Query(None, description="Filtra per league_id (SA1, SA2L)"),
+    league_id: Optional[str] = Query(None, description="Alias di 'league' per consistenza con altri campi (tm_player_id, current_club_id, ...)"),
+) -> list[dict]:
+    # 2026-06-08: accetta entrambi i nomi del param. PitchPlan e altri client
+    # tendono a usare `league_id` (consistente con tm_club_id, tm_player_id,
+    # current_club_id...). Manteniamo `league` per retrocompatibilita'.
+    code = league or league_id
+    if code:
+        return [c for c in store.clubs if c.get("league_id") == code]
     return store.clubs
 
 
