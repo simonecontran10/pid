@@ -7407,6 +7407,19 @@ function renderAdminEditor(p) {
       </div>
     </div>
     <div class="flex flex-col gap-3">
+      <!-- 2026-06-08: selettore club. Lista club ordinata per prettyClubName.
+           Mostra current_club_id corrente. Salvando, aggiorna anche
+           current_club_name dal record club selezionato. -->
+      <div>
+        <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Squadra (current_club_id)</label>
+        <select id="admin-edit-club" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);">
+          <option value="" ${!p.current_club_id ? "selected" : ""}>— Nessuna —</option>
+          ${[...state.clubs]
+            .sort((a,b) => prettyClubName(a.name||"").localeCompare(prettyClubName(b.name||"")))
+            .map(c => `<option value="${c.tm_club_id}" ${String(p.current_club_id) === String(c.tm_club_id) ? "selected" : ""}>${escapeHtml(prettyClubName(c.name))} (${c.league_id || "?"})</option>`)
+            .join("")}
+        </select>
+      </div>
       <div>
         <label class="text-[11px] uppercase tracking-wider" style="color: var(--text-3);">Data di nascita</label>
         <input id="admin-edit-dob" type="date" value="${dob}" class="w-full text-xs px-2 py-1.5 rounded-md mt-1" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
@@ -7491,11 +7504,14 @@ async function _adminSaveOverrides(pid) {
   const pos = document.getElementById("admin-edit-position")?.value?.trim() || null;
   const height = document.getElementById("admin-edit-height")?.value;
   const number = document.getElementById("admin-edit-number")?.value;
-  
+  // 2026-06-08: club selector — se cambia, scrive current_club_id +
+  // current_club_name nel record overrides per riflettere il trasferimento.
+  const clubIdStr = document.getElementById("admin-edit-club")?.value || "";
+
   // Multi-select altri ruoli
   const othersSelect = document.getElementById("admin-edit-position-others");
   const others = othersSelect ? Array.from(othersSelect.selectedOptions).map(o => o.value) : [];
-  
+
   const overrides = {};
   if (dob) overrides.date_of_birth = dob;
   if (foot) overrides.foot = foot;
@@ -7504,6 +7520,19 @@ async function _adminSaveOverrides(pid) {
   if (number) overrides.shirt_number = parseInt(number, 10);
   // position_others: salvato sempre (anche se vuoto, per consentire rimozione)
   overrides.position_others = others;
+  // current_club: salva solo se diverso dall'attuale per non rumoreggiare
+  if (clubIdStr) {
+    const newCid = parseInt(clubIdStr, 10);
+    if (newCid !== player.current_club_id) {
+      overrides.current_club_id = newCid;
+      const newClub = state.clubs.find(c => String(c.tm_club_id) === String(newCid));
+      if (newClub) overrides.current_club_name = newClub.name;
+    }
+  } else if (player.current_club_id) {
+    // L'utente ha selezionato "— Nessuna —" → rimuove l'associazione
+    overrides.current_club_id = null;
+    overrides.current_club_name = null;
+  }
   
   // Uso il client Supabase globale già inizializzato
   if (!window._supa) {
