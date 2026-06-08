@@ -630,6 +630,91 @@ def admin_add_player(payload: dict = Body(...)):
         raise HTTPException(status_code=500, detail=f"Errore: {type(e).__name__}: {e}")
 
 
+# 2026-06-08: aggiunge un club arbitrario al PID via URL Transfermarkt.
+# Triggera workflow GitHub Actions `add_club.yml` che esegue `add_club.py`.
+# Pattern: stesso di /admin-add-player ma per UN club + rosa.
+@app.post("/admin-add-club")
+def admin_add_club(payload: dict = Body(...)):
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Payload deve essere un oggetto JSON")
+    url = str(payload.get("url", "")).strip()
+    league = str(payload.get("league", "")).strip().upper()
+
+    if not url:
+        raise HTTPException(status_code=400, detail="Campo 'url' mancante")
+    if not re.search(r"transfermarkt\.[a-z.]+.*verein/\d+", url):
+        raise HTTPException(status_code=400, detail=f"URL TM non valido (deve contenere /verein/<id>/): {url[:120]}")
+
+    pat = _os.environ.get("GITHUB_PAT")
+    if not pat:
+        raise HTTPException(status_code=500, detail="GITHUB_PAT non configurato sul server")
+
+    # Pre-check: c'e gia un workflow add-club in corso?
+    runs_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_club.yml/runs?status=in_progress&per_page=5"
+    try:
+        runs_req = _urlreq.Request(
+            runs_url,
+            headers={
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {pat}",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+        )
+        with _urlreq.urlopen(runs_req, timeout=10) as resp:
+            data = _json_admin.loads(resp.read().decode("utf-8"))
+            in_progress = data.get("workflow_runs", [])
+            if in_progress:
+                run = in_progress[0]
+                raise HTTPException(
+                    status_code=409,
+                    detail={
+                        "error": "workflow_already_running",
+                        "message": f"Un workflow add-club e' gia in corso (run #{run.get('run_number')}). Riprova tra qualche minuto.",
+                        "run_url": run.get("html_url"),
+                    },
+                )
+    except HTTPException:
+        raise
+    except Exception:
+        pass  # se GitHub non risponde proseguiamo
+
+    api_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_club.yml/dispatches"
+    body = _json_admin.dumps({
+        "ref": "main",
+        "inputs": {
+            "url": url,
+            "league": league,
+        },
+    }).encode("utf-8")
+    req = _urlreq.Request(
+        api_url,
+        data=body,
+        method="POST",
+        headers={
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {pat}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "Content-Type": "application/json",
+        },
+    )
+    try:
+        with _urlreq.urlopen(req, timeout=15) as resp:
+            if resp.status == 204:
+                return {
+                    "success": True,
+                    "message": "Workflow add-club avviato. Il club appare nel PID quando completa (~5-10 min).",
+                    "actions_url": "https://github.com/simonecontran10/pid/actions/workflows/add_club.yml",
+                }
+            raise HTTPException(status_code=502, detail=f"GitHub API returned {resp.status}")
+    except _urlerr.HTTPError as e:
+        body_err = e.read().decode("utf-8", errors="replace")
+        raise HTTPException(status_code=502, detail=f"GitHub API error {e.code}: {body_err[:200]}")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Errore: {type(e).__name__}: {e}")
+
+
 # ============ VERCEL SERVERLESS HANDLER ============
 # Vercel cerca una variabile chiamata `handler` come entry point per ASGI apps
 try:

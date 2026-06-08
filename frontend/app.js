@@ -7223,6 +7223,36 @@ function renderAdminPanel() {
   panel.innerHTML = `
     <div class="grid gap-4" style="grid-template-columns: 360px minmax(0, 1fr); align-items: start;">
       <div class="flex flex-col gap-3">
+        <!-- 2026-06-08: box per aggiungere un club intero da URL TM. -->
+        <div class="rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
+          <h3 class="text-sm font-bold mb-2" style="color: var(--text-1);">Aggiungi nuovo club (rosa intera)</h3>
+          <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL Transfermarkt del club</label>
+          <input id="admin-add-club-url" type="text" placeholder="https://www.transfermarkt.com/.../verein/&lt;id&gt;/..."
+                 class="w-full text-xs px-2 py-1.5 rounded-md mb-2" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);"/>
+          <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">Lega <span style="text-transform: none;">(opzionale — auto-detect dalla pagina TM)</span></label>
+          <select id="admin-add-club-league" class="w-full text-xs px-2 py-1.5 rounded-md mb-2" style="background: var(--surface-2); border: 0.5px solid var(--border); color: var(--text-1);">
+            <option value="">Auto (dalla pagina TM)</option>
+            <option value="IT1">Serie A (IT1)</option>
+            <option value="IT2">Serie B (IT2)</option>
+            <option value="IT3A">Serie C A (IT3A)</option>
+            <option value="IT3B">Serie C B (IT3B)</option>
+            <option value="IT3C">Serie C C (IT3C)</option>
+            <option value="IJ1">Primavera 1 (IJ1)</option>
+            <option value="PL1">Ekstraklasa (PL1)</option>
+            <option value="PL2">1 Liga (PL2)</option>
+            <option value="ES1">LaLiga (ES1)</option>
+            <option value="GB1">Premier League (GB1)</option>
+            <option value="L1">Bundesliga (L1)</option>
+            <option value="FR1">Ligue 1 (FR1)</option>
+            <option value="OTHER">Altro</option>
+          </select>
+          <button id="admin-add-club-btn" class="w-full px-2.5 py-1.5 text-xs font-semibold rounded-md" style="background: var(--accent); color: #0E1116;">
+            Importa club + rosa
+          </button>
+          <div id="admin-add-club-status" class="text-[11px] mt-2" style="color: var(--text-3);">
+            Scrappa club + rosa + profili + stats da Transfermarkt (5-10 min).
+          </div>
+        </div>
         <div class="rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
           <h3 class="text-sm font-bold mb-2" style="color: var(--text-1);">Aggiungi nuovo giocatore</h3>
           <label class="text-[10px] uppercase tracking-wide mb-1 block" style="color: var(--text-3);">URL Transfermarkt</label>
@@ -7267,7 +7297,9 @@ function renderAdminPanel() {
   
   const addBtn = document.getElementById("admin-add-btn");
   if (addBtn) addBtn.addEventListener("click", _adminAddPlayer);
-  
+  const addClubBtn = document.getElementById("admin-add-club-btn");
+  if (addClubBtn) addClubBtn.addEventListener("click", _adminAddClub);
+
   if (editingPlayer) {
     const saveBtn = document.getElementById("admin-save");
     if (saveBtn) saveBtn.addEventListener("click", () => _adminSaveOverrides(editingPlayer.tm_player_id));
@@ -7578,6 +7610,64 @@ async function _adminAddPlayer() {
     if (sotsInput) sotsInput.value = "";
     if (sotsTeamInput) sotsTeamInput.value = "";
 
+  } catch (e) {
+    status.style.color = "#c00";
+    status.textContent = "Errore connessione: " + e.message;
+  } finally {
+    setTimeout(() => {
+      if (btn) btn.disabled = false;
+    }, 60000);
+  }
+}
+
+// 2026-06-08: import club intero (rosa + profili + stats) da URL Transfermarkt.
+// Triggera workflow GitHub Actions add_club.yml via /admin-add-club.
+async function _adminAddClub() {
+  const status = document.getElementById("admin-add-club-status");
+  const urlInput = document.getElementById("admin-add-club-url");
+  const leagueSelect = document.getElementById("admin-add-club-league");
+  const btn = document.getElementById("admin-add-club-btn");
+  if (!urlInput || !status) return;
+
+  const url = (urlInput.value || "").trim();
+  if (!url) {
+    status.style.color = "";
+    status.textContent = "Inserisci l'URL Transfermarkt del club (deve contenere /verein/<id>/).";
+    return;
+  }
+  if (!/transfermarkt\.[a-z.]+.*verein\/\d+/i.test(url)) {
+    status.style.color = "#c00";
+    status.textContent = "URL non valido. Esempio: https://www.transfermarkt.com/real-madrid/kader/verein/418/saison_id/2025";
+    return;
+  }
+  const league = (leagueSelect?.value || "").trim();
+
+  if (btn) btn.disabled = true;
+  status.style.color = "";
+  status.textContent = "Invio richiesta a GitHub Actions...";
+
+  try {
+    const res = await fetch("/admin-add-club", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url, league }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      status.style.color = "#c00";
+      const msg = (typeof data?.detail === "string") ? data.detail
+                : (data?.detail?.message || data?.message || "Errore sconosciuto");
+      status.textContent = "Errore: " + msg;
+      return;
+    }
+    const eta = new Date(Date.now() + 7 * 60 * 1000); // ~7 min stimati
+    const etaStr = eta.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    status.style.color = "#0a0";
+    status.innerHTML =
+      "✓ Workflow avviato. Completamento previsto: " + etaStr + ". " +
+      '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi progresso</a>';
+    urlInput.value = "";
+    if (leagueSelect) leagueSelect.value = "";
   } catch (e) {
     status.style.color = "#c00";
     status.textContent = "Errore connessione: " + e.message;

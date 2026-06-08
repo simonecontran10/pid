@@ -1,0 +1,91 @@
+name: Admin - Add Club from TM URL
+
+# 2026-06-08: aggiunge un club arbitrario al PID dato un URL Transfermarkt
+# (es. https://www.transfermarkt.com/real-madrid/kader/verein/418/...).
+# Scrappa club + rosa + profili + stats, committa data/ al repo.
+# Trigger: /admin-add-club endpoint API (chiamata da UI Admin frontend).
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL Transfermarkt del club (deve contenere /verein/<id>/)"
+        required: true
+        type: string
+      league:
+        description: "league_id override (es. ES1, GB1, IT1). Vuoto = auto-detect"
+        required: false
+        type: string
+        default: ""
+
+concurrency:
+  group: add-club
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  add-club:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Validate URL
+        run: |
+          URL="${{ github.event.inputs.url }}"
+          if echo "$URL" | grep -qE 'transfermarkt\.[a-z.]+.*verein/[0-9]+'; then
+            echo "OK: $URL"
+          else
+            echo "URL non valido (manca /verein/<id>/): $URL"
+            exit 1
+          fi
+
+      - name: Run add_club.py
+        env:
+          URL: ${{ github.event.inputs.url }}
+          LEAGUE: ${{ github.event.inputs.league }}
+        run: |
+          python3 add_club.py
+
+      - name: Commit and push if changed
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/ 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Nessuna modifica da committare"
+            exit 0
+          fi
+          URL="${{ github.event.inputs.url }}"
+          CLUB=$(echo "$URL" | grep -oE '/[^/]+/(startseite|kader|verein)' | head -1 | sed 's|^/||;s|/.*||')
+          git commit -m "auto: add club ${CLUB:-tm-import} from TM URL ($(date -u +%Y-%m-%d))"
+          if git push; then
+            echo "Push completato"
+            exit 0
+          fi
+          echo "Rebase difensivo..."
+          git rebase --abort 2>/dev/null || true
+          git fetch origin main
+          if git pull --rebase origin main && git push; then
+            exit 0
+          fi
+          exit 1
