@@ -101,11 +101,17 @@ def extract_from_rar(rar_path: str, archive_paths_to_files: dict[str, Path], des
             except subprocess.TimeoutExpired:
                 print(f"  batch {bi+1} TIMEOUT")
 
-        # Sposta i file estratti (tmp_path/<basename>) in destination con rename
+        # 2026-06-08 fix: unar -D non rimuove la struttura dir, mantiene
+        # "sortitoutsi/faces/face_<id>.png". Sposta cercando il path completo.
         ok = 0
         fail = 0
         for arc_path, out_file in to_extract.items():
-            extracted = tmp_path / Path(arc_path).name
+            extracted = tmp_path / arc_path
+            if not extracted.exists():
+                # Fallback: cerca solo per basename ovunque (struttura diversa)
+                matches = list(tmp_path.rglob(Path(arc_path).name))
+                if matches:
+                    extracted = matches[0]
             if extracted.exists():
                 out_file.parent.mkdir(parents=True, exist_ok=True)
                 try:
@@ -137,6 +143,8 @@ def extract_faces(rar_path: str) -> int:
 
 
 def extract_logos(rar_path: str) -> int:
+    # 2026-06-08: path corretto = sortitoutsi Metallic Logos/logos/clubs/normal/club_<id>.png
+    # (era erroneo "media/media_<id>.png" che è per nazioni / altri media).
     clubs = _load(CLUBS_FILE)
     mapping: dict[str, Path] = {}
     for c in clubs:
@@ -144,7 +152,7 @@ def extract_logos(rar_path: str) -> int:
         tm_club_id = c.get("tm_club_id")
         if not sots_team_id or not tm_club_id:
             continue
-        archive_path = f"sortitoutsi Metallic Logos/media/media_{sots_team_id}.png"
+        archive_path = f"sortitoutsi Metallic Logos/logos/clubs/normal/club_{sots_team_id}.png"
         out_file = LOGOS_OUT / f"{tm_club_id}.png"
         mapping[archive_path] = out_file
     return extract_from_rar(rar_path, mapping, "logos")

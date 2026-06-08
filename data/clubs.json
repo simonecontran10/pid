@@ -3437,9 +3437,9 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/418",
     "slug": "real-madrid",
-    "sortitoutsi_team_id": null,
+    "sortitoutsi_team_id": 1736,
     "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_logo_local": "photos/clubs_sots/418.png",
     "logo_url": null
   },
   {

@@ -96973,10 +96973,11 @@
     "roster_club_id": 418,
     "roster_club_name": "Real Madrid",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 78074594,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/369081.jpg"
+    "photo_local": "photos/players_tm/369081.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/78074594.png"
   },
   {
     "tm_player_id": 395685,
