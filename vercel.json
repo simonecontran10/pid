@@ -17,6 +17,10 @@
       "destination": "/api/main"
     },
     {
+      "source": "/admin-add-club/status",
+      "destination": "/api/main"
+    },
+    {
       "source": "/clubs",
       "destination": "/api/main"
     },

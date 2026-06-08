@@ -715,6 +715,79 @@ def admin_add_club(payload: dict = Body(...)):
         raise HTTPException(status_code=500, detail=f"Errore: {type(e).__name__}: {e}")
 
 
+# 2026-06-08: stato dell'ultimo workflow add_club.yml, per progress bar
+# nel frontend. Ritorna percentuale stimata, minuti elapsed/restanti, status.
+@app.get("/admin-add-club/status")
+def admin_add_club_status():
+    pat = _os.environ.get("GITHUB_PAT")
+    if not pat:
+        raise HTTPException(status_code=500, detail="GITHUB_PAT non configurato")
+    # Stima durata media in secondi (~8 min per ~25 giocatori). Se troppo bassa,
+    # la barra si fermerà al 95% finche' il workflow non completa davvero.
+    ESTIMATED_TOTAL_S = 480
+    runs_url = "https://api.github.com/repos/simonecontran10/pid/actions/workflows/add_club.yml/runs?per_page=1"
+    try:
+        req = _urlreq.Request(
+            runs_url,
+            headers={
+                "Accept": "application/vnd.github+json",
+                "Authorization": f"Bearer {pat}",
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+        )
+        with _urlreq.urlopen(req, timeout=10) as resp:
+            data = _json_admin.loads(resp.read().decode("utf-8"))
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"GitHub API: {e}")
+
+    runs = data.get("workflow_runs", [])
+    if not runs:
+        return {"status": "no_runs", "progress": 0, "elapsed_s": 0, "remaining_s": 0}
+    r = runs[0]
+    status = r.get("status", "")  # queued | in_progress | completed
+    conclusion = r.get("conclusion")  # success | failure | cancelled | None
+    created_at = r.get("created_at")
+    updated_at = r.get("updated_at")
+    html_url = r.get("html_url")
+    run_id = r.get("id")
+
+    # Calcola elapsed da created_at
+    from datetime import datetime
+    def _parse_iso(s):
+        if not s:
+            return None
+        try:
+            return datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ")
+        except Exception:
+            return None
+    started = _parse_iso(created_at)
+    ended = _parse_iso(updated_at) if status == "completed" else datetime.utcnow()
+    elapsed_s = int((ended - started).total_seconds()) if started and ended else 0
+
+    if status == "completed":
+        progress = 100
+        remaining_s = 0
+    elif status == "queued":
+        progress = 5
+        remaining_s = ESTIMATED_TOTAL_S
+    else:  # in_progress
+        # Cap 95% finche' non completo davvero (evita che la barra raggiunga 100% troppo presto)
+        progress = min(95, int(elapsed_s / ESTIMATED_TOTAL_S * 100))
+        remaining_s = max(0, ESTIMATED_TOTAL_S - elapsed_s)
+
+    return {
+        "status": status,
+        "conclusion": conclusion,
+        "progress": progress,
+        "elapsed_s": elapsed_s,
+        "remaining_s": remaining_s,
+        "estimated_total_s": ESTIMATED_TOTAL_S,
+        "run_id": run_id,
+        "html_url": html_url,
+        "started_at": created_at,
+    }
+
+
 # ============ VERCEL SERVERLESS HANDLER ============
 # Vercel cerca una variabile chiamata `handler` come entry point per ASGI apps
 try:

@@ -7252,6 +7252,16 @@ function renderAdminPanel() {
           <div id="admin-add-club-status" class="text-[11px] mt-2" style="color: var(--text-3);">
             Scrappa club + rosa + profili + stats da Transfermarkt (5-10 min).
           </div>
+          <!-- 2026-06-08: progress bar live, popolata da polling /admin-add-club/status -->
+          <div id="admin-add-club-progress" class="mt-2" style="display: none;">
+            <div class="flex justify-between text-[10px] mb-1" style="color: var(--text-2);">
+              <span id="admin-add-club-progress-label">Avvio...</span>
+              <span id="admin-add-club-progress-time">—</span>
+            </div>
+            <div style="height: 6px; background: var(--surface-2); border-radius: 999px; overflow: hidden; border: 0.5px solid var(--border);">
+              <div id="admin-add-club-progress-bar" style="height: 100%; width: 0%; background: var(--accent); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
         </div>
         <div class="rounded-xl p-3" style="background: var(--surface); border: 0.5px solid var(--border);">
           <h3 class="text-sm font-bold mb-2" style="color: var(--text-1);">Aggiungi nuovo giocatore</h3>
@@ -7660,14 +7670,14 @@ async function _adminAddClub() {
       status.textContent = "Errore: " + msg;
       return;
     }
-    const eta = new Date(Date.now() + 7 * 60 * 1000); // ~7 min stimati
-    const etaStr = eta.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     status.style.color = "#0a0";
-    status.innerHTML =
-      "✓ Workflow avviato. Completamento previsto: " + etaStr + ". " +
-      '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi progresso</a>';
+    status.innerHTML = "✓ Workflow avviato. " +
+      '<a href="' + (data.actions_url || "#") + '" target="_blank" rel="noopener">Vedi su GitHub</a>';
     urlInput.value = "";
     if (leagueSelect) leagueSelect.value = "";
+    // 2026-06-08: avvia il polling della progress bar (attende 5 sec prima
+    // del primo poll, GitHub Actions impiega ~3-5 sec a registrare il run).
+    setTimeout(() => _startAddClubProgressPolling(), 5000);
   } catch (e) {
     status.style.color = "#c00";
     status.textContent = "Errore connessione: " + e.message;
@@ -7676,5 +7686,80 @@ async function _adminAddClub() {
       if (btn) btn.disabled = false;
     }, 60000);
   }
+}
+
+// 2026-06-08: polling progress bar add_club. Polla /admin-add-club/status
+// ogni 5 sec finche' lo workflow completa. Aggiorna progress bar + label.
+let _addClubPollTimer = null;
+function _stopAddClubProgressPolling() {
+  if (_addClubPollTimer) {
+    clearTimeout(_addClubPollTimer);
+    _addClubPollTimer = null;
+  }
+}
+function _formatMinSec(s) {
+  if (s == null || s < 0) return "—";
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  if (m === 0) return sec + "s";
+  return m + "m " + (sec < 10 ? "0" : "") + sec + "s";
+}
+async function _startAddClubProgressPolling() {
+  _stopAddClubProgressPolling();
+  const wrap = document.getElementById("admin-add-club-progress");
+  const bar = document.getElementById("admin-add-club-progress-bar");
+  const label = document.getElementById("admin-add-club-progress-label");
+  const timeLabel = document.getElementById("admin-add-club-progress-time");
+  if (!wrap || !bar) return;
+  wrap.style.display = "block";
+
+  const poll = async () => {
+    try {
+      const res = await fetch("/admin-add-club/status", { cache: "no-store" });
+      const d = await res.json();
+      if (!res.ok) throw new Error(d.detail || "status error");
+
+      const progress = d.progress ?? 0;
+      const status = d.status || "";
+      const conclusion = d.conclusion;
+      bar.style.width = progress + "%";
+
+      if (status === "completed") {
+        // Workflow finito.
+        bar.style.width = "100%";
+        if (conclusion === "success") {
+          bar.style.background = "#10B981";
+          if (label) label.textContent = "✓ Completato — il club e' ora disponibile";
+          if (timeLabel) timeLabel.textContent = "fatto in " + _formatMinSec(d.elapsed_s);
+        } else {
+          bar.style.background = "#EF4444";
+          if (label) label.textContent = "✗ Errore (" + (conclusion || "fail") + ")";
+          if (timeLabel) timeLabel.textContent = "vedi log GitHub";
+        }
+        _stopAddClubProgressPolling();
+        // Trigger un /reload sul server per ricaricare lo store dal disco.
+        setTimeout(() => {
+          fetch("/reload", { method: "POST" }).catch(() => {});
+        }, 3000);
+        return;
+      }
+
+      // In corso / queued
+      bar.style.background = "var(--accent)";
+      if (label) {
+        const stepLabel = status === "queued" ? "In coda..." : "Scrape Transfermarkt in corso...";
+        label.textContent = stepLabel + " " + progress + "%";
+      }
+      if (timeLabel) {
+        const remStr = _formatMinSec(d.remaining_s);
+        timeLabel.textContent = _formatMinSec(d.elapsed_s) + " · ~" + remStr + " rimasti";
+      }
+      _addClubPollTimer = setTimeout(poll, 5000);
+    } catch (e) {
+      if (label) label.textContent = "Errore polling: " + e.message;
+      _addClubPollTimer = setTimeout(poll, 10000); // ripetere ma piu' lento
+    }
+  };
+  poll();
 }
 
