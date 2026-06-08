@@ -20247,5 +20247,215 @@
     "match_score": 1.0,
     "matched_via": "manual_override",
     "face_local": "photos/players_sots_lookup/49056530.png"
+  },
+  "485584": {
+    "sots_id": 37077855,
+    "name": "Anass Salah-Eddine",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/37077855.png"
+  },
+  "676411": {
+    "sots_id": 37084655,
+    "name": "Dailon Livramento",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/37084655.png"
+  },
+  "631927": {
+    "sots_id": 2000042460,
+    "name": "Saud Abdulhamid",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000042460.png"
+  },
+  "223974": {
+    "sots_id": 16147386,
+    "name": "Stefan Posch",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/16147386.png"
+  },
+  "370846": {
+    "sots_id": 48042432,
+    "name": "Timothy Weah",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/48042432.png"
+  },
+  "339332": {
+    "sots_id": 37055842,
+    "name": "Noa Lang",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/37055842.png"
+  },
+  "358166": {
+    "sots_id": 59061760,
+    "name": "Eldor Shomurodov",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/59061760.png"
+  },
+  "818892": {
+    "sots_id": 2000020964,
+    "name": "Nicola Bagnolini",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000020964.png"
+  },
+  "353609": {
+    "sots_id": 29157184,
+    "name": "Titas Krapikas",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/29157184.png"
+  },
+  "932733": {
+    "sots_id": 2000104785,
+    "name": "Leonardo Baroncelli",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000104785.png"
+  },
+  "932763": {
+    "sots_id": 2000103801,
+    "name": "Alessandro Di Bitonto",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000103801.png"
+  },
+  "56682": {
+    "sots_id": 43000523,
+    "name": "Andrea Signorini",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43000523.png"
+  },
+  "281633": {
+    "sots_id": 43140548,
+    "name": "Alberto Tentardini",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43140548.png"
+  },
+  "171399": {
+    "sots_id": 43082118,
+    "name": "Nicola Murru",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43082118.png"
+  },
+  "56618": {
+    "sots_id": 43006835,
+    "name": "Matteo Bruscagin",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43006835.png"
+  },
+  "816897": {
+    "sots_id": 43500641,
+    "name": "Lorenzo Podda",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43500641.png"
+  },
+  "711352": {
+    "sots_id": 43617805,
+    "name": "Francesco Zallu",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43617805.png"
+  },
+  "197744": {
+    "sots_id": 43093494,
+    "name": "Nicolò Fazzi",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43093494.png"
+  },
+  "62718": {
+    "sots_id": 43009072,
+    "name": "Federico Carraro",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43009072.png"
+  },
+  "924901": {
+    "sots_id": 2000134429,
+    "name": "Halid Djankpata",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000134429.png"
+  },
+  "123258": {
+    "sots_id": 43074244,
+    "name": "Ivan Varone",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43074244.png"
+  },
+  "256118": {
+    "sots_id": 43116070,
+    "name": "Saber Hraiech",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43116070.png"
+  },
+  "62750": {
+    "sots_id": 43084559,
+    "name": "Giacomo Rosaia",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43084559.png"
+  },
+  "819083": {
+    "sots_id": 2000021640,
+    "name": "Gabriele Costa",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000021640.png"
+  },
+  "1297382": {
+    "sots_id": 2000266768,
+    "name": "Valerio Conti",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000266768.png"
+  },
+  "402114": {
+    "sots_id": 43202175,
+    "name": "Alessio Di Massimo",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43202175.png"
+  },
+  "1249656": {
+    "sots_id": 2000350267,
+    "name": "Amoako Minta",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000350267.png"
+  },
+  "386577": {
+    "sots_id": 43252862,
+    "name": "Federico Mastropietro",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43252862.png"
+  },
+  "930944": {
+    "sots_id": 2000101154,
+    "name": "Tommaso Ghirardello",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000101154.png"
+  },
+  "134983": {
+    "sots_id": 43061716,
+    "name": "Andrea La Mantia",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43061716.png"
   }
 }
