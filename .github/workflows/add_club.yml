@@ -65,6 +65,18 @@ jobs:
         run: |
           python3 add_club.py
 
+      # pt73 rev65: dopo l'import TM, concateno la pipeline SOTS cosi' i
+      # nuovi giocatori ricevono in automatico sortitoutsi_person_id +
+      # foto local (face_*.png). Senza questo dovevamo eseguire i 3 step
+      # a mano dopo ogni add_club.
+      - name: SOTS — match unmatched + DOB verify
+        run: |
+          python3 find_more_sots_matches.py || true
+
+      - name: SOTS — applica match confermati + scarica foto
+        run: |
+          python3 apply_more_matches.py || true
+
       - name: Commit and push if changed
         if: always()
         run: |
