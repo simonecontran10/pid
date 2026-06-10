@@ -4514,7 +4514,8 @@ async function exportGridPDF() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait" });
     const pageW = 210, pageH = 297;
-    const margin = 8;
+    // pt77: niente margine bianco — il campo riempie tutta la pagina (stile Live board).
+    const margin = 0;
 
     // ====== HEADER (compatto in alto) ======
     const title = state.grids.store.currentName || (currentLang==="it"?"Formazione":"Formation");
@@ -4533,23 +4534,26 @@ async function exportGridPDF() {
     const pitchW = pageW - margin*2;
     const pitchH = pageH - margin*2;
 
-    // Sfondo verde con striature alternate (effetto rasatura)
-    pdf.setFillColor(15, 77, 42);
+    // pt77: campo verde piu' chiaro (stile Live board PitchPlan) con
+    // striature VERTICALI alternate. Era #0F4D2A scuro + righe orizzontali;
+    // ora #4CA44C base + 8 fasce verticali (le dispari piu' chiare #5CB85C).
+    pdf.setFillColor(76, 164, 76);
     pdf.rect(pitchX, pitchY, pitchW, pitchH, "F");
-    // 5 striature alternate più chiare
-    pdf.setFillColor(13, 68, 38);
-    for (let s = 0; s < 5; s++) {
-      const sH = pitchH / 10;
-      pdf.rect(pitchX, pitchY + (2*s + 1) * sH, pitchW, sH, "F");
+    pdf.setFillColor(92, 184, 92);
+    const stripeCount = 8;
+    const stripeW = pitchW / stripeCount;
+    for (let s = 0; s < stripeCount; s++) {
+      if (s % 2 === 0) continue;
+      pdf.rect(pitchX + s * stripeW, pitchY, stripeW, pitchH, "F");
     }
 
-    // Linee bianche perimetro
-    pdf.setDrawColor(255,255,255); pdf.setLineWidth(0.4);
-    pdf.rect(pitchX + 2, pitchY + 2, pitchW - 4, pitchH - 4);
+    // Linee bianche (no rettangolo perimetro esterno — pt77 rimosso, il
+    // campo va fino al bordo della pagina senza cornice bianca).
+    pdf.setDrawColor(255, 255, 255); pdf.setLineWidth(0.4);
     pdf.line(pitchX + 2, pitchY + pitchH/2, pitchX + pitchW - 2, pitchY + pitchH/2);
     // Cerchio centrocampo (ellisse)
     pdf.ellipse(pitchX + pitchW/2, pitchY + pitchH/2, pitchW * 0.10, pitchH * 0.06);
-    pdf.setFillColor(255,255,255);
+    pdf.setFillColor(255, 255, 255);
     pdf.circle(pitchX + pitchW/2, pitchY + pitchH/2, 0.6, "F");
     // Aree di rigore
     pdf.rect(pitchX + pitchW*0.22, pitchY + 2, pitchW*0.56, pitchH*0.13);
@@ -4568,10 +4572,12 @@ async function exportGridPDF() {
     pdf.text(dateStr, pitchX + pitchW - 4, pitchY + 7, { align: "right" });
 
     // ====== POSIZIONI + DEPTH CHART (card sotto ogni posizione) ======
-    // Card più strette per non sovrapporsi tra posizioni vicine
+    // Card più strette per non sovrapporsi tra posizioni vicine.
+    // pt77: cardHeaderH = 0 — rimosso header con pos.label + count
+    //       (ridondante: il pallino sopra la card mostra gia' il ruolo).
     const cardW = 42;
     const playerRowH = 6;
-    const cardHeaderH = 4;
+    const cardHeaderH = 0;
 
     // Aree usabili: dal sotto-header al fondo (pitchY + 11 → pitchY + pitchH - 4)
     const innerTop = pitchY + 13;
@@ -4594,20 +4600,21 @@ async function exportGridPDF() {
       const cy = innerTop + innerH * yFrac;
 
       // Cerchio posizione (titolare = verde pieno, vuoto = outline)
+      // pt77: circleR 4 → 3 (pallino piu' piccolo + font 6 → 5).
       const titularPid = ids[0];
       const p = titularPid ? state.players.find(x => x.tm_player_id === titularPid) : null;
-      const circleR = 4;
+      const circleR = 3;
       if (p) {
         pdf.setFillColor(111, 224, 168); pdf.setDrawColor(111, 224, 168); pdf.setLineWidth(0.3);
         pdf.circle(cx, cy, circleR, "F");
-        pdf.setTextColor(14,17,22); pdf.setFont("helvetica","bold"); pdf.setFontSize(6);
-        pdf.text(pos.label, cx, cy + 0.5, { align: "center" });
+        pdf.setTextColor(14,17,22); pdf.setFont("helvetica","bold"); pdf.setFontSize(5);
+        pdf.text(pos.label, cx, cy + 0.4, { align: "center" });
       } else {
         pdf.setDrawColor(255,255,255); pdf.setLineWidth(0.3);
-        pdf.setFillColor(15,77,42);
+        pdf.setFillColor(76, 164, 76);
         pdf.circle(cx, cy, circleR);
-        pdf.setTextColor(255,255,255); pdf.setFont("helvetica","bold"); pdf.setFontSize(6);
-        pdf.text(pos.label, cx, cy + 0.5, { align: "center" });
+        pdf.setTextColor(255,255,255); pdf.setFont("helvetica","bold"); pdf.setFontSize(5);
+        pdf.text(pos.label, cx, cy + 0.4, { align: "center" });
       }
 
       if (!ids.length) continue;
@@ -4638,11 +4645,8 @@ async function exportGridPDF() {
       pdf.setDrawColor(60, 70, 65); pdf.setLineWidth(0.2);
       pdf.roundedRect(cardX, cardY, cardW, cardH, 1.5, 1.5);
 
-      // Header card: posizione + count
-      pdf.setFont("helvetica","bold"); pdf.setFontSize(6); pdf.setTextColor(111, 224, 168);
-      pdf.text(pos.label, cardX + 2, cardY + 3);
-      pdf.setFont("helvetica","normal"); pdf.setFontSize(5); pdf.setTextColor(150, 170, 160);
-      pdf.text(`${ids.length} ${currentLang==="it"?"giocator"+(ids.length===1?"e":"i"):"player"+(ids.length===1?"":"s")}`, cardX + cardW - 2, cardY + 3, { align: "right" });
+      // pt77: NIENTE header card (pos.label + count ridondanti — il
+      // pallino verde sopra mostra gia' il ruolo).
 
       // Righe giocatori
       for (let i = 0; i < ids.length; i++) {
@@ -4663,25 +4667,25 @@ async function exportGridPDF() {
           pdf.rect(cardX + 1, rowY + 0.3, cardW - 2, playerRowH - 0.5, "F");
         }
 
-        // Numero depth
-        pdf.setFont("helvetica","bold"); pdf.setFontSize(6); pdf.setTextColor(isStarter ? 111 : 130, isStarter ? 224 : 145, isStarter ? 168 : 150);
-        pdf.text(`${i+1}`, cardX + 3, rowY + 4);
+        // pt77: NIENTE numero depth (1, 2, 3, ...) — ridondante con
+        // l'ordine visivo + l'evidenza titolare/riserve gia' fatta dal
+        // background verde tenue. Foto si sposta a sinistra (cardX + 2).
 
         // Foto cerchio (4mm)
         const ph = photos[idx];
-        if (ph) { try { pdf.addImage(ph, "PNG", cardX + 5.5, rowY + 1.2, 4, 4); } catch (e) {} }
+        if (ph) { try { pdf.addImage(ph, "PNG", cardX + 2, rowY + 1.2, 4, 4); } catch (e) {} }
 
-        // Nome (cognome)
+        // Nome (cognome) — sposta a sinistra perche' non c'e' piu' il numero
         const lastName = (pl.full_name || "").split(" ").slice(-1)[0] || pl.full_name;
         pdf.setFont("helvetica","bold"); pdf.setFontSize(7); pdf.setTextColor(255,255,255);
-        pdf.text(`${lastName} '${yr}`, cardX + 11, rowY + 3, { maxWidth: 22 });
+        pdf.text(`${lastName} '${yr}`, cardX + 7.5, rowY + 3, { maxWidth: 24 });
 
         // Sub: club abbr + foot + min
         pdf.setFont("helvetica","normal"); pdf.setFontSize(5.5); pdf.setTextColor(170, 180, 175);
         const subParts = [];
         if (clubAbbr) subParts.push(clubAbbr);
         if (foot) subParts.push(foot);
-        pdf.text(subParts.join(" · "), cardX + 11, rowY + 5.4, { maxWidth: 24 });
+        pdf.text(subParts.join(" · "), cardX + 7.5, rowY + 5.4, { maxWidth: 26 });
 
         // Logo club a destra
         const cLogo = clubLogos[idx];
