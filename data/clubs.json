@@ -1105,8 +1105,8 @@
     "league_name": "Primera Federación - Grupo I",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/6767",
     "slug": "real-madrid-b-castilla-",
-    "sortitoutsi_team_id": 1736,
-    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1736.png",
+    "sortitoutsi_team_id": 1737,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1737.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/6767.png",
     "logo_url": null
   },
@@ -3437,8 +3437,8 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/418",
     "slug": "real-madrid",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1736,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1736.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/418.png",
     "logo_url": null
   },
@@ -3521,9 +3521,9 @@
     "league_name": "LaLiga2",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/2502",
     "slug": "cd-castellon",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1690,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1690.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/2502.png",
     "logo_url": null
   },
   {

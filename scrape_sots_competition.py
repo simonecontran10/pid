@@ -189,6 +189,59 @@ def scrape_page(url: str) -> list[tuple[int, str, str]]:
     return teams
 
 
+# Heuristics per riconoscere le pagine competition TOP-TIER nella pagina nation.
+# La pagina /nation/<id>/<slug> di sortitoutsi NON mostra le prime divisioni
+# (es. nation/796/spain non ha Real Madrid). I top club stanno solo nelle
+# pagine /competition/<id>/<slug>. Espandiamo automaticamente quando vediamo
+# uno slug compatibile.
+TOP_TIER_SLUG_RE = re.compile(
+    r"(first-division|second-division|premier|"
+    r"primera|segunda|primeira|primeiro|"
+    r"serie-(a|b|c|bkt)|"
+    r"bundesliga|"
+    r"ligue-(1|2)|"
+    r"eredivisie|"
+    r"super-lig|sueperlig|"
+    r"liga-portugal|"
+    r"mls|"
+    r"brasileir|"
+    r"a-league|"
+    r"j(1|2)-league|"
+    r"k-league)",
+    re.IGNORECASE,
+)
+
+
+def expand_nation_to_competitions(url: str) -> list[str]:
+    """Se l'URL è una pagina /nation/<id>/<name>, ritorna ANCHE gli URL delle
+    competition top-tier trovate dentro (es. spanish-first-division).
+    La pagina nation espone solo le DIVISIONI MINORI nella tabella principale
+    — i top club (Real Madrid, Bayern, ecc.) appaiono solo nelle pagine
+    /competition/<id>/. Se l'URL passata non è una nation, ritorna [].
+    """
+    if "/nation/" not in url:
+        return []
+    print(f"[expand] {url} -> cerco competition top-tier...")
+    r = requests.get(url, headers=HEADERS, timeout=20)
+    if r.status_code != 200:
+        return []
+    extra = []
+    seen = set()
+    for m in re.finditer(
+        r'/football-manager-2026/competition/(\d+)/([a-z0-9-]+)', r.text
+    ):
+        cid, slug = m.group(1), m.group(2)
+        if cid in seen:
+            continue
+        if TOP_TIER_SLUG_RE.search(slug):
+            seen.add(cid)
+            extra.append(
+                f"https://sortitoutsi.net/football-manager-2026/competition/{cid}/{slug}"
+            )
+            print(f"  + competition/{cid}/{slug}")
+    return extra
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("urls", nargs="+", help="URL pagina competition o nation di sortitoutsi.net")
@@ -205,15 +258,26 @@ def main():
         if n:
             by_norm.setdefault(n, []).append(c)
 
-    # Aggrega tutti i team trovati sulle URL
-    all_teams: dict[int, tuple[str, str]] = {}  # sots_id → (slug, display)
+    # Espandi automaticamente le pagine nation alle competition top-tier
+    # (la nation /nation/796/spain NON mostra Real Madrid, solo Segunda e
+    # divisioni inferiori — i top stanno solo in /competition/<id>/).
+    expanded_urls: list[str] = []
     for url in args.urls:
+        expanded_urls.append(url)
+        for extra in expand_nation_to_competitions(url):
+            if extra not in expanded_urls:
+                expanded_urls.append(extra)
+        time.sleep(1.0)
+
+    # Aggrega tutti i team trovati sulle URL (originali + competition espanse)
+    all_teams: dict[int, tuple[str, str]] = {}  # sots_id → (slug, display)
+    for url in expanded_urls:
         for sid, slug, txt in scrape_page(url):
             if sid not in all_teams:
                 all_teams[sid] = (slug, txt)
         time.sleep(1.5)  # rate limit cortese
 
-    print(f"\n[parse] Team unici trovati: {len(all_teams)}")
+    print(f"\n[parse] Team unici trovati: {len(all_teams)} (su {len(expanded_urls)} URL)")
 
     matched = []
     unmatched_sots = []
