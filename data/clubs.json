@@ -3437,7 +3437,7 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/418",
     "slug": "real-madrid",
-    "sortitoutsi_team_id": 1736,
+    "sortitoutsi_team_id": null,
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": "photos/clubs_sots/418.png",
     "logo_url": null
@@ -6954,7 +6954,31 @@
     "league_name": "FIWC",
     "club_url": "https://www.transfermarkt.com/queens-park-rangers/startseite/verein/1039/saison_id/2025",
     "sortitoutsi_logo_local": "photos/clubs_sots/1039.png",
-    "sortitoutsi_team_id": 701,
-    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/701.png"
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null
+  },
+  {
+    "tm_club_id": 472,
+    "name": "UD Las Palmas",
+    "league_id": "ES2",
+    "league_name": "LaLiga2",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/472",
+    "slug": "ud-las-palmas",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 28,
+    "name": "FC Bayern Munich II",
+    "league_id": "RLB3",
+    "league_name": "Regionalliga Bayern",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/28",
+    "slug": "fc-bayern-munchen-ii",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]

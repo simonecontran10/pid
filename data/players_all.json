@@ -10692,10 +10692,10 @@
     "age": 22,
     "height_cm": 178,
     "foot": "right",
-    "position_general": "Defender",
-    "position_specific": "Left-Back",
+    "position_general": "Midfield",
+    "position_specific": "Right Midfield",
     "position_others": [
-      "Right Midfield",
+      "Left-Back",
       "Left Midfield"
     ],
     "place_of_birth": "Reggio Calabria",
@@ -10703,22 +10703,19 @@
       "Italy"
     ],
     "is_target_eligible": true,
-    "is_saudi_eligible": true,
     "current_club_id": 4097,
-    "current_club_name": "US Catanzaro",
+    "current_club_name": "Catanzaro",
     "shirt_number": 27,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/820635-1695050910.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/820635",
-    "fetched_at": "2026-05-05T21:31:24Z",
+    "fetched_at": "2026-06-10T07:54:42Z",
     "roster_club_id": 4097,
     "roster_club_name": "US Catanzaro",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 2000025303,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000025303.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000025303/costantino-favasuli",
     "photo_local": "photos/players_tm/820635.jpg",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000025313.png",
-    "current_club_id_original": 430,
-    "current_club_name_original": "New arrival"
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000025303.png"
   },
   {
     "tm_player_id": 1074991,
@@ -39103,20 +39100,18 @@
       "Italy"
     ],
     "is_target_eligible": true,
-    "is_saudi_eligible": true,
     "current_club_id": 8970,
-    "current_club_name": "Frosinone Calcio",
+    "current_club_name": "Frosinone",
     "shirt_number": 16,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/927905-1727119771.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/927905",
-    "fetched_at": "2026-05-05T22:35:33Z",
+    "fetched_at": "2026-06-10T07:54:50Z",
     "roster_club_id": 8970,
     "roster_club_name": "Frosinone Calcio",
     "sortitoutsi_person_id": null,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/927905.jpg",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000184263.png"
+    "photo_local": "photos/players_tm/927905.jpg"
   },
   {
     "tm_player_id": 382567,
@@ -48314,7 +48309,7 @@
     "full_name": "Rafik Belghali",
     "name_arabic": "رفيق بلغالي",
     "date_of_birth": "2002-06-07",
-    "age": 23,
+    "age": 24,
     "height_cm": 180,
     "foot": "right",
     "position_general": "Defender",
@@ -48329,22 +48324,19 @@
       "Belgium"
     ],
     "is_target_eligible": true,
-    "is_saudi_eligible": true,
     "current_club_id": 276,
     "current_club_name": "Hellas Verona",
     "shirt_number": 7,
     "photo_url": "https://img.a.transfermarkt.technology/portrait/header/864306-1706263707.jpg?lm=1",
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/864306",
-    "fetched_at": "2026-05-05T22:54:39Z",
+    "fetched_at": "2026-06-10T07:54:38Z",
     "roster_club_id": 276,
     "roster_club_name": "Hellas Verona",
-    "sortitoutsi_person_id": null,
-    "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null,
+    "sortitoutsi_person_id": 18116154,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_18116154.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/18116154/rafik-belghali",
     "photo_local": "photos/players_tm/864306.jpg",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18116154.png",
-    "current_club_id_original": 354,
-    "current_club_name_original": "New arrival"
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18116154.png"
   },
   {
     "tm_player_id": 935760,
@@ -96973,7 +96965,7 @@
     "roster_club_id": 418,
     "roster_club_name": "Real Madrid",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 78074594,
+    "sortitoutsi_person_id": null,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/369081.jpg",
@@ -99628,9 +99620,9 @@
     "roster_club_id": 383,
     "roster_club_name": "PSV",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 37077855,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_37077855.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/37077855/anass-salah-eddine",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/485584.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37077855.png"
   },
@@ -102576,9 +102568,9 @@
     "roster_club_id": 3268,
     "roster_club_name": "Casa Pia",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 37084655,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_37084655.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/37084655/dailon-livramento",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/676411.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37084655.png"
   },
@@ -104034,7 +104026,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/486477",
     "fetched_at": "2026-06-08T20:55:16Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/486477.jpg"
   },
   {
     "tm_player_id": 380744,
@@ -104059,7 +104055,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/380744",
     "fetched_at": "2026-06-08T20:54:03Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/380744.jpg"
   },
   {
     "tm_player_id": 645589,
@@ -115057,7 +115057,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/956920",
     "fetched_at": "2026-06-08T20:55:47Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/956920.jpg"
   },
   {
     "tm_player_id": 68290,
@@ -118427,9 +118431,9 @@
     "roster_club_id": 826,
     "roster_club_name": "Lens",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 2000042460,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000042460.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000042460/saud-abdulhamid",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/631927.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000042460.png"
   },
@@ -119070,9 +119074,9 @@
     "roster_club_id": 39,
     "roster_club_name": "Mainz",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 16147386,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_16147386.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/16147386/stefan-posch",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/223974.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/16147386.png"
   },
@@ -122098,9 +122102,9 @@
     "roster_club_id": 244,
     "roster_club_name": "Marseille",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 48042432,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_48042432.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/48042432/timothy-weah",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/370846.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/48042432.png"
   },
@@ -126485,9 +126489,9 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 37055842,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_37055842.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/37055842/noa-lang",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/339332.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37055842.png"
   },
@@ -130290,9 +130294,9 @@
     "roster_club_id": 6890,
     "roster_club_name": "Basaksehir",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": 59061760,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_59061760.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/59061760/eldor-shomurodov",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/358166.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/59061760.png"
   },
@@ -135011,10 +135015,11 @@
     "fetched_at": "2026-06-08T16:17:07Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000020964,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000020964.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000020964/nicola-bagnolini",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000020964.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000020964.png",
+    "photo_local": "photos/players_tm/818892.jpg"
   },
   {
     "tm_player_id": 353609,
@@ -135040,10 +135045,11 @@
     "fetched_at": "2026-06-08T16:17:11Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 29157184,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29157184.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29157184/titas-krapikas",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29157184.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29157184.png",
+    "photo_local": "photos/players_tm/353609.jpg"
   },
   {
     "tm_player_id": 932733,
@@ -135069,10 +135075,11 @@
     "fetched_at": "2026-06-08T16:17:15Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000104785,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000104785.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000104785/leonardo-baroncelli",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000104785.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000104785.png",
+    "photo_local": "photos/players_tm/932733.jpg"
   },
   {
     "tm_player_id": 932763,
@@ -135098,10 +135105,11 @@
     "fetched_at": "2026-06-08T16:17:19Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000103801,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000103801.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000103801/alessandro-di-bitonto",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000103801.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000103801.png",
+    "photo_local": "photos/players_tm/932763.png"
   },
   {
     "tm_player_id": 56682,
@@ -135127,10 +135135,11 @@
     "fetched_at": "2026-06-08T16:17:23Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43000523,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43000523.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43000523/andrea-signorini",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43000523.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43000523.png",
+    "photo_local": "photos/players_tm/56682.jpg"
   },
   {
     "tm_player_id": 281633,
@@ -135158,10 +135167,11 @@
     "fetched_at": "2026-06-08T16:17:27Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43140548,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43140548.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43140548/alberto-tentardini",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43140548.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43140548.png",
+    "photo_local": "photos/players_tm/281633.jpg"
   },
   {
     "tm_player_id": 171399,
@@ -135190,10 +135200,11 @@
     "fetched_at": "2026-06-08T16:17:32Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43082118,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43082118.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43082118/nicola-murru",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43082118.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43082118.png",
+    "photo_local": "photos/players_tm/171399.jpg"
   },
   {
     "tm_player_id": 56618,
@@ -135221,10 +135232,11 @@
     "fetched_at": "2026-06-08T16:17:36Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43006835,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43006835.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43006835/matteo-bruscagin",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43006835.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43006835.png",
+    "photo_local": "photos/players_tm/56618.jpg"
   },
   {
     "tm_player_id": 816897,
@@ -135252,10 +135264,11 @@
     "fetched_at": "2026-06-08T16:17:40Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43500641,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43500641.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43500641/lorenzo-podda",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43500641.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43500641.png",
+    "photo_local": "photos/players_tm/816897.jpg"
   },
   {
     "tm_player_id": 711352,
@@ -135281,10 +135294,11 @@
     "fetched_at": "2026-06-08T16:17:43Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43617805,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43617805.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43617805/francesco-zallu",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43617805.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43617805.png",
+    "photo_local": "photos/players_tm/711352.jpg"
   },
   {
     "tm_player_id": 197744,
@@ -135313,10 +135327,11 @@
     "fetched_at": "2026-06-08T16:17:48Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43093494,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43093494.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43093494/nicolò-fazzi",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43093494.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43093494.png",
+    "photo_local": "photos/players_tm/197744.png"
   },
   {
     "tm_player_id": 62718,
@@ -135344,10 +135359,11 @@
     "fetched_at": "2026-06-08T16:17:52Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43009072,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43009072.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43009072/federico-carraro",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43009072.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43009072.png",
+    "photo_local": "photos/players_tm/62718.jpg"
   },
   {
     "tm_player_id": 924901,
@@ -135376,10 +135392,11 @@
     "fetched_at": "2026-06-08T16:17:56Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000134429,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000134429.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000134429/halid-djankpata",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000134429.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000134429.png",
+    "photo_local": "photos/players_tm/924901.jpg"
   },
   {
     "tm_player_id": 123258,
@@ -135405,10 +135422,11 @@
     "fetched_at": "2026-06-08T16:18:00Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43074244,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43074244.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43074244/ivan-varone",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43074244.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43074244.png",
+    "photo_local": "photos/players_tm/123258.jpg"
   },
   {
     "tm_player_id": 256118,
@@ -135437,10 +135455,11 @@
     "fetched_at": "2026-06-08T16:18:04Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43116070,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43116070.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43116070/saber-hraiech",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43116070.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43116070.png",
+    "photo_local": "photos/players_tm/256118.jpg"
   },
   {
     "tm_player_id": 62750,
@@ -135468,10 +135487,11 @@
     "fetched_at": "2026-06-08T16:18:08Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43084559,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43084559.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43084559/giacomo-rosaia",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43084559.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43084559.png",
+    "photo_local": "photos/players_tm/62750.jpg"
   },
   {
     "tm_player_id": 819083,
@@ -135499,10 +135519,11 @@
     "fetched_at": "2026-06-08T16:18:12Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000021640,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000021640.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000021640/gabriele-costa",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000021640.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000021640.png",
+    "photo_local": "photos/players_tm/819083.jpg"
   },
   {
     "tm_player_id": 1297382,
@@ -135528,10 +135549,11 @@
     "fetched_at": "2026-06-08T16:18:16Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000266768,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000266768.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000266768/valerio-conti",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000266768.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000266768.png",
+    "photo_local": "photos/players_tm/1297382.jpg"
   },
   {
     "tm_player_id": 402114,
@@ -135559,10 +135581,11 @@
     "fetched_at": "2026-06-08T16:18:20Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43202175,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43202175.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43202175/alessio-di-massimo",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43202175.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43202175.png",
+    "photo_local": "photos/players_tm/402114.jpg"
   },
   {
     "tm_player_id": 1249656,
@@ -135590,10 +135613,11 @@
     "fetched_at": "2026-06-08T16:18:25Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000350267,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000350267.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000350267/amoako-minta",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000350267.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000350267.png",
+    "photo_local": "photos/players_tm/1249656.png"
   },
   {
     "tm_player_id": 386577,
@@ -135621,10 +135645,11 @@
     "fetched_at": "2026-06-08T16:18:29Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43252862,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43252862.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43252862/federico-mastropietro",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43252862.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43252862.png",
+    "photo_local": "photos/players_tm/386577.png"
   },
   {
     "tm_player_id": 930944,
@@ -135650,10 +135675,11 @@
     "fetched_at": "2026-06-08T16:18:33Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 2000101154,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000101154.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000101154/tommaso-ghirardello",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000101154.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000101154.png",
+    "photo_local": "photos/players_tm/930944.jpg"
   },
   {
     "tm_player_id": 134983,
@@ -135679,10 +135705,11 @@
     "fetched_at": "2026-06-08T16:18:37Z",
     "roster_club_id": 4326,
     "roster_club_name": "AS Gubbio 1910",
-    "sortitoutsi_person_id": 43061716,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43061716.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43061716/andrea-la-mantia",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43061716.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43061716.png",
+    "photo_local": "photos/players_tm/134983.jpg"
   },
   {
     "tm_player_id": 690548,
@@ -135708,10 +135735,11 @@
     "fetched_at": "2026-06-08T18:25:26Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 29217723,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29217723.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29217723/joe-walsh",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29217723.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29217723.png",
+    "photo_local": "photos/players_tm/690548.jpg"
   },
   {
     "tm_player_id": 189744,
@@ -135737,10 +135765,11 @@
     "fetched_at": "2026-06-08T18:25:30Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 85068996,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_85068996.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/85068996/paul-nardi",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85068996.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85068996.png",
+    "photo_local": "photos/players_tm/189744.jpg"
   },
   {
     "tm_player_id": 921746,
@@ -135766,10 +135795,11 @@
     "fetched_at": "2026-06-08T18:25:35Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 29218345,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29218345.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29218345/murphy-cooper",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29218345.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29218345.png",
+    "photo_local": "photos/players_tm/921746.jpg"
   },
   {
     "tm_player_id": 67283,
@@ -135795,10 +135825,11 @@
     "fetched_at": "2026-06-08T18:25:39Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 5119981,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_5119981.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/5119981/ben-hamer",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/5119981.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/5119981.png",
+    "photo_local": "photos/players_tm/67283.jpg"
   },
   {
     "tm_player_id": 732165,
@@ -135824,10 +135855,11 @@
     "fetched_at": "2026-06-08T18:25:43Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 29243820,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29243820.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29243820/ronnie-edwards",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29243820.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29243820.png",
+    "photo_local": "photos/players_tm/732165.jpg"
   },
   {
     "tm_player_id": 806310,
@@ -135856,10 +135888,11 @@
     "fetched_at": "2026-06-08T18:25:48Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000024506,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000024506.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000024506/amadou-mbengue",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000024506.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000024506.png",
+    "photo_local": "photos/players_tm/806310.jpg"
   },
   {
     "tm_player_id": 567114,
@@ -135885,10 +135918,11 @@
     "fetched_at": "2026-06-08T18:25:52Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 61094579,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_61094579.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/61094579/liam-morrison",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/61094579.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/61094579.png",
+    "photo_local": "photos/players_tm/567114.jpg"
   },
   {
     "tm_player_id": 316551,
@@ -135915,10 +135949,11 @@
     "fetched_at": "2026-06-08T18:25:56Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 28097983,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_28097983.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/28097983/jake-clarke-salter",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28097983.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28097983.png",
+    "photo_local": "photos/players_tm/316551.jpg"
   },
   {
     "tm_player_id": 90836,
@@ -135944,10 +135979,11 @@
     "fetched_at": "2026-06-08T18:26:00Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 28014634,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_28014634.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/28014634/steve-cook",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28014634.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28014634.png",
+    "photo_local": "photos/players_tm/90836.jpg"
   },
   {
     "tm_player_id": 1004737,
@@ -135973,10 +136009,11 @@
     "fetched_at": "2026-06-08T18:26:04Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000218798,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000218798.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000218798/esquerdinha",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000218798.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000218798.png",
+    "photo_local": "photos/players_tm/1004737.jpg"
   },
   {
     "tm_player_id": 543164,
@@ -136006,10 +136043,11 @@
     "fetched_at": "2026-06-08T18:26:08Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 29193986,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29193986.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29193986/rhys-norrington-davies",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29193986.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29193986.png",
+    "photo_local": "photos/players_tm/543164.jpg"
   },
   {
     "tm_player_id": 618402,
@@ -136038,10 +136076,11 @@
     "fetched_at": "2026-06-08T18:26:12Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 49060914,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_49060914.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/49060914/ziyad-larkeche",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49060914.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49060914.png",
+    "photo_local": "photos/players_tm/618402.jpg"
   },
   {
     "tm_player_id": 396174,
@@ -136070,10 +136109,11 @@
     "fetched_at": "2026-06-08T18:26:16Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 28100270,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_28100270.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/28100270/jimmy-dunne",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28100270.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28100270.png",
+    "photo_local": "photos/players_tm/396174.jpg"
   },
   {
     "tm_player_id": 1109828,
@@ -136101,7 +136141,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1109828",
     "fetched_at": "2026-06-08T18:26:21Z",
     "roster_club_id": 1039,
-    "roster_club_name": "Queens Park Rangers"
+    "roster_club_name": "Queens Park Rangers",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1109828.jpg"
   },
   {
     "tm_player_id": 387331,
@@ -136129,10 +136173,11 @@
     "fetched_at": "2026-06-08T18:26:25Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 28101021,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_28101021.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/28101021/sam-field",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28101021.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28101021.png",
+    "photo_local": "photos/players_tm/387331.jpg"
   },
   {
     "tm_player_id": 812902,
@@ -136161,10 +136206,11 @@
     "fetched_at": "2026-06-08T18:26:29Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 49054406,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_49054406.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/49054406/jonathan-varane",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49054406.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49054406.png",
+    "photo_local": "photos/players_tm/812902.jpg"
   },
   {
     "tm_player_id": 206225,
@@ -136193,10 +136239,11 @@
     "fetched_at": "2026-06-08T18:26:33Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 28067790,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_28067790.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/28067790/isaac-hayden",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28067790.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/28067790.png",
+    "photo_local": "photos/players_tm/206225.jpg"
   },
   {
     "tm_player_id": 464599,
@@ -136225,10 +136272,11 @@
     "fetched_at": "2026-06-08T18:26:37Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 27129144,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_27129144.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/27129144/nicolas-madsen",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/27129144.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/27129144.png",
+    "photo_local": "photos/players_tm/464599.png"
   },
   {
     "tm_player_id": 1047344,
@@ -136257,10 +136305,11 @@
     "fetched_at": "2026-06-08T18:26:41Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000222070,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000222070.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000222070/kieran-morgan",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000222070.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000222070.png",
+    "photo_local": "photos/players_tm/1047344.jpg"
   },
   {
     "tm_player_id": 581675,
@@ -136290,10 +136339,11 @@
     "fetched_at": "2026-06-08T18:26:45Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000016607,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000016607.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000016607/harvey-vale",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000016607.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000016607.png",
+    "photo_local": "photos/players_tm/581675.jpg"
   },
   {
     "tm_player_id": 380473,
@@ -136323,10 +136373,11 @@
     "fetched_at": "2026-06-08T18:26:49Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 18089606,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_18089606.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/18089606/ilias-chair",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18089606.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18089606.png",
+    "photo_local": "photos/players_tm/380473.jpg"
   },
   {
     "tm_player_id": 466602,
@@ -136354,7 +136405,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/466602",
     "fetched_at": "2026-06-08T18:26:53Z",
     "roster_club_id": 1039,
-    "roster_club_name": "Queens Park Rangers"
+    "roster_club_name": "Queens Park Rangers",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/466602.jpg"
   },
   {
     "tm_player_id": 501743,
@@ -136383,10 +136438,11 @@
     "fetched_at": "2026-06-08T18:26:57Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 45109986,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_45109986.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/45109986/koki-saito",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45109986.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45109986.png",
+    "photo_local": "photos/players_tm/501743.jpg"
   },
   {
     "tm_player_id": 1104713,
@@ -136416,10 +136472,11 @@
     "fetched_at": "2026-06-08T18:27:01Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000089797,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000089797.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000089797/daniel-bennie",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000089797.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000089797.png",
+    "photo_local": "photos/players_tm/1104713.jpg"
   },
   {
     "tm_player_id": 701062,
@@ -136449,10 +136506,11 @@
     "fetched_at": "2026-06-08T18:27:05Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 29228252,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29228252.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29228252/kwame-poku",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29228252.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29228252.png",
+    "photo_local": "photos/players_tm/701062.jpg"
   },
   {
     "tm_player_id": 408872,
@@ -136481,10 +136539,11 @@
     "fetched_at": "2026-06-08T18:27:09Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 52079995,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_52079995.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/52079995/paul-smyth",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/52079995.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/52079995.png",
+    "photo_local": "photos/players_tm/408872.jpg"
   },
   {
     "tm_player_id": 1218761,
@@ -136510,10 +136569,11 @@
     "fetched_at": "2026-06-08T18:27:14Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000108166,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000108166.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000108166/richard-kone",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000108166.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000108166.png",
+    "photo_local": "photos/players_tm/1218761.jpg"
   },
   {
     "tm_player_id": 624946,
@@ -136540,10 +136600,11 @@
     "fetched_at": "2026-06-08T18:27:18Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 29186220,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_29186220.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/29186220/rumarn-burrell",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29186220.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29186220.png",
+    "photo_local": "photos/players_tm/624946.jpg"
   },
   {
     "tm_player_id": 867699,
@@ -136572,10 +136633,11 @@
     "fetched_at": "2026-06-08T18:27:22Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 2000138737,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000138737.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000138737/rayan-kolli",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000138737.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000138737.png",
+    "photo_local": "photos/players_tm/867699.jpg"
   },
   {
     "tm_player_id": 838926,
@@ -136603,10 +136665,11 @@
     "fetched_at": "2026-06-08T18:27:26Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": 225123,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_225123.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/225123/alfie-lloyd",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/225123.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/225123.png",
+    "photo_local": "photos/players_tm/838926.jpg"
   },
   {
     "tm_player_id": 873270,
@@ -136632,7 +136695,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/873270",
     "fetched_at": "2026-06-08T18:27:30Z",
     "roster_club_id": 1039,
-    "roster_club_name": "Queens Park Rangers"
+    "roster_club_name": "Queens Park Rangers",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/873270.jpg"
   },
   {
     "tm_player_id": 342050,
@@ -136657,7 +136724,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/342050",
     "fetched_at": "2026-06-08T20:54:07Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/342050.jpg"
   },
   {
     "tm_player_id": 1088834,
@@ -136683,7 +136754,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1088834",
     "fetched_at": "2026-06-08T20:54:11Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1088834.jpg"
   },
   {
     "tm_player_id": 795831,
@@ -136708,7 +136783,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/795831",
     "fetched_at": "2026-06-08T20:54:15Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/795831.jpg"
   },
   {
     "tm_player_id": 906160,
@@ -136736,10 +136815,11 @@
     "fetched_at": "2026-06-08T20:54:19Z",
     "roster_club_id": 1010,
     "roster_club_name": "Watford FC",
-    "sortitoutsi_person_id": 2000139890,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000139890.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000139890/saba-goglichidze",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000139890.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000139890.png",
+    "photo_local": "photos/players_tm/906160.jpg"
   },
   {
     "tm_player_id": 855014,
@@ -136767,7 +136847,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/855014",
     "fetched_at": "2026-06-08T20:54:23Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/855014.jpg"
   },
   {
     "tm_player_id": 648032,
@@ -136796,10 +136880,11 @@
     "fetched_at": "2026-06-08T20:54:27Z",
     "roster_club_id": 1010,
     "roster_club_name": "Watford FC",
-    "sortitoutsi_person_id": 2000145982,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000145982.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000145982/james-abankwah",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000145982.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000145982.png",
+    "photo_local": "photos/players_tm/648032.jpg"
   },
   {
     "tm_player_id": 624948,
@@ -136824,7 +136909,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/624948",
     "fetched_at": "2026-06-08T20:54:31Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/624948.jpg"
   },
   {
     "tm_player_id": 1049020,
@@ -136852,7 +136941,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1049020",
     "fetched_at": "2026-06-08T20:54:36Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1049020.jpg"
   },
   {
     "tm_player_id": 649023,
@@ -136880,7 +136973,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/649023",
     "fetched_at": "2026-06-08T20:54:39Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/649023.jpg"
   },
   {
     "tm_player_id": 340310,
@@ -136909,7 +137006,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/340310",
     "fetched_at": "2026-06-08T20:54:43Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/340310.jpg"
   },
   {
     "tm_player_id": 503795,
@@ -136938,7 +137039,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/503795",
     "fetched_at": "2026-06-08T20:54:47Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/503795.jpg"
   },
   {
     "tm_player_id": 532858,
@@ -136967,7 +137072,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/532858",
     "fetched_at": "2026-06-08T20:54:51Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/532858.png"
   },
   {
     "tm_player_id": 538994,
@@ -136996,7 +137105,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/538994",
     "fetched_at": "2026-06-08T20:54:55Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/538994.jpg"
   },
   {
     "tm_player_id": 661253,
@@ -137025,7 +137138,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/661253",
     "fetched_at": "2026-06-08T20:54:59Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/661253.jpg"
   },
   {
     "tm_player_id": 111051,
@@ -137053,7 +137170,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/111051",
     "fetched_at": "2026-06-08T20:55:03Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/111051.jpg"
   },
   {
     "tm_player_id": 635336,
@@ -137082,7 +137203,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/635336",
     "fetched_at": "2026-06-08T20:55:07Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/635336.jpg"
   },
   {
     "tm_player_id": 562049,
@@ -137110,7 +137235,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/562049",
     "fetched_at": "2026-06-08T20:55:12Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/562049.jpg"
   },
   {
     "tm_player_id": 652803,
@@ -137139,7 +137268,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/652803",
     "fetched_at": "2026-06-08T20:55:21Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/652803.png"
   },
   {
     "tm_player_id": 412616,
@@ -137167,7 +137300,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/412616",
     "fetched_at": "2026-06-08T20:55:25Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/412616.jpg"
   },
   {
     "tm_player_id": 711247,
@@ -137196,7 +137333,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/711247",
     "fetched_at": "2026-06-08T20:55:31Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/711247.jpg"
   },
   {
     "tm_player_id": 741229,
@@ -137225,7 +137366,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/741229",
     "fetched_at": "2026-06-08T20:55:37Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/741229.jpg"
   },
   {
     "tm_player_id": 1081219,
@@ -137253,7 +137398,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1081219",
     "fetched_at": "2026-06-08T20:55:41Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1081219.jpg"
   },
   {
     "tm_player_id": 157368,
@@ -137282,7 +137431,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/157368",
     "fetched_at": "2026-06-08T20:55:53Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/157368.jpg"
   },
   {
     "tm_player_id": 668950,
@@ -137308,10 +137461,11 @@
     "fetched_at": "2026-06-08T20:55:57Z",
     "roster_club_id": 1010,
     "roster_club_name": "Watford FC",
-    "sortitoutsi_person_id": 27164375,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_27164375.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/27164375/luca-kjerrumgaard",
-    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/27164375.png"
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/27164375.png",
+    "photo_local": "photos/players_tm/668950.jpg"
   },
   {
     "tm_player_id": 1101539,
@@ -137336,7 +137490,11 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1101539",
     "fetched_at": "2026-06-08T20:56:04Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1101539.png"
   },
   {
     "tm_player_id": 1014243,
@@ -137362,6 +137520,212 @@
     "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1014243",
     "fetched_at": "2026-06-08T20:56:09Z",
     "roster_club_id": 1010,
-    "roster_club_name": "Watford FC"
+    "roster_club_name": "Watford FC",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
+    "photo_local": "photos/players_tm/1014243.jpg"
+  },
+  {
+    "tm_player_id": 568559,
+    "full_name": "Radu Drăgușin",
+    "name_arabic": "Radu Matei Drăgușin",
+    "date_of_birth": "2002-02-03",
+    "age": 24,
+    "height_cm": 191,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Right-Back"
+    ],
+    "place_of_birth": "Bucharest",
+    "citizenships": [
+      "Romania"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 148,
+    "current_club_name": "Tottenham",
+    "shirt_number": 3,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/568559-1704716630.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/568559",
+    "fetched_at": "2026-06-10T07:54:20Z",
+    "roster_club_id": 148,
+    "roster_club_name": "Tottenham",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 57178516,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_57178516.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/57178516/radu-drăgușin",
+    "photo_local": "photos/players_tm/568559.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/57178516.png"
+  },
+  {
+    "tm_player_id": 661132,
+    "full_name": "Exequiel Zeballos",
+    "name_arabic": "Oscar Exequiel Zeballos",
+    "date_of_birth": "2002-04-24",
+    "age": 24,
+    "height_cm": 175,
+    "foot": "right",
+    "position_general": "Attack",
+    "position_specific": "Right Winger",
+    "position_others": [
+      "Left Winger",
+      "Centre-Forward"
+    ],
+    "place_of_birth": "La Banda",
+    "citizenships": [
+      "Argentina"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 189,
+    "current_club_name": "Boca Juniors",
+    "shirt_number": 7,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/661132-1739899419.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/661132",
+    "fetched_at": "2026-06-10T07:54:23Z",
+    "roster_club_id": 189,
+    "roster_club_name": "Boca Juniors",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 14239273,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_14239273.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/14239273/exequiel-zeballos",
+    "photo_local": "photos/players_tm/661132.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/14239273.png"
+  },
+  {
+    "tm_player_id": 401922,
+    "full_name": "Samuel Chukwueze",
+    "name_arabic": "Samuel Chimerenka Chukwueze",
+    "date_of_birth": "1999-05-22",
+    "age": 27,
+    "height_cm": 172,
+    "foot": "left",
+    "position_general": "Attack",
+    "position_specific": "Right Winger",
+    "position_others": [
+      "Left Winger"
+    ],
+    "place_of_birth": "Umuahia",
+    "citizenships": [
+      "Nigeria"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 931,
+    "current_club_name": "Fulham",
+    "shirt_number": 19,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/401922-1767008430.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/401922",
+    "fetched_at": "2026-06-10T07:54:27Z",
+    "roster_club_id": 931,
+    "roster_club_name": "Fulham",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 67269484,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_67269484.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/67269484/samuel-chukwueze",
+    "photo_local": "photos/players_tm/401922.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67269484.png"
+  },
+  {
+    "tm_player_id": 1008568,
+    "full_name": "Guido Della Rovere",
+    "name_arabic": null,
+    "date_of_birth": "2007-06-04",
+    "age": 19,
+    "height_cm": 187,
+    "foot": "left",
+    "position_general": "Midfield",
+    "position_specific": "Attacking Midfield",
+    "position_others": [
+      "Central Midfield",
+      "Right Winger"
+    ],
+    "place_of_birth": "Cremona",
+    "citizenships": [
+      "Italy",
+      "Lithuania"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 28,
+    "current_club_name": "FC Bayern II",
+    "shirt_number": 10,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/1008568-1758891301.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/1008568",
+    "fetched_at": "2026-06-10T07:54:31Z",
+    "roster_club_id": 28,
+    "roster_club_name": "FC Bayern II",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 2000261857,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000261857.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000261857/guido-della-rovere",
+    "photo_local": "photos/players_tm/1008568.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000261857.png"
+  },
+  {
+    "tm_player_id": 487834,
+    "full_name": "Lorenzo Pirola",
+    "name_arabic": null,
+    "date_of_birth": "2002-02-20",
+    "age": 24,
+    "height_cm": 185,
+    "foot": "left",
+    "position_general": "Defender",
+    "position_specific": "Centre-Back",
+    "position_others": [
+      "Left-Back"
+    ],
+    "place_of_birth": "Carate Brianza",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 683,
+    "current_club_name": "Olympiacos",
+    "shirt_number": 5,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/487834-1757715902.png?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/487834",
+    "fetched_at": "2026-06-10T07:54:35Z",
+    "roster_club_id": 683,
+    "roster_club_name": "Olympiacos",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 43425720,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_43425720.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/43425720/lorenzo-pirola",
+    "photo_local": "photos/players_tm/487834.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/43425720.png"
+  },
+  {
+    "tm_player_id": 707450,
+    "full_name": "Lorenzo Amatucci",
+    "name_arabic": null,
+    "date_of_birth": "2004-02-05",
+    "age": 22,
+    "height_cm": 173,
+    "foot": "right",
+    "position_general": "Midfield",
+    "position_specific": "Defensive Midfield",
+    "position_others": [
+      "Central Midfield",
+      "Attacking Midfield"
+    ],
+    "place_of_birth": "Arezzo",
+    "citizenships": [
+      "Italy"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 472,
+    "current_club_name": "UD Las Palmas",
+    "shirt_number": 16,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/707450-1751270499.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/707450",
+    "fetched_at": "2026-06-10T07:54:46Z",
+    "roster_club_id": 472,
+    "roster_club_name": "UD Las Palmas",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 2000184263,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000184263.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000184263/lorenzo-amatucci",
+    "photo_local": "photos/players_tm/707450.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000184263.png"
   }
 ]
