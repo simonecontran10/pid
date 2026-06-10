@@ -6402,9 +6402,19 @@ function renderFavoritesPanel() {
 }
 
 // ============ ROUTING (sidebar) ============
+// 2026-06-10: route validi (per ripristino da localStorage al boot — se il
+// valore salvato non e' qui dentro, fallback "home").
+const VALID_ROUTES = new Set([
+  "home", "list", "favorites", "clubs", "compare", "callup",
+  "grids", "saves", "minutes", "admin", "scouting",
+]);
+const LAST_ROUTE_KEY = "pid_active_tab";
 function setActiveTab(route) {
   if (route === "players") route = "home"; // backward-compat
   state.activeTab = route;
+  // 2026-06-10: persisti la tab corrente cosi' un F5 / Cmd+R non riporta
+  // sempre alla home ma resta sulla sezione su cui l'utente stava.
+  try { localStorage.setItem(LAST_ROUTE_KEY, route); } catch (e) { /* ignore */ }
   document.querySelectorAll(".nav-item").forEach(b => b.classList.toggle("active", b.dataset.route === route));
   // Show/hide via classList (rimuove .hidden di Tailwind)
   const setVisible = (id, show) => {
@@ -7286,7 +7296,14 @@ document.addEventListener("DOMContentLoaded", () => {
     setupSearch();
     setupUpdateButton();
     document.querySelectorAll(".nav-item").forEach(b => b.addEventListener("click", () => setActiveTab(b.dataset.route)));
-    setActiveTab("home");
+    // 2026-06-10: ripristina l'ultima tab visitata (F5 / Cmd+R) — fallback
+    // a "home" se localStorage e' vuoto o contiene una route ormai rimossa.
+    let initialRoute = "home";
+    try {
+      const saved = localStorage.getItem(LAST_ROUTE_KEY);
+      if (saved && VALID_ROUTES.has(saved)) initialRoute = saved;
+    } catch (e) { /* ignore */ }
+    setActiveTab(initialRoute);
     updateFavoritesBadge();
     document.getElementById("filter-league").addEventListener("change", e => {
       state.filters.league = e.target.value;
