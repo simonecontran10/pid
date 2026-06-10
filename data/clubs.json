@@ -5585,8 +5585,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/9890",
     "slug": "us-monastir",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 43157290,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/43157290.png",
     "sortitoutsi_logo_local": null,
     "logo_url": null
   },

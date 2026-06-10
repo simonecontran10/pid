@@ -44,17 +44,56 @@ HEADERS = {
 }
 
 
+# Alias manuali per club con nomi MOLTO diversi tra sortitoutsi e clubs.json
+# (es. Internazionale Milano vs Inter Milan, Atalanta Bergamasca Calcio vs
+# Atalanta BC). Mappa post-normalize → post-normalize override.
+ALIAS_MANUAL: dict[str, str] = {
+    "internazionalemilano": "intermilan",
+    "atalantabergamasca": "atalantabc",
+    "asroma": "roma",
+    "asnapoli": "napoli",
+    "torinofc": "torino",
+    "ssclazio": "lazio",
+    "udinesecalcio": "udinese",
+    "bolognafc": "bologna",
+    "veronafc": "hellasverona",
+    "hellasveronafc": "hellasverona",
+    "fcdallas": "dallas",
+}
+
+
 def normalize(s: str) -> str:
-    """Lowercase + strip diacritics + remove punctuation. Per match fuzzy."""
+    """Match key per club. Multi-step per gestire stili italiani con punti:
+      "A.C. Milan", "AC Milan", "Milan FC", "Milan" → tutti → "milan".
+    """
     if not s: return ""
     s = unicodedata.normalize("NFD", s)
     s = "".join(c for c in s if unicodedata.category(c) != "Mn")
     s = s.lower()
-    # Rimuovi prefissi/suffissi club comuni
-    s = re.sub(r"\b(fc|cf|sc|afc|cfc|sfc|ac|acf|ssc|us|uc|aj|olympique|de)\b", "", s)
-    # Rimuovi punteggiatura/spazi
-    s = re.sub(r"[^a-z0-9]+", "", s)
-    return s
+    # Step 1: punteggiatura → spazio.
+    s = re.sub(r"[^a-z0-9]+", " ", s).strip()
+    # Step 1b: rimuovi anni (4 cifre standalone tipo "1898", "2018").
+    # Tipico di "Ascoli Calcio 1898", "Modena F.C. 2018", "Pro Patria 1919".
+    s = re.sub(r"\b\d{4}\b", " ", s)
+    # Step 2: collassa SIGLE (lettere singole consecutive) → "a c" → "ac",
+    # "s s c" → "ssc". Necessario perche' dopo lo step 1 "A.C." diventa
+    # "a c" — diviso — e la regex \b(ac)\b non matcherebbe.
+    parts = s.split()
+    out, buf = [], ""
+    for w in parts:
+        if len(w) == 1 and w.isalpha():
+            buf += w
+        else:
+            if buf: out.append(buf); buf = ""
+            out.append(w)
+    if buf: out.append(buf)
+    s = " ".join(out)
+    # Step 3: rimuovi prefissi/suffissi club comuni (multilingua).
+    s = re.sub(r"\b(fc|cf|sc|afc|cfc|sfc|ac|acf|ssc|us|uc|aj|asc|cd|rc|olympique|de|la|le|club|calcio|football|hotspur|albion|wanderers|rovers|county|town|city|united|athletic|atletic|atletico|atletici|real|de|del|los|las)\b", " ", s)
+    # Step 4: collassa spazi residui + rimuovi tutto cio' che non e' alphanum.
+    s = re.sub(r"\s+", "", s)
+    # Step 5: alias manuali per club con nomi MOLTO diversi (Inter, Atalanta...)
+    return ALIAS_MANUAL.get(s, s)
 
 
 def scrape_page(url: str) -> list[tuple[int, str, str]]:
