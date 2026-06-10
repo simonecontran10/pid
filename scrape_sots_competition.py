@@ -44,20 +44,80 @@ HEADERS = {
 }
 
 
-# Alias manuali per club con nomi MOLTO diversi tra sortitoutsi e clubs.json
-# (es. Internazionale Milano vs Inter Milan, Atalanta Bergamasca Calcio vs
-# Atalanta BC). Mappa post-normalize → post-normalize override.
+# Alias manuali per club con nomi MOLTO diversi tra sortitoutsi e clubs.json.
+# Mappa post-normalize → post-normalize override.
+#
+# CRITICO: la normalize() e' deliberatamente conservativa (NIENTE strip di
+# parole "descrittive" come "real", "atletico", "olympique", "club", "de").
+# Strippare queste portava a FALSI POSITIVI gravissimi:
+#   "Real Madrid" → "madrid" == "Atletico de Madrid" → "madrid"
+# che ha popolato Real Madrid con il sots_id dell'Atletico (1687). Mai piu'.
 ALIAS_MANUAL: dict[str, str] = {
+    # Italia
     "internazionalemilano": "intermilan",
-    "atalantabergamasca": "atalantabc",
-    "asroma": "roma",
-    "asnapoli": "napoli",
+    "atalantabergamascacalcio": "atalantabc",
     "torinofc": "torino",
-    "ssclazio": "lazio",
     "udinesecalcio": "udinese",
     "bolognafc": "bologna",
     "veronafc": "hellasverona",
     "hellasveronafc": "hellasverona",
+    # Spagna
+    "realmadridcf": "realmadrid",
+    "atleticodemadrid": "atleticodemadrid",
+    "atletimadrid": "atleticodemadrid",
+    "amadrid": "atleticodemadrid",
+    "atleticomadrid": "atleticodemadrid",
+    "fcbarcelona": "barcelona",
+    "rcdespanyoldebarcelona": "rcdespanyol",
+    "rcdespanyol": "rcdespanyol",
+    "realbetisbalompie": "realbetis",
+    "realbetis": "realbetisbalompie",
+    "realsociedaddefutbol": "realsociedad",
+    "udlaspalmas": "udlaspalmas",
+    "laspalmas": "udlaspalmas",
+    "rcdmallorca": "rcdmallorca",
+    "rsantander": "racingsantander",
+    "racingsantander": "racingsantander",
+    "rcceltadevigo": "celtadevigo",
+    "celtadevigo": "celta",
+    "celta": "celta",
+    # Germania
+    "fcbayernmunchen": "fcbayernmunich",
+    "fcbayernmunich": "fcbayernmunchen",
+    "borussiamonchengladbach": "borussiamoenchengladbach",
+    "borussiamoenchengladbach": "borussiamonchengladbach",
+    "bayer04leverkusen": "bayerleverkusen",
+    "bayerleverkusen": "bayer04leverkusen",
+    "vflwolfsburg": "vflwolfsburg",
+    "sportclubfreiburg": "scfreiburg",
+    "scfreiburg": "scfreiburg",
+    "1fckoln": "fckoln",
+    "fckoln": "1fckoln",
+    "1fcheidenheim1846": "fcheidenheim",
+    "fcheidenheim": "1fcheidenheim",
+    "1fckaiserslautern": "fckaiserslautern",
+    "fckaiserslautern": "1fckaiserslautern",
+    # Francia
+    "parissaintgermainfc": "parissaintgermain",
+    "olympiquedemarseille": "olympiquemarseille",
+    "olympiquemarseille": "olympiquedemarseille",
+    "olympiquelyonnais": "olympiquelyonnais",
+    "stadereims": "stadedereims",
+    "stadedereims": "stadereims",
+    "stadebrestois29": "stadebrestois",
+    "stadebrestois": "stadebrestois29",
+    "lehavreac": "havreac",
+    "havreac": "lehavreac",
+    "fctoulouse": "toulousefc",
+    "toulousefc": "fctoulouse",
+    # Portogallo
+    "scbraga": "scbraga",
+    "sportingcp": "sportingcp",
+    "futebolclubedoporto": "fcporto",
+    "fcporto": "fcporto",
+    "casapiaac": "casapia",
+    "casapia": "casapiaac",
+    # USA
     "fcdallas": "dallas",
 }
 
@@ -88,8 +148,11 @@ def normalize(s: str) -> str:
             out.append(w)
     if buf: out.append(buf)
     s = " ".join(out)
-    # Step 3: rimuovi prefissi/suffissi club comuni (multilingua).
-    s = re.sub(r"\b(fc|cf|sc|afc|cfc|sfc|ac|acf|ssc|us|uc|aj|asc|cd|rc|olympique|de|la|le|club|calcio|football|hotspur|albion|wanderers|rovers|county|town|city|united|athletic|atletic|atletico|atletici|real|de|del|los|las)\b", " ", s)
+    # Step 3: rimuovi SOLO sigle pure (FC, AC, SC...). DELIBERATAMENTE NIENTE
+    # parole descrittive (real, atletico, olympique, club, de, la, calcio).
+    # Strippare quelle causa falsi positivi gravissimi (Real Madrid →
+    # "madrid" == Atletico de Madrid → "madrid").
+    s = re.sub(r"\b(fc|cf|sc|afc|cfc|sfc|ac|acf|ssc|sf|aj|asc|sv|kv|ks|fk)\b", " ", s)
     # Step 4: collassa spazi residui + rimuovi tutto cio' che non e' alphanum.
     s = re.sub(r"\s+", "", s)
     # Step 5: alias manuali per club con nomi MOLTO diversi (Inter, Atalanta...)
