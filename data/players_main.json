@@ -105487,9 +105487,9 @@
     "roster_club_id": 18487,
     "roster_club_name": "Al-Ahli",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": 13136664,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_13136664.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/13136664/franck-kessié",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/294808.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/13136664.png"
   },
@@ -137756,9 +137756,9 @@
     "roster_club_id": 472,
     "roster_club_name": "UD Las Palmas",
     "added_date": "2026-06-10",
-    "sortitoutsi_person_id": 67295761,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_67295761.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/67295761/mika-mármol",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/617060.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67295761.png"
   },
@@ -137791,10 +137791,44 @@
     "roster_club_id": 826,
     "roster_club_name": "Lens",
     "added_date": "2026-06-10",
-    "sortitoutsi_person_id": 85132406,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_85132406.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/85132406/allan-saint-maximin",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/272642.jpg",
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85132406.png"
+  },
+  {
+    "tm_player_id": 990148,
+    "full_name": "Konstantinos Karetsas",
+    "name_arabic": "Κωνσταντίνος Καρέτσας",
+    "date_of_birth": "2007-11-19",
+    "age": 18,
+    "height_cm": 173,
+    "foot": "left",
+    "position_general": "Midfield",
+    "position_specific": "Attacking Midfield",
+    "position_others": [
+      "Right Winger"
+    ],
+    "place_of_birth": "Genk",
+    "citizenships": [
+      "Greece",
+      "Belgium"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 1184,
+    "current_club_name": "Genk",
+    "shirt_number": 20,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/990148-1742566542.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/990148",
+    "fetched_at": "2026-06-10T14:02:21Z",
+    "roster_club_id": 1184,
+    "roster_club_name": "Genk",
+    "added_date": "2026-06-10",
+    "sortitoutsi_person_id": 2000307251,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000307251.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000307251/konstantinos-karetsas",
+    "photo_local": "photos/players_tm/990148.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000307251.png"
   }
 ]
