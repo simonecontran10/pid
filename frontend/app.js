@@ -4525,8 +4525,14 @@ async function exportGridPDF() {
       const s = state.statsById.get(pid)?.seasons?.["2025"] || {};
       return Object.values({ ...s.club, ...s.national }).reduce((a, x) => a + (x.minutes_played || 0), 0);
     };
-    const footMap = { left: currentLang==="it"?"S":"L", right: currentLang==="it"?"D":"R", both: currentLang==="it"?"E":"B" };
+    // pt77b: piede ora mostrato per esteso e colorato (Destro blu /
+    // Sinistro giallo / Entrambi grigio). footMap dropped — vedi nella
+    // riga giocatore sotto la gestione inline.
     const dateStr = new Date().toLocaleDateString(currentLang==="it"?"it-IT":"en-GB");
+    // pt77b: tronca cognome a 11 char con ellissi per evitare jsPDF che
+    // espande i caratteri quando maxWidth e' troppo stretto (bug
+    // "Dr gu in '02" con cognomi lunghi come "Dragusin").
+    const truncName = (s, max=11) => (s && s.length > max) ? s.slice(0, max-1) + "…" : (s || "");
 
     // ====== CAMPO A TUTTA PAGINA ======
     const pitchX = margin;
@@ -4572,11 +4578,14 @@ async function exportGridPDF() {
     pdf.text(dateStr, pitchX + pitchW - 4, pitchY + 7, { align: "right" });
 
     // ====== POSIZIONI + DEPTH CHART (card sotto ogni posizione) ======
-    // Card più strette per non sovrapporsi tra posizioni vicine.
     // pt77: cardHeaderH = 0 — rimosso header con pos.label + count
     //       (ridondante: il pallino sopra la card mostra gia' il ruolo).
-    const cardW = 42;
-    const playerRowH = 6;
+    // pt77b: card piu' stretta + piu' alta + foto piu' grande.
+    //   cardW 42 → 38 (~10% piu' stretta — meno sovrapposizioni tra
+    //   posizioni vicine come quinti/ali). playerRowH 6 → 8.5 (altezza +40%
+    //   → foto e nome respirano meglio). Foto 4mm → 6mm (+50%).
+    const cardW = 38;
+    const playerRowH = 8.5;
     const cardHeaderH = 0;
 
     // Aree usabili: dal sotto-header al fondo (pitchY + 11 → pitchY + pitchH - 4)
@@ -4648,7 +4657,8 @@ async function exportGridPDF() {
       // pt77: NIENTE header card (pos.label + count ridondanti — il
       // pallino verde sopra mostra gia' il ruolo).
 
-      // Righe giocatori
+      // Righe giocatori (pt77b: layout ricalcolato per nuova playerRowH 8.5
+      // e foto 6mm — proporzioni piu' eleganti, niente piu' troncamento bug).
       for (let i = 0; i < ids.length; i++) {
         const idx = idxByPid.get(ids[i]);
         if (idx == null) continue;
@@ -4658,43 +4668,57 @@ async function exportGridPDF() {
         const club = state.clubsById.get(pl.current_club_id);
         const clubAbbr = prettyClubName(pl.current_club_name || "").replace(/\s(SFC|FC|SC|Club|Riad)\b.*$/, "").slice(0, 12);
         const mins = seasonMins(pl.tm_player_id);
-        const foot = footMap[(pl.foot||"").toLowerCase()] || "—";
+        const footRaw = (pl.foot || "").toLowerCase();
 
         const rowY = cardY + cardHeaderH + i * playerRowH;
-        // Sfondo titolare (sottile verde tenue)
+        // Sfondo titolare (sottile verde tenue) — occupa quasi tutta la riga
         if (isStarter) {
           pdf.setFillColor(28, 50, 38);
           pdf.rect(cardX + 1, rowY + 0.3, cardW - 2, playerRowH - 0.5, "F");
         }
 
-        // pt77: NIENTE numero depth (1, 2, 3, ...) — ridondante con
-        // l'ordine visivo + l'evidenza titolare/riserve gia' fatta dal
-        // background verde tenue. Foto si sposta a sinistra (cardX + 2).
-
-        // Foto cerchio (4mm)
+        // pt77: niente numero depth.
+        // pt77b: foto 6mm centrata verticalmente nella riga (rowY + 1.25),
+        // foto + nome occupano la met sinistra della card.
         const ph = photos[idx];
-        if (ph) { try { pdf.addImage(ph, "PNG", cardX + 2, rowY + 1.2, 4, 4); } catch (e) {} }
+        if (ph) { try { pdf.addImage(ph, "PNG", cardX + 1.5, rowY + 1.25, 6, 6); } catch (e) {} }
 
-        // Nome (cognome) — sposta a sinistra perche' non c'e' piu' il numero
-        const lastName = (pl.full_name || "").split(" ").slice(-1)[0] || pl.full_name;
+        // Nome (cognome '99) — troncato a 11 char con ellissi per evitare
+        // il bug jsPDF che espandeva i caratteri ("Dr gu in '02" → "Dragusin '02").
+        const lastNameRaw = (pl.full_name || "").split(" ").slice(-1)[0] || pl.full_name;
+        const lastName = truncName(lastNameRaw, 11);
         pdf.setFont("helvetica","bold"); pdf.setFontSize(7); pdf.setTextColor(255,255,255);
-        pdf.text(`${lastName} '${yr}`, cardX + 7.5, rowY + 3, { maxWidth: 24 });
+        pdf.text(`${lastName} '${yr}`, cardX + 8.5, rowY + 3.6);
 
-        // Sub: club abbr + foot + min
+        // Sub: club + piede colorato. Spezzo in 2 chiamate text() per
+        // applicare colore distinto al piede:
+        //   Destro → BLU (#60A5FA)  ·  Sinistro → GIALLO (#FACC15)  ·  Entrambi → grigio
         pdf.setFont("helvetica","normal"); pdf.setFontSize(5.5); pdf.setTextColor(170, 180, 175);
-        const subParts = [];
-        if (clubAbbr) subParts.push(clubAbbr);
-        if (foot) subParts.push(foot);
-        pdf.text(subParts.join(" · "), cardX + 7.5, rowY + 5.4, { maxWidth: 26 });
+        let subX = cardX + 8.5;
+        if (clubAbbr) {
+          const clubText = clubAbbr + " · ";
+          pdf.text(clubText, subX, rowY + 6.5);
+          subX += pdf.getTextWidth(clubText);
+        }
+        const isIt = currentLang === "it";
+        let footLabel = "";
+        let footColor = [170, 180, 175];
+        if (footRaw === "right")      { footLabel = isIt ? "Destro"   : "Right"; footColor = [96, 165, 250]; }
+        else if (footRaw === "left")  { footLabel = isIt ? "Sinistro" : "Left";  footColor = [250, 204,  21]; }
+        else if (footRaw === "both")  { footLabel = isIt ? "Entrambi" : "Both";  footColor = [180, 180, 180]; }
+        if (footLabel) {
+          pdf.setTextColor(footColor[0], footColor[1], footColor[2]);
+          pdf.text(footLabel, subX, rowY + 6.5);
+        }
 
-        // Logo club a destra
+        // Logo club a destra (4.5mm)
         const cLogo = clubLogos[idx];
-        if (cLogo) { try { pdf.addImage(cLogo, "PNG", cardX + cardW - 11.5, rowY + 1, 4, 4); } catch (e) {} }
+        if (cLogo) { try { pdf.addImage(cLogo, "PNG", cardX + cardW - 10, rowY + 1.5, 4.5, 4.5); } catch (e) {} }
 
-        // Minuti
+        // Minuti — right-aligned, sotto il logo
         pdf.setFont("helvetica","bold"); pdf.setFontSize(5.8);
         if (mins > 0) pdf.setTextColor(111, 224, 168); else pdf.setTextColor(150,160,155);
-        pdf.text(`${mins}'`, cardX + cardW - 2, rowY + 4.8, { align: "right" });
+        pdf.text(`${mins}'`, cardX + cardW - 2, rowY + 7.2, { align: "right" });
       }
     }
 
