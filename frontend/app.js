@@ -234,6 +234,59 @@ function _photoUrl(localPath) {
   return `${DATA_BASE}/${localPath}${_PHOTO_CACHE_BUST}`;
 }
 
+// pt75 rev11: pulisce nomi club rimuovendo prefissi/suffissi corporate
+// (SSC, ACF, AS, FC, US, ...) e applica alias ("Inter Milan" → "Inter").
+// Speculare a apps/web/src/lib/clubName.ts di PitchPlan. Applicato solo
+// quando esportiamo il JSON convocazione/griglia (export PIDs).
+const _CLUB_NAME_ALIASES = {
+  "inter milan": "Inter",
+  "internazionale": "Inter",
+  "internazionale milano": "Inter",
+  "spezia calcio": "Spezia",
+  "ac milan": "Milan",
+  "a.c. milan": "Milan",
+};
+function _cleanClubName(name) {
+  if (!name) return name;
+  const PREFIXES = [
+    "ACF","ASD","SSC","SSD","AFC","USD","CFC","CFR","CFCR",
+    "AC","AS","FC","CF","US","SS","RC","KV","KAA","KSC","OFK","NK","HNK",
+    "Calcio","Polisportiva","Pol.",
+  ];
+  const SUFFIXES = [
+    "FC","BC","AFC","CFC","CF","AC","SC","Calcio",
+    "1909","1907","1903","1898","1908","1899","1913","1910","1919","1921","1928",
+  ];
+  const _esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  let s = String(name).trim();
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const p of PREFIXES) {
+      const re = new RegExp(`^${_esc(p)}\\s+`, "i");
+      if (re.test(s)) {
+        const stripped = s.replace(re, "");
+        if (stripped.length >= 3 && /[a-z]/i.test(stripped)) { s = stripped; changed = true; }
+      }
+    }
+  }
+  changed = true;
+  while (changed) {
+    changed = false;
+    for (const p of SUFFIXES) {
+      const re = new RegExp(`\\s+${_esc(p)}$`, "i");
+      if (re.test(s)) {
+        const stripped = s.replace(re, "");
+        if (stripped.length >= 3 && /[a-z]/i.test(stripped)) { s = stripped; changed = true; }
+      }
+    }
+  }
+  s = s.trim();
+  const alias = _CLUB_NAME_ALIASES[s.toLowerCase()];
+  if (alias) s = alias;
+  return s;
+}
+
 function birthYear(p) {
   // Estrae l'anno di nascita (es. "1991") dalla data ISO "1991-08-19".
   if (!p) return null;
@@ -2658,7 +2711,8 @@ function renderCallupPanel() {
       const cid = p.current_club_id || p.roster_club_id;
       const club = cid != null ? state.clubsById.get(String(cid)) : null;
       const clubBlock = club ? {
-        name: p.current_club_name || club.name || null,
+        // pt75 rev11: nome club pulito ("SSC Napoli" → "Napoli", "Inter Milan" → "Inter").
+        name: _cleanClubName(p.current_club_name || club.name) || null,
         logo_url: clubLogoAbsolute(club) || null,
         tm_club_id: club.tm_club_id || null,
         league: {
@@ -2667,7 +2721,7 @@ function renderCallupPanel() {
           country_iso: isoOfLeague(club.league_id),
         },
       } : (p.current_club_name ? {
-        name: p.current_club_name,
+        name: _cleanClubName(p.current_club_name),
         logo_url: null,
         tm_club_id: null,
         league: null,
@@ -6898,7 +6952,8 @@ function _buildGridPlayersBlock(assigned) {
     const cid = p.current_club_id || p.roster_club_id;
     const club = cid != null ? state.clubsById.get(String(cid)) : null;
     const clubBlock = club ? {
-      name: p.current_club_name || club.name || null,
+      // pt75 rev11: nome club pulito.
+      name: _cleanClubName(p.current_club_name || club.name) || null,
       logo_url: _clubLogoAbsolute(club) || null,
       tm_club_id: club.tm_club_id || null,
       league: {
@@ -6907,7 +6962,7 @@ function _buildGridPlayersBlock(assigned) {
         country_iso: _isoOfLeague(club.league_id),
       },
     } : (p.current_club_name ? {
-      name: p.current_club_name, logo_url: null, tm_club_id: null, league: null,
+      name: _cleanClubName(p.current_club_name), logo_url: null, tm_club_id: null, league: null,
     } : null);
     return {
       first_name: first, last_name: last, full_name: p.full_name || null,
