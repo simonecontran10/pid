@@ -2699,9 +2699,12 @@ function renderCallupPanel() {
     // pt75: country ISO alpha-2 estratto da league_id (es. "IT1" → "IT",
     // "ES1" → "ES", "PL1" → "PL"). Solo league_id che iniziano con 2 lettere
     // maiuscole; altrimenti null.
+    // pt75 rev22: 4 home nations → bandiera della nazione specifica.
+    const _LEAGUE_PREFIX_TO_ISO = { GB: "ENG", SC: "SCO", WL: "WAL", NI: "NIR" };
     const isoOfLeague = (leagueId) => {
       const m = String(leagueId || "").match(/^([A-Z]{2})\d/);
-      return m ? m[1] : null;
+      if (!m) return null;
+      return _LEAGUE_PREFIX_TO_ISO[m[1]] || m[1];
     };
     const items = callupList.map((p) => {
       const [first, last] = splitName(p.full_name);
@@ -4200,6 +4203,30 @@ async function _gridsExportPptx(buttonEl) {
   document.getElementById("grids-save")?.addEventListener("click", () => {
     const name = (document.getElementById("grids-list-name")?.value || "").trim();
     if (!name) { alert(currentLang==="it"?"Dai un nome alla griglia":"Give the grid a name"); return; }
+    // pt75: se la griglia esiste gia' (sovrascrittura), chiedi conferma per
+    // evitare di perdere modifiche per sbaglio. Mostra anche la differenza
+    // (numero di giocatori cambiati / formation cambiato) come indizio.
+    const existing = state.grids.store.lists[name];
+    if (existing) {
+      const oldAssigned = existing.assigned || {};
+      const newAssigned = state.grids.assigned || {};
+      let changed = 0;
+      const allRoles = new Set([...Object.keys(oldAssigned), ...Object.keys(newAssigned)]);
+      for (const r of allRoles) {
+        const oldIds = JSON.stringify(oldAssigned[r] || []);
+        const newIds = JSON.stringify(newAssigned[r] || []);
+        if (oldIds !== newIds) changed++;
+      }
+      const formChanged = (existing.formation || "") !== (state.grids.formation || "");
+      const parts = [];
+      if (formChanged) parts.push(currentLang==="it" ? `modulo: ${existing.formation || "—"} → ${state.grids.formation || "—"}` : `formation: ${existing.formation || "—"} → ${state.grids.formation || "—"}`);
+      if (changed > 0) parts.push(currentLang==="it" ? `${changed} ruol${changed === 1 ? "o" : "i"} modificat${changed === 1 ? "o" : "i"}` : `${changed} role${changed === 1 ? "" : "s"} changed`);
+      const diff = parts.length ? `\n\n${parts.join(" · ")}` : "";
+      const msg = currentLang === "it"
+        ? `Sovrascrivere la griglia "${name}"?${diff}`
+        : `Overwrite grid "${name}"?${diff}`;
+      if (!confirm(msg)) return;
+    }
     const now = new Date().toISOString();
     const prevMeta = state.grids.store.lists[name]?._meta;
     state.grids.store.lists[name] = {
@@ -4244,11 +4271,26 @@ async function _gridsExportPptx(buttonEl) {
     renderGridsPanel();
   }));
 
-  // Delete a saved grid
+  // Delete a saved grid — pt75: conferma piu' esplicita con riepilogo
+  // (modulo + n. giocatori assegnati) per evitare cancellazioni accidentali.
   panel.querySelectorAll(".grid-delete-btn").forEach(b => b.addEventListener("click", e => {
     e.stopPropagation();
     const name = b.dataset.name;
-    if (!confirm(currentLang==="it"?`Cancellare la griglia "${name}"?`:`Delete grid "${name}"?`)) return;
+    const grid = state.grids?.store?.lists?.[name];
+    let nPlayers = 0;
+    if (grid?.assigned) {
+      for (const ids of Object.values(grid.assigned)) {
+        if (Array.isArray(ids)) nPlayers += ids.length;
+      }
+    }
+    const parts = [];
+    if (grid?.formation) parts.push(grid.formation);
+    if (nPlayers > 0) parts.push(currentLang === "it" ? `${nPlayers} giocator${nPlayers === 1 ? "e" : "i"}` : `${nPlayers} player${nPlayers === 1 ? "" : "s"}`);
+    const info = parts.length ? `\n\n${parts.join(" · ")}` : "";
+    const msg = currentLang === "it"
+      ? `Eliminare la griglia "${name}"?${info}\n\nL'operazione non e' reversibile.`
+      : `Delete grid "${name}"?${info}\n\nThis cannot be undone.`;
+    if (!confirm(msg)) return;
     delete state.grids.store.lists[name];
     if (state.grids.store.currentName === name) state.grids.store.currentName = "";
     _saveGrids();
@@ -6928,9 +6970,15 @@ function _buildGridPlayersBlock(assigned) {
     if (cand) return `${location.origin}/data/${cand}`;
     return c.sortitoutsi_logo_url || c.logo_url || "";
   };
+  // pt75 rev22: per le leghe delle 4 "home nations" (Inghilterra/Scozia/
+  // Galles/Irlanda del Nord) il codice paese ISO 3166-1 e' "GB", ma calcio-
+  // wise vogliamo la bandiera della nazione specifica. PitchPlan riconosce
+  // i codici fittizi ENG/SCO/WAL/NIR e mostra la bandiera giusta.
+  const _LEAGUE_PREFIX_TO_ISO = { GB: "ENG", SC: "SCO", WL: "WAL", NI: "NIR" };
   const _isoOfLeague = (leagueId) => {
     const m = String(leagueId || "").match(/^([A-Z]{2})\d/);
-    return m ? m[1] : null;
+    if (!m) return null;
+    return _LEAGUE_PREFIX_TO_ISO[m[1]] || m[1];
   };
   const _playersById = new Map();
   for (const p of state.players) _playersById.set(String(p.tm_player_id), p);
@@ -7176,7 +7224,22 @@ function duplicateCallupSave(name) {
 }
 
 function deleteGridSave(name) {
-  if (!confirm(`Eliminare la griglia "${name}"?`)) return;
+  // pt75: conferma con riepilogo (modulo + n. giocatori).
+  const grid = state.grids?.store?.lists?.[name];
+  let nPlayers = 0;
+  if (grid?.assigned) {
+    for (const ids of Object.values(grid.assigned)) {
+      if (Array.isArray(ids)) nPlayers += ids.length;
+    }
+  }
+  const parts = [];
+  if (grid?.formation) parts.push(grid.formation);
+  if (nPlayers > 0) parts.push(currentLang === "it" ? `${nPlayers} giocator${nPlayers === 1 ? "e" : "i"}` : `${nPlayers} player${nPlayers === 1 ? "" : "s"}`);
+  const info = parts.length ? `\n\n${parts.join(" · ")}` : "";
+  const msg = currentLang === "it"
+    ? `Eliminare la griglia "${name}"?${info}\n\nL'operazione non e' reversibile.`
+    : `Delete grid "${name}"?${info}\n\nThis cannot be undone.`;
+  if (!confirm(msg)) return;
   delete state.grids?.store?.lists?.[name];
   if (state.grids?.store?.currentName === name) state.grids.store.currentName = "";
   _saveGrids();
