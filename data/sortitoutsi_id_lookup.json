@@ -24174,5 +24174,96 @@
     "match_score": 1.0,
     "matched_via": "cross_club_dob_confirmed",
     "face_local": "photos/players_sots_lookup/85132406.png"
+  },
+  "315858": {
+    "sots_id": 43252073,
+    "name": "Gianluigi Donnarumma",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43252073.png"
+  },
+  "502821": {
+    "sots_id": 43424738,
+    "name": "Riccardo Calafiori",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43424738.png"
+  },
+  "556385": {
+    "sots_id": 43426047,
+    "name": "Destiny Udogie",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43426047.png"
+  },
+  "823486": {
+    "sots_id": 2000023588,
+    "name": "Michael Kayode",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000023588.png"
+  },
+  "397033": {
+    "sots_id": 43298481,
+    "name": "Sandro Tonali",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43298481.png"
+  },
+  "286047": {
+    "sots_id": 43155241,
+    "name": "Guglielmo Vicario",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43155241.png"
+  },
+  "616631": {
+    "sots_id": 43425834,
+    "name": "Matteo Ruggeri",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43425834.png"
+  },
+  "318470": {
+    "sots_id": 58123738,
+    "name": "Matvey Safonov",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/58123738.png"
+  },
+  "463600": {
+    "sots_id": 49048357,
+    "name": "Lucas Chevalier",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/49048357.png"
+  },
+  "1041614": {
+    "sots_id": 2000198858,
+    "name": "Renato Marin",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000198858.png"
+  },
+  "903693": {
+    "sots_id": 2000179713,
+    "name": "Senny Mayulu",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000179713.png"
+  },
+  "502670": {
+    "sots_id": 59130638,
+    "name": "Khvicha Kvaratskhelia",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/59130638.png"
+  },
+  "1053208": {
+    "sots_id": 2000288850,
+    "name": "Quentin Ndjantou",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000288850.png"
   }
 }
