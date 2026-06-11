@@ -2489,7 +2489,7 @@ function renderCallupPanel() {
           <div class="flex gap-1 mt-3 pt-3" style="border-top: 0.5px solid var(--border);">
             <button id="callup-clear" class="flex-1 px-2 py-1.5 text-[11px] rounded-md" style="background: rgba(239,68,68,0.10); color: #EF4444; border: 0.5px solid rgba(239,68,68,0.20);">${currentLang==="it"?"Svuota":"Clear"}</button>
             <button id="callup-export-pdf" class="flex-1 px-2 py-1.5 text-[11px] rounded-md font-semibold" style="background: rgba(96,165,250,0.10); color: var(--info); border: 0.5px solid rgba(96,165,250,0.20);">${currentLang==="it"?"Esporta PDF":"Export PDF"}</button>
-            <button id="callup-export" class="flex-1 px-2 py-1.5 text-[11px] rounded-md" style="background: rgba(255,255,255,0.04); color: var(--text-2); border: 0.5px solid var(--border);">${currentLang==="it"?"Esporta CSV":"Export CSV"}</button>
+            <button id="callup-export" class="flex-1 px-2 py-1.5 text-[11px] rounded-md" style="background: rgba(255,255,255,0.04); color: var(--text-2); border: 0.5px solid var(--border);">${currentLang==="it"?"Esporta JSON":"Export JSON"}</button>
           </div>` : ""}
       </div>
     </div>`;
@@ -2601,17 +2601,12 @@ function renderCallupPanel() {
   });
 
   document.getElementById("callup-export")?.addEventListener("click", () => {
-    // pt56: rich CSV designed for PitchPlan import. Columns chosen so an
-    // import in PitchPlan needs zero manual mapping. Keep English headers
-    // here (PitchPlan recognises both EN and IT column names).
+    // pt75: rich JSON designed for PitchPlan import. Include nested club +
+    // league (with country ISO derived from league_id prefix). Filename =
+    // <nome convocazione>.json (no prefisso "convocazione_").
     const splitName = (full) => {
       // Split into first name and last name, keeping surname particles
       // (de, van, da, di, della, ...) attached to the surname.
-      // Examples:
-      //   "David de Gea"        -> ["David",  "de Gea"]
-      //   "Robin van Persie"    -> ["Robin",  "van Persie"]
-      //   "Henrikh Mkhitaryan"  -> ["Henrikh","Mkhitaryan"]
-      //   "Aaron Ciammaglichella" -> ["Aaron","Ciammaglichella"]
       const PARTICLES = new Set([
         "de","da","di","del","della","dello","dei","degli","delle","dal",
         "dalla","dallo","dai","dagli","dalle","von","van","der","den","ten",
@@ -2621,8 +2616,6 @@ function renderCallupPanel() {
       if (!s) return ["", ""];
       const parts = s.split(/\s+/);
       if (parts.length === 1) return ["", parts[0]];
-      // Walk from the second-to-last token toward the start and grow the
-      // surname as long as we keep finding particles.
       let lastStart = parts.length - 1;
       while (lastStart > 1 && PARTICLES.has(parts[lastStart - 1].toLowerCase())) {
         lastStart--;
@@ -2631,17 +2624,7 @@ function renderCallupPanel() {
       const last = parts.slice(lastStart).join(" ");
       return [first, last];
     };
-    const rows = [[
-      "First Name", "Last Name", "Date of Birth", "Nationality",
-      "Position General", "Position Specific", "Other Positions",
-      "Foot", "Height (cm)", "Shirt Number", "Club",
-      "Photo URL Best", "Photo URL", "TM Profile URL", "TM ID",
-      "Sortitoutsi ID", "Place of Birth"
-    ]];
-    // Resolve the best photo URL by walking PID's own cascade. We use the
-    // same playerPhoto() helper but turn the relative ../data/... path into
-    // an absolute https URL so PitchPlan can fetch it directly. ui-avatars
-    // fallbacks are filtered out (they're not real photos).
+    // pt75: photo URL absolute (resolve relative ../data/ → https).
     const bestPhotoUrl = (p) => {
       const raw = playerPhoto(p);
       if (!raw) return "";
@@ -2649,30 +2632,84 @@ function renderCallupPanel() {
       if (raw.startsWith("../data/")) {
         return `${location.origin}/data/${raw.slice("../data/".length)}`;
       }
-      return raw; // already absolute (Transfermarkt remote)
+      return raw;
     };
-    callupList.forEach(p => {
+    // pt75: logo club absolute URL (stessa cascata di clubBadge ma sempre absolute).
+    const clubLogoAbsolute = (c) => {
+      if (!c) return "";
+      const cand = c.sortitoutsi_logo_local_curated
+        || c.sortitoutsi_logo_local
+        || c.logo_local;
+      if (cand) return `${location.origin}/data/${cand}`;
+      return c.sortitoutsi_logo_url || c.logo_url || "";
+    };
+    // pt75: country ISO alpha-2 estratto da league_id (es. "IT1" → "IT",
+    // "ES1" → "ES", "PL1" → "PL"). Solo league_id che iniziano con 2 lettere
+    // maiuscole; altrimenti null.
+    const isoOfLeague = (leagueId) => {
+      const m = String(leagueId || "").match(/^([A-Z]{2})\d/);
+      return m ? m[1] : null;
+    };
+    const items = callupList.map((p) => {
       const [first, last] = splitName(p.full_name);
       const nat = Array.isArray(p.citizenships) && p.citizenships.length
-        ? p.citizenships[0] : "";
-      const others = Array.isArray(p.position_others)
-        ? p.position_others.join("; ") : "";
-      rows.push([
-        first, last, p.date_of_birth || "", nat,
-        p.position_general || "", p.position_specific || "", others,
-        p.foot || "", p.height_cm || "", p.shirt_number || "",
-        p.current_club_name || "",
-        bestPhotoUrl(p), p.photo_url || "", p.tm_profile_url || "",
-        p.tm_player_id || "", p.sortitoutsi_person_id || "",
-        p.place_of_birth || ""
-      ]);
+        ? p.citizenships[0] : null;
+      const others = Array.isArray(p.position_others) ? p.position_others : [];
+      const cid = p.current_club_id || p.roster_club_id;
+      const club = cid != null ? state.clubsById.get(String(cid)) : null;
+      const clubBlock = club ? {
+        name: p.current_club_name || club.name || null,
+        logo_url: clubLogoAbsolute(club) || null,
+        tm_club_id: club.tm_club_id || null,
+        league: {
+          id: club.league_id || null,
+          name: club.league_name || null,
+          country_iso: isoOfLeague(club.league_id),
+        },
+      } : (p.current_club_name ? {
+        name: p.current_club_name,
+        logo_url: null,
+        tm_club_id: null,
+        league: null,
+      } : null);
+      return {
+        first_name: first,
+        last_name: last,
+        full_name: p.full_name || null,
+        date_of_birth: p.date_of_birth || null,
+        nationality: nat,
+        citizenships: Array.isArray(p.citizenships) ? p.citizenships : [],
+        position_general: p.position_general || null,
+        position_specific: p.position_specific || null,
+        other_positions: others,
+        foot: p.foot || null,
+        height_cm: p.height_cm || null,
+        shirt_number: p.shirt_number || null,
+        photo_url: bestPhotoUrl(p) || null,
+        photo_url_raw: p.photo_url || null,
+        tm_id: p.tm_player_id || null,
+        tm_url: p.tm_profile_url || null,
+        sortitoutsi_id: p.sortitoutsi_person_id || null,
+        place_of_birth: p.place_of_birth || null,
+        club: clubBlock,
+      };
     });
-    const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const callupName = state.callup.store.currentName || "convocazione";
+    const payload = {
+      format: "pitchplan-callup-v1",
+      generated_at: new Date().toISOString(),
+      name: callupName,
+      count: items.length,
+      players: items,
+    };
+    const json = JSON.stringify(payload, null, 2);
+    const blob = new Blob([json], { type: "application/json;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `convocazione_${state.callup.store.currentName||"export"}.csv`;
+    // pt75: filename = "<nome convocazione>.json" (no prefisso).
+    const safe = callupName.replace(/[^a-z0-9 _-]+/gi, "").trim() || "convocazione";
+    a.download = `${safe}.json`;
     a.click();
     URL.revokeObjectURL(url);
   });
@@ -4047,6 +4084,9 @@ async function _gridsExportPptx(buttonEl) {
 
   // Esporta la griglia corrente come JSON (formato pid_grid_save) — pronto
   // per essere importato in PitchPlan come "formazione probabile avversari"
+  // pt75 rev9: include anche l'array `players` con i dati completi (formato
+  // identico alla convocazione, sezione "players") cosi' lo stesso file e'
+  // importabile come "convocazione" in PitchPlan.
   document.getElementById("grids-export-json")?.addEventListener("click", () => {
     const hasPlayers = Object.values(state.grids.assigned || {}).some(ids => Array.isArray(ids) && ids.length > 0);
     if (!hasPlayers) {
@@ -4057,12 +4097,19 @@ async function _gridsExportPptx(buttonEl) {
     // (non state.grids.currentName che non esiste — bug precedente che faceva
     // fallback sempre a "griglia").
     const name = state.grids.store?.currentName || (currentLang==="it"?"griglia":"grid");
+    const playersBlock = _buildGridPlayersBlock(state.grids.assigned || {});
     const payload = {
+      // pt75 rev9: il file e' importabile come griglia (campi assigned/
+      // formation) E come convocazione (campo players). PitchPlan riconosce
+      // l'uno o l'altro in base al campo che trova per primo.
       type: "pid_grid_save",
+      format: "pitchplan-callup-v1",
       version: 1,
       name,
+      count: playersBlock.length,
       formation: state.grids.formation || "4-3-3",
       assigned: state.grids.assigned || {},
+      players: playersBlock,
       _meta: {
         created_by: _currentUsername(),
         created_at: new Date().toISOString(),
@@ -4071,8 +4118,6 @@ async function _gridsExportPptx(buttonEl) {
       exported_at: new Date().toISOString(),
       exported_by: _currentUsername(),
     };
-    // pt68: filename = "<nome>_griglia.json" (es. "Inter_griglia.json").
-    // Sanitizzo solo i caratteri vietati cross-platform.
     const safe = (name || "griglia").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "griglia";
     _downloadJSON(`${safe}_griglia.json`, payload);
   });
@@ -6801,6 +6846,91 @@ function _touchCallupSave(name) {
   saveCallups(state.callup.store);
 }
 
+// pt75 rev9: helper condiviso per costruire l'array `players` (con dati
+// completi tipo convocazione) a partire da un oggetto `assigned` di
+// griglia (role_id → [tm_player_id, ...]). Usato sia dall'export attivo
+// sia da exportGridSave.
+function _buildGridPlayersBlock(assigned) {
+  const _splitName = (full) => {
+    const PARTICLES = new Set(["de","da","di","del","della","dello","dei","degli","delle","dal","dalla","dallo","dai","dagli","dalle","von","van","der","den","ten","ter","la","le","lo","el","al","ibn","bin","ben","mc","mac","du","des"]);
+    const s = String(full || "").trim();
+    if (!s) return ["", ""];
+    const parts = s.split(/\s+/);
+    if (parts.length === 1) return ["", parts[0]];
+    let lastStart = parts.length - 1;
+    while (lastStart > 1 && PARTICLES.has(parts[lastStart - 1].toLowerCase())) lastStart--;
+    return [parts.slice(0, lastStart).join(" "), parts.slice(lastStart).join(" ")];
+  };
+  const _bestPhotoUrl = (p) => {
+    const raw = playerPhoto(p);
+    if (!raw) return "";
+    if (raw.startsWith("https://ui-avatars.com/")) return "";
+    if (raw.startsWith("../data/")) return `${location.origin}/data/${raw.slice("../data/".length)}`;
+    return raw;
+  };
+  const _clubLogoAbsolute = (c) => {
+    if (!c) return "";
+    const cand = c.sortitoutsi_logo_local_curated || c.sortitoutsi_logo_local || c.logo_local;
+    if (cand) return `${location.origin}/data/${cand}`;
+    return c.sortitoutsi_logo_url || c.logo_url || "";
+  };
+  const _isoOfLeague = (leagueId) => {
+    const m = String(leagueId || "").match(/^([A-Z]{2})\d/);
+    return m ? m[1] : null;
+  };
+  const _playersById = new Map();
+  for (const p of state.players) _playersById.set(String(p.tm_player_id), p);
+  const orderedIds = [];
+  const seen = new Set();
+  for (const ids of Object.values(assigned || {})) {
+    if (!Array.isArray(ids)) continue;
+    for (const id of ids) {
+      const k = String(id);
+      if (!seen.has(k)) { seen.add(k); orderedIds.push(k); }
+    }
+  }
+  return orderedIds.map((id) => {
+    const p = _playersById.get(id);
+    if (!p) return null;
+    const [first, last] = _splitName(p.full_name);
+    const nat = Array.isArray(p.citizenships) && p.citizenships.length ? p.citizenships[0] : null;
+    const others = Array.isArray(p.position_others) ? p.position_others : [];
+    const cid = p.current_club_id || p.roster_club_id;
+    const club = cid != null ? state.clubsById.get(String(cid)) : null;
+    const clubBlock = club ? {
+      name: p.current_club_name || club.name || null,
+      logo_url: _clubLogoAbsolute(club) || null,
+      tm_club_id: club.tm_club_id || null,
+      league: {
+        id: club.league_id || null,
+        name: club.league_name || null,
+        country_iso: _isoOfLeague(club.league_id),
+      },
+    } : (p.current_club_name ? {
+      name: p.current_club_name, logo_url: null, tm_club_id: null, league: null,
+    } : null);
+    return {
+      first_name: first, last_name: last, full_name: p.full_name || null,
+      date_of_birth: p.date_of_birth || null,
+      nationality: nat,
+      citizenships: Array.isArray(p.citizenships) ? p.citizenships : [],
+      position_general: p.position_general || null,
+      position_specific: p.position_specific || null,
+      other_positions: others,
+      foot: p.foot || null,
+      height_cm: p.height_cm || null,
+      shirt_number: p.shirt_number || null,
+      photo_url: _bestPhotoUrl(p) || null,
+      photo_url_raw: p.photo_url || null,
+      tm_id: p.tm_player_id || null,
+      tm_url: p.tm_profile_url || null,
+      sortitoutsi_id: p.sortitoutsi_person_id || null,
+      place_of_birth: p.place_of_birth || null,
+      club: clubBlock,
+    };
+  }).filter(Boolean);
+}
+
 // Esporta una griglia o convocazione come download .json
 function _downloadJSON(filename, payload) {
   try {
@@ -6820,18 +6950,24 @@ function _downloadJSON(filename, payload) {
 function exportGridSave(name) {
   const entry = state.grids?.store?.lists?.[name];
   if (!entry) return;
+  // pt75 rev9: include anche `players` con dati completi (vedi
+  // _buildGridPlayersBlock). PitchPlan riconosce sia griglia sia
+  // convocazione da questo file.
+  const playersBlock = _buildGridPlayersBlock(entry.assigned || {});
   const payload = {
     type: "pid_grid_save",
+    format: "pitchplan-callup-v1",
     version: 1,
     name,
+    count: playersBlock.length,
     formation: entry.formation || "4-3-3",
     assigned: entry.assigned || {},
+    players: playersBlock,
     _meta: entry._meta || {},
     exported_at: new Date().toISOString(),
     exported_by: _currentUsername(),
   };
   // pt68: filename = "<nome>_griglia.json" (es. "Inter_griglia.json").
-  // Sanitizzo solo i caratteri vietati nei filename cross-platform.
   const safe = (name || "export").replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "export";
   _downloadJSON(`${safe}_griglia.json`, payload);
 }
