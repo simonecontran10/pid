@@ -59,7 +59,8 @@ COMPETITIONS = {
     },
     "GB1": {
         "name": "English Premier League",
-        "url": "https://sortitoutsi.net/football-manager-2026/competition/12/english-premier-division",
+        # 2026-06-12: fix URL (/12/ era Championship in FM26). Vero EPL: /11/.
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/11/premier-league",
     },
     "L1": {
         "name": "German Bundesliga",
@@ -67,7 +68,8 @@ COMPETITIONS = {
     },
     "FR1": {
         "name": "French Ligue 1",
-        "url": "https://sortitoutsi.net/football-manager-2026/competition/17/ligue-1",
+        # 2026-06-12: fix URL (/17/ era Ligue 2 in FM26). Vero Ligue 1: /16/.
+        "url": "https://sortitoutsi.net/football-manager-2026/competition/16/ligue-1-mcdonalds",
     },
     "IJ1": {
         "name": "Italian Primavera 1",

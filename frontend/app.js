@@ -602,11 +602,22 @@ function applyFilters() {
       (p.current_club_name||"").toLowerCase().includes(ql)
     );
   }
-  if (sort === "age_asc") items.sort((a,b) => (a.age||999) - (b.age||999));
-  else if (sort === "age_desc") items.sort((a,b) => (b.age||0) - (a.age||0));
-  else if (sort === "club") items.sort((a,b) => (a.current_club_name||"").localeCompare(b.current_club_name||""));
-  else if (sort === "goals_desc") items.sort((a,b) => totalGoals2025(b.tm_player_id) - totalGoals2025(a.tm_player_id));
-  else items.sort((a,b) => (a.full_name||"").localeCompare(b.full_name||""));
+  // 2026-06-12: quando un singolo club è filtrato, ordina i giocatori per
+  // RUOLO come primario (POR → DEF → CEN → ATT) e poi per il sort secondario.
+  // Vista club = sguardo per reparto, l'ordine alfabetico non aiuta.
+  const ROLE_ORDER_FILTER = { Goalkeeper: 0, Defender: 1, Midfield: 2, Attack: 3 };
+  const roleKey = (p) => ROLE_ORDER_FILTER[p.position_general] ?? 99;
+  const cmpSecondary =
+    sort === "age_asc"    ? (a,b) => (a.age||999) - (b.age||999) :
+    sort === "age_desc"   ? (a,b) => (b.age||0) - (a.age||0) :
+    sort === "club"       ? (a,b) => (a.current_club_name||"").localeCompare(b.current_club_name||"") :
+    sort === "goals_desc" ? (a,b) => totalGoals2025(b.tm_player_id) - totalGoals2025(a.tm_player_id) :
+                            (a,b) => (a.full_name||"").localeCompare(b.full_name||"");
+  if (club) {
+    items.sort((a,b) => (roleKey(a) - roleKey(b)) || cmpSecondary(a, b));
+  } else {
+    items.sort(cmpSecondary);
+  }
 
   state.filtered = items;
   renderPlayers();

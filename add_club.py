@@ -201,7 +201,12 @@ def main() -> int:
         "slug": slug,
         "league_id": league_id,
         "league_name": (existing_club or {}).get("league_name") or league_id,
-        "club_url": f"https://www.transfermarkt.com/{slug}/startseite/verein/{cid}/saison_id/2025",
+        # 2026-06-12: `kader/.../plus/1` invece di `startseite/...` per ottenere
+        # la "Detailed view" con TUTTI i giocatori della rosa (~25-30) invece
+        # della compact "prima squadra" (~16-22). Senza /plus/1 il workflow
+        # admin importa solo 17 giocatori per club anche se l'utente passa
+        # un URL /kader/.../plus/1 — l'override qui lo scartava.
+        "club_url": f"https://www.transfermarkt.com/{slug}/kader/verein/{cid}/saison_id/2025/plus/1",
         "sortitoutsi_logo_local": f"photos/clubs_sots/{cid}.png",
     }
     if sots_team_id:

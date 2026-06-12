@@ -875,8 +875,8 @@
     "league_id": "PL2",
     "club_url": "https://www.transfermarkt.com/wieczysta-krakow/startseite/verein/30974/saison_id/2025",
     "league_name": "1 Liga",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 2000028546,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000028546.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/30974.png"
   },
   {
@@ -941,8 +941,8 @@
     "league_id": "PL2",
     "club_url": "https://www.transfermarkt.com/pogon-grodzisk-mazowiecki/startseite/verein/30998/saison_id/2025",
     "league_name": "1 Liga",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 96056623,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/96056623.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/30998.png"
   },
   {
@@ -2093,8 +2093,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/11",
     "slug": "fc-arsenal",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 602,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/602.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/11.png",
     "logo_url": null
   },
@@ -3437,8 +3437,8 @@
     "league_name": "LaLiga",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/418",
     "slug": "real-madrid",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1736,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1736.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/418.png",
     "logo_url": null
   },
@@ -3773,8 +3773,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/club/startseite/verein/583",
     "slug": "fc-paris-saint-germain",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 868,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/868.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/583.png",
     "logo_url": null
   },
@@ -6954,8 +6954,8 @@
     "league_name": "FIWC",
     "club_url": "https://www.transfermarkt.com/queens-park-rangers/startseite/verein/1039/saison_id/2025",
     "sortitoutsi_logo_local": "photos/clubs_sots/1039.png",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null
+    "sortitoutsi_team_id": 701,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/701.png"
   },
   {
     "tm_club_id": 472,

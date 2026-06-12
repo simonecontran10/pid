@@ -76,11 +76,18 @@ jobs:
       # foto local (face_*.png). Senza questo dovevamo eseguire i 3 step
       # a mano dopo ogni add_club.
 
-      # Se sots_url e' stato fornito, refresh della rosa SOTS solo per
-      # quel club (--only <tm_club_id>): merge con sots_rosters.json
-      # esistente per non perdere gli altri 437 club cached.
-      - name: SOTS — refresh rosa cluster del nuovo club (se sots_url passato)
-        if: ${{ github.event.inputs.sots_url != '' }}
+      # 2026-06-12: auto-discovery sortitoutsi_team_id se l'utente NON ha
+      # passato sots_url. scrape_sortitoutsi_competition popola i sots_team_id
+      # di TUTTI i club della lega del nuovo club leggendo la pagina
+      # competizione SortItOutSi. Senza questo i club esteri (Arsenal, PSG,
+      # Madrid, etc) restavano senza sortitoutsi_team_id → niente foto.
+      - name: SOTS — auto-discovery sortitoutsi_team_id (sempre)
+        run: |
+          python3 scrape_sortitoutsi_competition.py || true
+
+      # Refresh della rosa SOTS per il nuovo club: merge con sots_rosters.json
+      # esistente per non perdere gli altri club cached.
+      - name: SOTS — refresh rosa cluster del nuovo club
         run: |
           # Estraggo tm_club_id dall'URL TM (es. /verein/732/...)
           URL="${{ github.event.inputs.url }}"
