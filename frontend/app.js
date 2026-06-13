@@ -3458,28 +3458,27 @@ function importCallupToMinutes(callupName) {
   return ids.length;
 }
 
-// Importa una convocazione salvata nella griglia tattica corrente:
-// distribuisce i giocatori per macroruolo nei slot della formazione (round-robin)
-function importCallupToGrid(callupName) {
-  const ids = _callupIds(state.callup?.store?.lists?.[callupName]);
-  if (!ids.length) return 0;
+// Helper condiviso: distribuisce un elenco di player IDs nella formazione
+// corrente raggruppandoli per macroruolo (Goalkeeper, Defender, Midfield, Attack)
+// e popolando i corrispondenti slot in round-robin (titolare = primo arrivato).
+// 2026-06-14: estratto da importCallupToGrid per riusare la logica nel bottone
+// "Ordina" (riordina i player gia' in griglia per ruolo).
+function _distributePlayersIntoGridByRole(playerIds) {
+  if (!playerIds || !playerIds.length) return 0;
   const positions = FORMATIONS[state.grids.formation] || FORMATIONS["4-3-3"];
-  // Raggruppa slot per macroruolo, mantenendo l'ordine dichiarato
   const slotsByRole = { Goalkeeper: [], Defender: [], Midfield: [], Attack: [] };
   positions.forEach(pos => {
     const r = _slotRoleGeneral(pos);
     if (slotsByRole[r]) slotsByRole[r].push(pos.id);
   });
-  // Raggruppa giocatori convocati per macroruolo
   const playersByRole = { Goalkeeper: [], Defender: [], Midfield: [], Attack: [] };
-  for (const pid of ids) {
+  for (const pid of playerIds) {
     const p = state.players.find(x => x.tm_player_id === pid);
     if (!p) continue;
     const r = p.position_general;
     if (playersByRole[r]) playersByRole[r].push(pid);
     else playersByRole["Midfield"].push(pid); // fallback prudente
   }
-  // Reset assegnazioni e popola round-robin (titolari + depth chart)
   state.grids.assigned = {};
   for (const role of Object.keys(playersByRole)) {
     const players = playersByRole[role];
@@ -3492,7 +3491,25 @@ function importCallupToGrid(callupName) {
     });
   }
   _saveGrids();
-  return ids.length;
+  return playerIds.length;
+}
+
+// Importa una convocazione salvata nella griglia tattica corrente:
+// distribuisce i giocatori per macroruolo nei slot della formazione (round-robin)
+function importCallupToGrid(callupName) {
+  const ids = _callupIds(state.callup?.store?.lists?.[callupName]);
+  if (!ids.length) return 0;
+  return _distributePlayersIntoGridByRole(ids);
+}
+
+// 2026-06-14: riordina i giocatori GIA' assegnati nella griglia corrente,
+// redistribuendoli per macroruolo. Utile quando l'utente ha piazzato i
+// player a mano in slot "sbagliati" (es. un attaccante in difesa) e vuole
+// l'auto-arrangement pulito senza dover passare da una convocazione.
+function reorderCurrentGridByRole() {
+  const ids = _gridsAssignedAll();
+  if (!ids.length) return 0;
+  return _distributePlayersIntoGridByRole(ids);
 }
 
 // Persistenza estesa: stato corrente + liste salvate (nominate)
@@ -3723,6 +3740,7 @@ function renderGridsPanel() {
           </select>
           <span class="ml-auto text-xs stat-cell" style="color: var(--text-3);">${positions.filter(p => _gridsAssignedFor(p.id).length > 0).length} / 11</span>
           <button id="grids-to-callup" class="text-[11px] px-2 py-1 rounded-md" style="background: var(--accent-bg); color: var(--accent); border: 0.5px solid rgba(111,224,168,0.30); font-weight: 600;">${t("add_to_callup")}</button>
+          <button id="grids-reorder" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(167,139,250,0.10); color: #A78BFA; border: 0.5px solid rgba(167,139,250,0.30); font-weight: 600;" title="${escapeHtml(t("reorder_by_role_tooltip"))}">${t("reorder_by_role")}</button>
           <button id="grids-export-pdf" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(96,165,250,0.10); color: var(--info); border: 0.5px solid rgba(96,165,250,0.20);">${t("export_pdf")}</button>
           <button id="grids-export-pptx" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(245,158,11,0.10); color: #F59E0B; border: 0.5px solid rgba(245,158,11,0.20);">${t("export_pptx")}</button>
           <button id="grids-export-json" class="text-[11px] px-2 py-1 rounded-md" style="background: rgba(167,139,250,0.10); color: #A78BFA; border: 0.5px solid rgba(167,139,250,0.20);">${currentLang==="it"?"Esporta JSON":"Export JSON"}</button>
@@ -4139,6 +4157,17 @@ async function _gridsExportPptx(buttonEl) {
     state.grids.assigned = {};
     state.grids.selectedSlot = null;
     _saveGrids();
+    renderGridsPanel();
+  });
+  // 2026-06-14: bottone "Ordina" — redistribuisce i player gia' in griglia
+  // per macroruolo (P → GK, DIF → linea difensiva, ecc).
+  document.getElementById("grids-reorder")?.addEventListener("click", () => {
+    const n = reorderCurrentGridByRole();
+    if (!n) {
+      alert(currentLang==="it" ? "Nessun giocatore in griglia da ordinare." : "No players in the grid to reorder.");
+      return;
+    }
+    state.grids.selectedSlot = null;
     renderGridsPanel();
   });
 
