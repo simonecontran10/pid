@@ -5237,9 +5237,9 @@
     "league_name": "Saudi First Division League",
     "club_url": "https://www.transfermarkt.com/al-ula-fc/kader/verein/107818/saison_id/2025/plus/1",
     "slug": "al-ula-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1031640,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1031640.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/107818.png",
     "logo_url": null
   },
   {
@@ -5489,9 +5489,9 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-najma/kader/verein/32328/saison_id/2025/plus/1",
     "slug": "al-najma",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 135425,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/135425.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/32328.png",
     "logo_url": null
   },
   {
