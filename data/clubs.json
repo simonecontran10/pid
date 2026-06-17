@@ -2957,9 +2957,9 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/manchester-city/kader/verein/281/saison_id/2025/plus/1",
     "slug": "manchester-city",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": "photos/clubs_sots/281.png",
+    "sortitoutsi_team_id": 679,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/679.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/679.png",
     "logo_url": null
   },
   {
