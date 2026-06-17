@@ -1,9 +1,12 @@
 # Test outputs locali
 scripts/pptx_generator/test_output/
 
-# Backup files
+# Backup files (pattern .bak* + .bak_*)
 **/*.bak*
 **/*.bak_*
+
+# Backup folders (es. _backup_pre_pt77 creato durante bulk import loghi)
+**/_backup_*
 
 # Cache python
 **/__pycache__/
@@ -18,6 +21,10 @@ venv/
 
 # Raw data scraping
 raw/
+
+# Charts pesanti (HTML statici grandi)
+charts/
+charts_en/
 
 # Documentazione interna (resta nel repo ma non deployata)
 progetto-pid.md
