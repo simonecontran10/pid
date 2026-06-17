@@ -84,7 +84,8 @@
   "functions": {
     "api/main.py": {
       "maxDuration": 60,
-      "memory": 1024
+      "memory": 1024,
+      "excludeFiles": "{data/photos/**,charts/**,charts_en/**,raw/**,frontend/**,Icon/**,**/*.bak*,**/_backup_*/**,scripts/**,scraper/**,venv/**,.venv/**}"
     }
   }
 }
