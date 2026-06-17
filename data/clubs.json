@@ -1805,8 +1805,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-liverpool/kader/verein/31/saison_id/2025/plus/1",
     "slug": "fc-liverpool",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 676,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/676.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/31.png",
     "logo_url": null
   },
@@ -1901,8 +1901,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/rc-strassburg-alsace/kader/verein/667/saison_id/2025/plus/1",
     "slug": "rc-strassburg-alsace",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 872,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/872.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/667.png",
     "logo_url": null
   },
@@ -1961,8 +1961,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/fc-lorient/kader/verein/1158/saison_id/2025/plus/1",
     "slug": "fc-lorient",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 2005,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2005.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1158.png",
     "logo_url": null
   },
@@ -1985,8 +1985,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/afc-bournemouth/kader/verein/989/saison_id/2025/plus/1",
     "slug": "afc-bournemouth",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 600,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/600.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/989.png",
     "logo_url": null
   },
@@ -2057,8 +2057,8 @@
     "league_name": "Jupiler Pro League",
     "club_url": "https://www.transfermarkt.com/rsc-charleroi/kader/verein/172/saison_id/2025/plus/1",
     "slug": "rsc-charleroi",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 263,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/263.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/172.png",
     "logo_url": null
   },
@@ -2093,8 +2093,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-arsenal/kader/verein/11/saison_id/2025/plus/1",
     "slug": "fc-arsenal",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 602,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/602.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/11.png",
     "logo_url": null
   },
@@ -2213,8 +2213,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-everton/kader/verein/29/saison_id/2025/plus/1",
     "slug": "fc-everton",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 650,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/650.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/29.png",
     "logo_url": null
   },
@@ -2237,8 +2237,8 @@
     "league_name": "2. Bundesliga",
     "club_url": "https://www.transfermarkt.com/fc-schalke-04/kader/verein/33/saison_id/2025/plus/1",
     "slug": "fc-schalke-04",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 920,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/920.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/33.png",
     "logo_url": null
   },
@@ -2261,8 +2261,8 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/fenerbahce-istanbul/kader/verein/36/saison_id/2025/plus/1",
     "slug": "fenerbahce-istanbul",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1870,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1870.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/36.png",
     "logo_url": null
   },
@@ -2273,8 +2273,8 @@
     "league_name": "2. Bundesliga",
     "club_url": "https://www.transfermarkt.com/fortuna-dusseldorf/kader/verein/38/saison_id/2025/plus/1",
     "slug": "fortuna-dusseldorf",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 921,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/921.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/38.png",
     "logo_url": null
   },
@@ -2309,8 +2309,8 @@
     "league_name": "2. Bundesliga",
     "club_url": "https://www.transfermarkt.com/hannover-96/kader/verein/42/saison_id/2025/plus/1",
     "slug": "hannover-96",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 927,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/927.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/42.png",
     "logo_url": null
   },
@@ -2333,8 +2333,8 @@
     "league_name": "2. Bundesliga",
     "club_url": "https://www.transfermarkt.com/karlsruher-sc/kader/verein/48/saison_id/2025/plus/1",
     "slug": "karlsruher-sc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 931,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/931.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/48.png",
     "logo_url": null
   },
@@ -2345,8 +2345,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-ahli-dschidda/kader/verein/18487/saison_id/2025/plus/1",
     "slug": "al-ahli-dschidda",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 102850,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/102850.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/18487.png",
     "logo_url": null
   },
@@ -2417,8 +2417,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-suqoor/kader/verein/34911/saison_id/2025/plus/1",
     "slug": "al-suqoor",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 2000326380,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000326380.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/34911.png",
     "logo_url": null
   },
@@ -2453,8 +2453,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-nasr-riad/kader/verein/18544/saison_id/2025/plus/1",
     "slug": "al-nasr-riad",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 102862,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/102862.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/18544.png",
     "logo_url": null
   },
@@ -2525,8 +2525,8 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/galatasaray-istanbul/kader/verein/141/saison_id/2025/plus/1",
     "slug": "galatasaray-istanbul",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1871,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1871.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/141.png",
     "logo_url": null
   },
@@ -2549,8 +2549,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/tottenham-hotspur/kader/verein/148/saison_id/2025/plus/1",
     "slug": "tottenham-hotspur",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 728,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/728.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/148.png",
     "logo_url": null
   },
@@ -2573,8 +2573,8 @@
     "league_name": "J2/J3 100 Year Vision League",
     "club_url": "https://www.transfermarkt.com/albirex-niigata/kader/verein/8344/saison_id/2025/plus/1",
     "slug": "albirex-niigata",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 107280,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/107280.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/8344.png",
     "logo_url": null
   },
@@ -2585,8 +2585,8 @@
     "league_name": "Jupiler Pro League",
     "club_url": "https://www.transfermarkt.com/kaa-gent/kader/verein/157/saison_id/2025/plus/1",
     "slug": "kaa-gent",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 168,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/168.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/157.png",
     "logo_url": null
   },
@@ -2609,8 +2609,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/as-monaco/kader/verein/162/saison_id/2025/plus/1",
     "slug": "as-monaco",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 826,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/826.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/162.png",
     "logo_url": null
   },
@@ -2633,8 +2633,8 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/vancouver-whitecaps-fc/kader/verein/6321/saison_id/2025/plus/1",
     "slug": "vancouver-whitecaps-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 4400014,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/4400014.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/6321.png",
     "logo_url": null
   },
@@ -2681,8 +2681,8 @@
     "league_name": "J1 100 Year Vision League",
     "club_url": "https://www.transfermarkt.com/kashima-antlers/kader/verein/2241/saison_id/2025/plus/1",
     "slug": "kashima-antlers",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1189,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1189.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/2241.png",
     "logo_url": null
   },
@@ -2693,8 +2693,8 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/portland-timbers/kader/verein/4291/saison_id/2025/plus/1",
     "slug": "portland-timbers",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 975489,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/975489.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/4291.png",
     "logo_url": null
   },
@@ -2765,8 +2765,8 @@
     "league_name": "Jupiler Pro League",
     "club_url": "https://www.transfermarkt.com/fc-brugge/kader/verein/2282/saison_id/2025/plus/1",
     "slug": "fc-brugge",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 186,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/186.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/2282.png",
     "logo_url": null
   },
@@ -2777,8 +2777,8 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/feyenoord-rotterdam/kader/verein/234/saison_id/2025/plus/1",
     "slug": "feyenoord-rotterdam",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1013,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1013.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/234.png",
     "logo_url": null
   },
@@ -2789,8 +2789,8 @@
     "league_name": "Keuken Kampioen Divisie",
     "club_url": "https://www.transfermarkt.com/rkc-waalwijk/kader/verein/235/saison_id/2025/plus/1",
     "slug": "rkc-waalwijk",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1032,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1032.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/235.png",
     "logo_url": null
   },
@@ -2825,8 +2825,8 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/kasimpasa/kader/verein/10484/saison_id/2025/plus/1",
     "slug": "kasimpasa",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 130360,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/130360.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/10484.png",
     "logo_url": null
   },
@@ -2849,8 +2849,8 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/konyaspor/kader/verein/2293/saison_id/2025/plus/1",
     "slug": "konyaspor",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 130344,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/130344.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/2293.png",
     "logo_url": null
   },
@@ -2897,8 +2897,8 @@
     "league_name": "Super League 1",
     "club_url": "https://www.transfermarkt.com/panathinaikos-athen/kader/verein/265/saison_id/2025/plus/1",
     "slug": "panathinaikos-athen",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 983,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/983.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/265.png",
     "logo_url": null
   },
@@ -2909,8 +2909,8 @@
     "league_name": "2. Bundesliga",
     "club_url": "https://www.transfermarkt.com/holstein-kiel/kader/verein/269/saison_id/2025/plus/1",
     "slug": "holstein-kiel",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 2245,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2245.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/269.png",
     "logo_url": null
   },
@@ -2933,8 +2933,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/fc-stade-rennes/kader/verein/273/saison_id/2025/plus/1",
     "slug": "fc-stade-rennes",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 884,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/884.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/273.png",
     "logo_url": null
   },
@@ -2957,8 +2957,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/manchester-city/kader/verein/281/saison_id/2025/plus/1",
     "slug": "manchester-city",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 679,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/679.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/679.png",
     "logo_url": null
   },
@@ -2981,8 +2981,8 @@
     "league_name": "Torneo Clausura",
     "club_url": "https://www.transfermarkt.com/club-estudiantes-de-la-plata/kader/verein/288/saison_id/2025/plus/1",
     "slug": "club-estudiantes-de-la-plata",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 85,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/85.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/288.png",
     "logo_url": null
   },
@@ -2993,8 +2993,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/afc-sunderland/kader/verein/289/saison_id/2025/plus/1",
     "slug": "afc-sunderland",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 722,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/722.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/289.png",
     "logo_url": null
   },
@@ -3005,8 +3005,8 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/san-diego-fc/kader/verein/114977/saison_id/2025/plus/1",
     "slug": "san-diego-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 2000259716,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000259716.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/114977.png",
     "logo_url": null
   },
@@ -3017,8 +3017,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/aj-auxerre/kader/verein/290/saison_id/2025/plus/1",
     "slug": "aj-auxerre",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 824,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/824.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/290.png",
     "logo_url": null
   },
@@ -3125,8 +3125,8 @@
     "league_name": "Liga Portugal",
     "club_url": "https://www.transfermarkt.com/sporting-lissabon/kader/verein/336/saison_id/2025/plus/1",
     "slug": "sporting-lissabon",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 55056835,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/55056835.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/336.png",
     "logo_url": null
   },
@@ -3221,8 +3221,8 @@
     "league_name": "Liga MX Apertura",
     "club_url": "https://www.transfermarkt.com/cf-monterrey/kader/verein/2407/saison_id/2025/plus/1",
     "slug": "cf-monterrey",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1257,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1257.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/2407.png",
     "logo_url": null
   },
@@ -3281,8 +3281,8 @@
     "league_name": "Liga Portugal",
     "club_url": "https://www.transfermarkt.com/gil-vicente-fc/kader/verein/2424/saison_id/2025/plus/1",
     "slug": "gil-vicente-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1481,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1481.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/2424.png",
     "logo_url": null
   },
@@ -3329,8 +3329,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/leeds-united/kader/verein/399/saison_id/2025/plus/1",
     "slug": "leeds-united",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 671,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/671.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/399.png",
     "logo_url": null
   },
@@ -3353,8 +3353,8 @@
     "league_name": "Keuken Kampioen Divisie",
     "club_url": "https://www.transfermarkt.com/fc-den-bosch/kader/verein/404/saison_id/2025/plus/1",
     "slug": "fc-den-bosch",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1005,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1005.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/404.png",
     "logo_url": null
   },
@@ -3365,8 +3365,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/aston-villa/kader/verein/405/saison_id/2025/plus/1",
     "slug": "aston-villa",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 603,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/603.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/405.png",
     "logo_url": null
   },
@@ -3389,8 +3389,8 @@
     "league_name": "LaLiga2",
     "club_url": "https://www.transfermarkt.com/fc-granada/kader/verein/16795/saison_id/2025/plus/1",
     "slug": "fc-granada",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1714,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1714.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/16795.png",
     "logo_url": null
   },
@@ -3425,8 +3425,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/ogc-nizza/kader/verein/417/saison_id/2025/plus/1",
     "slug": "ogc-nizza",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 862,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/862.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/417.png",
     "logo_url": null
   },
@@ -3485,9 +3485,9 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/trabzonspor/kader/verein/449/saison_id/2025/plus/1",
     "slug": "trabzonspor",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1879,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1879.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/449.png",
     "logo_url": null
   },
   {
@@ -3545,9 +3545,9 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/nec-nijmegen/kader/verein/467/saison_id/2025/plus/1",
     "slug": "nec-nijmegen",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1025,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1025.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/467.png",
     "logo_url": null
   },
   {
@@ -3569,9 +3569,9 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/sparta-rotterdam/kader/verein/468/saison_id/2025/plus/1",
     "slug": "sparta-rotterdam",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1039,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1039.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/468.png",
     "logo_url": null
   },
   {
@@ -3605,9 +3605,9 @@
     "league_name": "J1 100 Year Vision League",
     "club_url": "https://www.transfermarkt.com/fc-tokyo/kader/verein/6631/saison_id/2025/plus/1",
     "slug": "fc-tokyo",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 107313,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/107313.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/6631.png",
     "logo_url": null
   },
   {
@@ -3725,8 +3725,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/wolverhampton-wanderers/kader/verein/543/saison_id/2025/plus/1",
     "slug": "wolverhampton-wanderers",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 740,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/740.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/543.png",
     "logo_url": null
   },
@@ -3737,9 +3737,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/orlando-city-sc/kader/verein/45604/saison_id/2025/plus/1",
     "slug": "orlando-city-sc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72014193,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72014193.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/45604.png",
     "logo_url": null
   },
   {
@@ -3773,8 +3773,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/fc-paris-saint-germain/kader/verein/583/saison_id/2025/plus/1",
     "slug": "fc-paris-saint-germain",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 868,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/868.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/583.png",
     "logo_url": null
   },
@@ -3821,9 +3821,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/fc-dallas/kader/verein/8816/saison_id/2025/plus/1",
     "slug": "fc-dallas",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1905,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1905.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/8816.png",
     "logo_url": null
   },
   {
@@ -3857,9 +3857,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/los-angeles-fc/kader/verein/51828/saison_id/2025/plus/1",
     "slug": "los-angeles-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72049313,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72049313.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/51828.png",
     "logo_url": null
   },
   {
@@ -3869,8 +3869,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-chelsea/kader/verein/631/saison_id/2025/plus/1",
     "slug": "fc-chelsea",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 630,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/630.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/631.png",
     "logo_url": null
   },
@@ -3893,9 +3893,9 @@
     "league_name": "J1 100 Year Vision League",
     "club_url": "https://www.transfermarkt.com/sanfrecce-hiroshima/kader/verein/2697/saison_id/2025/plus/1",
     "slug": "sanfrecce-hiroshima",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1193,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1193.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/2697.png",
     "logo_url": null
   },
   {
@@ -3989,8 +3989,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/nottingham-forest/kader/verein/703/saison_id/2025/plus/1",
     "slug": "nottingham-forest",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 692,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/692.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/703.png",
     "logo_url": null
   },
@@ -4013,9 +4013,9 @@
     "league_name": "Liga Portugal",
     "club_url": "https://www.transfermarkt.com/fc-porto/kader/verein/720/saison_id/2025/plus/1",
     "slug": "fc-porto",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 55000308,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/55000308.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/720.png",
     "logo_url": null
   },
   {
@@ -4025,9 +4025,9 @@
     "league_name": "Keuken Kampioen Divisie",
     "club_url": "https://www.transfermarkt.com/almere-city-fc/kader/verein/723/saison_id/2025/plus/1",
     "slug": "almere-city-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 850022,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/850022.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/723.png",
     "logo_url": null
   },
   {
@@ -4037,9 +4037,9 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/fc-volendam/kader/verein/724/saison_id/2025/plus/1",
     "slug": "fc-volendam",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1011,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1011.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/724.png",
     "logo_url": null
   },
   {
@@ -4133,8 +4133,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/newcastle-united/kader/verein/762/saison_id/2025/plus/1",
     "slug": "newcastle-united",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 688,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/688.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/762.png",
     "logo_url": null
   },
@@ -4181,9 +4181,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/minnesota-united-fc/kader/verein/56089/saison_id/2025/plus/1",
     "slug": "minnesota-united-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 20030048,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/20030048.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/56089.png",
     "logo_url": null
   },
   {
@@ -4205,9 +4205,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/columbus-crew-sc/kader/verein/813/saison_id/2025/plus/1",
     "slug": "columbus-crew-sc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1904,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1904.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/813.png",
     "logo_url": null
   },
   {
@@ -4241,8 +4241,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/rc-lens/kader/verein/826/saison_id/2025/plus/1",
     "slug": "rc-lens",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 871,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/871.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/826.png",
     "logo_url": null
   },
@@ -4289,8 +4289,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/crystal-palace/kader/verein/873/saison_id/2025/plus/1",
     "slug": "crystal-palace",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 642,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/642.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/873.png",
     "logo_url": null
   },
@@ -4313,9 +4313,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/philadelphia-union/kader/verein/25467/saison_id/2025/plus/1",
     "slug": "philadelphia-union",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72019000,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72019000.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/25467.png",
     "logo_url": null
   },
   {
@@ -4349,9 +4349,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/toronto-fc/kader/verein/11141/saison_id/2025/plus/1",
     "slug": "toronto-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72000789,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72000789.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/11141.png",
     "logo_url": null
   },
   {
@@ -4409,8 +4409,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-fulham/kader/verein/931/saison_id/2025/plus/1",
     "slug": "fc-fulham",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 654,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/654.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/931.png",
     "logo_url": null
   },
@@ -4517,8 +4517,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/manchester-united/kader/verein/985/saison_id/2025/plus/1",
     "slug": "manchester-united",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 680,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/680.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/985.png",
     "logo_url": null
   },
@@ -4553,8 +4553,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/fc-nantes/kader/verein/995/saison_id/2025/plus/1",
     "slug": "fc-nantes",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 846,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/846.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/995.png",
     "logo_url": null
   },
@@ -4649,8 +4649,8 @@
     "league_name": "League One",
     "club_url": "https://www.transfermarkt.com/luton-town/kader/verein/1031/saison_id/2025/plus/1",
     "slug": "luton-town",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 677,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/677.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1031.png",
     "logo_url": null
   },
@@ -4685,9 +4685,9 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/alanyaspor/kader/verein/11282/saison_id/2025/plus/1",
     "slug": "alanyaspor",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 458718,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/458718.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/11282.png",
     "logo_url": null
   },
   {
@@ -4757,8 +4757,8 @@
     "league_name": "League One",
     "club_url": "https://www.transfermarkt.com/peterborough-united/kader/verein/1072/saison_id/2025/plus/1",
     "slug": "peterborough-united",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 696,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/696.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1072.png",
     "logo_url": null
   },
@@ -4805,8 +4805,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/losc-lille/kader/verein/1082/saison_id/2025/plus/1",
     "slug": "losc-lille",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 858,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/858.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1082.png",
     "logo_url": null
   },
@@ -4853,8 +4853,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-hilal-riad/kader/verein/1114/saison_id/2025/plus/1",
     "slug": "al-hilal-riad",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 102852,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/102852.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1114.png",
     "logo_url": null
   },
@@ -4877,8 +4877,8 @@
     "league_name": "Saudi First Division League",
     "club_url": "https://www.transfermarkt.com/abha-club/kader/verein/40039/saison_id/2025/plus/1",
     "slug": "abha-club",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 7920353,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/7920353.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/40039.png",
     "logo_url": null
   },
@@ -4889,8 +4889,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-burnley/kader/verein/1132/saison_id/2025/plus/1",
     "slug": "fc-burnley",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 622,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/622.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1132.png",
     "logo_url": null
   },
@@ -4901,9 +4901,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/new-york-city-fc/kader/verein/40058/saison_id/2025/plus/1",
     "slug": "new-york-city-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72041885,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72041885.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/40058.png",
     "logo_url": null
   },
   {
@@ -4913,8 +4913,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/fc-brentford/kader/verein/1148/saison_id/2025/plus/1",
     "slug": "fc-brentford",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 617,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/617.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1148.png",
     "logo_url": null
   },
@@ -4925,9 +4925,9 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/kayserispor/kader/verein/3205/saison_id/2025/plus/1",
     "slug": "kayserispor",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1875,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1875.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/3205.png",
     "logo_url": null
   },
   {
@@ -4973,8 +4973,8 @@
     "league_name": "League One",
     "club_url": "https://www.transfermarkt.com/rotherham-united/kader/verein/1194/saison_id/2025/plus/1",
     "slug": "rotherham-united",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 704,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/704.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1194.png",
     "logo_url": null
   },
@@ -4997,8 +4997,8 @@
     "league_name": "League One",
     "club_url": "https://www.transfermarkt.com/fc-port-vale/kader/verein/1211/saison_id/2025/plus/1",
     "slug": "fc-port-vale",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 698,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/698.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1211.png",
     "logo_url": null
   },
@@ -5021,8 +5021,8 @@
     "league_name": "Liga Portugal",
     "club_url": "https://www.transfermarkt.com/casa-pia-ac/kader/verein/3268/saison_id/2025/plus/1",
     "slug": "casa-pia-ac",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 2443,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2443.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/3268.png",
     "logo_url": null
   },
@@ -5045,8 +5045,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/brighton-amp-hove-albion/kader/verein/1237/saison_id/2025/plus/1",
     "slug": "brighton-amp-hove-albion",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 618,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/618.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1237.png",
     "logo_url": null
   },
@@ -5069,9 +5069,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/colorado-rapids/kader/verein/1247/saison_id/2025/plus/1",
     "slug": "colorado-rapids",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1903,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1903.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1247.png",
     "logo_url": null
   },
   {
@@ -5093,9 +5093,9 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/pec-zwolle/kader/verein/1269/saison_id/2025/plus/1",
     "slug": "pec-zwolle",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1012,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1012.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1269.png",
     "logo_url": null
   },
   {
@@ -5165,8 +5165,8 @@
     "league_name": "Bundesliga",
     "club_url": "https://www.transfermarkt.com/rasenballsport-leipzig/kader/verein/23826/saison_id/2025/plus/1",
     "slug": "rasenballsport-leipzig",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 91013388,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/91013388.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/23826.png",
     "logo_url": null
   },
@@ -5177,9 +5177,9 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/heracles-almelo/kader/verein/1304/saison_id/2025/plus/1",
     "slug": "heracles-almelo",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1037,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1037.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1304.png",
     "logo_url": null
   },
   {
@@ -5237,8 +5237,8 @@
     "league_name": "Saudi First Division League",
     "club_url": "https://www.transfermarkt.com/al-ula-fc/kader/verein/107818/saison_id/2025/plus/1",
     "slug": "al-ula-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1031640,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1031640.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/107818.png",
     "logo_url": null
   },
@@ -5285,8 +5285,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/sco-angers/kader/verein/1420/saison_id/2025/plus/1",
     "slug": "sco-angers",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 875,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/875.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/1420.png",
     "logo_url": null
   },
@@ -5297,9 +5297,9 @@
     "league_name": "Keuken Kampioen Divisie",
     "club_url": "https://www.transfermarkt.com/vvv-venlo/kader/verein/1426/saison_id/2025/plus/1",
     "slug": "vvv-venlo",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1044,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1044.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1426.png",
     "logo_url": null
   },
   {
@@ -5381,8 +5381,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-qadisiyah-fc/kader/verein/26069/saison_id/2025/plus/1",
     "slug": "al-qadisiyah-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1104149,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1104149.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/26069.png",
     "logo_url": null
   },
@@ -5477,8 +5477,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-ettifaq/kader/verein/7732/saison_id/2025/plus/1",
     "slug": "al-ettifaq",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 135427,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/135427.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/7732.png",
     "logo_url": null
   },
@@ -5549,9 +5549,9 @@
     "league_name": "Liga MX Apertura",
     "club_url": "https://www.transfermarkt.com/cd-cruz-azul/kader/verein/3711/saison_id/2025/plus/1",
     "slug": "cd-cruz-azul",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1254,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1254.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/3711.png",
     "logo_url": null
   },
   {
@@ -5573,9 +5573,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/inter-miami-cf/kader/verein/69261/saison_id/2025/plus/1",
     "slug": "inter-miami-cf",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72052048,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72052048.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/69261.png",
     "logo_url": null
   },
   {
@@ -5609,8 +5609,8 @@
     "league_name": "Ligue 1",
     "club_url": "https://www.transfermarkt.com/paris-fc/kader/verein/10004/saison_id/2025/plus/1",
     "slug": "paris-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 867,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/867.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/10004.png",
     "logo_url": null
   },
@@ -5633,9 +5633,9 @@
     "league_name": "Premijer Liga Bosne i Hercegovine",
     "club_url": "https://www.transfermarkt.com/fk-borac-banja-luka/kader/verein/3900/saison_id/2025/plus/1",
     "slug": "fk-borac-banja-luka",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1104133,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1104133.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/3900.png",
     "logo_url": null
   },
   {
@@ -5657,8 +5657,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-ittihad-dschidda/kader/verein/8023/saison_id/2025/plus/1",
     "slug": "al-ittihad-dschidda",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 106063,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/106063.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/8023.png",
     "logo_url": null
   },
@@ -5729,9 +5729,9 @@
     "league_name": "Challenger Pro League",
     "club_url": "https://www.transfermarkt.com/waasland-beveren/kader/verein/28643/saison_id/2025/plus/1",
     "slug": "waasland-beveren",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 539089,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/539089.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/28643.png",
     "logo_url": null
   },
   {
@@ -5777,9 +5777,9 @@
     "league_name": "Liga MX Apertura",
     "club_url": "https://www.transfermarkt.com/mazatlan-fc/kader/verein/82696/saison_id/2025/plus/1",
     "slug": "mazatlan-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 2000017276,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000017276.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/82696.png",
     "logo_url": null
   },
   {
@@ -5873,9 +5873,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/seattle-sounders-fc/kader/verein/9636/saison_id/2025/plus/1",
     "slug": "seattle-sounders-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72014006,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72014006.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/9636.png",
     "logo_url": null
   },
   {
@@ -5945,9 +5945,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/chicago-fire-fc/kader/verein/432/saison_id/2025/plus/1",
     "slug": "chicago-fire-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 108893,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/108893.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/432.png",
     "logo_url": null
   },
   {
@@ -5957,9 +5957,9 @@
     "league_name": "Jupiler Pro League",
     "club_url": "https://www.transfermarkt.com/fcv-dender-eh/kader/verein/9010/saison_id/2025/plus/1",
     "slug": "fcv-dender-eh",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 199,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/199.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/9010.png",
     "logo_url": null
   },
   {
@@ -6005,9 +6005,9 @@
     "league_name": "Jupiler Pro League",
     "club_url": "https://www.transfermarkt.com/rsc-anderlecht/kader/verein/58/saison_id/2025/plus/1",
     "slug": "rsc-anderlecht",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 256,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/256.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/58.png",
     "logo_url": null
   },
   {
@@ -6017,9 +6017,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/fc-cincinnati/kader/verein/51772/saison_id/2025/plus/1",
     "slug": "fc-cincinnati",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 20041327,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/20041327.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/51772.png",
     "logo_url": null
   },
   {
@@ -6101,9 +6101,9 @@
     "league_name": "Liga MX Apertura",
     "club_url": "https://www.transfermarkt.com/club-leon-fc/kader/verein/4941/saison_id/2025/plus/1",
     "slug": "club-leon-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1259,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1259.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/4941.png",
     "logo_url": null
   },
   {
@@ -6149,8 +6149,8 @@
     "league_name": "League One",
     "club_url": "https://www.transfermarkt.com/fc-barnsley/kader/verein/349/saison_id/2025/plus/1",
     "slug": "fc-barnsley",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 606,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/606.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/349.png",
     "logo_url": null
   },
@@ -6185,8 +6185,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-fayha-fc/kader/verein/50531/saison_id/2025/plus/1",
     "slug": "al-fayha-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 7920365,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/7920365.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/50531.png",
     "logo_url": null
   },
@@ -6209,9 +6209,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/charlotte-fc/kader/verein/78435/saison_id/2025/plus/1",
     "slug": "charlotte-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 2000032491,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/2000032491.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/78435.png",
     "logo_url": null
   },
   {
@@ -6245,9 +6245,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/new-england-revolution/kader/verein/626/saison_id/2025/plus/1",
     "slug": "new-england-revolution",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1909,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1909.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/626.png",
     "logo_url": null
   },
   {
@@ -6269,8 +6269,8 @@
     "league_name": "Premier League",
     "club_url": "https://www.transfermarkt.com/west-ham-united/kader/verein/379/saison_id/2025/plus/1",
     "slug": "west-ham-united",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 735,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/735.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/379.png",
     "logo_url": null
   },
@@ -6305,9 +6305,9 @@
     "league_name": "Super League 1",
     "club_url": "https://www.transfermarkt.com/aek-athen/kader/verein/2441/saison_id/2025/plus/1",
     "slug": "aek-athen",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 967,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/967.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/2441.png",
     "logo_url": null
   },
   {
@@ -6317,9 +6317,9 @@
     "league_name": "Liga MX Apertura",
     "club_url": "https://www.transfermarkt.com/deportivo-toluca/kader/verein/1804/saison_id/2025/plus/1",
     "slug": "deportivo-toluca",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 102355,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/102355.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1804.png",
     "logo_url": null
   },
   {
@@ -6389,9 +6389,9 @@
     "league_name": "Jordanian Pro League",
     "club_url": "https://www.transfermarkt.com/al-faisaly-amman/kader/verein/13592/saison_id/2025/plus/1",
     "slug": "al-faisaly-amman",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 7920362,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/7920362.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/13592.png",
     "logo_url": null
   },
   {
@@ -6413,9 +6413,9 @@
     "league_name": "Süper Lig",
     "club_url": "https://www.transfermarkt.com/samsunspor/kader/verein/152/saison_id/2025/plus/1",
     "slug": "samsunspor",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 1878,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1878.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/152.png",
     "logo_url": null
   },
   {
@@ -6629,9 +6629,9 @@
     "league_name": "Eredivisie",
     "club_url": "https://www.transfermarkt.com/az-alkmaar/kader/verein/1090/saison_id/2025/plus/1",
     "slug": "az-alkmaar",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 991,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/991.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1090.png",
     "logo_url": null
   },
   {
@@ -6689,9 +6689,9 @@
     "league_name": "Qatar Stars League",
     "club_url": "https://www.transfermarkt.com/al-arabi-sc/kader/verein/1230/saison_id/2025/plus/1",
     "slug": "al-arabi-sc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 7920364,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/7920364.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/1230.png",
     "logo_url": null
   },
   {
@@ -6701,9 +6701,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/atlanta-united-fc/kader/verein/51663/saison_id/2025/plus/1",
     "slug": "atlanta-united-fc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 72047296,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/72047296.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/51663.png",
     "logo_url": null
   },
   {
@@ -6785,9 +6785,9 @@
     "league_name": "Major League Soccer",
     "club_url": "https://www.transfermarkt.com/nashville-sc/kader/verein/63966/saison_id/2025/plus/1",
     "slug": "nashville-sc",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
-    "sortitoutsi_logo_local": null,
+    "sortitoutsi_team_id": 20046403,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/20046403.png",
+    "sortitoutsi_logo_local": "photos/clubs_sots/63966.png",
     "logo_url": null
   },
   {
@@ -6833,8 +6833,8 @@
     "league_name": "Saudi Pro League",
     "club_url": "https://www.transfermarkt.com/al-shabab-riad/kader/verein/9840/saison_id/2025/plus/1",
     "slug": "al-shabab-riad",
-    "sortitoutsi_team_id": null,
-    "sortitoutsi_logo_url": null,
+    "sortitoutsi_team_id": 1535,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1535.png",
     "sortitoutsi_logo_local": "photos/clubs_sots/9840.png",
     "logo_url": null
   },
