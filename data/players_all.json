@@ -29888,12 +29888,13 @@
     "fetched_at": "2026-05-05T22:11:06Z",
     "roster_club_id": 8970,
     "roster_club_name": "Frosinone Calcio",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000188011,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
     "photo_local": "photos/players_tm/1051737.jpg",
     "current_club_id_original": 48428,
-    "current_club_name_original": "New arrival"
+    "current_club_name_original": "New arrival",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000188011.png"
   },
   {
     "tm_player_id": 247377,
@@ -39108,10 +39109,11 @@
     "fetched_at": "2026-06-10T07:54:50Z",
     "roster_club_id": 8970,
     "roster_club_name": "Frosinone Calcio",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000184263,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/927905.jpg"
+    "photo_local": "photos/players_tm/927905.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000184263.png"
   },
   {
     "tm_player_id": 382567,
@@ -68066,10 +68068,11 @@
     "fetched_at": "2026-05-06T14:08:26Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 31040477,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/634145.png"
+    "photo_local": "photos/players_tm/634145.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/31040477.png"
   },
   {
     "tm_player_id": 469695,
@@ -68201,10 +68204,11 @@
     "fetched_at": "2026-05-06T14:08:43Z",
     "roster_club_id": 6110,
     "roster_club_name": "Korona Kielce",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 67144727,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/152776.png"
+    "photo_local": "photos/players_tm/152776.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67144727.png"
   },
   {
     "tm_player_id": 453156,
@@ -74023,10 +74027,11 @@
     "fetched_at": "2026-05-06T14:22:14Z",
     "roster_club_id": 15906,
     "roster_club_name": "Nieciecza",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 67262228,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/606570.jpg"
+    "photo_local": "photos/players_tm/606570.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67262228.png"
   },
   {
     "tm_player_id": 847436,
@@ -80248,10 +80253,11 @@
     "fetched_at": "2026-05-06T14:36:19Z",
     "roster_club_id": 9510,
     "roster_club_name": "Stal Rzeszow",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000444481,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1268625.png"
+    "photo_local": "photos/players_tm/1268625.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000444481.png"
   },
   {
     "tm_player_id": 1299576,
@@ -87732,10 +87738,11 @@
     "fetched_at": "2026-05-06T14:53:17Z",
     "roster_club_id": 1750,
     "roster_club_name": "GKS Tychy",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000182173,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/884808.jpg"
+    "photo_local": "photos/players_tm/884808.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000182173.png"
   },
   {
     "tm_player_id": 617431,
@@ -96654,10 +96661,11 @@
     "roster_club_id": 1114,
     "roster_club_name": "Al-Hilal",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 12029963,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/207834.jpg"
+    "photo_local": "photos/players_tm/207834.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/12029963.png"
   },
   {
     "tm_player_id": 230784,
@@ -96722,10 +96730,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 55061470,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/231572.jpg"
+    "photo_local": "photos/players_tm/231572.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/55061470.png"
   },
   {
     "tm_player_id": 241641,
@@ -97640,10 +97649,11 @@
     "roster_club_id": 18544,
     "roster_club_name": "Al-Nassr",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 735216,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/8198.jpg"
+    "photo_local": "photos/players_tm/8198.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/735216.png"
   },
   {
     "tm_player_id": 881506,
@@ -98296,10 +98306,11 @@
     "fetched_at": "2026-06-11T20:48:21Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 67228634,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/398073.jpg"
+    "photo_local": "photos/players_tm/398073.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67228634.png"
   },
   {
     "tm_player_id": 949929,
@@ -98356,10 +98367,11 @@
     "roster_club_id": 10484,
     "roster_club_name": "Kasimpasa",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000219151,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1071742.jpg"
+    "photo_local": "photos/players_tm/1071742.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000219151.png"
   },
   {
     "tm_player_id": 748443,
@@ -98612,10 +98624,11 @@
     "roster_club_id": 1304,
     "roster_club_name": "Heracles Almelo",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 91145128,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/265625.png"
+    "photo_local": "photos/players_tm/265625.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/91145128.png"
   },
   {
     "tm_player_id": 400960,
@@ -100000,10 +100013,11 @@
     "roster_club_id": 234,
     "roster_club_name": "Feyenoord",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 73201859,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/917911.jpg"
+    "photo_local": "photos/players_tm/917911.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/73201859.png"
   },
   {
     "tm_player_id": 46413,
@@ -100666,10 +100680,11 @@
     "roster_club_id": 234,
     "roster_club_name": "Feyenoord",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 45111868,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/589128.jpg"
+    "photo_local": "photos/players_tm/589128.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45111868.png"
   },
   {
     "tm_player_id": 735815,
@@ -101356,10 +101371,11 @@
     "fetched_at": "2026-06-11T20:49:01Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 49056282,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/708265.jpg"
+    "photo_local": "photos/players_tm/708265.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49056282.png"
   },
   {
     "tm_player_id": 314678,
@@ -101425,10 +101441,11 @@
     "roster_club_id": 724,
     "roster_club_name": "FC Volendam",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37041086,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/232219.jpg"
+    "photo_local": "photos/players_tm/232219.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37041086.png"
   },
   {
     "tm_player_id": 236168,
@@ -101455,10 +101472,11 @@
     "roster_club_id": 2282,
     "roster_club_name": "Club Brugge",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 18059927,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/236168.jpg"
+    "photo_local": "photos/players_tm/236168.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18059927.png"
   },
   {
     "tm_player_id": 451747,
@@ -102341,10 +102359,11 @@
     "roster_club_id": 449,
     "roster_club_name": "Trabzonspor",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000381116,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1279526.png"
+    "photo_local": "photos/players_tm/1279526.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000381116.png"
   },
   {
     "tm_player_id": 250490,
@@ -102441,10 +102460,11 @@
     "roster_club_id": 26069,
     "roster_club_name": "Al-Qadsiah",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000253243,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1119447.png"
+    "photo_local": "photos/players_tm/1119447.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000253243.png"
   },
   {
     "tm_player_id": 532096,
@@ -102472,10 +102492,11 @@
     "roster_club_id": 114977,
     "roster_club_name": "San Diego",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 83228364,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/532096.jpg"
+    "photo_local": "photos/players_tm/532096.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/83228364.png"
   },
   {
     "tm_player_id": 806793,
@@ -102968,10 +102989,11 @@
     "roster_club_id": 25467,
     "roster_club_name": "Philadelphia",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000121593,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/628834.jpg"
+    "photo_local": "photos/players_tm/628834.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000121593.png"
   },
   {
     "tm_player_id": 546543,
@@ -103000,10 +103022,11 @@
     "roster_club_id": 1114,
     "roster_club_name": "Al-Hilal",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 78090138,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/546543.jpg"
+    "photo_local": "photos/players_tm/546543.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/78090138.png"
   },
   {
     "tm_player_id": 452483,
@@ -103225,10 +103248,11 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 76023027,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/341429.png"
+    "photo_local": "photos/players_tm/341429.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/76023027.png"
   },
   {
     "tm_player_id": 344695,
@@ -103458,10 +103482,11 @@
     "roster_club_id": 11141,
     "roster_club_name": "Toronto",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 82070082,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/354763.jpg"
+    "photo_local": "photos/players_tm/354763.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/82070082.png"
   },
   {
     "tm_player_id": 914562,
@@ -103491,10 +103516,11 @@
     "fetched_at": "2026-06-11T20:49:09Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000115202,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/914562.jpg"
+    "photo_local": "photos/players_tm/914562.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000115202.png"
   },
   {
     "tm_player_id": 708989,
@@ -103524,10 +103550,11 @@
     "roster_club_id": 467,
     "roster_club_name": "NEC Nijmegen",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000022831,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/708989.png"
+    "photo_local": "photos/players_tm/708989.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000022831.png"
   },
   {
     "tm_player_id": 655006,
@@ -104116,10 +104143,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 55057659,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/238223.jpg"
+    "photo_local": "photos/players_tm/238223.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/55057659.png"
   },
   {
     "tm_player_id": 28396,
@@ -105110,10 +105138,11 @@
     "roster_club_id": 265,
     "roster_club_name": "Panathinaikos",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 78095389,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/676318.png"
+    "photo_local": "photos/players_tm/676318.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/78095389.png"
   },
   {
     "tm_player_id": 377268,
@@ -105302,10 +105331,11 @@
     "roster_club_id": 288,
     "roster_club_name": "Estudiantes LP",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 78001113,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/58088.png"
+    "photo_local": "photos/players_tm/58088.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/78001113.png"
   },
   {
     "tm_player_id": 398184,
@@ -105367,10 +105397,11 @@
     "roster_club_id": 4291,
     "roster_club_name": "Portland",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 88031637,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/724809.jpg"
+    "photo_local": "photos/players_tm/724809.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/88031637.png"
   },
   {
     "tm_player_id": 631922,
@@ -106258,10 +106289,11 @@
     "roster_club_id": 235,
     "roster_club_name": "RKC Waalwijk",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37060620,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/393241.jpg"
+    "photo_local": "photos/players_tm/393241.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37060620.png"
   },
   {
     "tm_player_id": 225122,
@@ -106351,10 +106383,11 @@
     "fetched_at": "2026-06-11T20:49:21Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 83209468,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/550550.jpg"
+    "photo_local": "photos/players_tm/550550.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/83209468.png"
   },
   {
     "tm_player_id": 402733,
@@ -106699,10 +106732,11 @@
     "roster_club_id": 2282,
     "roster_club_name": "Club Brugge",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 93060362,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/320440.jpg"
+    "photo_local": "photos/players_tm/320440.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/93060362.png"
   },
   {
     "tm_player_id": 936981,
@@ -106829,10 +106863,11 @@
     "roster_club_id": 2282,
     "roster_club_name": "Club Brugge",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 18051194,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/137576.jpg"
+    "photo_local": "photos/players_tm/137576.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18051194.png"
   },
   {
     "tm_player_id": 203123,
@@ -107153,10 +107188,11 @@
     "roster_club_id": 51828,
     "roster_club_name": "LAFC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 92020288,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/91845.jpg"
+    "photo_local": "photos/players_tm/91845.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/92020288.png"
   },
   {
     "tm_player_id": 560593,
@@ -107579,10 +107615,11 @@
     "roster_club_id": 234,
     "roster_club_name": "Feyenoord",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 66034886,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/365394.jpg"
+    "photo_local": "photos/players_tm/365394.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/66034886.png"
   },
   {
     "tm_player_id": 255508,
@@ -107876,10 +107913,11 @@
     "roster_club_id": 7732,
     "roster_club_name": "Al-Ettifaq",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 29091029,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/363223.jpg"
+    "photo_local": "photos/players_tm/363223.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29091029.png"
   },
   {
     "tm_player_id": 192557,
@@ -108109,10 +108147,11 @@
     "roster_club_id": 56089,
     "roster_club_name": "Minnesota",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 76002390,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/88103.jpg"
+    "photo_local": "photos/players_tm/88103.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/76002390.png"
   },
   {
     "tm_player_id": 518505,
@@ -108211,10 +108250,11 @@
     "roster_club_id": 1269,
     "roster_club_name": "PEC Zwolle",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37041867,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/272930.jpg"
+    "photo_local": "photos/players_tm/272930.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37041867.png"
   },
   {
     "tm_player_id": 750903,
@@ -108279,10 +108319,11 @@
     "roster_club_id": 8344,
     "roster_club_name": "Albirex Niigata",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 15016694,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/185175.jpg"
+    "photo_local": "photos/players_tm/185175.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/15016694.png"
   },
   {
     "tm_player_id": 344864,
@@ -108412,10 +108453,11 @@
     "roster_club_id": 28643,
     "roster_club_name": "SK Beveren",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37070212,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/538958.png"
+    "photo_local": "photos/players_tm/538958.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37070212.png"
   },
   {
     "tm_player_id": 262980,
@@ -108976,10 +109018,11 @@
     "roster_club_id": 18544,
     "roster_club_name": "Al-Nassr",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 83169822,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/462250.jpg"
+    "photo_local": "photos/players_tm/462250.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/83169822.png"
   },
   {
     "tm_player_id": 670681,
@@ -109007,10 +109050,11 @@
     "fetched_at": "2026-06-11T20:48:32Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000030130,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/670681.jpg"
+    "photo_local": "photos/players_tm/670681.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000030130.png"
   },
   {
     "tm_player_id": 623965,
@@ -109106,10 +109150,11 @@
     "roster_club_id": 2282,
     "roster_club_name": "Club Brugge",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000108398,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/981196.jpg"
+    "photo_local": "photos/players_tm/981196.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000108398.png"
   },
   {
     "tm_player_id": 345700,
@@ -109171,10 +109216,11 @@
     "roster_club_id": 2282,
     "roster_club_name": "Club Brugge",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000033033,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/893661.jpg"
+    "photo_local": "photos/players_tm/893661.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000033033.png"
   },
   {
     "tm_player_id": 927353,
@@ -109472,10 +109518,11 @@
     "roster_club_id": 234,
     "roster_club_name": "Feyenoord",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000015266,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/855731.jpg"
+    "photo_local": "photos/players_tm/855731.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000015266.png"
   },
   {
     "tm_player_id": 598145,
@@ -109696,10 +109743,11 @@
     "roster_club_id": 13,
     "roster_club_name": "Atlético",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 78060464,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/250845.jpg"
+    "photo_local": "photos/players_tm/250845.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/78060464.png"
   },
   {
     "tm_player_id": 249994,
@@ -109792,10 +109840,11 @@
     "roster_club_id": 3205,
     "roster_club_name": "Kayserispor",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37044524,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/207006.png"
+    "photo_local": "photos/players_tm/207006.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37044524.png"
   },
   {
     "tm_player_id": 161056,
@@ -110358,10 +110407,11 @@
     "roster_club_id": 724,
     "roster_club_name": "FC Volendam",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37046963,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/348863.jpg"
+    "photo_local": "photos/players_tm/348863.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37046963.png"
   },
   {
     "tm_player_id": 848856,
@@ -110491,10 +110541,11 @@
     "roster_club_id": 40039,
     "roster_club_name": "Abha",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 216444,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/328455.png"
+    "photo_local": "photos/players_tm/328455.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/216444.png"
   },
   {
     "tm_player_id": 309400,
@@ -110557,10 +110608,11 @@
     "roster_club_id": 40058,
     "roster_club_name": "New York City",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 15085280,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/691326.jpg"
+    "photo_local": "photos/players_tm/691326.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/15085280.png"
   },
   {
     "tm_player_id": 643574,
@@ -110620,10 +110672,11 @@
     "fetched_at": "2026-06-11T20:48:48Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 67260506,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/557149.jpg"
+    "photo_local": "photos/players_tm/557149.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67260506.png"
   },
   {
     "tm_player_id": 1061046,
@@ -110712,10 +110765,11 @@
     "roster_club_id": 2697,
     "roster_club_name": "Sanf. Hiroshima",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 45112057,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/415521.jpg"
+    "photo_local": "photos/players_tm/415521.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45112057.png"
   },
   {
     "tm_player_id": 405397,
@@ -111074,10 +111128,11 @@
     "roster_club_id": 404,
     "roster_club_name": "FC Den Bosch",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37071912,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/433933.jpg"
+    "photo_local": "photos/players_tm/433933.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37071912.png"
   },
   {
     "tm_player_id": 544586,
@@ -111361,10 +111416,11 @@
     "roster_club_id": 467,
     "roster_club_name": "NEC Nijmegen",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 45100936,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/351567.png"
+    "photo_local": "photos/players_tm/351567.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45100936.png"
   },
   {
     "tm_player_id": 223967,
@@ -111556,10 +111612,11 @@
     "roster_club_id": 2497,
     "roster_club_name": "Real Oviedo",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 59130428,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/538006.png"
+    "photo_local": "photos/players_tm/538006.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/59130428.png"
   },
   {
     "tm_player_id": 342229,
@@ -112021,10 +112078,11 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 91138280,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/192565.jpg"
+    "photo_local": "photos/players_tm/192565.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/91138280.png"
   },
   {
     "tm_player_id": 552467,
@@ -112151,10 +112209,11 @@
     "roster_club_id": 69261,
     "roster_club_name": "Miami",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 7458500,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/28003.jpg"
+    "photo_local": "photos/players_tm/28003.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/7458500.png"
   },
   {
     "tm_player_id": 164915,
@@ -112316,10 +112375,11 @@
     "roster_club_id": 8816,
     "roster_club_name": "Dallas",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 27161076,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/646108.jpg"
+    "photo_local": "photos/players_tm/646108.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/27161076.png"
   },
   {
     "tm_player_id": 539798,
@@ -112482,10 +112542,11 @@
     "fetched_at": "2026-06-11T20:48:17Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 67197145,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/281963.jpg"
+    "photo_local": "photos/players_tm/281963.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67197145.png"
   },
   {
     "tm_player_id": 1279984,
@@ -112514,10 +112575,11 @@
     "roster_club_id": 1247,
     "roster_club_name": "Colorado",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000263936,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1279984.jpg"
+    "photo_local": "photos/players_tm/1279984.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000263936.png"
   },
   {
     "tm_player_id": 444523,
@@ -113139,10 +113201,11 @@
     "roster_club_id": 45604,
     "roster_club_name": "Orlando",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 92097178,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/395928.jpg"
+    "photo_local": "photos/players_tm/395928.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/92097178.png"
   },
   {
     "tm_player_id": 282411,
@@ -113274,10 +113337,11 @@
     "fetched_at": "2026-06-11T20:48:01Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 19163495,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/181767.jpg"
+    "photo_local": "photos/players_tm/181767.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/19163495.png"
   },
   {
     "tm_player_id": 357003,
@@ -114065,10 +114129,11 @@
     "roster_club_id": 11282,
     "roster_club_name": "Alanyaspor",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 13173388,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/423678.jpg"
+    "photo_local": "photos/players_tm/423678.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/13173388.png"
   },
   {
     "tm_player_id": 81723,
@@ -114098,10 +114163,11 @@
     "roster_club_id": 56089,
     "roster_club_name": "Minnesota",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 88000990,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/81723.jpg"
+    "photo_local": "photos/players_tm/81723.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/88000990.png"
   },
   {
     "tm_player_id": 120205,
@@ -114517,10 +114583,11 @@
     "roster_club_id": 172,
     "roster_club_name": "R Charleroi SC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000108580,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/911985.jpg"
+    "photo_local": "photos/players_tm/911985.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000108580.png"
   },
   {
     "tm_player_id": 742770,
@@ -116172,10 +116239,11 @@
     "fetched_at": "2026-06-11T20:48:12Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 83261910,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/616341.jpg"
+    "photo_local": "photos/players_tm/616341.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/83261910.png"
   },
   {
     "tm_player_id": 55089,
@@ -116364,10 +116432,11 @@
     "fetched_at": "2026-06-11T20:49:17Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 85140178,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/288230.jpg"
+    "photo_local": "photos/players_tm/288230.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85140178.png"
   },
   {
     "tm_player_id": 974982,
@@ -116426,10 +116495,11 @@
     "roster_club_id": 172,
     "roster_club_name": "R Charleroi SC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 12078200,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/624913.jpg"
+    "photo_local": "photos/players_tm/624913.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/12078200.png"
   },
   {
     "tm_player_id": 82873,
@@ -116909,10 +116979,11 @@
     "roster_club_id": 8816,
     "roster_club_name": "Dallas",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 24053167,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/387110.jpg"
+    "photo_local": "photos/players_tm/387110.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/24053167.png"
   },
   {
     "tm_player_id": 430824,
@@ -117307,10 +117378,11 @@
     "roster_club_id": 6321,
     "roster_club_name": "Vancouver",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000476111,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1273985.jpg"
+    "photo_local": "photos/players_tm/1273985.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000476111.png"
   },
   {
     "tm_player_id": 1012564,
@@ -117603,10 +117675,11 @@
     "roster_club_id": 2293,
     "roster_club_name": "Konyaspor",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37041762,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/216443.png"
+    "photo_local": "photos/players_tm/216443.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37041762.png"
   },
   {
     "tm_player_id": 358504,
@@ -117671,10 +117744,11 @@
     "roster_club_id": 18487,
     "roster_club_name": "Al-Ahli",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 85078058,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/171424.jpg"
+    "photo_local": "photos/players_tm/171424.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85078058.png"
   },
   {
     "tm_player_id": 166158,
@@ -117868,10 +117942,11 @@
     "roster_club_id": 69261,
     "roster_club_name": "Miami",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 14048343,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/255901.jpg"
+    "photo_local": "photos/players_tm/255901.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/14048343.png"
   },
   {
     "tm_player_id": 606752,
@@ -117933,10 +118008,11 @@
     "roster_club_id": 18487,
     "roster_club_name": "Al-Ahli",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 19337893,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/524481.jpg"
+    "photo_local": "photos/players_tm/524481.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/19337893.png"
   },
   {
     "tm_player_id": 346853,
@@ -118034,10 +118110,11 @@
     "roster_club_id": 235,
     "roster_club_name": "RKC Waalwijk",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37059541,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/401029.jpg"
+    "photo_local": "photos/players_tm/401029.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37059541.png"
   },
   {
     "tm_player_id": 447995,
@@ -118100,10 +118177,11 @@
     "roster_club_id": 1114,
     "roster_club_name": "Al-Hilal",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 55070307,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/225161.jpg"
+    "photo_local": "photos/players_tm/225161.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/55070307.png"
   },
   {
     "tm_player_id": 536520,
@@ -118134,10 +118212,11 @@
     "roster_club_id": 723,
     "roster_club_name": "Almere City",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 49039275,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/536520.jpg"
+    "photo_local": "photos/players_tm/536520.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/49039275.png"
   },
   {
     "tm_player_id": 345886,
@@ -118301,10 +118380,11 @@
     "roster_club_id": 1269,
     "roster_club_name": "PEC Zwolle",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37047951,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/203357.jpg"
+    "photo_local": "photos/players_tm/203357.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37047951.png"
   },
   {
     "tm_player_id": 295381,
@@ -118566,10 +118646,11 @@
     "roster_club_id": 931,
     "roster_club_name": "Fulham",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 53101282,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/333014.jpg"
+    "photo_local": "photos/players_tm/333014.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/53101282.png"
   },
   {
     "tm_player_id": 549378,
@@ -118690,10 +118771,11 @@
     "roster_club_id": 2407,
     "roster_club_name": "Monterrey",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 78067540,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/320739.jpg"
+    "photo_local": "photos/players_tm/320739.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/78067540.png"
   },
   {
     "tm_player_id": 350357,
@@ -119010,10 +119092,11 @@
     "roster_club_id": 6631,
     "roster_club_name": "FC Tokyo",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 66000930,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/92076.jpg"
+    "photo_local": "photos/players_tm/92076.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/66000930.png"
   },
   {
     "tm_player_id": 282689,
@@ -119078,10 +119161,11 @@
     "roster_club_id": 1269,
     "roster_club_name": "PEC Zwolle",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37058054,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/315211.jpg"
+    "photo_local": "photos/players_tm/315211.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37058054.png"
   },
   {
     "tm_player_id": 307870,
@@ -119476,10 +119560,11 @@
     "roster_club_id": 813,
     "roster_club_name": "Columbus",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 85144322,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/203517.jpg"
+    "photo_local": "photos/players_tm/203517.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85144322.png"
   },
   {
     "tm_player_id": 384568,
@@ -119608,10 +119693,11 @@
     "roster_club_id": 2241,
     "roster_club_name": "Kashima Antlers",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 66044498,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/645847.jpg"
+    "photo_local": "photos/players_tm/645847.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/66044498.png"
   },
   {
     "tm_player_id": 639027,
@@ -119941,10 +120027,11 @@
     "roster_club_id": 1114,
     "roster_club_name": "Al-Hilal",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 67211695,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/339808.jpg"
+    "photo_local": "photos/players_tm/339808.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/67211695.png"
   },
   {
     "tm_player_id": 576028,
@@ -120200,10 +120287,11 @@
     "roster_club_id": 2241,
     "roster_club_name": "Kashima Antlers",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000088692,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/683271.jpg"
+    "photo_local": "photos/players_tm/683271.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000088692.png"
   },
   {
     "tm_player_id": 390814,
@@ -120231,10 +120319,11 @@
     "roster_club_id": 1426,
     "roster_club_name": "VVV-Venlo",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37061236,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/390814.jpg"
+    "photo_local": "photos/players_tm/390814.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37061236.png"
   },
   {
     "tm_player_id": 598791,
@@ -120263,10 +120352,11 @@
     "roster_club_id": 234,
     "roster_club_name": "Feyenoord",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 45111131,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/598791.jpg"
+    "photo_local": "photos/players_tm/598791.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45111131.png"
   },
   {
     "tm_player_id": 1007720,
@@ -120593,10 +120683,11 @@
     "fetched_at": "2026-06-11T20:48:26Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 83174762,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/487469.jpg"
+    "photo_local": "photos/players_tm/487469.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/83174762.png"
   },
   {
     "tm_player_id": 242277,
@@ -120657,10 +120748,11 @@
     "roster_club_id": 449,
     "roster_club_name": "Trabzonspor",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000122654,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1072017.png"
+    "photo_local": "photos/players_tm/1072017.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000122654.png"
   },
   {
     "tm_player_id": 193004,
@@ -120724,10 +120816,11 @@
     "fetched_at": "2026-06-11T20:48:35Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000179712,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/810092.jpg"
+    "photo_local": "photos/players_tm/810092.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000179712.png"
   },
   {
     "tm_player_id": 146310,
@@ -120821,10 +120914,11 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 12078947,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/648779.png"
+    "photo_local": "photos/players_tm/648779.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/12078947.png"
   },
   {
     "tm_player_id": 609691,
@@ -120885,10 +120979,11 @@
     "roster_club_id": 3711,
     "roster_club_name": "CD Cruz Azul",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 76053523,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/609255.jpg"
+    "photo_local": "photos/players_tm/609255.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/76053523.png"
   },
   {
     "tm_player_id": 495666,
@@ -120946,10 +121041,11 @@
     "fetched_at": "2026-06-11T20:47:52Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 86075795,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/661171.jpg"
+    "photo_local": "photos/players_tm/661171.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/86075795.png"
   },
   {
     "tm_player_id": 531450,
@@ -121619,10 +121715,11 @@
     "roster_club_id": 6631,
     "roster_club_name": "FC Tokyo",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 45005331,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/79522.jpg"
+    "photo_local": "photos/players_tm/79522.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/45005331.png"
   },
   {
     "tm_player_id": 147051,
@@ -122466,10 +122563,11 @@
     "roster_club_id": 9636,
     "roster_club_name": "Seattle",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72044167,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/354792.jpg"
+    "photo_local": "photos/players_tm/354792.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72044167.png"
   },
   {
     "tm_player_id": 370846,
@@ -122757,10 +122855,11 @@
     "roster_club_id": 51772,
     "roster_club_name": "Cincinnati",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72048200,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/468022.jpg"
+    "photo_local": "photos/players_tm/468022.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72048200.png"
   },
   {
     "tm_player_id": 472423,
@@ -123407,10 +123506,11 @@
     "roster_club_id": 58,
     "roster_club_name": "RSC Anderlecht",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000069115,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/842420.jpg"
+    "photo_local": "photos/players_tm/842420.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000069115.png"
   },
   {
     "tm_player_id": 896616,
@@ -123774,10 +123874,11 @@
     "roster_club_id": 114977,
     "roster_club_name": "San Diego",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 14023180,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/161671.jpg"
+    "photo_local": "photos/players_tm/161671.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/14023180.png"
   },
   {
     "tm_player_id": 349701,
@@ -124102,10 +124203,11 @@
     "roster_club_id": 56089,
     "roster_club_name": "Minnesota",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 20049244,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/628806.jpg"
+    "photo_local": "photos/players_tm/628806.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/20049244.png"
   },
   {
     "tm_player_id": 177064,
@@ -124228,10 +124330,11 @@
     "roster_club_id": 432,
     "roster_club_name": "Chicago",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000015458,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/765504.jpg"
+    "photo_local": "photos/players_tm/765504.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000015458.png"
   },
   {
     "tm_player_id": 578539,
@@ -124493,10 +124596,11 @@
     "roster_club_id": 69261,
     "roster_club_name": "Miami",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72052878,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/439750.jpg"
+    "photo_local": "photos/players_tm/439750.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72052878.png"
   },
   {
     "tm_player_id": 258919,
@@ -125177,10 +125281,11 @@
     "roster_club_id": 4941,
     "roster_club_name": "León",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 84125463,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/243298.png"
+    "photo_local": "photos/players_tm/243298.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/84125463.png"
   },
   {
     "tm_player_id": 251664,
@@ -125208,10 +125313,11 @@
     "roster_club_id": 18487,
     "roster_club_name": "Al-Ahli",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 29116247,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/251664.jpg"
+    "photo_local": "photos/players_tm/251664.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/29116247.png"
   },
   {
     "tm_player_id": 637632,
@@ -125241,10 +125347,11 @@
     "roster_club_id": 51828,
     "roster_club_name": "LAFC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 20048623,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/637632.jpg"
+    "photo_local": "photos/players_tm/637632.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/20048623.png"
   },
   {
     "tm_player_id": 566799,
@@ -125561,10 +125668,11 @@
     "roster_club_id": 432,
     "roster_club_name": "Chicago",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 20503374,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/441738.jpg"
+    "photo_local": "photos/players_tm/441738.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/20503374.png"
   },
   {
     "tm_player_id": 186590,
@@ -125629,10 +125737,11 @@
     "roster_club_id": 11141,
     "roster_club_name": "Toronto",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72040331,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/260807.jpg"
+    "photo_local": "photos/players_tm/260807.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72040331.png"
   },
   {
     "tm_player_id": 61651,
@@ -126388,10 +126497,11 @@
     "roster_club_id": 51828,
     "roster_club_name": "LAFC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72052133,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/589006.jpg"
+    "photo_local": "photos/players_tm/589006.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72052133.png"
   },
   {
     "tm_player_id": 415381,
@@ -126453,10 +126563,11 @@
     "roster_club_id": 40058,
     "roster_club_name": "New York City",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72052925,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/500309.jpg"
+    "photo_local": "photos/players_tm/500309.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72052925.png"
   },
   {
     "tm_player_id": 425306,
@@ -126484,10 +126595,11 @@
     "roster_club_id": 626,
     "roster_club_name": "New England",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72046884,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/425306.jpg"
+    "photo_local": "photos/players_tm/425306.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72046884.png"
   },
   {
     "tm_player_id": 993063,
@@ -126517,10 +126629,11 @@
     "roster_club_id": 813,
     "roster_club_name": "Columbus",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000184163,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/993063.jpg"
+    "photo_local": "photos/players_tm/993063.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000184163.png"
   },
   {
     "tm_player_id": 189014,
@@ -126547,10 +126660,11 @@
     "roster_club_id": 45604,
     "roster_club_name": "Orlando",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72022967,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/189014.jpg"
+    "photo_local": "photos/players_tm/189014.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72022967.png"
   },
   {
     "tm_player_id": 1378320,
@@ -126577,10 +126691,11 @@
     "roster_club_id": 432,
     "roster_club_name": "Chicago",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000294631,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1378320.jpg"
+    "photo_local": "photos/players_tm/1378320.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000294631.png"
   },
   {
     "tm_player_id": 167850,
@@ -127043,10 +127158,11 @@
     "roster_club_id": 25467,
     "roster_club_name": "Philadelphia",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000146034,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1069801.jpg"
+    "photo_local": "photos/players_tm/1069801.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000146034.png"
   },
   {
     "tm_player_id": 445939,
@@ -127108,10 +127224,11 @@
     "roster_club_id": 50531,
     "roster_club_name": "Al-Fayha",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 80026243,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/402979.png"
+    "photo_local": "photos/players_tm/402979.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/80026243.png"
   },
   {
     "tm_player_id": 673381,
@@ -127434,10 +127551,11 @@
     "roster_club_id": 11141,
     "roster_club_name": "Toronto",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72045915,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/417348.jpg"
+    "photo_local": "photos/players_tm/417348.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72045915.png"
   },
   {
     "tm_player_id": 620217,
@@ -127658,10 +127776,11 @@
     "roster_club_id": 6321,
     "roster_club_name": "Vancouver",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72056313,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/734761.jpg"
+    "photo_local": "photos/players_tm/734761.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72056313.png"
   },
   {
     "tm_player_id": 361104,
@@ -127786,10 +127905,11 @@
     "roster_club_id": 51828,
     "roster_club_name": "LAFC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 55079798,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/512913.jpg"
+    "photo_local": "photos/players_tm/512913.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/55079798.png"
   },
   {
     "tm_player_id": 638793,
@@ -128081,10 +128201,11 @@
     "roster_club_id": 78435,
     "roster_club_name": "Charlotte",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 72021508,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/145466.jpg"
+    "photo_local": "photos/players_tm/145466.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/72021508.png"
   },
   {
     "tm_player_id": 503981,
@@ -128406,10 +128527,11 @@
     "roster_club_id": 82696,
     "roster_club_name": "Mazatlán FC",
     "added_date": "2026-06-01",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 80027502,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/283473.jpg"
+    "photo_local": "photos/players_tm/283473.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/80027502.png"
   },
   {
     "tm_player_id": 754037,
@@ -128825,10 +128947,11 @@
     "roster_club_id": 63966,
     "roster_club_name": "Nashville",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 93140606,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/833817.jpg"
+    "photo_local": "photos/players_tm/833817.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/93140606.png"
   },
   {
     "tm_player_id": 949320,
@@ -128887,10 +129010,11 @@
     "roster_club_id": 467,
     "roster_club_name": "NEC Nijmegen",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000038244,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/662131.png"
+    "photo_local": "photos/players_tm/662131.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000038244.png"
   },
   {
     "tm_player_id": 562022,
@@ -129079,10 +129203,11 @@
     "roster_club_id": 1804,
     "roster_club_name": "Toluca",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 51054788,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/424689.jpg"
+    "photo_local": "photos/players_tm/424689.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/51054788.png"
   },
   {
     "tm_player_id": 249360,
@@ -129145,9 +129270,10 @@
     "roster_club_id": 9840,
     "roster_club_name": "Al-Shabab",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000084196,
     "sortitoutsi_face_url": null,
-    "sortitoutsi_profile_url": null
+    "sortitoutsi_profile_url": null,
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000084196.png"
   },
   {
     "tm_player_id": 527092,
@@ -129273,10 +129399,11 @@
     "roster_club_id": 9010,
     "roster_club_name": "FCV Dender EH",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 37044889,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/213268.jpg"
+    "photo_local": "photos/players_tm/213268.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/37044889.png"
   },
   {
     "tm_player_id": 345095,
@@ -129531,10 +129658,11 @@
     "roster_club_id": 6321,
     "roster_club_name": "Vancouver",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 14077429,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/323872.jpg"
+    "photo_local": "photos/players_tm/323872.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/14077429.png"
   },
   {
     "tm_player_id": 891998,
@@ -130089,10 +130217,11 @@
     "roster_club_id": 45604,
     "roster_club_name": "Orlando",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 79031731,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/491596.jpg"
+    "photo_local": "photos/players_tm/491596.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/79031731.png"
   },
   {
     "tm_player_id": 724443,
@@ -130150,10 +130279,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70093800,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/320141.png"
+    "photo_local": "photos/players_tm/320141.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70093800.png"
   },
   {
     "tm_player_id": 816585,
@@ -130248,10 +130378,11 @@
     "roster_club_id": 58,
     "roster_club_name": "RSC Anderlecht",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 51063413,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/540315.jpg"
+    "photo_local": "photos/players_tm/540315.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/51063413.png"
   },
   {
     "tm_player_id": 387687,
@@ -130311,10 +130442,11 @@
     "roster_club_id": 152,
     "roster_club_name": "Samsunspor",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 18102747,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/480705.jpg"
+    "photo_local": "photos/players_tm/480705.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18102747.png"
   },
   {
     "tm_player_id": 861852,
@@ -130605,10 +130737,11 @@
     "roster_club_id": 18487,
     "roster_club_name": "Al-Ahli",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 85121966,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/442531.jpg"
+    "photo_local": "photos/players_tm/442531.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85121966.png"
   },
   {
     "tm_player_id": 401356,
@@ -130838,10 +130971,11 @@
     "roster_club_id": 3711,
     "roster_club_name": "CD Cruz Azul",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 51073017,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/602324.jpg"
+    "photo_local": "photos/players_tm/602324.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/51073017.png"
   },
   {
     "tm_player_id": 500091,
@@ -131410,10 +131544,11 @@
     "fetched_at": "2026-06-11T20:49:13Z",
     "roster_club_id": 583,
     "roster_club_name": "Paris Saint-Germain",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000385919,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1185888.jpg"
+    "photo_local": "photos/players_tm/1185888.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000385919.png"
   },
   {
     "tm_player_id": 709974,
@@ -131571,10 +131706,11 @@
     "roster_club_id": 58,
     "roster_club_name": "RSC Anderlecht",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 18115024,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/570781.jpg"
+    "photo_local": "photos/players_tm/570781.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/18115024.png"
   },
   {
     "tm_player_id": 623570,
@@ -131639,10 +131775,11 @@
     "roster_club_id": 10484,
     "roster_club_name": "Kasimpasa",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70075229,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/216603.png"
+    "photo_local": "photos/players_tm/216603.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70075229.png"
   },
   {
     "tm_player_id": 675178,
@@ -131703,10 +131840,11 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 91184349,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/375137.png"
+    "photo_local": "photos/players_tm/375137.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/91184349.png"
   },
   {
     "tm_player_id": 613725,
@@ -131735,10 +131873,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70118983,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/613725.jpg"
+    "photo_local": "photos/players_tm/613725.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70118983.png"
   },
   {
     "tm_player_id": 410225,
@@ -132060,10 +132199,11 @@
     "roster_club_id": 1804,
     "roster_club_name": "Toluca",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 51049312,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/344854.jpg"
+    "photo_local": "photos/players_tm/344854.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/51049312.png"
   },
   {
     "tm_player_id": 356044,
@@ -132189,10 +132329,11 @@
     "roster_club_id": 26069,
     "roster_club_name": "Al-Qadsiah",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 51056626,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/416090.jpg"
+    "photo_local": "photos/players_tm/416090.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/51056626.png"
   },
   {
     "tm_player_id": 660867,
@@ -132289,10 +132430,11 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 91100534,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/119031.jpeg"
+    "photo_local": "photos/players_tm/119031.jpeg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/91100534.png"
   },
   {
     "tm_player_id": 355817,
@@ -132354,10 +132496,11 @@
     "roster_club_id": 1114,
     "roster_club_name": "Al-Hilal",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 85051083,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/93128.png"
+    "photo_local": "photos/players_tm/93128.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85051083.png"
   },
   {
     "tm_player_id": 222385,
@@ -132421,10 +132564,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70099785,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/382528.png"
+    "photo_local": "photos/players_tm/382528.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70099785.png"
   },
   {
     "tm_player_id": 492558,
@@ -132746,10 +132890,11 @@
     "roster_club_id": 1090,
     "roster_club_name": "AZ Alkmaar",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000283330,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1066953.jpg"
+    "photo_local": "photos/players_tm/1066953.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000283330.png"
   },
   {
     "tm_player_id": 661269,
@@ -132780,10 +132925,11 @@
     "roster_club_id": 51663,
     "roster_club_name": "Atlanta",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 79035283,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/661269.png"
+    "photo_local": "photos/players_tm/661269.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/79035283.png"
   },
   {
     "tm_player_id": 678439,
@@ -132943,10 +133089,11 @@
     "roster_club_id": 18487,
     "roster_club_name": "Al-Ahli",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 83176849,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/340879.jpeg"
+    "photo_local": "photos/players_tm/340879.jpeg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/83176849.png"
   },
   {
     "tm_player_id": 51894,
@@ -132973,10 +133120,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70005951,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/51894.png"
+    "photo_local": "photos/players_tm/51894.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70005951.png"
   },
   {
     "tm_player_id": 353922,
@@ -133007,10 +133155,11 @@
     "roster_club_id": 36,
     "roster_club_name": "Fenerbahçe",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 16184687,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/353922.jpg"
+    "photo_local": "photos/players_tm/353922.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/16184687.png"
   },
   {
     "tm_player_id": 560423,
@@ -133071,10 +133220,11 @@
     "roster_club_id": 51663,
     "roster_club_name": "Atlanta",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 79024232,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/272999.jpg"
+    "photo_local": "photos/players_tm/272999.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/79024232.png"
   },
   {
     "tm_player_id": 333355,
@@ -133554,10 +133704,11 @@
     "roster_club_id": 449,
     "roster_club_name": "Trabzonspor",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70099923,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/390379.png"
+    "photo_local": "photos/players_tm/390379.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70099923.png"
   },
   {
     "tm_player_id": 952341,
@@ -133913,10 +134064,11 @@
     "roster_club_id": 2441,
     "roster_club_name": "AEK Athens",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 51052239,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/334042.png"
+    "photo_local": "photos/players_tm/334042.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/51052239.png"
   },
   {
     "tm_player_id": 454567,
@@ -134590,10 +134742,11 @@
     "roster_club_id": 18544,
     "roster_club_name": "Al-Nassr",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 85100467,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/200512.jpg"
+    "photo_local": "photos/players_tm/200512.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/85100467.png"
   },
   {
     "tm_player_id": 561481,
@@ -135385,10 +135538,11 @@
     "roster_club_id": 141,
     "roster_club_name": "Galatasaray",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 70110533,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/396908.png"
+    "photo_local": "photos/players_tm/396908.png",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/70110533.png"
   },
   {
     "tm_player_id": 589099,
@@ -135449,10 +135603,11 @@
     "roster_club_id": 1114,
     "roster_club_name": "Al-Hilal",
     "added_date": "2026-06-02",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000284138,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1100642.jpg"
+    "photo_local": "photos/players_tm/1100642.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000284138.png"
   },
   {
     "tm_player_id": 517376,
@@ -136639,10 +136794,11 @@
     "fetched_at": "2026-06-08T18:26:21Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000090224,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/1109828.jpg"
+    "photo_local": "photos/players_tm/1109828.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000090224.png"
   },
   {
     "tm_player_id": 387331,
@@ -137193,10 +137349,11 @@
     "fetched_at": "2026-06-08T18:27:30Z",
     "roster_club_id": 1039,
     "roster_club_name": "Queens Park Rangers",
-    "sortitoutsi_person_id": null,
+    "sortitoutsi_person_id": 2000131091,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null,
-    "photo_local": "photos/players_tm/873270.jpg"
+    "photo_local": "photos/players_tm/873270.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000131091.png"
   },
   {
     "tm_player_id": 342050,
