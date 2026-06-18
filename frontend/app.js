@@ -4772,11 +4772,10 @@ async function exportGridPDF() {
     pdf.rect(pitchX + pitchW*0.22, pitchY + pitchH*0.87 - 2, pitchW*0.56, pitchH*0.13);
     pdf.rect(pitchX + pitchW*0.34, pitchY + pitchH*0.95 - 2, pitchW*0.32, pitchH*0.05);
 
-    // pt77 rev259: header senza barra nera — titolo + modulo sovrapposti
-    // direttamente al campo verde (bianco su verde, leggibile).
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255);
+    // pt77 rev260: titolo + modulo in NERO sovrapposti al campo verde.
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(14,17,22);
     pdf.text(title, pitchX + 4, pitchY + 7);
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(255,255,255);
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(14,17,22);
     pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 7, { align: "center" });
 
     // ====== POSIZIONI + DEPTH CHART (card sotto ogni posizione) ======
@@ -4810,10 +4809,11 @@ async function exportGridPDF() {
       else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +7; // attaccanti al limite alto
       return Math.max(0, Math.min(100, y + adj));
     };
-    // Compressione verticale: GK più basso possibile lasciando spazio per la sua card
-    const Y_TOP_PAD = 0.04;
-    const Y_SCALE = 0.88; // spazio utile per le posizioni
-    // → posizioni mappate dentro [0.04, 0.92] dell'innerH, lasciando ~8% di spazio sotto il GK
+    // pt77 rev260: Y_TOP_PAD 0.04→0.01 — gli attaccanti vanno ancora piu'
+    // in alto sfruttando lo spazio sotto il titolo (che adesso e' sovrapposto
+    // al campo, non piu' in barra nera).
+    const Y_TOP_PAD = 0.01;
+    const Y_SCALE = 0.88;
 
     for (const pos of positions) {
       const ids = _gridsAssignedFor(pos.id);
@@ -4843,21 +4843,22 @@ async function exportGridPDF() {
 
       if (!ids.length) continue;
 
-      // Card depth chart: SEMPRE sotto il cerchio della posizione (anche per GK)
-      const cardH = cardHeaderH + ids.length * playerRowH + 1;
-      let cardX = cx - cardW / 2;
+      // pt77 rev260: per il GK rendering a 2 COLONNE affiancate (card piu'
+      // larga ma meta' altezza) per risparmiare spazio verticale.
+      const is2Col = pos.id === "GK" && ids.length > 1;
+      const rowsPerCol = is2Col ? Math.ceil(ids.length / 2) : ids.length;
+      const cardW_eff = is2Col ? cardW * 2 : cardW;
+      const cardH = cardHeaderH + rowsPerCol * playerRowH + 1;
+      let cardX = cx - cardW_eff / 2;
       let cardY = cy + circleR + 1;
 
       // Clamp orizzontale dentro al campo
       if (cardX < pitchX + 3) cardX = pitchX + 3;
-      if (cardX + cardW > pitchX + pitchW - 3) cardX = pitchX + pitchW - 3 - cardW;
-      // Clamp verticale: la card può sborderare leggermente fuori dal campo (max footer-edge)
-      const maxBottomY = pageH - margin - 1; // appena sopra il footer
+      if (cardX + cardW_eff > pitchX + pitchW - 3) cardX = pitchX + pitchW - 3 - cardW_eff;
+      // Clamp verticale: la card può sborderare leggermente fuori dal campo
+      const maxBottomY = pageH - margin - 1;
       if (cardY + cardH > maxBottomY) {
-        // Sposta la card più in alto, ma mantienila sotto il cerchio se possibile
         cardY = maxBottomY - cardH;
-        // pt77 rev233: per il GK la card NON va MAI sopra il cerchio.
-        // Accetta che sfori in basso piuttosto che sovrapporsi al portiere.
         if (cardY < cy + circleR - 0.5 && pos.id !== "GK") {
           cardY = cy - circleR - 1 - cardH;
           if (cardY < innerTop) cardY = innerTop;
@@ -4866,17 +4867,13 @@ async function exportGridPDF() {
         }
       }
 
-      // Sfondo card scuro semi-opaco simulato
+      // Sfondo card scuro
       pdf.setFillColor(14, 17, 22);
-      pdf.roundedRect(cardX, cardY, cardW, cardH, 1.5, 1.5, "F");
+      pdf.roundedRect(cardX, cardY, cardW_eff, cardH, 1.5, 1.5, "F");
       pdf.setDrawColor(60, 70, 65); pdf.setLineWidth(0.2);
-      pdf.roundedRect(cardX, cardY, cardW, cardH, 1.5, 1.5);
+      pdf.roundedRect(cardX, cardY, cardW_eff, cardH, 1.5, 1.5);
 
-      // pt77: NIENTE header card (pos.label + count ridondanti — il
-      // pallino verde sopra mostra gia' il ruolo).
-
-      // Righe giocatori (pt77c: foto piena altezza riga + minuti dopo
-      // il piede + logo squadra spinto al bordo destro).
+      // Righe giocatori
       for (let i = 0; i < ids.length; i++) {
         const idx = idxByPid.get(ids[i]);
         if (idx == null) continue;
@@ -4888,41 +4885,37 @@ async function exportGridPDF() {
         const mins = seasonMins(pl.tm_player_id);
         const footRaw = (pl.foot || "").toLowerCase();
 
-        const rowY = cardY + cardHeaderH + i * playerRowH;
-        // Sfondo titolare (sottile verde tenue) — occupa quasi tutta la riga
+        // pt77 rev260: in 2col, col 0 = prima meta' giocatori, col 1 = seconda meta'.
+        const col = is2Col ? Math.floor(i / rowsPerCol) : 0;
+        const row = is2Col ? (i % rowsPerCol) : i;
+        const colW = is2Col ? cardW_eff / 2 : cardW_eff;
+        const colX = cardX + col * colW;
+        const rowY = cardY + cardHeaderH + row * playerRowH;
+
         if (isStarter) {
           pdf.setFillColor(28, 50, 38);
-          pdf.rect(cardX + 1, rowY + 0.3, cardW - 2, playerRowH - 0.5, "F");
+          pdf.rect(colX + 1, rowY + 0.3, colW - 2, playerRowH - 0.5, "F");
         }
 
-        // pt77c: foto INGRANDITA — sfrutta quasi tutta l'altezza riga
-        //  (playerRowH 8.5 → foto 7.5mm). y = rowY + 0.5 evita di toccare il
-        //  sfondo verde tenue del titolare. Niente piu' bordi top/bottom.
         const photoSize = 7.5;
         const ph = photos[idx];
-        if (ph) { try { pdf.addImage(ph, "PNG", cardX + 1.2, rowY + 0.5, photoSize, photoSize); } catch (e) {} }
+        if (ph) { try { pdf.addImage(ph, "PNG", colX + 1.2, rowY + 0.5, photoSize, photoSize); } catch (e) {} }
 
-        // Nome (cognome '99) — normalizzato + troncato (no piu' diacritici
-        // che jsPDF rendeva come spazi).
         const lastNameRaw = (pl.full_name || "").split(" ").slice(-1)[0] || pl.full_name;
         const lastName = truncName(lastNameRaw, 12);
         pdf.setFont("helvetica","bold"); pdf.setFontSize(7); pdf.setTextColor(255,255,255);
-        pdf.text(`${lastName} '${yr}`, cardX + 9.5, rowY + 3.5);
+        pdf.text(`${lastName} '${yr}`, colX + 9.5, rowY + 3.5);
 
-        // Sub: club + piede colorato + MINUTI (pt77c: minuti spostati
-        // INLINE dopo il piede, non piu' in basso a destra sotto il logo).
         const isIt = currentLang === "it";
         pdf.setFont("helvetica","normal"); pdf.setFontSize(5.5);
-        let subX = cardX + 9.5;
+        let subX = colX + 9.5;
         const subY = rowY + 6.4;
-        // Parte 1: "Club · " in grigio
         if (clubAbbr) {
           pdf.setTextColor(170, 180, 175);
           const clubText = clubAbbr + " · ";
           pdf.text(clubText, subX, subY);
           subX += pdf.getTextWidth(clubText);
         }
-        // Parte 2: piede colorato (Destro=blu / Sinistro=giallo / Entrambi=grigio)
         let footLabel = "";
         let footColor = [170, 180, 175];
         if (footRaw === "right")      { footLabel = isIt ? "Destro"   : "Right"; footColor = [96, 165, 250]; }
@@ -4933,14 +4926,12 @@ async function exportGridPDF() {
           pdf.text(footLabel, subX, subY);
           subX += pdf.getTextWidth(footLabel);
         }
-        // Parte 3: " · MINUTI'" in verde (se >0) o grigio.
         pdf.setFont("helvetica","bold"); pdf.setFontSize(5.5);
         if (mins > 0) pdf.setTextColor(111, 224, 168); else pdf.setTextColor(150, 160, 155);
         pdf.text(` · ${mins}'`, subX, subY);
 
-        // Logo club a destra — pt77c: spinto AL BORDO destro (-1mm), 5mm.
         const cLogo = clubLogos[idx];
-        if (cLogo) { try { pdf.addImage(cLogo, "PNG", cardX + cardW - 6, rowY + 1.75, 5, 5); } catch (e) {} }
+        if (cLogo) { try { pdf.addImage(cLogo, "PNG", colX + colW - 6, rowY + 1.75, 5, 5); } catch (e) {} }
       }
     }
 
