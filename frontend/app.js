@@ -3594,10 +3594,14 @@ function renderGridsPanel() {
     const titularPid = ids[0];
     const p = titularPid ? state.players.find(x => x.tm_player_id === titularPid) : null;
     const selected = state.grids.selectedSlot === pos.id;
-    // pt77 rev234: GK ora a y=22 — anchor centro standard. La card è centrata
-    // sul punto e non sfora sopra ai CB perché il GK è in posizione media-bassa
-    // (top: 78%). Rimosso anchor top di rev224 che non era affidabile.
-    const baseStyle = `position: absolute; left: ${pos.x}%; top: ${100 - pos.y}%; transform: translate(-50%, -50%); cursor: pointer; user-select: none;`;
+    // pt77 rev255: shift verticale +8% per la GRIGLIA UI (non per il PDF).
+    // FORMATIONS resta uguale (PDF la usa direttamente), ma in UI le card di
+    // attacco (ST/LW/RW) con depth chart lungo sforavano sopra il campo nei
+    // filtri header. Spingo tutto un pò giù — il GK si abbassa anche lui ma
+    // c'è spazio sotto. Se serve di più aumenta GRID_UI_TOP_SHIFT_PCT.
+    const GRID_UI_TOP_SHIFT_PCT = 8;
+    const topPct = 100 - pos.y + GRID_UI_TOP_SHIFT_PCT;
+    const baseStyle = `position: absolute; left: ${pos.x}%; top: ${topPct}%; transform: translate(-50%, -50%); cursor: pointer; user-select: none;`;
 
     // Depth chart popup (no foto grande sul campo, no shirt number, font più grande)
     let depthHtml = "";
