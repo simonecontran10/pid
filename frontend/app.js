@@ -4772,15 +4772,15 @@ async function exportGridPDF() {
     pdf.rect(pitchX + pitchW*0.22, pitchY + pitchH*0.87 - 2, pitchW*0.56, pitchH*0.13);
     pdf.rect(pitchX + pitchW*0.34, pitchY + pitchH*0.95 - 2, pitchW*0.32, pitchH*0.05);
 
-    // Header sopra (titolo + data + modulo) renderizzato sopra il campo
-    pdf.setFillColor(0, 0, 0, 0.45); // semi-transparent? jsPDF non supporta alpha direttamente, useremo overlay
+    // Header sopra (titolo + modulo) renderizzato sopra il campo.
+    // pt77 rev258: rimossa data (a destra) per look pulito; font ridotto
+    // (13→10 titolo, 9→8 modulo) per meno larghezza ottica.
     pdf.setFillColor(14, 17, 22);
-    pdf.rect(pitchX, pitchY, pitchW, 11, "F");
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(13); pdf.setTextColor(255,255,255);
-    pdf.text(title, pitchX + 4, pitchY + 7);
-    pdf.setFont("helvetica","normal"); pdf.setFontSize(9); pdf.setTextColor(180,200,190);
-    pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 7, { align: "center" });
-    pdf.text(dateStr, pitchX + pitchW - 4, pitchY + 7, { align: "right" });
+    pdf.rect(pitchX, pitchY, pitchW, 10, "F");
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(255,255,255);
+    pdf.text(title, pitchX + 4, pitchY + 6.5);
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(8); pdf.setTextColor(180,200,190);
+    pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 6.5, { align: "center" });
 
     // ====== POSIZIONI + DEPTH CHART (card sotto ogni posizione) ======
     // pt77: cardHeaderH = 0 — rimosso header con pos.label + count
@@ -4793,9 +4793,10 @@ async function exportGridPDF() {
     const playerRowH = 8.5;
     const cardHeaderH = 0;
 
-    // Aree usabili: dal sotto-header al fondo (pitchY + 11 → pitchY + pitchH - 4)
-    const innerTop = pitchY + 13;
-    const innerBottom = pitchY + pitchH - 4;
+    // Aree usabili: dal sotto-header al fondo. rev258: footer rimosso →
+    // innerBottom esteso (era pitchH-4, ora pitchH-1).
+    const innerTop = pitchY + 12;
+    const innerBottom = pitchY + pitchH - 1;
     const innerH = innerBottom - innerTop;
 
     // Override SOLO per il PDF: spread più ampio sulle x per le posizioni vicine
@@ -4946,12 +4947,8 @@ async function exportGridPDF() {
       }
     }
 
-    // Footer compatto in basso (sopra il campo)
-    pdf.setFillColor(14, 17, 22);
-    pdf.rect(pitchX, pitchY + pitchH - 5, pitchW, 5, "F");
-    pdf.setFontSize(6); pdf.setFont("helvetica","normal"); pdf.setTextColor(150,170,160);
-    pdf.text("PID — Players Intelligence Database", pitchX + 4, pitchY + pitchH - 1.5);
-    pdf.text(dateStr, pitchX + pitchW - 4, pitchY + pitchH - 1.5, { align: "right" });
+    // pt77 rev258: footer nero rimosso (barra "PID — ..." + data) per look
+    // pulito stile broadcast — il campo arriva fino al fondo pagina.
 
     const safeName = (title || "formazione").replace(/[^a-zA-Z0-9_-]/g, "_");
     pdf.save(`${safeName}.pdf`);
