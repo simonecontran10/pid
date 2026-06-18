@@ -3594,12 +3594,13 @@ function renderGridsPanel() {
     const titularPid = ids[0];
     const p = titularPid ? state.players.find(x => x.tm_player_id === titularPid) : null;
     const selected = state.grids.selectedSlot === pos.id;
-    // pt77 rev255: shift verticale +8% per la GRIGLIA UI (non per il PDF).
-    // FORMATIONS resta uguale (PDF la usa direttamente), ma in UI le card di
-    // attacco (ST/LW/RW) con depth chart lungo sforavano sopra il campo nei
-    // filtri header. Spingo tutto un pò giù — il GK si abbassa anche lui ma
-    // c'è spazio sotto. Se serve di più aumenta GRID_UI_TOP_SHIFT_PCT.
-    const GRID_UI_TOP_SHIFT_PCT = 8;
+    // pt77 rev256: shift verticale +14% per la GRIGLIA UI (non per il PDF).
+    // FORMATIONS resta uguale (PDF la usa con override per ruolo, vedi
+    // pdfYAdjust in exportGridPDF), ma in UI le card di attacco (ST/LW/RW)
+    // con depth chart lungo sforavano sopra il campo nei filtri header.
+    // Spingo tutto un pò giù — il GK si abbassa anche lui ma c'è spazio sotto.
+    // Se serve di più aumenta GRID_UI_TOP_SHIFT_PCT.
+    const GRID_UI_TOP_SHIFT_PCT = 14;
     const topPct = 100 - pos.y + GRID_UI_TOP_SHIFT_PCT;
     const baseStyle = `position: absolute; left: ${pos.x}%; top: ${topPct}%; transform: translate(-50%, -50%); cursor: pointer; user-select: none;`;
 
@@ -4800,6 +4801,16 @@ async function exportGridPDF() {
     // Override SOLO per il PDF: spread più ampio sulle x per le posizioni vicine
     // Stretching simmetrico attorno al centro: nuovo_x = 50 + (x - 50) * 1.10
     const pdfPosX = (x) => Math.max(8, Math.min(92, 50 + (x - 50) * 1.10));
+    // pt77 rev256: override Y per il PDF — abbassa GK e difensori, alza attaccanti.
+    // FORMATIONS resta invariato (usato da UI e PDF), ma qui rimappa per ruolo.
+    // y aumenta = posizione PIU' IN ALTO sul campo (perche' yFrac usa 100-y).
+    const pdfPosY = (posId, y) => {
+      let adj = 0;
+      if (posId === "GK") adj = -7;
+      else if (/^(LB|RB|LCB|RCB|CB|LWB|RWB)$/.test(posId)) adj = -5;
+      else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +3;
+      return Math.max(0, Math.min(100, y + adj));
+    };
     // Compressione verticale: GK più basso possibile lasciando spazio per la sua card
     const Y_TOP_PAD = 0.04;
     const Y_SCALE = 0.88; // spazio utile per le posizioni
@@ -4809,7 +4820,8 @@ async function exportGridPDF() {
       const ids = _gridsAssignedFor(pos.id);
       // posiziona il cerchio nel campo. y=0 → porta nostra (basso), y=100 → top
       const cx = pitchX + pitchW * (pdfPosX(pos.x) / 100);
-      const yFrac = Y_TOP_PAD + Y_SCALE * ((100 - pos.y) / 100);
+      const effectiveY = pdfPosY(pos.id, pos.y);
+      const yFrac = Y_TOP_PAD + Y_SCALE * ((100 - effectiveY) / 100);
       const cy = innerTop + innerH * yFrac;
 
       // Cerchio posizione (titolare = verde pieno, vuoto = outline)
