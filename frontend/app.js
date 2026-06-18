@@ -4801,14 +4801,15 @@ async function exportGridPDF() {
     // Override SOLO per il PDF: spread più ampio sulle x per le posizioni vicine
     // Stretching simmetrico attorno al centro: nuovo_x = 50 + (x - 50) * 1.10
     const pdfPosX = (x) => Math.max(8, Math.min(92, 50 + (x - 50) * 1.10));
-    // pt77 rev256: override Y per il PDF — abbassa GK e difensori, alza attaccanti.
-    // FORMATIONS resta invariato (usato da UI e PDF), ma qui rimappa per ruolo.
-    // y aumenta = posizione PIU' IN ALTO sul campo (perche' yFrac usa 100-y).
+    // pt77 rev256+257: override Y per il PDF — abbassa GK e difensori, alza
+    // attaccanti. FORMATIONS resta invariato (usato da UI e PDF), ma qui
+    // rimappa per ruolo. y aumenta = posizione PIU' IN ALTO sul campo
+    // (perche' yFrac usa 100-y).
     const pdfPosY = (posId, y) => {
       let adj = 0;
       if (posId === "GK") adj = -7;
       else if (/^(LB|RB|LCB|RCB|CB|LWB|RWB)$/.test(posId)) adj = -5;
-      else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +3;
+      else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +7; // attaccanti al limite alto
       return Math.max(0, Math.min(100, y + adj));
     };
     // Compressione verticale: GK più basso possibile lasciando spazio per la sua card
