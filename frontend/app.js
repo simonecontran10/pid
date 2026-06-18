@@ -4772,11 +4772,11 @@ async function exportGridPDF() {
     pdf.rect(pitchX + pitchW*0.22, pitchY + pitchH*0.87 - 2, pitchW*0.56, pitchH*0.13);
     pdf.rect(pitchX + pitchW*0.34, pitchY + pitchH*0.95 - 2, pitchW*0.32, pitchH*0.05);
 
-    // pt77 rev260: titolo + modulo in NERO sovrapposti al campo verde.
+    // pt77 rev262: titolo+modulo alzati (y 7→6) per dare piu' spazio agli attaccanti.
     pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(14,17,22);
-    pdf.text(title, pitchX + 4, pitchY + 7);
+    pdf.text(title, pitchX + 4, pitchY + 6);
     pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(14,17,22);
-    pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 7, { align: "center" });
+    pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 6, { align: "center" });
 
     // ====== POSIZIONI + DEPTH CHART (card sotto ogni posizione) ======
     // pt77: cardHeaderH = 0 — rimosso header con pos.label + count
@@ -4791,7 +4791,7 @@ async function exportGridPDF() {
 
     // Aree usabili: dal sotto-header al fondo. rev258: footer rimosso →
     // innerBottom esteso (era pitchH-4, ora pitchH-1).
-    const innerTop = pitchY + 12;
+    const innerTop = pitchY + 10;
     const innerBottom = pitchY + pitchH - 1;
     const innerH = innerBottom - innerTop;
 
@@ -4805,11 +4805,14 @@ async function exportGridPDF() {
     // pt77 rev261: abbasso GK (-7→-15), difensori (-5→-10) e centrocampisti
     // (nuovo adj -5) per usare lo spazio liberato dal GK in 2 colonne.
     // I trequartisti (CAM/LAM/RAM) e attaccanti restano alti.
+    // pt77 rev262: le mezzali (LCM/RCM) abbassate ulteriormente (-5→-8) per
+    // staccarle dalla linea attaccanti. CM centrale e mediani restano a -5.
     const pdfPosY = (posId, y) => {
       let adj = 0;
       if (posId === "GK") adj = -15;
       else if (/^(LB|RB|LCB|RCB|CB|LWB|RWB)$/.test(posId)) adj = -10;
-      else if (/^(CM|LCM|RCM|DM|LDM|RDM|LM|RM)$/.test(posId)) adj = -5;
+      else if (/^(LCM|RCM)$/.test(posId)) adj = -8;
+      else if (/^(CM|DM|LDM|RDM|LM|RM)$/.test(posId)) adj = -5;
       else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +7;
       return Math.max(0, Math.min(100, y + adj));
     };
