@@ -4772,15 +4772,12 @@ async function exportGridPDF() {
     pdf.rect(pitchX + pitchW*0.22, pitchY + pitchH*0.87 - 2, pitchW*0.56, pitchH*0.13);
     pdf.rect(pitchX + pitchW*0.34, pitchY + pitchH*0.95 - 2, pitchW*0.32, pitchH*0.05);
 
-    // Header sopra (titolo + modulo) renderizzato sopra il campo.
-    // pt77 rev258: rimossa data (a destra) per look pulito; font ridotto
-    // (13→10 titolo, 9→8 modulo) per meno larghezza ottica.
-    pdf.setFillColor(14, 17, 22);
-    pdf.rect(pitchX, pitchY, pitchW, 10, "F");
-    pdf.setFont("helvetica","bold"); pdf.setFontSize(10); pdf.setTextColor(255,255,255);
-    pdf.text(title, pitchX + 4, pitchY + 6.5);
-    pdf.setFont("helvetica","normal"); pdf.setFontSize(8); pdf.setTextColor(180,200,190);
-    pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 6.5, { align: "center" });
+    // pt77 rev259: header senza barra nera — titolo + modulo sovrapposti
+    // direttamente al campo verde (bianco su verde, leggibile).
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(11); pdf.setTextColor(255,255,255);
+    pdf.text(title, pitchX + 4, pitchY + 7);
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(9); pdf.setTextColor(255,255,255);
+    pdf.text(`${state.grids.formation}`, pitchX + pitchW/2, pitchY + 7, { align: "center" });
 
     // ====== POSIZIONI + DEPTH CHART (card sotto ogni posizione) ======
     // pt77: cardHeaderH = 0 — rimosso header con pos.label + count
