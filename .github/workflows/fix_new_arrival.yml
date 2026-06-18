@@ -42,6 +42,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run fix_new_arrival_clubs.py
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: |
           if [ -n "${{ github.event.inputs.limit }}" ]; then
             python3 fix_new_arrival_clubs.py --limit ${{ github.event.inputs.limit }}
@@ -50,6 +52,8 @@ jobs:
           fi
 
       - name: Run enrich_sortitoutsi.py
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: python3 enrich_sortitoutsi.py || true
 
       - name: Commit and push if changed

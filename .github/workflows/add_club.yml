@@ -68,6 +68,7 @@ jobs:
           URL: ${{ github.event.inputs.url }}
           LEAGUE: ${{ github.event.inputs.league }}
           SOTS_URL: ${{ github.event.inputs.sots_url }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: |
           python3 add_club.py
 

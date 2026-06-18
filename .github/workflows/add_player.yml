@@ -78,6 +78,7 @@ jobs:
         env:
           SOTS_URLS: ${{ github.event.inputs.sots_urls }}
           SOTS_TEAM_URLS: ${{ github.event.inputs.sots_team_urls }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: |
           echo "${{ github.event.inputs.urls }}" | python3 add_players.py
 

@@ -82,6 +82,8 @@ jobs:
 
       - name: Run full update
         if: steps.window.outputs.in_window == 'true'
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: python3 run_update.py
 
       - name: Hash post-run + check changes

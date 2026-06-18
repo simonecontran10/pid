@@ -57,6 +57,8 @@ jobs:
           fi
 
       - name: Run stats refresh
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
         run: python3 run_stats.py --refresh
 
       - name: Hash post-run + check changes
