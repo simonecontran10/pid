@@ -4802,11 +4802,15 @@ async function exportGridPDF() {
     // attaccanti. FORMATIONS resta invariato (usato da UI e PDF), ma qui
     // rimappa per ruolo. y aumenta = posizione PIU' IN ALTO sul campo
     // (perche' yFrac usa 100-y).
+    // pt77 rev261: abbasso GK (-7→-15), difensori (-5→-10) e centrocampisti
+    // (nuovo adj -5) per usare lo spazio liberato dal GK in 2 colonne.
+    // I trequartisti (CAM/LAM/RAM) e attaccanti restano alti.
     const pdfPosY = (posId, y) => {
       let adj = 0;
-      if (posId === "GK") adj = -7;
-      else if (/^(LB|RB|LCB|RCB|CB|LWB|RWB)$/.test(posId)) adj = -5;
-      else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +7; // attaccanti al limite alto
+      if (posId === "GK") adj = -15;
+      else if (/^(LB|RB|LCB|RCB|CB|LWB|RWB)$/.test(posId)) adj = -10;
+      else if (/^(CM|LCM|RCM|DM|LDM|RDM|LM|RM)$/.test(posId)) adj = -5;
+      else if (/^(ST|LST|RST|LW|RW)$/.test(posId)) adj = +7;
       return Math.max(0, Math.min(100, y + adj));
     };
     // pt77 rev260: Y_TOP_PAD 0.04→0.01 — gli attaccanti vanno ancora piu'
