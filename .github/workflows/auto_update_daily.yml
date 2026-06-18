@@ -4,8 +4,13 @@ name: Auto Update Daily (stats only)
 # Aggiorna solo i dati delle partite (run_stats.py --refresh): ~25-40 min
 on:
   schedule:
-    - cron: "0 3 * * *"   # primario: 03:00 UTC = 05:00 italiana (estate)
-    - cron: "30 6 * * *"  # backup: parte se il primario salta (skip occasionali GitHub)
+    # pt77: ridotto da ogni notte a Lun + Gio per stare sotto free tier
+    # ScraperAPI (1000 req/mese). 8.6 run/mese × ~50-100 req = ~430-860 req.
+    # cron syntax: "M H * * D" → D=1 Lun, D=4 Gio (UTC).
+    - cron: "0 3 * * 1"   # primario Lun: 03:00 UTC = 05:00 ITA (estate)
+    - cron: "30 6 * * 1"  # backup Lun (se primario salta)
+    - cron: "0 3 * * 4"   # primario Gio: 03:00 UTC = 05:00 ITA (estate)
+    - cron: "30 6 * * 4"  # backup Gio (se primario salta)
   workflow_dispatch:  # permette run manuale dal tab Actions
 
 concurrency:
