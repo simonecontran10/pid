@@ -6992,5 +6992,29 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 75901,
+    "name": "Fiorentina Under 18",
+    "league_id": "ITJ7",
+    "league_name": "Campionato Under 18",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/75901",
+    "slug": "ac-florenz-u18",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
+  },
+  {
+    "tm_club_id": 49741,
+    "name": "Fiorentina Under 17",
+    "league_id": "ITJ6",
+    "league_name": "Campionato nazionale Under 17 - C",
+    "club_url": "https://www.transfermarkt.com/club/startseite/verein/49741",
+    "slug": "ac-florenz-u17",
+    "sortitoutsi_team_id": null,
+    "sortitoutsi_logo_url": null,
+    "sortitoutsi_logo_local": null,
+    "logo_url": null
   }
 ]
