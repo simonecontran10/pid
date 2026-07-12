@@ -139462,9 +139462,9 @@
     "roster_club_id": 8505,
     "roster_club_name": "Fiorentina U20",
     "added_date": "2026-07-07",
-    "sortitoutsi_person_id": 2000158335,
-    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000158335.png",
-    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000158335/dennis-beldenti",
+    "sortitoutsi_person_id": null,
+    "sortitoutsi_face_url": null,
+    "sortitoutsi_profile_url": null,
     "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000158335.png"
   },
   {
@@ -139651,5 +139651,39 @@
     "sortitoutsi_person_id": null,
     "sortitoutsi_face_url": null,
     "sortitoutsi_profile_url": null
+  },
+  {
+    "tm_player_id": 741257,
+    "full_name": "Álex Jiménez",
+    "name_arabic": "Alejandro Jiménez Sánchez",
+    "date_of_birth": "2005-05-08",
+    "age": 21,
+    "height_cm": 177,
+    "foot": "right",
+    "position_general": "Defender",
+    "position_specific": "Right-Back",
+    "position_others": [
+      "Left-Back",
+      "Right Midfield"
+    ],
+    "place_of_birth": "Leganés",
+    "citizenships": [
+      "Spain"
+    ],
+    "is_target_eligible": true,
+    "current_club_id": 989,
+    "current_club_name": "Bournemouth",
+    "shirt_number": null,
+    "photo_url": "https://img.a.transfermarkt.technology/portrait/header/741257-1751532035.jpg?lm=1",
+    "tm_profile_url": "https://www.transfermarkt.com/-/profil/spieler/741257",
+    "fetched_at": "2026-07-12T14:03:53Z",
+    "roster_club_id": 989,
+    "roster_club_name": "Bournemouth",
+    "added_date": "2026-07-12",
+    "sortitoutsi_person_id": 2000211997,
+    "sortitoutsi_face_url": "https://sortitoutsi.b-cdn.net/uploads/face/face_2000211997.png",
+    "sortitoutsi_profile_url": "https://sortitoutsi.net/football-manager-2026/person/2000211997/álex-jiménez",
+    "photo_local": "photos/players_tm/741257.jpg",
+    "sortitoutsi_face_local_lookup": "photos/players_sots_lookup/2000211997.png"
   }
 ]
