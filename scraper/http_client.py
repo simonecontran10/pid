@@ -1,9 +1,19 @@
-"""HTTP client educato con rate limiting, retry, backoff e header rotation."""
+"""HTTP client educato con rate limiting, retry, backoff e header rotation.
+
+pt rev: supporto ScraperAPI come proxy-bypass per Transfermarkt.
+- Se la env var SCRAPERAPI_KEY è settata, ogni richiesta verso transfermarkt.*
+  viene riscritta in `http://api.scraperapi.com/?api_key=...&url=ENCODED`.
+- ScraperAPI ha free tier 1000 req/mese, sufficiente per sync rose periodici.
+- Per altri provider (Webshare/BrightData) usare HTTPS_PROXY/HTTP_PROXY std env vars,
+  picked up da requests automaticamente.
+"""
 
 import json
+import os
 import random
 import time
 from typing import Any, Optional
+from urllib.parse import quote as urlquote
 
 import requests
 
@@ -22,6 +32,19 @@ from .config import (
 )
 
 
+_SCRAPERAPI_KEY = os.environ.get("SCRAPERAPI_KEY", "").strip()
+
+
+def _maybe_proxy_url(url: str) -> str:
+    """Se SCRAPERAPI_KEY è settata e url è TM, instrada via ScraperAPI."""
+    if not _SCRAPERAPI_KEY:
+        return url
+    if "transfermarkt." not in url:
+        return url
+    # ScraperAPI accetta render=false (default) per HTML statico — sufficiente per TM.
+    return f"http://api.scraperapi.com/?api_key={_SCRAPERAPI_KEY}&url={urlquote(url, safe='')}"
+
+
 class TransfermarktClient:
     """Wrapper su requests.Session con politiche conservative."""
 
@@ -29,6 +52,8 @@ class TransfermarktClient:
         self.session = requests.Session()
         self.sleep = sleep
         self._last_request_time: Optional[float] = None
+        if _SCRAPERAPI_KEY:
+            print(f"[http_client] ScraperAPI proxy ATTIVO (key ***{_SCRAPERAPI_KEY[-4:]})")
 
     def _build_headers(self, *, xhr: bool = False, referer: Optional[str] = None) -> dict:
         h = dict(DEFAULT_HEADERS)
@@ -60,7 +85,10 @@ class TransfermarktClient:
             if time.monotonic() - request_started > MAX_TOTAL_WAIT_PER_REQUEST:
                 raise RuntimeError(f"GIVE UP {url} after {int(time.monotonic()-request_started)}s")
             try:
-                resp = self.session.get(url, headers=headers, timeout=REQUEST_TIMEOUT)
+                fetch_url = _maybe_proxy_url(url)
+                # ScraperAPI può richiedere fino a 30-60s (rendering, retry interno).
+                timeout = REQUEST_TIMEOUT if fetch_url == url else max(REQUEST_TIMEOUT, 60)
+                resp = self.session.get(fetch_url, headers=headers, timeout=timeout)
                 self._last_request_time = time.monotonic()
                 if resp.status_code == 200:
                     return resp
