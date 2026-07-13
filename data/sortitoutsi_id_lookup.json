@@ -24454,5 +24454,215 @@
     "match_score": 1.0,
     "matched_via": "cross_club_dob_confirmed",
     "face_local": "photos/players_sots_lookup/43425834.png"
+  },
+  "318470": {
+    "sots_id": 58123738,
+    "name": "Matvey Safonov",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/58123738.png"
+  },
+  "463600": {
+    "sots_id": 49048357,
+    "name": "Lucas Chevalier",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/49048357.png"
+  },
+  "1041614": {
+    "sots_id": 2000198858,
+    "name": "Renato Marin",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000198858.png"
+  },
+  "903693": {
+    "sots_id": 2000179713,
+    "name": "Senny Mayulu",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000179713.png"
+  },
+  "502670": {
+    "sots_id": 59130638,
+    "name": "Khvicha Kvaratskhelia",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/59130638.png"
+  },
+  "1053208": {
+    "sots_id": 2000288850,
+    "name": "Quentin Ndjantou",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000288850.png"
+  },
+  "572265": {
+    "sots_id": 43409366,
+    "name": "Lorenzo Lucca",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43409366.png"
+  },
+  "461833": {
+    "sots_id": 43372285,
+    "name": "Caleb Okoli",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43372285.png"
+  },
+  "1074990": {
+    "sots_id": 2000333549,
+    "name": "Luca Reggiani",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000333549.png"
+  },
+  "1058359": {
+    "sots_id": 2000338374,
+    "name": "Samuele Inácio",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000338374.png"
+  },
+  "724104": {
+    "sots_id": 2000116422,
+    "name": "Fabio Chiarodia",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000116422.png"
+  },
+  "1144700": {
+    "sots_id": 2000158335,
+    "name": "Matías Moreno",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000158335.png"
+  },
+  "1223890": {
+    "sots_id": 2000442543,
+    "name": "Alessandro Perrotti",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "1078812": {
+    "sots_id": 2000442528,
+    "name": "Antonio Pirrò",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": null
+  },
+  "879371": {
+    "sots_id": 2000081255,
+    "name": "Matteo Salamon",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000081255.png"
+  },
+  "1245612": {
+    "sots_id": 2000343484,
+    "name": "Tylon Smith",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000343484.png"
+  },
+  "1089414": {
+    "sots_id": 2000222682,
+    "name": "Noah McCann",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000222682.png"
+  },
+  "1089411": {
+    "sots_id": 2000222678,
+    "name": "Jake Leahy",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000222678.png"
+  },
+  "1225604": {
+    "sots_id": 2000308768,
+    "name": "Jaiden Putman",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000308768.png"
+  },
+  "433180": {
+    "sots_id": 28115785,
+    "name": "Elijah Dixon-Bonner",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/28115785.png"
+  },
+  "1005850": {
+    "sots_id": 2000222683,
+    "name": "Alfie Tuck",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000222683.png"
+  },
+  "1352650": {
+    "sots_id": 2000408756,
+    "name": "Teddy Tarbotton",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000408756.png"
+  },
+  "935469": {
+    "sots_id": 2000169743,
+    "name": "Isak Alemayehu",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000169743.png"
+  },
+  "1104726": {
+    "sots_id": 2000248324,
+    "name": "Jaylan Pearman",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000248324.png"
+  },
+  "1225600": {
+    "sots_id": 2000308764,
+    "name": "Emmerson Sutton",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000308764.png"
+  },
+  "1373897": {
+    "sots_id": 2000511769,
+    "name": "Kalen Brunson",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000511769.png"
+  },
+  "1376840": {
+    "sots_id": 2000511773,
+    "name": "Leon Scarlett",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000511773.png"
+  },
+  "1348063": {
+    "sots_id": 2000453540,
+    "name": "Ashley Trujillo",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000453540.png"
+  },
+  "340427": {
+    "sots_id": 62189940,
+    "name": "Zan Celar",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/62189940.png"
+  },
+  "1068357": {
+    "sots_id": 2000215020,
+    "name": "Cian Dillon",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000215020.png"
   }
 }
