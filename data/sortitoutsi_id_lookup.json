@@ -24748,5 +24748,26 @@
     "match_score": 1.0,
     "matched_via": "cross_club_dob_confirmed",
     "face_local": "photos/players_sots_lookup/2000183231.png"
+  },
+  "120186": {
+    "sots_id": 16045707,
+    "name": "Daniel Bachmann",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/16045707.png"
+  },
+  "557147": {
+    "sots_id": 67263880,
+    "name": "José Gragera",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/67263880.png"
+  },
+  "457422": {
+    "sots_id": 43390644,
+    "name": "Samuele Mulattieri",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/43390644.png"
   }
 }

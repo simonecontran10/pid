@@ -7016,5 +7016,14 @@
     "sortitoutsi_logo_url": null,
     "sortitoutsi_logo_local": null,
     "logo_url": null
+  },
+  {
+    "tm_club_id": 897,
+    "name": "Deportivo A Coruña",
+    "slug": "deportivo-la-coruna",
+    "league_id": "FIWC",
+    "league_name": "FIWC",
+    "club_url": "https://www.transfermarkt.com/deportivo-la-coruna/kader/verein/897/saison_id/2025/plus/1",
+    "sortitoutsi_logo_local": "photos/clubs_sots/897.png"
   }
 ]
