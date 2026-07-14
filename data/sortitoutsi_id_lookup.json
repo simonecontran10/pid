@@ -24664,5 +24664,89 @@
     "match_score": 1.0,
     "matched_via": "cross_club_dob_confirmed",
     "face_local": "photos/players_sots_lookup/2000215020.png"
+  },
+  "404839": {
+    "sots_id": 71099053,
+    "name": "Andriy Lunin",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/71099053.png"
+  },
+  "890290": {
+    "sots_id": 2000109240,
+    "name": "Dean Huijsen",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000109240.png"
+  },
+  "401530": {
+    "sots_id": 19273276,
+    "name": "Éder Militão",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/19273276.png"
+  },
+  "935245": {
+    "sots_id": 2000126407,
+    "name": "Raúl Asencio",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000126407.png"
+  },
+  "811778": {
+    "sots_id": 2000032706,
+    "name": "Álvaro Carreras",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000032706.png"
+  },
+  "341264": {
+    "sots_id": 67245235,
+    "name": "Fran García",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/67245235.png"
+  },
+  "291417": {
+    "sots_id": 85133751,
+    "name": "Ferland Mendy",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/85133751.png"
+  },
+  "314353": {
+    "sots_id": 28104124,
+    "name": "Trent Alexander-Arnold",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/28104124.png"
+  },
+  "640428": {
+    "sots_id": 49056243,
+    "name": "Eduardo Camavinga",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/49056243.png"
+  },
+  "319745": {
+    "sots_id": 67202350,
+    "name": "Dani Ceballos",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/67202350.png"
+  },
+  "412363": {
+    "sots_id": 19306929,
+    "name": "Rodrygo",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/19306929.png"
+  },
+  "1057316": {
+    "sots_id": 2000183231,
+    "name": "Franco Mastantuono",
+    "match_score": 1.0,
+    "matched_via": "cross_club_dob_confirmed",
+    "face_local": "photos/players_sots_lookup/2000183231.png"
   }
 }
