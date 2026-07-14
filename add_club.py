@@ -65,7 +65,7 @@ def _save(p: Path, data) -> None:
     p.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def parse_tm_url(url: str) -> tuple[int, str]:
+def parse_tm_url(url: str) -> tuple[int, str, int | None]:
     """Estrae (tm_club_id, slug) dall'URL Transfermarkt.
 
     Formati accettati:
@@ -82,12 +82,20 @@ def parse_tm_url(url: str) -> tuple[int, str]:
         raise ValueError(f"URL TM non valido (manca /verein/<id>/): {url}")
     slug = m.group(1)
     cid = int(m.group(2))
-    return cid, slug
+    # Stagione: rispetta quella nell'URL incollato (path /saison_id/2025 o query
+    # ?saison_id=2025). Se assente → None = stagione corrente. Così l'utente
+    # sceglie: nessuna stagione = rosa attuale (nuovi acquisti); saison_id/2025 =
+    # quella rosa specifica (es. QPR che a inizio stagione ha la lista più
+    # completa con U21/prestiti come Salamon).
+    sm = re.search(r"saison_id[/=](\d{4})", url)
+    season = int(sm.group(1)) if sm else None
+    return cid, slug, season
 
 
-def fetch_club_name(client: TransfermarktClient, slug: str, cid: int) -> tuple[str, str | None]:
+def fetch_club_name(client: TransfermarktClient, slug: str, cid: int, season: int | None = None) -> tuple[str, str | None]:
     """Scarica la pagina startseite e estrae il nome del club + league_id se possibile."""
-    page_url = f"https://www.transfermarkt.com/{slug}/startseite/verein/{cid}/saison_id/2025"
+    season_seg = f"/saison_id/{season}" if season else ""  # assente → stagione corrente
+    page_url = f"https://www.transfermarkt.com/{slug}/startseite/verein/{cid}{season_seg}"
     print(f"[fetch club] {page_url}")
     html = client.get_html(page_url)
     soup = BeautifulSoup(html, "lxml")
@@ -138,20 +146,21 @@ def main() -> int:
         return 1
 
     try:
-        cid, slug = parse_tm_url(args.url)
+        cid, slug, season = parse_tm_url(args.url)
     except ValueError as e:
         print(f"ERRORE: {e}")
         return 1
 
+    season_seg = f"/saison_id/{season}" if season else ""
     print("=" * 70)
-    print(f"ADD CLUB — tm_club_id={cid} slug={slug}")
+    print(f"ADD CLUB — tm_club_id={cid} slug={slug} stagione={season or 'corrente'}")
     print("=" * 70)
 
     client = TransfermarktClient()
 
     # === Step 1: nome club + lega ===
     try:
-        club_name, detected_league = fetch_club_name(client, slug, cid)
+        club_name, detected_league = fetch_club_name(client, slug, cid, season)
     except Exception as e:
         print(f"[error] impossibile leggere pagina club: {type(e).__name__}: {e}")
         return 1
@@ -206,7 +215,10 @@ def main() -> int:
         # della compact "prima squadra" (~16-22). Senza /plus/1 il workflow
         # admin importa solo 17 giocatori per club anche se l'utente passa
         # un URL /kader/.../plus/1 — l'override qui lo scartava.
-        "club_url": f"https://www.transfermarkt.com/{slug}/kader/verein/{cid}/saison_id/2025/plus/1",
+        # Stagione = quella dell'URL incollato (season_seg). Assente → rosa
+        # CORRENTE ad ogni fetch (i nuovi acquisti compaiono da soli). Con una
+        # stagione esplicita il club resta pinnato a quella rosa specifica.
+        "club_url": f"https://www.transfermarkt.com/{slug}/kader/verein/{cid}{season_seg}/plus/1",
         "sortitoutsi_logo_local": f"photos/clubs_sots/{cid}.png",
     }
     if sots_team_id:
@@ -270,8 +282,20 @@ def main() -> int:
         existing = profiles_by_id.get(pid)
         try:
             prof = scrape_player_profile(pid, client)
+            # MERGE, non overwrite: lo scrape fresco NON contiene i campi di
+            # enrichment (foto SortItOutSi, wyscout_id, added_date, ...) aggiunti
+            # da step separati. Sovrascrivere li perderebbe. Partiamo dal profilo
+            # esistente e ci sovrapponiamo i campi TM freschi.
+            if existing:
+                prof = {**existing, **prof}
             prof["roster_club_id"] = cid
             prof["roster_club_name"] = club_name
+            # Il kader è la verità sul club ATTUALE: il profilo TM di un nuovo
+            # acquisto è spesso indietro (mostra ancora il vecchio club). L'app
+            # filtra gli avversari per current_club_id, quindi allineiamolo al
+            # club di cui stiamo scaricando la rosa.
+            prof["current_club_id"] = cid
+            prof["current_club_name"] = club_name
             if existing:
                 n_updated += 1
             else:

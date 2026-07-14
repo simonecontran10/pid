@@ -162,6 +162,10 @@ def step_scrape_new_profiles(new_ids: set[int], rosters: dict,
             prof = scrape_player_profile(pid, client)
             prof["roster_club_id"] = meta.get("tm_club_id")
             prof["roster_club_name"] = meta.get("club_name")
+            # Allinea current_club al kader (vedi add_club.py): il profilo TM di
+            # un nuovo acquisto è spesso indietro e l'app filtra per current_club_id.
+            prof["current_club_id"] = meta.get("tm_club_id")
+            prof["current_club_name"] = meta.get("club_name")
             profiles_by_id[str(pid)] = prof
             done += 1
             print(f"    [{done}/{len(new_ids)}] {prof.get('full_name'):<28}  ({meta.get('club_name')})")

@@ -50,7 +50,11 @@ def scrape_club_roster(
     club: dict,
     client: Optional[TransfermarktClient] = None,
 ) -> list[dict]:
-    """Scarica e parsa la rosa di un club. `club` è un dict da scrape_all_leagues."""
+    """Scarica e parsa la rosa di un club. `club` è un dict da scrape_all_leagues.
+
+    Rispetta `club_url` così com'è: la stagione è codificata nell'URL al momento
+    dell'aggiunta del club (nessun saison_id = rosa corrente; con saison_id =
+    rosa di quella stagione specifica). Vedi parse_tm_url in add_club.py."""
     client = client or TransfermarktClient()
     print(f"[roster] {club['name']}")
     html = client.get_html(club["club_url"])
