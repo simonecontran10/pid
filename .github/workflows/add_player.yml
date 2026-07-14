@@ -37,6 +37,10 @@ jobs:
           fetch-depth: 1
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup git merge driver (anti-conflict data JSON)
+        run: bash scripts/setup_git_merge_driver.sh
+
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -98,16 +102,20 @@ jobs:
           fi
           COUNT=$(cat /tmp/url_count.txt 2>/dev/null || echo "?")
           git commit -m "auto: add ${COUNT} player(s) from TM URL ($(date -u +%Y-%m-%d))"
-          if git push; then
-            echo "Push completato"
-            exit 0
-          fi
-          echo "Push iniziale fallito, provo un rebase difensivo..."
-          git rebase --abort 2>/dev/null || true
-          git fetch origin main
-          if git pull --rebase origin main && git push; then
-            echo "Push riuscito al secondo tentativo"
-            exit 0
-          fi
-          echo "Push fallito definitivamente"
+          for attempt in 1 2 3 4 5; do
+            if git push; then
+              echo "Push completato (tentativo $attempt/5)"
+              exit 0
+            fi
+            echo "Push fallito, tentativo $attempt/5 — rebase su origin/main..."
+            git fetch origin main || true
+            if git rebase origin/main; then
+              echo "Rebase pulito (merge driver risolve i metadata)."
+            else
+              echo "Conflitto di rebase: abort e nuovo tentativo."
+              git rebase --abort 2>/dev/null || true
+            fi
+            sleep $((attempt * 3))
+          done
+          echo "Push fallito dopo 5 tentativi"
           exit 1
