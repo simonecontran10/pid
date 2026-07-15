@@ -7024,6 +7024,8 @@
     "league_id": "FIWC",
     "league_name": "FIWC",
     "club_url": "https://www.transfermarkt.com/deportivo-la-coruna/kader/verein/897/plus/1",
-    "sortitoutsi_logo_local": "photos/clubs_sots/897.png"
+    "sortitoutsi_logo_local": "photos/clubs_sots/897.png",
+    "sortitoutsi_team_id": 1705,
+    "sortitoutsi_logo_url": "https://sortitoutsi.b-cdn.net/uploads/team/1705.png"
   }
 ]
